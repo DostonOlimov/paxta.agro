@@ -1,0 +1,19 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
+class OrganizationCompanies extends Model
+{
+    public function city()
+    {
+        return $this->belongsTo(Area::class, 'city_id');
+    }
+    public function application(): HasMany
+    {
+        return $this->hasMany(Application::class, 'organization_id');
+    }
+}
