@@ -20,9 +20,7 @@ class ApplicationController extends Controller
 
     public function applicationlist(Request $request)
     {
-//        session(['locale' => 'ru']);
-//        \Log::info('Language set to: ' . 'ru');
-        var_dump( app()->getLocale() );
+
         $user = Auth::User();
         $city = $request->input('city');
         $crop = $request->input('crop');

@@ -73,6 +73,10 @@ class PreparedCompaniesController extends Controller
     public function destory($id)
     {
         $this->authorize('delete', User::class);
+        $app = Application::where('prepared_id',$id)->first();
+        if($app){
+            return redirect('prepared/list')->with('message', 'Cannot Deleted');
+        }
         PreparedCompanies::destroy($id);
         return redirect('prepared/list')->with('message', 'Successfully Deleted');
     }

@@ -18,7 +18,42 @@
         td{
             font-weight: bold;
         }
+        #top-scroll-btn {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #3498db;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+        }
+        /* Styles for the table container with horizontal scroll */
+        .table-container {
+            overflow-x: hidden;
+            position: relative;
+        }
 
+        .table-wrapper {
+            overflow-x: auto;
+            overflow-y: hidden;
+            white-space: nowrap;
+        }
+
+        /* Optional: Add a fixed header for the table */
+        #examples1 thead {
+            position: sticky;
+            top: 0;
+            background-color: #3498db;
+            color: #ffffff;
+        }
+
+        #examples1 th, #examples1 td {
+            padding: 10px;
+            text-align: left;
+        }
     </style>
     <div class="section">
         <div class="page-header">
@@ -63,7 +98,8 @@
                             <div class="col-md-12">
                                 <div class="card">
                                     <div class="card-body">
-                                        <div class="table-responsive row">
+                                        <div class="table-container">
+                                            <div class="table-wrapper">
                                             <table id="examples1" class="table table-striped table-bordered nowrap" style="margin-top:20px;" >
                                                 <thead>
                                                 <tr>
@@ -162,12 +198,35 @@
                                                 </tbody>
                                             </table>
                                         </div>
+                                        </div>
                                     </div>
                                 </div>
+                                <!-- Top Scroll Button -->
+                                <button id="top-scroll-btn" onclick="scrollToTop()">Yuqoriga</button>
                             </div>
                         </div>
                 </div>
             </div>
         </div>
+            <script>
+                // JavaScript function to scroll to the top
+                function scrollToTop() {
+                    document.body.scrollTop = 0;  // For Safari
+                    document.documentElement.scrollTop = 0;  // For Chrome, Firefox, IE, and Opera
+                }
 
+                // Show/hide the Top Scroll button based on the scroll position
+                window.onscroll = function() {
+                    showTopScrollButton();
+                };
+
+                function showTopScrollButton() {
+                    var topScrollBtn = document.getElementById("top-scroll-btn");
+                    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                        topScrollBtn.style.display = "block";
+                    } else {
+                        topScrollBtn.style.display = "none";
+                    }
+                }
+            </script>
 @endsection

@@ -35,8 +35,7 @@ class DalolatnomaController extends Controller
         $apps= TestPrograms::with('application')
             ->with('application.crops.name')
             ->with('application.crops.type')
-            ->with('application.organization')
-            ->with('final_result');
+            ->with('application.organization');
         if ($user->role == \App\Models\User::STATE_EMPLOYEE) {
             $user_city = $user->state_id;
             $apps = $apps->whereHas('application.organization', function ($query) use ($user_city) {

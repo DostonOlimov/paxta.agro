@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=0'>
-    <meta name="description" content="Agroinspeksiya">
+    <meta name="description" content="paxta.agroset">
     <meta name="author" content="Doston Olimov">
     <title>Paxta tolasini sertifikatlashtirish tizimi</title>
-    <link rel="icon" type="image/png" sizes="252x252 href="{{ URL::asset('/resources/assets/images/paxta_logo.png') }}">
+    <link rel="icon" type="image/png" sizes="252x252" href="{{ URL::asset('/resources/assets/images/paxta_logo.png') }}">
 
     <!-- Vendors styles-->
      <link rel="stylesheet" href="{{ URL::asset('/assets/vendors/simplebar/css/simplebar.css') }}">
@@ -158,7 +158,7 @@ $settings = settings();
             url: '/change-language',
             data: { language: language , _token: token},
             success: function (data) {
-                location.reload(); // Reload the page to apply the new language
+                location.reload();
             },
             error: function (error) {
                 console.error('Error changing language', error);

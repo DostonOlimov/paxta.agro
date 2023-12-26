@@ -8,7 +8,7 @@
 		<div class="page-header">
 			<ol class="breadcrumb">
 				<li class="breadcrumb-item">
-					<i class="fe fe-life-buoy mr-1"></i>&nbsp Arizalar ro'yxati
+					<i class="fe fe-life-buoy mr-1"></i>&nbsp {{trans('app.Arizalar ro\'yxati')}}
 				</li>
 			</ol>
 		</div>
@@ -61,13 +61,13 @@
 								<thead>
 									<tr>
                                         <th class="border-bottom-0 border-top-0">#</th>
-										<th class="border-bottom-0 border-top-0">Ariza raqami</th>
-                                        <th class="border-bottom-0 border-top-0">Ariza sanasi</th>
-										<th class="border-bottom-0 border-top-0">Buyurtmachi korxona yoki tashkilot nomi</th>
-										<th class="border-bottom-0 border-top-0">Sertifikatlanuvchi mahsulot</th>
-										<th class="border-bottom-0 border-top-0">Miqdori</th>
-										<th class="border-bottom-0 border-top-0">Hosil yili</th>
-                                        <th class="border-bottom-0 border-top-0">Action</th>
+										<th class="border-bottom-0 border-top-0">{{trans('app.Ariza raqami')}}</th>
+                                        <th class="border-bottom-0 border-top-0">{{trans('app.Ariza sanasi')}}</th>
+										<th class="border-bottom-0 border-top-0">{{trans('app.Buyurtmachi korxona yoki tashkilot nomi')}}</th>
+										<th class="border-bottom-0 border-top-0">{{trans('app.Sertifikatlanuvchi mahsulot')}}</th>
+										<th class="border-bottom-0 border-top-0">{{trans('app.amount')}}</th>
+										<th class="border-bottom-0 border-top-0">{{trans('app.Hosil yili')}}</th>
+                                        <th class="border-bottom-0 border-top-0">{{trans('app.Action')}}</th>
 									</tr>
 								</thead>
 								<tbody>

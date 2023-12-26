@@ -159,11 +159,11 @@
                                     <div class="col-md-6 form-group has-feedback {{ $errors->has('to_toy') ? ' has-error' : '' }}">
                                         <input type="number" class="form-control" value="{{ old('to_toy')}}"  name="to_toy" required>
                                         <label for="number" class="form-label ">gacha </label>
-                                        @if ($errors->has('to_toy'))
-                                            <span class="help-block">
-                                                <strong class="text-danger">{{$errors->first('to_toy')}}</strong>
-                                            </span>
-                                        @endif
+                                            @if ($errors->has('to_toy'))
+                                                <span class="help-block">
+                                                    <strong class="text-danger">{{$errors->first('to_toy')}}</strong>
+                                                </span>
+                                            @endif
                                     </div>
                                     </div>
                                 </div>

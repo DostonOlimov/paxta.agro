@@ -6,7 +6,7 @@
        <b> «TАSDIQLАYMАN» </b><br>
         Paxta mahsulotlarini<br>
          sertifikatlashtirish organi boshligʼi<br>
-        _________<span id="director-name"></span><br>
+        _________<span>Nurullayev M.</span><br>
         <span id="application-date"></span> yil
 
     </h4>

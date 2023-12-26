@@ -13,7 +13,7 @@
                 <div class="page-header">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
-                            <a ><i class="fe fe-life-buoy mr-1"></i>&nbsp Korxona yoki klasterni o'zgartirish
+                            <a ><i class="fe fe-life-buoy mr-1"></i>&nbsp {{trans('app.Korxona yoki klaster ma\'lumotlarini o\'zgartirish')}}
                             </a>
                         </li>
                     </ol>
@@ -60,7 +60,7 @@
                                             <div class="row">
                                                 <div class="col-12 col-md-6">
                                                     <label class="form-label"
-                                                           for="first-name">Korxona nomi <label
+                                                           for="first-name">{{trans('app.Korxona nomi')}} <label
                                                             class="text-danger">*</label>
                                                     </label>
                                                     <input type="text" required="required" name="name"
@@ -69,7 +69,7 @@
                                                 <div class="col-12 col-md-6">
                                                     <div class="form-group">
                                                         <label class="form-label"
-                                                               for="owner_name">Korxona raxbarining ismi-sharifi <label
+                                                               for="owner_name">{{trans('app.Raxbarning ismi-sharifi')}} <label
                                                                 class="text-danger">*</label>
                                                         </label>
                                                         <input type="text" required="required" name="owner_name"
@@ -78,9 +78,9 @@
                                                 </div>
                                                 <div id="tin-container" class="col-md-6 legal-fields">
                                                     <div class="form-group">
-                                                        <label class="form-label">STIR<label class="text-danger">*</label></label>
+                                                        <label class="form-label">{{trans('app.STIR')}}<label class="text-danger">*</label></label>
                                                         <input class="form-control" type="text" name="inn" data-field-name="tin" data-field-length="9"
-                                                               placeholder="STIR ni kiriting" minlength="9"
+                                                               minlength="9"
                                                                data-mask="000000000" maxlength="9" required="required"
                                                                title="9ta raqam kiriting!" data-pattern-mismatch="Noto'g'ri shakl" value="{{ $company->inn }}"
                                                         />
@@ -116,7 +116,7 @@
                                                         <select class="w-100 form-control state_of_country custom-select" name="state_id"
                                                                 url="{!! url('/getcityfromstate') !!}">
                                                             @if(count($states))
-                                                                <option value="">Viloyat tanlang</option>
+                                                                <option value="">{{trans('app.Viloyat tanlang')}}</option>
                                                             @endif
 
                                                             @if(!empty($states))
@@ -146,9 +146,7 @@
                                                 <div class="col-md-6 form-group overflow-hidden">
 
                                                     <label class="form-label">
-
-                                                        Tuman / Shahar
-
+                                                        {{trans('app.Tuman nomi')}}
                                                         <label class="text-danger">*</label>
 
                                                     </label>
@@ -163,7 +161,7 @@
                                                                 @endif
                                                             >
                                                                 @if($cities && count($cities))
-                                                                    <option value="">Viloyat tanlang</option>
+                                                                    <option value="">{{trans('app.Tumanni tanlang')}}</option>
                                                                 @endif
 
                                                                 @if(!empty($cities))

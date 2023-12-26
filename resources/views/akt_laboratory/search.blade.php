@@ -8,7 +8,7 @@
             <div class="page-header">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
-                        <i class="fe fe-life-buoy mr-1"></i>&nbsp Laboratoriya xulosalari
+                        <i class="fe fe-life-buoy mr-1"></i>&nbsp {{trans('app.Laboratoriya ma\'lumolari')}}
                     </li>
                 </ol>
             </div>
@@ -40,12 +40,12 @@
                                     <thead>
                                     <tr>
                                         <th class="border-bottom-0 border-top-0">#</th>
-                                        <th>Sinov dasturi raqami</th>
-                                        <th>Sinov bayonnomasi sanasi</th>
-                                        <th>Buyurtmachi korxona yoki tashkilot nomi</th>
-                                        <th>Ekin turi</th>
-                                        <th>Ekin miqdori</th>
-                                        <th>Action</th>
+                                        <th>{{trans('app.Sinov dasturi raqami')}}</th>
+                                        <th>{{trans('app.Sinov bayonnomasi sanasi')}}</th>
+                                        <th>{{trans('app.Buyurtmachi korxona yoki tashkilot nomi')}}</th>
+                                        <th>{{trans('app.Sertifikatlanuvchi mahsulot')}}</th>
+                                        <th>{{trans('app.amount')}}</th>
+                                        <th>{{trans('app.Action')}}</th>
                                     </tr>
 
                                     </thead>
@@ -62,7 +62,7 @@
                                             <td>{{ $test->test_program->application->crops->name->name }}</td>
                                             <td>{{ optional($test->test_program->application)->crops->amount_name }}</td>
                                             <td>
-                                                <a href="{!! url('/akt_laboratory/add/'.$test->id) !!}"><button type="button" class="btn btn-round btn-success">Kiritish</button></a>
+                                                <a href="{!! url('/akt_laboratory/add/'.$test->id) !!}"><button type="button" class="btn btn-round btn-success">{{trans('app.Qo\'shish')}}</button></a>
                                                 <a href="{!! url('/akt_laboratory/view/'.$test->id) !!}"><button type="button" class="btn btn-round btn-info">{{ trans('app.View')}}</button></a>
                                             </td>
                                         </tr>

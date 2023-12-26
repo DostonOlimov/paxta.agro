@@ -18,7 +18,7 @@
             <div class="page-header">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
-                        <i class="fe fe-life-buoy mr-1"></i>&nbsp Kompaniya
+                        <i class="fe fe-life-buoy mr-1"></i>&nbsp {{trans('app.Kompaniya ma\'lumotlari')}}
                     </li>
                 </ol>
             </div>
@@ -42,13 +42,13 @@
                                         <li>
                                             <a href="{{ URL::previous() }}">
                                                 <span class="visible-xs"></span>
-                                                <i class="fa fa-list fa-lg">&nbsp;</i> Orqaga
+                                                <i class="fa fa-list fa-lg">&nbsp;</i> {{trans('app.Orqaga')}}
                                             </a>
                                         </li>
                                         <li class="active">
                                             <span class="visible-xs"></span>
                                             <i class="fa fa-eye fa-lg">&nbsp;</i>
-                                            <b>Kompaniyani ko'rish</b>
+                                            <b>{{trans('app.View')}}</b>
                                         </li>
                                     </ul>
                                 </div>
@@ -58,60 +58,60 @@
                                     <div class="row">
                                         <div class="col-md-8 col-sm-12 right_side">
                                             <div class="table_row row">
-                                                <div class="col-md-5 col-sm-12 table_td">
-                                                    <b>Buyurtmachi korxona yoki tashkilot  STIRi</b>
-                                                </div>
                                                 <div class="col-md-7 col-sm-12 table_td">
+                                                    <b>{{trans('app.Buyurtmachi korxona yoki tashkilot  STIRi')}}</b>
+                                                </div>
+                                                <div class="col-md-5 col-sm-12 table_td">
                                             <span class="txt_color">
                                             {{ $company->inn }}
                                             </span>
                                                 </div>
                                             </div>
                                             <div class="table_row row">
-                                                <div class="col-md-5 col-sm-12 table_td">
-                                                    <b>Buyurtmachi korxona yoki tashkilot nomi</b>
-                                                </div>
                                                 <div class="col-md-7 col-sm-12 table_td">
+                                                    <b>{{trans('app.Buyurtmachi korxona yoki tashkilot nomi')}}</b>
+                                                </div>
+                                                <div class="col-md-5 col-sm-12 table_td">
                                             <span class="txt_color">
                                                 {{ $company->name }}
                                             </span>
                                                 </div>
                                             </div>
                                             <div class="table_row row">
-                                                <div class="col-md-5 col-sm-12 table_td">
-                                                    <b>Buyurtmachi korxona yoki tashkilot shahri</b>
-                                                </div>
                                                 <div class="col-md-7 col-sm-12 table_td">
+                                                    <b>{{trans('app.Buyurtmachi korxona yoki tashkilot shahri')}}</b>
+                                                </div>
+                                                <div class="col-md-5 col-sm-12 table_td">
                                             <span class="txt_color">
                                                 {{ optional($company->city)->name  }}
                                             </span>
                                                 </div>
                                             </div>
                                             <div class="table_row row">
-                                                <div class="col-md-5 col-sm-12 table_td">
-                                                    <b>Buyurtmachi korxona yoki tashkilot manzili</b>
-                                                </div>
                                                 <div class="col-md-7 col-sm-12 table_td">
+                                                    <b>{{trans('app.Buyurtmachi korxona yoki tashkilot manzili')}}</b>
+                                                </div>
+                                                <div class="col-md-5 col-sm-12 table_td">
                                             <span class="txt_color">
                                                 {{ $company->address  }}
                                             </span>
                                                 </div>
                                             </div>
                                             <div class="table_row row">
-                                                <div class="col-md-5 col-sm-12 table_td">
-                                                    <b>Buyurtmachi korxona yoki tashkilot rahbari</b>
-                                                </div>
                                                 <div class="col-md-7 col-sm-12 table_td">
+                                                    <b>{{trans('app.Buyurtmachi korxona yoki tashkilot rahbari')}}</b>
+                                                </div>
+                                                <div class="col-md-5 col-sm-12 table_td">
                                             <span class="txt_color">
                                                 {{ $company->owner_name  }}
                                             </span>
                                                 </div>
                                             </div>
                                             <div class="table_row row">
-                                                <div class="col-md-5 col-sm-12 table_td">
-                                                    <b>Buyurtmachi korxona yoki tashkilot telefon raqami</b>
-                                                </div>
                                                 <div class="col-md-7 col-sm-12 table_td">
+                                                    <b>{{trans('app.Buyurtmachi korxona yoki tashkilot telefon raqami')}}</b>
+                                                </div>
+                                                <div class="col-md-5 col-sm-12 table_td">
                                             <span class="txt_color">
                                                 {{ $company->phone_number  }}
                                             </span>

@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Application;
 use App\Models\Area;
 use App\Models\Region;
 use App\Models\OrganizationCompanies;
 use App\tbl_states;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\tbl_activities;
@@ -89,6 +91,10 @@ class OrganizationCompaniesController extends Controller
     public function destory($id)
     {
         $this->authorize('delete', User::class);
+        $app = Application::where('organization_id',$id)->first();
+        if($app){
+            return redirect('organization/list')->with('message', 'Cannot Deleted');
+        }
         OrganizationCompanies::destroy($id);
         return redirect('organization/list')->with('message', 'Successfully Deleted');
     }

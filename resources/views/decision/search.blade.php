@@ -7,7 +7,7 @@
             <div class="page-header" >
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item" >
-                        <i class="fe fe-life-buoy mr-1"></i>&nbsp Sertifikatlashtirishni oʼtkazish uchun berilgan ariza boʼyicha qaror va sinov dasturlari ro'yxati
+                        <i class="fe fe-life-buoy mr-1"></i>&nbsp {{trans('app.Sertifikatlashtirishni oʼtkazish uchun berilgan ariza boʼyicha qaror va sinov dasturlari ro\'yxati')}}
                     </li>
                 </ol>
             </div>
@@ -38,13 +38,12 @@
                                     <thead>
                                     <tr>
                                         <th class="border-bottom-0 border-top-0">#</th>
-                                        <th>Ariza sanasi</th>
-                                        <th>Buyurtmachi korxona yoki tashkilot nomi</th>
-                                        <th>Mahsulot nomi</th>
-                                        <th>Miqdori</th>
-                                        <th>Hosil yili</th>
-                                        <th>Qarorlar</th>
-                                        <th>Sinov dasturlari</th>
+                                        <th>{{trans('app.Ariza sanasi')}}</th>
+                                        <th>{{trans('app.Buyurtmachi korxona yoki tashkilot nomi')}}</th>
+                                        <th>{{trans('app.Sertifikatlanuvchi mahsulot')}}</th>
+                                        <th>{{trans('app.Hosil yili')}}</th>
+                                        <th>{{trans('app.Qarorlar')}}</th>
+                                        <th>{{trans('app.Sinov dasturlari')}}</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -58,22 +57,21 @@
                                             <td> <a href="{!! url('/application/view/'.$app->id) !!}">{{ $app->date }}</a></td>
                                             <td><a href="{!! url('/organization/view/'.$app->organization_id) !!}">{{ optional($app->organization)->name }}</a></td>
                                             <td>{{ optional($app->crops->name)->name }}</td>
-                                            <td>{{ optional($app->crops)->amount_name }}</td>
                                             <td>{{ optional($app->crops)->year }}</td>
                                                 @if($descion = $app->decision)
                                                 <td>
-                                                    <a href="{!! url('/decision/view/'.$descion->id) !!}"><button type="button" class="btn btn-round btn-info">Qaror fayli</button></a>
+                                                    <a href="{!! url('/decision/view/'.$descion->id) !!}"><button type="button" class="btn btn-round btn-info">{{trans('app.Qaror fayli')}}</button></a>
                                                     <a url="{!! url('/decision/list/delete/'.$descion->id)!!}" class="sa-warning"> <button type="button" class="btn btn-round btn-danger dgr">{{ trans('app.Delete')}}</button></a>
                                                 </td>
                                                     <?php $appid=Auth::User()->id; ?>
                                                     @if($app->tests)
                                                         <td>
-                                                            <a href="{!! url('/tests/view/'.$app->tests->id) !!}"><button type="button" class="btn btn-round btn-info">Sinov dasturi fayli</button></a>
+                                                            <a href="{!! url('/tests/view/'.$app->tests->id) !!}"><button type="button" class="btn btn-round btn-info">{{trans('app.Sinov dasturi fayli')}}</button></a>
                                                         </td>
                                                     @endif
                                                 @else
                                                 <td>
-                                                    <a href="{!! url('/decision/add/'.$app->id) !!}"><button type="button" class="btn btn-round btn-success">&nbsp; Qarorni shakllantirish &nbsp;</button></a>
+                                                    <a href="{!! url('/decision/add/'.$app->id) !!}"><button type="button" class="btn btn-round btn-success">&nbsp;{{trans('app.Qarorni shakllantirish')}} &nbsp;</button></a>
                                                 </td>
                                                 <td></td>
                                             @endif

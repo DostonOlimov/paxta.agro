@@ -8,16 +8,25 @@
             <svg width="90" height="46" alt="CoreUI Logo">
                 <use xlink:href="/assets/brand/coreui.svg#full"></use>
             </svg></a>
-
+    @php
+        $currentFlag = "/img/flags/uzbekistan.png";
+        if(app()->getLocale() == 'ru'){
+            $currentFlag = "/img/flags/russia.png";
+        }elseif (app()->getLocale() == 'en'){
+            $currentFlag = "/img/flags/united-kingdom.png";
+        }
+    @endphp
         <div class="d-flex align-items-center justify-content-around" style="width: 86%;">
             <div>
-                <select class="form-select" onchange="changeLanguage(this.value)" >
-                    <option value="es" {{ app()->getLocale() == 'uz' ? 'selected' : '' }}>O'zbekcha</option>
-                    <option value="krill" {{ app()->getLocale() == 'krill' ? 'selected' : '' }}>Ўзбекча</option>
-                    <option value="en" {{ app()->getLocale() == 'en' ? 'selected' : '' }}><i class="cif-uz"></i>English</option>
-                    <option value="ru" {{ app()->getLocale() == 'ru' ? 'selected' : '' }}>Русский</option>
-                    <!-- Add more languages as needed -->
-                </select>
+                <div class="dropdown">
+                    <img id="currentFlag" src="{{$currentFlag}}" class="flag">
+                    <div class="my-dropdown-content">
+                        <a href="#" onclick="changeLanguage('uz')"><img src="/img/flags/uzbekistan.png" class="flag">O'zbek</a>
+                        <a href="#" onclick="changeLanguage('krill')"><img src="/img/flags/uzbekistan.png" class="flag">Ўзбек</a>
+                        <a href="#" onclick="changeLanguage('en')"><img src="/img/flags/united-kingdom.png" class="flag">English</a>
+                        <a href="#" onclick="changeLanguage('ru')"><img src="/img/flags/russia.png"  class="flag">Русский</a>
+                    </div>
+                </div>
             </div>
             <div class="title" style="width: 100%; text-align: center;">
                 <h1 style="text-transform: uppercase;">{{ trans('message.Paxta tolasini sertifikatlashtirish avtomatlashtirilgan axborot tizimi') }}</h1>
@@ -34,14 +43,14 @@
                     <a class="dropdown-item" href="#">
                         <svg class="icon me-2">
                             <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-user"></use>
-                        </svg> Shaxsiy ma'lumotlar</a><a class="dropdown-item" href="#">
+                        </svg> {{trans('message.Shaxsiy ma\'lumotlar')}}</a><a class="dropdown-item" href="#">
                         <svg class="icon me-2">
                             <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-settings"></use>
-                        </svg> Sozlamalar</a>
+                        </svg> {{trans('message.Settings')}}</a>
                         <a class="dropdown-item" href="#" title="Logout" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                         <svg class="icon me-2">
                             <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-account-logout"></use>
-                        </svg> Tizimdan chiqish  <form id="logout-form" action="{{route('logout')}}" method="POST"
+                        </svg> {{trans('message.Tizimdan chiqish')}}  <form id="logout-form" action="{{route('logout')}}" method="POST"
                                           style="display: none;">
                                         @csrf
                             </form></a>

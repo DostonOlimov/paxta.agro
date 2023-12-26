@@ -46,7 +46,7 @@ class FinalResultsController extends Controller
             ->with('test_program.application.crops.name')
             ->with('test_program.application.crops.type')
             ->with('test_program.application.organization')
-            ->with('test_program.final_result');
+           ;
         if ($user->role == \App\Models\User::STATE_EMPLOYEE) {
             $user_city = $user->state_id;
             $apps = $apps->whereHas('test_program.application.organization', function ($query) use ($user_city) {
@@ -106,10 +106,53 @@ class FinalResultsController extends Controller
     //index
     public function add($id)
     {
-        $test = TestPrograms::find($id);
-        $makers = DB::table('decision_makers')->get();
-        $types = FinalResult::getType();
-        return view('final_results.add', compact('makers','test','types'));
+        $dalolatnoma = Dalolatnoma::find($id);
+        $tests = ClampData::where('dalolatnoma_id',$id)->count();
+        $data_count = FinalResult::where('dalolatnoma_id',$id)->count();
+
+        if($data_count == 0){
+            $counts = ClampData::select('sort', 'class',
+                \DB::raw('count(*) as count'),
+                DB::raw('SUM(akt_amount.amount) as total_amount'),
+                DB::raw('AVG(clamp_data.mic) as mic'),
+                DB::raw('AVG(clamp_data.staple) as staple'),
+                DB::raw('AVG(clamp_data.strength) as strength'),
+                DB::raw('AVG(clamp_data.uniform) as uniform'),
+                DB::raw('AVG(clamp_data.humidity) as humidity')
+            )
+                ->join('akt_amount', 'akt_amount.shtrix_kod', '=', 'clamp_data.gin_bale')
+                ->groupBy('sort', 'class')
+                ->get();
+            foreach($counts as $count){
+                $result = new FinalResult();
+                $result->dalolatnoma_id = $id;
+                $result->sort = $count->sort;
+                $result->class = $count->class;
+                $result->count = $count->count;
+                $result->amount = $count->total_amount;
+                $result->mic = $count->mic;
+                $result->staple = $count->staple;
+                $result->strength = $count->strength;
+                $result->uniform = $count->uniform;
+                $result->humidity = $count->humidity;
+                $result->save();
+            }
+        }
+
+
+        return view('final_results.add', [
+            'results' => $tests,
+            'counts' => FinalResult::where('dalolatnoma_id',$id)->get(),
+            'dalolatnoma'=>$dalolatnoma,
+        ]);
+    }
+
+    public function add2($id)
+    {
+
+        return view('final_results.add2', [
+            'id'=>$id,
+        ]);
     }
 
     //list
@@ -125,47 +168,20 @@ class FinalResultsController extends Controller
     {
         $userA = Auth::user();
         $this->authorize('create', Application::class);
-        $test_id = $request->input('test_id');
+        $id = $request->input('id');
         $given_certificate = $request->input('given_certificate');
-        $number = $request->input('number');
-        $maker = $request->input('maker');
-
         $reestr_number = $request->input('reestr_number');
-        $type = $given_certificate == 1 ? 2 : $request->input('type');
-        $folder_number = $given_certificate == 0 ? $request->input('folder_number') : null;
-        $comment = $given_certificate == 0 ? $request->input('comment') : null;
-
-        $test = new FinalResult();
-        $test->test_program_id = $test_id;
-        $test->number = $number;
-        $test->date = join('-', array_reverse(explode('-', $request->input('date'))));
-        $test->type = $type;
-        $test->folder_number = $folder_number;
-        $test->comment = $comment;
-        $test->maker = $maker;
-        $test->save();
+        $cer = new Sertificate();
+        $cer->final_result_id = $id;
+        $cer->reestr_number = $reestr_number;
+        $cer->given_date = join('-', array_reverse(explode('-', $request->input('given_date'))));;;
+        $cer->save();
 
         if ($request->hasFile('reason-file')) {
-            $this->attachmentService->upload($request->file('reason-file'), $test);
+            $this->attachmentService->upload($request->file('reason-file'), $cer);
         }
-        if($given_certificate == 1)
-        {
-            $cer = new Sertificate();
-            $cer->final_result_id = $test->id;
-            $cer->reestr_number = $reestr_number;
-            $cer->given_date = join('-', array_reverse(explode('-', $request->input('given_date'))));;;
-            $cer->save();
-        }
-        $active = new tbl_activities;
-        $active->ip_adress = $_SERVER['REMOTE_ADDR'];
-        $active->user_id = $userA->id;
-        $active->action_id = $test->id;
-        $active->action_type = 'new_result';
-        $active->action = "Yakuniy natijalar qo'shildi";
-        $active->time = date('Y-m-d H:i:s');
-        $active->save();
-
-        return redirect('/final_results/search')->with('message', 'Successfully Submitted');
+        $result_id = FinalResult::find($id);
+        return redirect('/final_results/add/'.$result_id->dalolatnoma_id)->with('message', 'Successfully Submitted');
 
 
     }
@@ -231,13 +247,29 @@ class FinalResultsController extends Controller
     }
     public function view($id)
     {
+        $dalolatnoma = Dalolatnoma::find($id);
         $tests = ClampData::where('dalolatnoma_id',$id)->get()->toArray();
         $data1 = [];
         if($tests){
             $data1 =  array_chunk($tests, ceil(count($tests)/4));
         }
+
+        $counts = ClampData::select('sort', 'class', \DB::raw('count(*) as count'))
+            ->groupBy('sort', 'class')
+            ->get();
+        $mic = ClampData::avg('mic');
+        $length = ClampData::avg('fiblength');
+        $strength = ClampData::avg('strength');
+        $uniform = ClampData::avg('uniform');
+
         return view('final_results.show', [
             'results' => $data1,
+            'counts' => $counts,
+            'dalolatnoma'=>$dalolatnoma,
+            'mic' => $mic,
+            'length' => $length,
+            'strength' => $strength,
+            'uniform' => $uniform
         ]);
     }
 

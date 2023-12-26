@@ -34,6 +34,10 @@ class Dalolatnoma  extends Model
     {
         return $this->hasMany(AktAmount::class,'id','dalolatnoma_id');
     }
+    public function result()
+    {
+        return $this->hasMany(FinalResult::class, 'id', 'dalolatnoma_id');
+    }
 
 
 }

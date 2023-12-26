@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\App;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Customercontroller;
 
@@ -32,7 +33,7 @@ Route::get('/full-report', '\App\Http\Controllers\ReportController@report')->nam
         Route::get('/list/{id}', 'Usercontroller@usershow');
         Route::get('/get', 'Usercontroller@get_users');
     });
-//employee module
+//employee modulea
 Route::get('/attachments/{id}/download', '\App\Http\Controllers\AttachmentsController@download')->name('attachment.download');
 
 Route::group(['prefix' => 'employee'], function () {
@@ -252,6 +253,7 @@ Route::group(['prefix' => 'akt_laboratory', 'middleware' => 'auth'], function ()
     Route::group(['prefix' => 'final_results', 'middleware' => 'auth'], function () {
     Route::get('/search', '\App\Http\Controllers\FinalResultsController@search');
     Route::get('/add/{id}', '\App\Http\Controllers\FinalResultsController@add');
+    Route::get('/add2/{id}', '\App\Http\Controllers\FinalResultsController@add2');
     Route::get('/list', '\App\Http\Controllers\FinalResultsController@list');
     Route::get('/list/delete/{id}', '\App\Http\Controllers\FinalResultsController@destory');
     Route::get('/list/edit/{id}', '\App\Http\Controllers\FinalResultsController@edit');

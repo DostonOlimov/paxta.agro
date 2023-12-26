@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Area;
+use App\Models\CropData;
 use App\Models\Region;
 use App\Models\CropsType;
 use App\tbl_states;
@@ -53,6 +54,10 @@ class CropsTypeController extends Controller
     public function destory($id)
     {
         $this->authorize('setting_delete', User::class);
+        $app = CropData::where('type_id',$id)->first();
+        if($app){
+            return redirect('crops_type/list')->with('message', 'Cannot Deleted');
+        }
         CropsType::destroy($id);
         return redirect('crops_type/list')->with('message', 'Successfully Deleted');
     }

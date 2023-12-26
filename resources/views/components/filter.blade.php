@@ -2,7 +2,7 @@
     <div class="col-sm-4">
             <select class="w-100 form-control state_of_country custom-select " name="city" id="city">
                 @if(count($states))
-                    <option value="">Respublika bo'yicha</option>
+                    <option value="">{{trans('message.Respublika bo\'yicha')}}</option>
                 @endif
 
                 @if(!empty($states))
@@ -23,7 +23,7 @@
     <div class="col-sm-4">
         <select class="w-100 form-control state_of_country custom-select" name="crop" id="crop">
             @if(count($crop_names))
-                <option value="">Barcha urug'lar bo'yicha</option>
+                <option value="">{{trans('message.Barchasi')}}</option>
             @endif
 
             @if(!empty($crop_names))
@@ -41,7 +41,7 @@
 </div>
 
 <div id="list-date-filter">
-    <div class="show-date btn btn-default filter-button" style="background-color: #3160EE;color:white"><b>Vaqt bo'yicha filtrlash</b> <i
+    <div class="show-date btn btn-default filter-button" style="background-color: #3160EE;color:white"><b>{{trans('message.Vaqt bo\'yicha filtrlash')}}</b> <i
             class="fa {{ ($from && $till) ? 'fa-angle-left':'fa-angle-right' }}"></i></div>
     <div class="date {{($from && $till) ? 'open':''}}">
         <form class="input-filter">
@@ -50,19 +50,19 @@
                    @if(!empty($from))
                    value="{{$from}}"
                 @endif
-            /> dan
+            />{{trans('message.dan')}}
             <input class="form-control fc-datepicker till input-filter" name="till"
                    placeholder="dd-mm-yyyy" autocomplete="off" required="required"
                    @if(!empty($till))
                    value="{{$till}}"
                 @endif
-            /> gacha
+            /> {{trans('message.gacha')}}
             @if($from && $till)
                 <button type="button" class="btn btn-primary filter-button"
-                        id="cancel-date-filter">Filtrni bekor qilish
+                        id="cancel-date-filter">{{trans('message.Filtrni bekor qilish')}}
                 </button>
             @else
-                <button type='submit' class="btn btn-primary  filter-button">Filtrlash
+                <button type='submit' class="btn btn-primary  filter-button">{{trans('message.filterlash')}}
                 </button>
             @endif
         </form>
@@ -79,7 +79,7 @@
     <div class="col-4">
         <form class="d-flex">
             <input type="text" name="s" class="search-input form-control"
-                   placeholder="Qidirish"
+                   placeholder="{{trans('message.Qidirish')}}"
                    value="{{ isset($_GET['s']) ? $_GET['s'] : '' }}">
             <button type='submit' class="btn btn-primary"><i class="fa fa-search"></i>
             </button>

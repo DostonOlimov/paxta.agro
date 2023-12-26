@@ -9,23 +9,25 @@
 		<div class="page-header">
 			<ol class="breadcrumb">
 				<li class="breadcrumb-item">
-					<i class="fe fe-life-buoy mr-1"></i>&nbsp {{ $title}}
+					<i class="fe fe-life-buoy mr-1"></i>&nbsp {{ trans('message.Buyurtmachilar korxonalar')}}
 				</li>
 			</ol>
 		</div>
 		@if(session('message'))
 		<div class="row massage">
-			<div class="col-md-12 col-sm-12 col-xs-12">
-				<div class="alert alert-success text-center">
-                 @if(session('message') == 'Successfully Submitted')
-					<label for="checkbox-10 colo_success"> {{trans('app.Successfully Submitted')}}  </label>
-				   @elseif(session('message')=='Successfully Updated')
-				   <label for="checkbox-10 colo_success"> {{ trans('app.Successfully Updated')}}  </label>
-				   @elseif(session('message')=='Successfully Deleted')
-				   <label for="checkbox-10 colo_success"> {{ trans('app.Successfully Deleted')}}  </label>
-			    @endif
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="alert @php echo (session('message')=='Cannot Deleted') ? 'alert-danger' : 'alert-success' @endphp text-center">
+                    @if(session('message') == 'Successfully Submitted')
+                        <label for="checkbox-10 colo_success"> {{trans('app.Successfully Submitted')}}  </label>
+                    @elseif(session('message')=='Successfully Updated')
+                        <label for="checkbox-10 colo_success"> {{ trans('app.Successfully Updated')}}  </label>
+                    @elseif(session('message')=='Successfully Deleted')
+                        <label for="checkbox-10 colo_success"> {{ trans('app.Successfully Deleted')}}  </label>
+                    @elseif(session('message')=='Cannot Deleted')
+                        <label for="checkbox-10 "> {{ trans('app.Cannot Deleted')}}  </label>
+                    @endif
                 </div>
-			</div>
+            </div>
 		</div>
 		@endif
         <div class="row">
@@ -57,11 +59,11 @@
 								<thead>
 									<tr>
 										<th>#</th>
-										<th>Korxona nomi</th>
-                                        <th>Raxbarning ismi-sharifi</th>
-                                        <th>STIR</th>
-										<th>{{ trans('app.Region')}}</th>
-                                        <th>Tuman nomi</th>
+										<th>{{trans('app.Korxona nomi')}}</th>
+                                        <th>{{trans('app.Raxbarning ismi-sharifi')}}</th>
+                                        <th>{{trans('app.STIR')}}</th>
+										<th>{{ trans('app.Viloyat')}}</th>
+                                        <th>{{trans('app.Tuman nomi')}}</th>
 										<th>{{ trans('app.Action')}}</th>
 									</tr>
 								</thead>
@@ -70,7 +72,7 @@
 								 @foreach($companies as $company)
 									<tr>
 										<td>{{ $i }}</td>
-										<td>{{ $company->name }}</td>
+                                        <td><a href="{!! url('/organization/view/'.$company->id) !!}"> {{ $company->name }}</a></td>
                                         <td>{{ $company->owner_name }}</td>
                                         <td>{{ $company->inn }}</td>
                                         <td>{{ optional($company->city->region)->name }}</td>

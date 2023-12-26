@@ -12,7 +12,7 @@
                 <div class="page-header">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
-                            <a ><i class="fe fe-life-buoy mr-1"></i>&nbsp Zavod nomini o'zgartirish
+                            <a ><i class="fe fe-life-buoy mr-1"></i>&nbsp {{trans('app.Edit')}}
                             </a>
                         </li>
                     </ol>
@@ -59,7 +59,7 @@
                                             <div class="row">
                                                 <div class="col-12 col-md-4">
                                                     <label class="form-label"
-                                                           for="first-name">Zavod nomi <label
+                                                           for="first-name">{{trans('app.Zavod nomi')}} <label
                                                             class="text-danger">*</label>
                                                     </label>
                                                     <input type="text" required="required" name="name"
@@ -67,7 +67,7 @@
                                                 </div>
                                                 <div class="col-12 col-md-4">
                                                     <label class="form-label"
-                                                           for="first-name">Zavod kodi <label
+                                                           for="first-name">{{'app.Zavod kodi'}} <label
                                                             class="text-danger">*</label>
                                                     </label>
                                                     <input type="text" required="required" name="kod"
@@ -76,7 +76,7 @@
                                                 <div class="col-12 col-md-4">
                                                     <div class="form-group">
                                                         <label class="form-label"
-                                                               for="first-name">{{ trans('app.Region Name')}} <label
+                                                               for="first-name">{{ trans('app.Viloyat nomi')}} <label
                                                                 class="text-danger">*</label>
                                                         </label>
                                                         <select name="region" class="region" required>

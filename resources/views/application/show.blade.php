@@ -21,7 +21,7 @@
             <div class="page-header">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
-                        <i class="fa fa-file mr-1"></i>&nbsp Ariza ma'lumotlari
+                        <i class="fa fa-file mr-1"></i>&nbsp {{trans('app.Ariza ma\'lumotlari')}}
                     </li>
                 </ol>
             </div>
@@ -45,7 +45,7 @@
                                         <li class="btn-warning">
                                             <a class="text-light" href="{{  url('/application/list') }}">
                                                 <span class="visible-xs"></span>
-                                                <i class="fa fa-arrow-left">&nbsp;</i> Orqaga
+                                                <i class="fa fa-arrow-left">&nbsp;</i> {{trans('app.Orqaga')}}
                                             </a>
                                         </li>
                                         <li class="btn-primary">
@@ -75,31 +75,11 @@
                                 <div class="col-md-12 col-sm-12">
                                     <div class="row">
                                         <div class="col-md-6 col-sm-12 right_side">
-                                            <h4><b>Ariza ma'lumotlari</b></h4>
-                                            <div class="table_row row">
-                                                <div class="col-md-5 col-sm-12 table_td">
-                                                    <b>Arizachi beruvchi</b>
-                                                </div>
-                                                <div class="col-md-7 col-sm-12 table_td">
-                                                    <span class="txt_color">
-                                                        {{ optional($user->user)->role == \App\Models\User::ROLE_CUSTOMER ? 'Fuqaro' : 'Xodim' }}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="table_row row">
-                                                <div class="col-md-5 col-sm-12 table_td">
-                                                    <b>Arizachi ismi-sharifi</b>
-                                                </div>
-                                                <div class="col-md-7 col-sm-12 table_td">
-                                                    <span class="txt_color">
-                                                        {{ optional($user->user)->name.' '.optional($user->user)->lastname }}
-                                                    </span>
-                                                </div>
-                                            </div>
+                                            <h4><b>{{trans('app.Ariza ma\'lumotlari')}}</b></h4>
 
                                             <div class="table_row row">
                                                 <div class="col-md-5 col-sm-12 table_td">
-                                                    <b>Ariza yaratilgan sanasi</b>
+                                                    <b>{{trans('app.Ariza sanasi')}}</b>
                                                 </div>
                                                 <div class="col-md-7 col-sm-12 table_td">
                                             <span class="txt_color">
@@ -110,7 +90,7 @@
 
                                             <div class="table_row row">
                                                 <div class="col-md-5 col-sm-12 table_td">
-                                                    <b>Tayorlangan shaxobcha yoki sexning nomi</b>
+                                                    <b>{{trans('app.Tayorlangan shaxobcha yoki sexning nomi')}}</b>
                                                 </div>
                                                 <div class="col-md-7 col-sm-12 table_td">
                                             <span class="txt_color">
@@ -120,7 +100,7 @@
                                             </div>
                                             <div class="table_row row">
                                                 <div class="col-md-5 col-sm-12 table_td">
-                                                    <b>Sertifikatlanuvchi mahsulot</b>
+                                                    <b>{{trans('app.Sertifikatlanuvchi mahsulot')}}</b>
                                                 </div>
                                                 <div class="col-md-7 col-sm-12 table_td">
                                             <span class="txt_color">
@@ -131,7 +111,7 @@
 
                                             <div class="table_row row">
                                                 <div class="col-md-5 col-sm-12 table_td">
-                                                    <b>Kod TN VED</b>
+                                                    <b>{{trans('app.Kod TN VED')}}</b>
                                                 </div>
                                                 <div class="col-md-7 col-sm-12 table_td">
                                             <span class="txt_color">
@@ -141,7 +121,7 @@
                                             </div>
                                             <div class="table_row row">
                                                 <div class="col-md-5 col-sm-12 table_td">
-                                                    <b>Partiya raqami</b>
+                                                    <b>{{trans('app.Toʼda (partiya) raqami')}}</b>
                                                 </div>
                                                 <div class="col-md-7 col-sm-12 table_td">
                                             <span class="txt_color">
@@ -151,7 +131,7 @@
                                             </div>
                                             <div class="table_row row">
                                                 <div class="col-md-5 col-sm-12 table_td">
-                                                    <b>Miqdori</b>
+                                                    <b>{{trans('app.amount')}}</b>
                                                 </div>
                                                 <div class="col-md-7 col-sm-12 table_td">
                                             <span class="txt_color">
@@ -161,7 +141,7 @@
                                             </div>
                                             <div class="table_row row">
                                                 <div class="col-md-5 col-sm-12 table_td">
-                                                    <b>Hosil yili</b>
+                                                    <b>{{trans('app.Hosil yili')}}</b>
                                                 </div>
                                                 <div class="col-md-7 col-sm-12 table_td">
                                             <span class="txt_color">
@@ -174,12 +154,12 @@
                                             <div class="panel panel-primary">
                                                 <div class="tab_wrapper page-tab">
                                                     <ul class="tab_list">
-                                                        <h5><b>Buyurtmachi korxona yoki tashkilot ma'lumotlari</b></h5>
+                                                        <h5><b>{{trans('app.Buyurtmachi korxona yoki tashkilot ma\'lumotlari')}}</b></h5>
                                                         <li class="btn-primary">
                                                             <a class="text-light" href="{!! url('/organization/list/edit/'.$company->id) !!}">
                                                                 <span class="visible-xs"></span>
                                                                 <i class="fa fa-edit">&nbsp;</i>
-                                                                <b >O'zgartirish</b>
+                                                                <b >{{trans('app.Edit')}}</b>
                                                             </a>
                                                         </li>
                                                     </ul>
@@ -188,22 +168,22 @@
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="row">
-                                                        <div class="col-md-8 col-sm-12 right_side">
+                                                        <div class="col-md-12 col-sm-12 right_side">
                                                             <div class="table_row row">
-                                                                <div class="col-md-5 col-sm-12 table_td">
-                                                                    <b>Tashkilot  STIRi</b>
-                                                                </div>
                                                                 <div class="col-md-7 col-sm-12 table_td">
+                                                                    <b>{{trans('app.Buyurtmachi korxona yoki tashkilot  STIRi')}}</b>
+                                                                </div>
+                                                                <div class="col-md-5 col-sm-12 table_td">
                                             <span class="txt_color">
                                             {{ $company->inn }}
                                             </span>
                                                                 </div>
                                                             </div>
                                                             <div class="table_row row">
-                                                                <div class="col-md-5 col-sm-12 table_td">
-                                                                    <b>Tashkilot nomi</b>
-                                                                </div>
                                                                 <div class="col-md-7 col-sm-12 table_td">
+                                                                    <b>{{trans('app.Korxona nomi')}}</b>
+                                                                </div>
+                                                                <div class="col-md-5 col-sm-12 table_td">
                                             <span class="txt_color">
                                                 {{ $company->name }}
                                             </span>
@@ -211,30 +191,30 @@
                                                             </div>
 
                                                             <div class="table_row row">
-                                                                <div class="col-md-5 col-sm-12 table_td">
-                                                                    <b>Tashkilot manzili</b>
-                                                                </div>
                                                                 <div class="col-md-7 col-sm-12 table_td">
+                                                                    <b>{{trans('app.Address')}}</b>
+                                                                </div>
+                                                                <div class="col-md-5 col-sm-12 table_td">
                                             <span class="txt_color">
                                                 {{ optional($company->city)->region->name .' '.optional($company->city)->name . ' ' .$company->address  }}
                                             </span>
                                                                 </div>
                                                             </div>
                                                             <div class="table_row row">
-                                                                <div class="col-md-5 col-sm-12 table_td">
-                                                                    <b>Tashkilot rahbari</b>
-                                                                </div>
                                                                 <div class="col-md-7 col-sm-12 table_td">
+                                                                    <b>{{trans('app.Raxbarning ismi-sharifi')}}</b>
+                                                                </div>
+                                                                <div class="col-md-5 col-sm-12 table_td">
                                             <span class="txt_color">
                                                 {{ $company->owner_name  }}
                                             </span>
                                                                 </div>
                                                             </div>
                                                             <div class="table_row row">
-                                                                <div class="col-md-5 col-sm-12 table_td">
-                                                                    <b>Tashkilot telefon raqami</b>
-                                                                </div>
                                                                 <div class="col-md-7 col-sm-12 table_td">
+                                                                    <b>{{trans('app.Mobile No')}}</b>
+                                                                </div>
+                                                                <div class="col-md-5 col-sm-12 table_td">
                                             <span class="txt_color">
                                                 {{ $company->phone_number  }}
                                             </span>

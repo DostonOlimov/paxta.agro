@@ -12,8 +12,8 @@
                 <div class="col-md-12 grid-margin">
                     <div class="row">
                         <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-                            <h2 class="font-weight-bold text-light">Xush kelibsiz!</h2>
-                            <h4 class="font-weight-normal text-light mb-0">&nbsp {{ auth()->user()->name.' '.auth()->user()->lastname}} tizimga muvaffaqiyatli kirdingiz. </h4>
+                            <h2 class="font-weight-bold text-light">{{trans('message.Xush kelibsiz')}}!</h2>
+                            <h4 class="font-weight-normal text-light mb-0">&nbsp {{ auth()->user()->name.' '.auth()->user()->lastname}} {{trans('message.tizimga muvaffaqiyatli kirdingiz.')}} </h4>
                         </div>
 
                     </div>
@@ -24,7 +24,7 @@
 
     <div class="scores" >
         <div class="my-title">
-            <h2>Kelib tushgan arizalar</h2>
+            <h2>{{trans('message.Kelib tushgan arizalar')}}</h2>
         </div>
         <div class="circle-persentages">
             <div class="circle_persentages__statistics">
@@ -65,8 +65,8 @@
                     </div>
                 </div>
                 <div class="circle_persentages__statistics__texts">
-                    <h3 class="lineUp">Jami arizalar</h3>
-                    <p class="lineUp">{{$all_app_count}} ta</p>
+                    <h3 class="lineUp">{{trans('message.Jami arizalar')}}</h3>
+                    <p class="lineUp">{{$all_app_count}} {{trans('message.ta')}}</p>
                 </div>
             </div>
             <div class="circle_persentages__statistics">
@@ -107,8 +107,8 @@
                     </div>
                 </div>
                 <div class="circle_persentages__statistics__texts">
-                    <h3 class="lineUp">Mahaliy urug'lar <br>uchun arizalar</h3>
-                    <p class="lineUp">{{$local_app}} ta</p>
+                    <h3 class="lineUp">{{trans('message.Mahaliy arizalar')}}</h3>
+                    <p class="lineUp">{{$local_app}} {{trans('message.ta')}}</p>
                 </div>
             </div>
             <div class="circle_persentages__statistics">
@@ -149,8 +149,8 @@
                     </div>
                 </div>
                 <div class="circle_persentages__statistics__texts">
-                    <h3 class="lineUp">Import qilingan<br> urug'lar uchun:</h3>
-                    <p class="lineUp">{{$global_app}} ta</p>
+                    <h3 class="lineUp">{{trans('message.Xorijiy arizalar:')}}</h3>
+                    <p class="lineUp">{{$global_app}} {{trans('message.ta')}}</p>
                 </div>
             </div>
         </div>
@@ -158,23 +158,23 @@
 
     <div class="scores empty">
         <div class="my-title">
-            <h2>filtrlash</h2>
+            <h2>{{trans('message.filterlash')}}</h2>
         </div>
         <div class="empty-inside">
             <div class="row">
                 <div class="col-sm-4">
                     <select class="w-100 form-control state_of_country custom-select" name="app_type_selector" id="app_type_selector">
 
-                        <option value="">Barcha arizalar</option>
-                        <option value="3" @if( ( $app_type_selector && $app_type_selector == 3))  selected="selected" @endif> Jarayon to'liq yakunlanmagan arizalar </option>
-                        <option value="2" @if( ( $app_type_selector && $app_type_selector == 2))  selected="selected" @endif> Sertifikat berilgan arizalar </option>
-                        <option value="0" @if( ( !is_null($app_type_selector) && $app_type_selector == 0))  selected="selected" @endif> Nomuvofiqligi uchun sertifikat berilmagan arizalar </option>
-                        <option value="1" @if( ( $app_type_selector && $app_type_selector == 1))  selected="selected" @endif> Boshqa sabablarga ko'ra sertifikat berilmagan arizalar  </option>
+                        <option value="">{{trans('message.Barcha arizalar')}}</option>
+                        <option value="3" @if( ( $app_type_selector && $app_type_selector == 3))  selected="selected" @endif>{{trans('message.Jarayon to\'liq yakunlanmagan arizalar')}} </option>
+                        <option value="2" @if( ( $app_type_selector && $app_type_selector == 2))  selected="selected" @endif> {{trans('message.Sertifikat berilgan arizalar')}} </option>
+                        <option value="0" @if( ( !is_null($app_type_selector) && $app_type_selector == 0))  selected="selected" @endif>{{trans('message.Nomuvofiqligi uchun sertifikat berilmagan arizalar')}}</option>
+                        <option value="1" @if( ( $app_type_selector && $app_type_selector == 1))  selected="selected" @endif>{{trans('message.Boshqa sabablarga ko\'ra sertifikat berilmagan arizalar')}}</option>
                     </select>
                 </div>
                 <div class="col-sm-8">
                     <div id="list-date-filter" class="p-0 m-0 " >
-                        <div class="show-date btn btn-default filter-button m-0 rounded-2" style="font-size: 15px;" >Vaqt bo'yicha filtrlash <i
+                        <div class="show-date btn btn-default filter-button m-0 rounded-2" style="font-size: 15px;" >{{trans('message.Vaqt bo\'yicha filtrlash')}} <i
                                 class="fa {{ ($from && $till) ? 'fa-angle-left':'fa-angle-right' }}"></i></div>
                         <div class="date {{($from && $till) ? 'open':''}}">
                             <form class="input-filter pr-0 mr-0">
@@ -183,19 +183,19 @@
                                        @if(!empty($from))
                                        value="{{$from}}"
                                     @endif
-                                /> <span style="color:white">dan</span>
+                                /> <span style="color:white">{{trans('message.dan')}}</span>
                                 <input class="form-control fc-datepicker till input-filter" name="till"
                                        placeholder="dd-mm-yyyy" autocomplete="off" required="required"
                                        @if(!empty($till))
                                        value="{{$till}}"
                                     @endif
-                                /> <span style="color:white">gacha</span>
+                                /> <span style="color:white">{{trans('message.gacha')}}</span>
                                 @if($from && $till)
                                     <button type="button" class="btn btn-primary filter-button"
-                                            id="cancel-date-filter">Filtrni bekor qilish
+                                            id="cancel-date-filter">{{trans('message.Filtrni bekor qilish')}}
                                     </button>
                                 @else
-                                    <button type='submit' class="btn btn-primary  filter-button">Filtrlash
+                                    <button type='submit' class="btn btn-primary  filter-button">{{trans('message.filterlash')}}
                                     </button>
                                 @endif
                             </form>
@@ -209,12 +209,12 @@
     <div class="scores workblocks">
         <div class="my-title row">
             <div class="col-sm-8">
-                <h2>Urug'lar kesimida ma'lumot</h2>
+                <h2>{{trans('message.Paxta tolasi kesimida ma\'lumot')}}</h2>
             </div>
             <div class="col-sm-4">
                 <select class="w-100 form-control state_of_country custom-select " name="city" id="city">
                     @if(count($states))
-                        <option value="">Respublika bo'yicha</option>
+                        <option value="">{{trans('message.Respublika bo\'yicha')}}</option>
                     @endif
 
                     @if(!empty($states))
@@ -240,18 +240,18 @@
                         T/r</a>
                 </div>
                 <div class="workblocks__info__row__theme">
-                    <a href="#" rel="noopener noreferrer">Nomi</a>
+                    <a href="#" rel="noopener noreferrer">{{trans('app.Name')}}</a>
                 </div>
                 <div class="workblocks__info__row__duration">
                     <a href="#" rel="noopener noreferrer"
-                    >Arizalar soni</a
+                    >{{trans('message.Arizalar soni')}}</a
                     >
                 </div>
                 <div class="workblocks__info__row__score">
-                    <a href="#" rel="noopener noreferrer">Miqdori</a>
+                    <a href="#" rel="noopener noreferrer">{{trans('message.Miqdori')}}</a>
                 </div>
                 <div class="workblocks__info__row__score">
-                    <a href="#" rel="noopener noreferrer">O'lchov birligi</a>
+                    <a href="#" rel="noopener noreferrer">{{trans('message.O\'lchov birligi')}}</a>
                 </div>
             </div>
             @foreach($crops as $item)
@@ -268,13 +268,13 @@
                     >
                 </div>
                 <div class="workblocks__info__row__duration">
-                    <a href="{{ url('full-report?till='.$till.'&from='.$from.'&city='.$city.'&crop='.$item->id.'&app_type_selector='.$app_type_selector) }}" target="_blank" rel="noopener noreferrer">{{$item->count}} ta</a>
+                    <a href="{{ url('full-report?till='.$till.'&from='.$from.'&city='.$city.'&crop='.$item->id.'&app_type_selector='.$app_type_selector) }}" target="_blank" rel="noopener noreferrer">{{$item->count}} {{trans('message.ta')}}</a>
                 </div>
                 <div class="workblocks__info__row__score">
                     <a href="{{ url('full-report?till='.$till.'&from='.$from.'&city='.$city.'&crop='.$item->id.'&app_type_selector='.$app_type_selector) }}" target="_blank" rel="noopener noreferrer">{{round($item->total_amount,3)}}</a>
                 </div>
                 <div class="workblocks__info__row__score">
-                    <a href="{{ url('full-report?till='.$till.'&from='.$from.'&city='.$city.'&crop='.$item->id.'&app_type_selector='.$app_type_selector) }}" target="_blank" rel="noopener noreferrer">@if($item->id == 20 or $item->id == 8) {{'dona'}} @else {{'tonna'}} @endif</a>
+                    <a href="{{ url('full-report?till='.$till.'&from='.$from.'&city='.$city.'&crop='.$item->id.'&app_type_selector='.$app_type_selector) }}" target="_blank" rel="noopener noreferrer">@if($item->id == 20 or $item->id == 8) {{'dona'}} @else {{trans('message.tonna')}} @endif</a>
                 </div>
             </div>
             @endforeach
@@ -284,12 +284,12 @@
     <div class="scores workblocks">
         <div class="my-title row">
             <div class="col-sm-8">
-                <h2>Viloyatlar kesimida ma'lumot</h2>
+                <h2>{{trans('message.Viloyatlar kesimida ma\'lumot')}}</h2>
             </div>
             <div class="col-sm-4">
                 <select class="w-100 form-control state_of_country custom-select" name="crop" id="crop">
                     @if(count($crop_names))
-                        <option value="">Barcha urug'lar</option>
+                        <option value="">{{trans('message.Barchasi')}}</option>
                     @endif
 
                     @if(!empty($crop_names))
@@ -322,7 +322,7 @@
                 </div>
                 <div class="workblocks__info__row__duration">
                     <a  href="{{ url('full-report?till='.$till.'&from='.$from.'&city='.$app_state->id.'&crop='.$crop.'&app_type_selector='.$app_type_selector) }}" target="_blank" rel="noopener noreferrer"
-                    >{{$app_state->application_count}} ta</a
+                    >{{$app_state->application_count}} {{trans('message.ta')}}</a
                     >
                 </div>
             </div>

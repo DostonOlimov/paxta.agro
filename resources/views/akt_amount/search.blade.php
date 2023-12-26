@@ -8,7 +8,7 @@
             <div class="page-header">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
-                        <i class="fe fe-life-buoy mr-1"></i>&nbsp Og'irlik bo'yicha na'muna olish dalolatnomalari
+                        <i class="fe fe-life-buoy mr-1"></i>&nbsp {{trans('app. Og\'irlik bo\'yicha na\'muna olish dalolatnomalari')}}
                     </li>
                 </ol>
             </div>
@@ -40,12 +40,12 @@
                                     <thead>
                                     <tr>
                                         <th class="border-bottom-0 border-top-0">#</th>
-                                        <th>Sinov dasturi raqami</th>
-                                        <th>Sinov bayonnomasi sanasi</th>
-                                        <th>Buyurtmachi korxona yoki tashkilot nomi</th>
-                                        <th>Ekin turi</th>
-                                        <th>Ekin miqdori</th>
-                                        <th>Action</th>
+                                        <th>{{trans('app.Sinov dasturi raqami')}}</th>
+                                        <th>{{trans('app.Sinov bayonnomasi sanasi')}}</th>
+                                        <th>{{trans('app.Buyurtmachi korxona yoki tashkilot nomi')}}</th>
+                                        <th>{{trans('app.Sertifikatlanuvchi mahsulot')}}</th>
+                                        <th>{{trans('app.amount')}}</th>
+                                        <th>{{trans('app.Action')}}</th>
                                     </tr>
 
                                     </thead>

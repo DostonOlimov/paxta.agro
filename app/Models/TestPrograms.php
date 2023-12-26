@@ -48,10 +48,6 @@ class TestPrograms  extends Model
     {
         return $this->belongsTo(FinalResult::class, 'id', 'test_program_id');
     }
-    public function final_result(): BelongsTo
-    {
-        return $this->belongsTo(FinalResult::class, 'id', 'test_program_id');
-    }
     public function dalolatnoma(): BelongsTo
     {
         return $this->belongsTo(Dalolatnoma::class, 'id', 'test_program_id');

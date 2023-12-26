@@ -18,13 +18,16 @@
         td{
             font-weight: bold;
         }
+        .nuber_column{
+            background-color: yellow !important;
+        }
 
     </style>
     <div class="section">
         <div class="page-header">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <i class="fe fe-life-buoy mr-1"></i>&nbsp Yakuniy natijalar
+                    <i class="fe fe-life-buoy mr-1"></i>&nbsp {{trans('message.Yakuniy natijalar')}}
                 </li>
             </ol>
         </div>
@@ -64,11 +67,22 @@
                             <div class="col-md-12">
                                 <div class="card">
                                     <div class="card-body">
+                                        <div class="data-section mb-3 p-3" style="background-color: #3498db; color: #ffffff; font-size: large; border-radius: 8px;">
+                                        <div class="row "  >
+                                            <div class="col-md-3 ">Partiya raqami : {{$dalolatnoma->party}}</div>
+                                            <div class="col-md-3">Kip soni : {{$dalolatnoma->toy_count}}</div>
+                                            <div class="col-md-3">Mikroneyr : {{round($mic,2)}}</div>
+                                            <div class="col-md-3">Uzunlik : {{round($length/100,2)}}</div>
+                                            <div class="col-md-6">Maxsus uzilish og'irligi, gf/tex : {{round($strength,1)}}</div>
+                                            <div class="col-md-6">Uzunligi bo'yicha bir xillik ko'rsatkichi,%: {{round($uniform,1)}}</div>
+                                            <!-- Add styles for the date -->
+                                        </div>
+                                        </div>
                                         <div class="table-responsive row">
                                             <table id="examples1" class="table table-striped table-bordered nowrap" style="margin-top:20px;" >
                                                 <thead>
                                                 <tr>
-                                                    <th class="border-bottom-0 border-top-0">№</th>
+                                                    <th >№</th>
                                                     <th>Kip raqami</th>
                                                     <th>Nav</th>
                                                     <th>Sinf</th>
@@ -93,24 +107,24 @@
                                                     @php $count = count($results[0]); @endphp
                                                     @for($i = 0; $i < $count; $i++)
                                                         <tr>
-                                                            <td>{{ $i+1}}</td>
+                                                            <td class="nuber_column">{{ $i+1}}</td>
                                                             <td>{{ $results[0][$i]['gin_bale'] }}</td>
                                                             <td>{{ $results[0][$i]['sort'] }}</td>
                                                             <td>{{ $results[0][$i]['class'] }}</td>
 
-                                                            <td>{{ $count + $i+1 }}</td>
+                                                            <td class="nuber_column">{{ $count + $i+1 }}</td>
                                                             <td>{{$results[1][$i]['gin_bale']}}</td>
                                                             <td>{{$results[1][$i]['sort']}}</td>
                                                             <td>{{$results[1][$i]['class']}}</td>
 
 
-                                                            <td>{{ 2 * $count + $i +1}}</td>
+                                                            <td class="nuber_column">{{ 2 * $count + $i +1}}</td>
                                                             <td>{{$results[2][$i]['gin_bale']}}</td>
                                                             <td>{{$results[2][$i]['sort']}}</td>
                                                             <td>{{$results[2][$i]['class']}}</td>
 
 
-                                                            <td>{{ 3 * $count + $i +1}}</td>
+                                                            <td class="nuber_column">{{ 3 * $count + $i +1}}</td>
                                                             <td>@if(array_key_exists($i,$results[3])) {{$results[3][$i]['gin_bale']}}  @endif</td>
 
                                                             @if(array_key_exists($i,$results[3]))
@@ -132,6 +146,12 @@
                                                 </form>
                                                 </tbody>
                                             </table>
+                                            <div class="data-section mb-3 p-3" style="background-color: #3498db; color: #ffffff; font-size: large; border-radius: 8px;">
+                                                {{"Jami :"}}
+                                                @foreach ($counts as $count)
+                                                    {{" {$count->sort}/ {$count->class} = {$count->count}\n ta"}}
+                                                @endforeach
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
