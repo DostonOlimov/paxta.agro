@@ -46,7 +46,7 @@ class AktAmountController extends Controller
             $fromTime = join('-', array_reverse(explode('-', $from)));
             $tillTime = join('-', array_reverse(explode('-', $till)));
             $apps->whereHas('test_program.application', function ($query) use ($fromTime,$tillTime) {
-                $apps = $query->whereDate('date', '>=', $fromTime)
+                $query->whereDate('date', '>=', $fromTime)
                     ->whereDate('date', '<=', $tillTime);
             });
         }
