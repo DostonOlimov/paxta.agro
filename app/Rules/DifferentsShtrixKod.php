@@ -11,7 +11,7 @@ class DifferentsShtrixKod implements Rule
         $fromNumber = request()->input('from_kod');
         $toNumber = request()->input('to_kod');
 
-        return ($toNumber - $fromNumber) < 2000;
+        return ($toNumber - $fromNumber) < 4000;
     }
 
     public function message()

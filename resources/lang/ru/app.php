@@ -175,6 +175,7 @@ return[
     "Passport No" => "Pasport ma'lumoti",
     "Ro'yxat" => "Список",
     "Qo'shish" => "Добавлять",
+    "Olib tashlash"=>"Снять",
     "Hujjatlar ro'yxati" => "Hujjatlar ro'yxati",
     "Tahrirlash" => "Редактирование",
     "Berish" => "Berish",

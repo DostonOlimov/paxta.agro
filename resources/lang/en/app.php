@@ -35,7 +35,7 @@ return[
 
     //sinov dasturlari
     'Sertifikatlashtirishni oʼtkazish uchun berilgan ariza boʼyicha qaror va sinov dasturlari ro\'yxati'=>
-        'Certification application decision and list of test programs',
+    'Certification application decision and list of test programs',
     'Qarorlar'=>'Decisions',
     'Sinov dasturlari'=>'Test programs',
     'Sinov dasturi raqami'=>'Test program number',
@@ -167,6 +167,7 @@ return[
     "Passport No" => "Pasport ma'lumoti",
     "Ro'yxat" => "List",
     "Qo'shish" => "Add",
+    "Olib tashlash" => "Take down",
     "Hujjatlar ro'yxati" => "Hujjatlar ro'yxati",
     "Tahrirlash" => "Edit",
     "Berish" => "Berish",

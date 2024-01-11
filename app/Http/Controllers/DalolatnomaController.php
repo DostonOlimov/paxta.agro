@@ -110,12 +110,15 @@ class DalolatnomaController extends Controller
     //  store
     public function store(Request $request)
     {
+        $kod_toy = $request->input('kod_toy');
+
         $request->validate([
-            'from_kod' => 'required|numeric',
-            'to_kod' => ['required', 'numeric', new DifferentsShtrixKod(),new EqualToyCount()],
+            'kod_toy.*.0' => 'required|numeric',
+            'kod_toy.*.1' => ['required', 'numeric', new DifferentsShtrixKod(), new EqualToyCount()],
             'toy_count' => ['required', 'numeric', new EqualToyCount()],
-            'to_toy' => ['required', 'numeric', new EqualToyCount()],
+            'kod_toy.*.3' => ['required', 'numeric', new EqualToyCount()],
         ]);
+
         $userA = Auth::user();
         $this->authorize('create', Application::class);
         $test_id = $request->input('test_id');
@@ -126,11 +129,6 @@ class DalolatnomaController extends Controller
         $party_number = $request->input('party_number');
         $nav = $request->input('nav');
         $sinf = $request->input('sinf');
-
-        $from_kod = $request->input('from_kod');
-        $to_kod = $request->input('to_kod');
-        $from_toy = $request->input('from_toy');
-        $to_toy = $request->input('to_toy');
 
         $test = new Dalolatnoma();
         $test->test_program_id = $test_id;
@@ -144,20 +142,47 @@ class DalolatnomaController extends Controller
         $test->sinf = $sinf;
         $test->save();
 
-        for($i = $from_kod; $i <= $to_kod; $i++){
-            $amount = new AktAmount();
-            $amount->dalolatnoma_id = $test->id;
-            $amount->shtrix_kod  = $i;
-            $amount->save();
+
+        //start dynamic form
+
+
+
+        for ($i = 0; $i < count($kod_toy); $i++) {
+            $from_kod = $kod_toy[$i][0];
+            $to_kod = $kod_toy[$i][1];
+            for ($j = $from_kod; $j <= $to_kod; $j++) {
+                $amount = new AktAmount();
+                $amount->dalolatnoma_id = $test->id;
+                $amount->shtrix_kod  = $j;
+                $amount->save();
+            }
         }
 
         $ball = new GinBalles();
-        $ball->dalolatnoma_id = $test->id;
-        $ball->from_number = $from_kod;
-        $ball->to_number = $to_kod;
-        $ball->from_toy = $from_toy;
-        $ball->to_toy = $to_toy;
-        $ball->save();
+        // for ($i = 0; $i < count($kod_toy); $i++) {
+        //     $ball->dalolatnoma_id = $test->id;
+        //     $ball->from_number = $kod_toy[$i][0];
+        //     $ball->to_number = $kod_toy[$i][1];
+        //     $ball->from_toy = $kod_toy[$i][2];
+        //     $ball->to_toy = $kod_toy[$i][3];
+        //     $ball->save();
+        // }
+
+        for ($i = 0; $i < count($kod_toy); $i++) {
+            if ($kod_toy[$i][0] && $kod_toy[$i][1] && $kod_toy[$i][2] && $kod_toy[$i][3]) {
+                $ball = new GinBalles();
+                $ball->dalolatnoma_id = $test->id;
+                $ball->from_number = $kod_toy[$i][0];
+                $ball->to_number = $kod_toy[$i][1];
+                $ball->from_toy = $kod_toy[$i][2];
+                $ball->to_toy = $kod_toy[$i][3];
+                $ball->save();
+            } else {
+                dd("dsds");
+            }
+        }
+
+        //end dynamic form
 
         $active = new tbl_activities;
         $active->ip_adress = $_SERVER['REMOTE_ADDR'];
@@ -168,9 +193,7 @@ class DalolatnomaController extends Controller
         $active->time = date('Y-m-d H:i:s');
         $active->save();
 
-        return redirect('/akt_amount/edit/'.$test->id);
-
-
+        return redirect('/akt_amount/search');
     }
 
     public function edit($id)

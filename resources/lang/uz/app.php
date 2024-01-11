@@ -206,6 +206,7 @@ return[
     "Passport No" => "Pasport ma'lumoti",
     "Ro'yxat" => "Ro'yxat",
     "Qo'shish" => "Qo'shish",
+    "Olib tashlash" => "Olib tashlash",
     "Hujjatlar ro'yxati" => "Hujjatlar ro'yxati",
     "Tahrirlash" => "Tahrirlash",
     "Berish" => "Berish",
