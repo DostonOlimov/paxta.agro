@@ -1,5 +1,4 @@
 @extends('layouts.app')
-@import url("my-imported-styles.css");
 @section('styles')
     <style>
         .form-group {
@@ -73,6 +72,7 @@
                                         @endif
                                     </div>
                                     <div class="row">
+                                        {{-- select start --}}
                                         <div class="col-md-4 form-group has-feedback {{ $errors->has('selection_code') ? ' has-error' : '' }}">
                                             <label for="number" class="form-label ">Seleksion navining kodi<label class="text-danger">*</label> </label>
                                             <input type="text" class="form-control" maxlength="10" value="{{ old('selection_code')}}"  name="selection_code" required>
@@ -83,6 +83,8 @@
                                                 </span>
                                             @endif
                                         </div>
+
+                                        {{-- select end --}}
                                         <div class="col-md-4 form-group has-feedback {{ $errors->has('toy_count') ? ' has-error' : '' }}">
                                             <label for="number" class="form-label ">Jami na'munalar soni<label class="text-danger">*</label> </label>
                                             <input type="number" class="form-control" value="{{ old('toy_count')}}"  name="toy_count" required>
@@ -136,56 +138,6 @@
                                         </div>
                                     </div>
 
-                                    {{-- <div class="certificate row">
-                                        <div class="col-md-6 row">
-                                            <label for="number" class="form-label ">Shtrix kod raqami:<label
-                                                    class="text-danger">*</label></label>
-                                            <div
-                                                class="col-md-6 form-group has-feedback {{ $errors->has('from_kod') ? ' has-error' : '' }}">
-                                                <input type="number" class="form-control" maxlength="10"
-                                                    value="{{ old('from_kod') }}" name="from_kod" required>
-                                                <label for="number" class="form-label ">dan</label>
-                                                @if ($errors->has('from_kod'))
-                                                    <span class="help-block">
-                                                        <strong class="text-danger">{{ $errors->first('from_kod') }}</strong>
-                                                    </span>
-                                                @endif
-                                            </div>
-                                            <div
-                                                class="col-md-6 form-group has-feedback {{ $errors->has('to_kod') ? ' has-error' : '' }}">
-                                                <input type="number" class="form-control" value="{{ old('to_kod') }}"
-                                                    name="to_kod" required>
-                                                <label for="number" class="form-label ">gacha </label>
-                                                @if ($errors->has('to_kod'))
-                                                    <span class="help-block">
-                                                        <strong class="text-danger">{{ $errors->first('to_kod') }}</strong>
-                                                    </span>
-                                                @endif
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 row">
-                                            <label for="number" class="form-label ">Toylar ketma-ketligi:<label
-                                                    class="text-danger">*</label></label>
-                                            <div
-                                                class="col-md-6 form-group has-feedback {{ $errors->has('from_toy') ? ' has-error' : '' }}">
-                                                <input type="number" class="form-control" maxlength="10"
-                                                    value="{{ old('from_toy') }}" name="from_toy" required>
-                                                <label for="number" class="form-label ">dan</label>
-                                            </div>
-                                            <div
-                                                class="col-md-6 form-group has-feedback {{ $errors->has('to_toy') ? ' has-error' : '' }}">
-                                                <input type="number" class="form-control" value="{{ old('to_toy') }}"
-                                                    name="to_toy" required>
-                                                <label for="number" class="form-label ">gacha </label>
-                                                @if ($errors->has('to_toy'))
-                                                    <span class="help-block">
-                                                        <strong class="text-danger">{{ $errors->first('to_toy') }}</strong>
-                                                    </span>
-                                                @endif
-                                            </div>
-                                        </div>
-                                    </div> --}}
-
                                     {{-- start --}}
                                     <div class="certificate row" id="forms">
 
@@ -205,14 +157,6 @@
                                                     </span>
                                                 @endif
                                             </div>
-
-
-
-
-
-
-
-
 
                                             <div
                                                 class="col-md-6 form-group has-feedback {{ $errors->has('kod_toy[0][1]') ? ' has-error' : '' }}">
@@ -329,7 +273,7 @@
                                                 <div class="col-md-2 row "> <label></label>
                                                      <div class="col-md-6 col-sm-6"> <div onclick="removeField(` +
                                                 fieldId + `);" class="btn btn-danger">
-                                                         <i class="fa fa-plus-circle fa-lg">&nbsp;</i>
+                                                         <i class="fa fa-minus-circle fa-lg">&nbsp;</i>
                                                     <b>{{ trans('app.Olib tashlash') }}</b></div>
                                             </div>
                                         </div>

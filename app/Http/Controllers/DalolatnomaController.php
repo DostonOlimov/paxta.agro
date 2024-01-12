@@ -142,31 +142,21 @@ class DalolatnomaController extends Controller
         $test->sinf = $sinf;
         $test->save();
 
-
-        //start dynamic form
-
-
+        $amounts = [];
 
         for ($i = 0; $i < count($kod_toy); $i++) {
             $from_kod = $kod_toy[$i][0];
             $to_kod = $kod_toy[$i][1];
             for ($j = $from_kod; $j <= $to_kod; $j++) {
-                $amount = new AktAmount();
-                $amount->dalolatnoma_id = $test->id;
-                $amount->shtrix_kod  = $j;
-                $amount->save();
+                $amounts[] = [
+                    'dalolatnoma_id' => $test->id,
+                    'shtrix_kod' => $j,
+                ];
             }
         }
-
-        $ball = new GinBalles();
-        // for ($i = 0; $i < count($kod_toy); $i++) {
-        //     $ball->dalolatnoma_id = $test->id;
-        //     $ball->from_number = $kod_toy[$i][0];
-        //     $ball->to_number = $kod_toy[$i][1];
-        //     $ball->from_toy = $kod_toy[$i][2];
-        //     $ball->to_toy = $kod_toy[$i][3];
-        //     $ball->save();
-        // }
+        DB::transaction(function () use ($amounts) {
+            AktAmount::insert($amounts);
+        });
 
         for ($i = 0; $i < count($kod_toy); $i++) {
             if ($kod_toy[$i][0] && $kod_toy[$i][1] && $kod_toy[$i][2] && $kod_toy[$i][3]) {
@@ -177,12 +167,8 @@ class DalolatnomaController extends Controller
                 $ball->from_toy = $kod_toy[$i][2];
                 $ball->to_toy = $kod_toy[$i][3];
                 $ball->save();
-            } else {
-                dd("dsds");
             }
         }
-
-        //end dynamic form
 
         $active = new tbl_activities;
         $active->ip_adress = $_SERVER['REMOTE_ADDR'];
@@ -201,9 +187,11 @@ class DalolatnomaController extends Controller
         $userA = Auth::user();
         $result = Dalolatnoma::find($id);
         $test = TestPrograms::find($result->test_program_id);
-        $certificate =  Sertificate::where('final_result_id','=',$result->id)->first() ;
+        $certificate =  Sertificate::where('final_result_id', '=', $result->id)->first();
+        $gin_balles = GinBalles::where('dalolatnoma_id', $id)->get();
 
-        return view('dalolatnoma.edit', compact('test','result','certificate'));
+
+        return view('dalolatnoma.edit', compact('test', 'result', 'certificate', 'gin_balles'));
     }
 
 
@@ -211,16 +199,14 @@ class DalolatnomaController extends Controller
 
     public function update($id, Request $request)
     {
+        $kod_toy = $request->input('kod_toy');
+
         $request->validate([
-            'from_kod' => 'required|numeric',
-            'to_kod' => ['required', 'numeric', new DifferentsShtrixKod(),new EqualToyCount()],
+            'kod_toy.*.1' => 'required|numeric',
+            'kod_toy.*.2' => ['required', 'numeric', new DifferentsShtrixKod(), new EqualToyCount()],
             'toy_count' => ['required', 'numeric', new EqualToyCount()],
-            'to_toy' => ['required', 'numeric', new EqualToyCount()],
+            'kod_toy.*.4' => ['required', 'numeric', new EqualToyCount()],
         ]);
-        $from_kod = $request->input('from_kod');
-        $to_kod = $request->input('to_kod');
-        $from_toy = $request->input('from_toy');
-        $to_toy = $request->input('to_toy');
 
         $userA = Auth::user();
         $result = Dalolatnoma::find($id);
@@ -236,20 +222,37 @@ class DalolatnomaController extends Controller
         $result->sinf = $request->input('sinf');
         $result->save();
 
-        $ball =GinBalles::where('dalolatnoma_id',$result->id)->first();
-        $ball->from_number =  $request->input('from_kod');
-        $ball->to_number = $request->input('to_kod');
-        $ball->from_toy = $request->input('from_toy');
-        $ball->to_toy = $request->input('to_toy');
-        $ball->save();
+        foreach ($kod_toy as $item) {
+                $conditions = ['id' => $item[0]];
+                $data = [
+                    'dalolatnoma_id' => $id,
+                    'from_number' => $item[1],
+                    'to_number' => $item[2],
+                    'from_toy' => $item[3],
+                    'to_toy' => $item[4],
+                ];
 
-        AktAmount::where('dalolatnoma_id',$id)->delete();
-        for($i = $from_kod; $i <= $to_kod; $i++){
-            $amount = new AktAmount();
-            $amount->dalolatnoma_id = $id;
-            $amount->shtrix_kod  = $i;
-            $amount->save();
+            GinBalles::updateOrCreate($conditions, $data);
         }
+
+        AktAmount::where('dalolatnoma_id', $id)->delete();
+        $amount = new AktAmount();
+
+        $amounts = [];
+    for ($i = 0; $i < count($kod_toy); $i++) {
+            $from_kod = $kod_toy[$i][0];
+            $to_kod = $kod_toy[$i][1];
+        for ($j = $from_kod; $j <= $to_kod; $j++) {
+            $amounts[] = [
+                'dalolatnoma_id' => $id,
+                'shtrix_kod' => $j,
+            ];
+        }
+    }
+
+    DB::transaction(function () use ($amounts) {
+        AktAmount::insert($amounts);
+    });
 
         $active = new tbl_activities;
         $active->ip_adress = $_SERVER['REMOTE_ADDR'];

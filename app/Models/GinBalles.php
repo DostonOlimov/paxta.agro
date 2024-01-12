@@ -13,4 +13,12 @@ class GinBalles  extends Model
 {
     protected $table = 'gin_balles';
 
+    protected $fillable = [
+        'dalolatnoma_id',
+        'from_number',
+        'to_number',
+        'from_toy',
+        'to_toy'
+    ];
+
 }
