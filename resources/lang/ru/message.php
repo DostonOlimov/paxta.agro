@@ -2,14 +2,14 @@
 
 return[
     //APP Menu page
-    'Welcome'=>'Xush kelibsiz',
+    'Welcome'=>'Добро пожаловать',
     'Inventory'=>'Inventarizatsiya',
     'Home'=>'Home',
     'Paxta tolasini sertifikatlashtirish avtomatlashtirilgan axborot tizimi'=>'Автоматизированная информационная система сертификации хлопкового волокна.',
 
     //Dashbord page
     'AGROINSPEKSIYA'=>'АГРОИНСПЕКЦИЯ',
-    'Dashboard'=>'Asboblar paneli',
+    'Dashboard'=>'Панель инструментов',
     'Bosh sahifa'=>'Домашняя страница',
     'Umumiy ro\'yxat'=>'Общий список',
     'Arizalar'=>'Приложения',
@@ -24,6 +24,7 @@ return[
     'Nomlar ro\'yxati'=>'Список имен',
     'Navlar ro\'yxati'=>'Список сортов',
     'Sinflar ro\'yxatii'=>'Список классов',
+    'Seleksiya turlari'=>'Типы выбора',
     'Korxona va tashkilotlar'=>'Предприятия и организации',
     'Buyurtmachilar korxonalar'=>'Клиенты — это компании',
     'Ishlab chiqaruvchi zavodlar'=>'Заводы',
@@ -68,4 +69,33 @@ return[
     'Shaxsiy ma\'lumotlar'=>'Персональная информация',
     'Settings'=>'Настройки',
     'Tizimdan chiqish'=>'Bыход',
+
+
+        // Crops
+        "Yangi qo'shish" => "Добавить новое",
+        "Sinf avlodlari" => "Потомки класса",
+        "Sinf nomi" => "Имя класса",
+        "Sinf kodi" => "Код класса",
+        "Mahsulot turi" => "Тип продукта",
+        "Mahsulot nomi" => "Наименование товара",
+        "Tahrirlash oynasi" => "Окно редактирования",
+        "Sertifikatlanuvchi mahsulot nomlari" => "Сертифицируемые названия продуктов",
+        "Nomlari" => "Имена",
+        "Kodi" => "Коди",
+        "Seleksiya kodi" => "Код выбора",
+        "Seleksiya nomi" => "Название выбора",
+        "Seleksiya turlari" => "Типы выбора",
+        "Nav kodi" => "Введите код",
+        "Nav nomi" => "Название сорта",
+        "Nav ro'yxati" => "Список сортов",
+        "Paxta navlari" => "Сорта хлопка",
+        "TN VED kodlari" => "Коды ТН ВЭД",
+        "Kod TN VED" => "Код ТН ВЭД",
+
+        //warning
+
+    "O'chirishni istaysizmi" => "Вы хотите удалить",
+    "O'chirilgan ma'lumotlar qayta tiklanmaydi" => "Удаленные данные невозможно восстановить",
+    "Ha, o'chirish" => "Да, удалить",
+    "O'chirishni bekor qilish" => "Отменить удаление",
 ];

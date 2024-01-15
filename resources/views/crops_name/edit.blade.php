@@ -13,7 +13,7 @@
                 <div class="page-header">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
-                            <a <i class="fe fe-life-buoy mr-1"></i>&nbsp Tahrirlash oynasi
+                            <a><i class="fe fe-life-buoy mr-1"></i>&nbsp {{trans('message.Tahrirlash oynasi')}}
                             </a>
                         </li>
                     </ol>
@@ -68,7 +68,7 @@
                                                 </div>
                                                 <div id="tin-container" class="col-md-4 legal-fields">
                                                     <div class="form-group">
-                                                        <label class="form-label">Kod TN VED<label class="text-danger">*</label></label>
+                                                        <label class="form-label">{{trans('message.Kod TN VED')}}<label class="text-danger">*</label></label>
                                                         <input class="form-control" type="text" name="tnved" data-field-name="tin" data-field-length="10"
                                                                minlength="10"
                                                                data-mask="0000000000" maxlength="10" required="required"

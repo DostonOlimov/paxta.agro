@@ -75,12 +75,18 @@
                                         {{-- select start --}}
                                         <div class="col-md-4 form-group has-feedback {{ $errors->has('selection_code') ? ' has-error' : '' }}">
                                             <label for="number" class="form-label ">Seleksion navining kodi<label class="text-danger">*</label> </label>
-                                            <input type="text" class="form-control" maxlength="10" value="{{ old('selection_code')}}"  name="selection_code" required>
+                                            <select id="selection_code" class="form-control owner_search" name="selection_code" required>
+                                                @if(!empty($selection))
+                                                @foreach ($selection as $select)
+                                                    <option selected  value="{{ $select->id }}">{{$select->name}}</option>
+                                                @endforeach
+                                                @endif
+                                            </select>
                                             @if ($errors->has('selection_code'))
-                                                <span class="help-block">
-                                                    <strong>
-                                                        Seleksiya kodi noto'g'ri shaklda kiritilgan</strong>
-                                                </span>
+                                            <span class="help-block">
+                                                <strong>
+                                                    Seleksiya kodi noto'g'ri shaklda kiritilgan</strong>
+                                            </span>
                                             @endif
                                         </div>
 
@@ -371,5 +377,62 @@
             }, 5000);
         }
     </script>
+
+    <script>
+    $(document).ready(function () {
+        $('select.owner_search').select2({
+            ajax: {
+                url: '/crops_selection/search_by_name',
+                delay: 300,
+                dataType: 'json',
+                data: function (params) {
+                    return {
+                        search: params.term
+                    }
+                },
+                processResults: function (data) {
+                    data = data.map((name, index) => {
+                        return {
+                            id: name.id,
+                            text: capitalize(name.name + (name.name ? ' - Kod:' + name.kod : ''))
+                        }
+                    });
+                    return {
+                        results: data
+                    }
+                }
+            },
+            language: {
+                inputTooShort: function () {
+                    return 'Seleksion navining kodni kiritib izlang';
+                },
+                searching: function () {
+                    return 'Izlanmoqda...';
+                },
+                noResults: function () {
+                    return "Natija topilmadi"
+                },
+                errorLoading: function () {
+                    return "Natija topilmadi"
+                }
+            },
+            placeholder: 'Seleksion navini kiriting',
+            minimumInputLength: 1
+        })
+
+        function capitalize(text) {
+            var words = text.split(' ');
+            for (var i = 0; i < words.length; i++) {
+                if (words[i][0] == null) {
+                    continue;
+                } else {
+                    words[i] = words[i][0].toUpperCase() + words[i].substring(1).toLowerCase();
+                }
+
+            }
+            return words.join(' ');
+        }
+    });
+</script>
 @endsection
 

@@ -10,7 +10,7 @@
 		<div class="page-header">
 			<ol class="breadcrumb">
 				<li class="breadcrumb-item">
-					<i class="fe fe-life-buoy mr-1"></i>&nbsp Paxta navlari
+					<i class="fe fe-life-buoy mr-1"></i>&nbsp {{trans('message.Paxta navlari')}}
 				</li>
 			</ol>
 		</div>
@@ -59,9 +59,9 @@
 								<table id="datatable" class="table table-striped table-bordered nowrap" style="margin-top:20px; width:100%;">
 								<thead>
 									<tr>
-										<th>Kodi</th>
-										<th>Nav nomi</th>
-										<th>Mahsulot turi</th>
+										<th>{{trans('message.Kodi')}}</th>
+										<th>{{trans('message.Nav nomi')}}</th>
+										<th>{{trans('message.Mahsulot turi')}}</th>
 										<th>{{ trans('app.Action')}}</th>
 									</tr>
 								</thead>
@@ -115,13 +115,13 @@
 
 
         swal({
-            title: "O'chirishni istaysizmi?",
-      text: "O'chirilgan ma'lumotlar qayta tiklanmaydi!",
+            title: "{{trans('message.O\'chirishni istaysizmi')}}?",
+      text: "{{trans('message.O\'chirilgan ma\'lumotlar qayta tiklanmaydi')}}!",
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: "#297FCA",
-            confirmButtonText: "Ha, o'chirish!",
-            cancelButtonText:"O'chirishni bekor qilish",
+            confirmButtonText: "{{trans('message.Ha, o\'chirish')}}!",
+            cancelButtonText:"{{trans('message.O\'chirishni bekor qilish')}}",
             closeOnConfirm: false
         }).then((result) => {
       window.location.href = url;

@@ -54,7 +54,10 @@
                 </li>
                 <li class="nav-item"><a class="nav-link" href="{{ url('/crops_generation/list') }}"><span class="nav-icon"></span>
                         <svg class="nav-icon">
-                        </svg>{{trans('Sinflar ro\'yxatii')}}</a>
+                        </svg>{{trans('message.Sinflar ro\'yxatii')}}</a>
+                <li class="nav-item"><a class="nav-link" href="{{ url('/crops_selection/list') }}"><span class="nav-icon"></span>
+                        <svg class="nav-icon">
+                        </svg>{{trans('message.Seleksiya turlari')}}</a>
                 </li>
             </ul>
         </li>

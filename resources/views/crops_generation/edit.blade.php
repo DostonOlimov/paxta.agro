@@ -13,7 +13,7 @@
                 <div class="page-header">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
-                            <a ><i class="fe fe-life-buoy mr-1"></i>&nbsp Sinf avlodlari
+                            <a ><i class="fe fe-life-buoy mr-1"></i>&nbsp {{trans('message.Sinf avlodlari')}}
                             </a>
                         </li>
                     </ol>
@@ -60,7 +60,7 @@
                                             <div class="row">
                                                 <div class="col-12 col-md-4">
                                                     <label class="form-label"
-                                                           for="first-name">Sinf nomi <label
+                                                           for="first-name">{{trans('message.Sinf nomi')}} <label
                                                             class="text-danger">*</label>
                                                     </label>
                                                     <input type="text" required="required" name="name"
@@ -68,7 +68,7 @@
                                                 </div>
                                                 <div class="col-12 col-md-4">
                                                     <label class="form-label"
-                                                           for="first-name">Sinf kodi <label
+                                                           for="first-name">{{trans('message.Sinf kodi')}} <label
                                                             class="text-danger">*</label>
                                                     </label>
                                                     <input type="number" required="required" name="kod"
@@ -77,7 +77,7 @@
                                                 <div class="col-12 col-md-4">
                                                     <div class="form-group">
                                                         <label class="form-label"
-                                                               for="first-name">Mahsulot turi <label
+                                                               for="first-name">{{trans('message.Mahsulot turi')}} <label
                                                                 class="text-danger">*</label>
                                                         </label>
                                                         <select name="crop" class="crop" required>

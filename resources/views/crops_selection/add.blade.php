@@ -35,14 +35,14 @@
                                     <div class="tab_wrapper page-tab">
                                         <ul class="tab_list">
                                             <li>
-                                                <a href="{!! url('/crops_type/list')!!}">
+                                                <a href="{!! url('/crops_selection/list')!!}">
                                                     <span class="visible-xs"></span>
                                                     <i class="fa fa-list fa-lg">&nbsp;</i>
                                                     {{ trans('app.Ro\'yxat')}}
                                                 </a>
                                             </li>
                                             <li class="active">
-                                                <a href="{!! url('/crops_type/add')!!}">
+                                                <a href="{!! url('/crops_selection/add')!!}">
                                                     <span class="visible-xs"></span>
                                                     <i class="fa fa-plus-circle fa-lg">&nbsp;</i> <b>
                                                         {{ trans('app.Qo\'shish')}}</b>
@@ -53,14 +53,14 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12 col-sm-12 col-xs-12">
-                                        <form action="{{ url('/crops_type/store') }}" method="post"
+                                        <form action="{{ url('/crops_selection/store') }}" method="post"
                                               enctype="multipart/form-data" data-parsley-validate
                                               class="form-horizontal form-label-left">
                                             <div class="row">
                                                 <div class="col-12 col-md-4">
                                                     <div class="form-group">
                                                         <label class="form-label"
-                                                               for="first-name">{{trans('message.Nav nomi')}} <label
+                                                               for="first-name">{{trans('message.Seleksiya nomi')}}<label
                                                                 class="text-danger">*</label>
                                                         </label>
                                                         <input type="text" required="required" name="name"
@@ -70,17 +70,17 @@
                                                 <div class="col-12 col-md-4">
                                                     <div class="form-group">
                                                         <label class="form-label"
-                                                               for="first-name">{{trans('message.Nav kodi')}} <label
+                                                               for="first-name">{{trans('message.Seleksiya kodi')}}<label
                                                                 class="text-danger">*</label>
                                                         </label>
-                                                        <input type="integer" required="required" name="kod"
+                                                        <input type="number" required="required" name="kod"
                                                                class="form-control">
                                                     </div>
                                                 </div>
                                                 <div class="col-12 col-md-4">
                                                     <div class="form-group">
                                                         <label class="form-label"
-                                                               for="first-name">{{trans('message.Mahsulot turi')}} <label
+                                                               for="first-name">{{trans('message.Mahsulot nomi')}}<label
                                                                 class="text-danger">*</label>
                                                         </label>
                                                         <select name="crop" class="region" required>

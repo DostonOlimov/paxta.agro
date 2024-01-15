@@ -54,10 +54,6 @@ class CropsGenerationController extends Controller
     public function destory($id)
     {
         $this->authorize('setting_delete', User::class);
-        $app = CropData::where('generation_id',$id)->first();
-        if($app){
-            return redirect('crops_generation/list')->with('message', 'Cannot Deleted');
-        }
         CropsGeneration::destroy($id);
         return redirect('crops_generation/list')->with('message', 'Successfully Deleted');
     }

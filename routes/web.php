@@ -145,6 +145,16 @@ Route::group(['prefix' => 'laboratories', 'middleware' => 'auth'], function () {
     Route::get('/list/edit/{id}', '\App\Http\Controllers\CropsGenerationController@edit');
     Route::post('/list/edit/update/{id}', '\App\Http\Controllers\CropsGenerationController@update');
     });
+    //Crops selection
+    Route::group(['prefix' => 'crops_selection', 'middleware' => 'auth'], function () {
+    Route::get('/add', '\App\Http\Controllers\CropsSelectionController@index');
+    Route::get('/list', '\App\Http\Controllers\CropsSelectionController@list');
+    Route::post('/store', '\App\Http\Controllers\CropsSelectionController@store');
+    Route::get('/search_by_name', '\App\Http\Controllers\CropsSelectionController@search_by_name');
+    Route::get('/list/delete/{id}', '\App\Http\Controllers\CropsSelectionController@destory');
+    Route::get('/list/edit/{id}', '\App\Http\Controllers\CropsSelectionController@edit');
+    Route::post('/list/edit/update/{id}', '\App\Http\Controllers\CropsSelectionController@update');
+    });
     //Nds
     Route::group(['prefix' => 'nds', 'middleware' => 'auth'], function () {
     Route::get('/add', '\App\Http\Controllers\NdsController@index');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AktAmount;
 use App\Models\Application;
 use App\Models\CropData;
+use App\Models\CropsSelection;
 use App\Models\Decision;
 use App\Models\Dalolatnoma;
 use App\Models\GinBalles;
@@ -96,7 +97,9 @@ class DalolatnomaController extends Controller
     public function add($id)
     {
         $test = TestPrograms::find($id);
-        return view('dalolatnoma.add', compact('test'));
+        $selection = CropsSelection::get();
+
+        return view('dalolatnoma.add', compact('test', 'selection'));
     }
 
     //list
@@ -189,9 +192,9 @@ class DalolatnomaController extends Controller
         $test = TestPrograms::find($result->test_program_id);
         $certificate =  Sertificate::where('final_result_id', '=', $result->id)->first();
         $gin_balles = GinBalles::where('dalolatnoma_id', $id)->get();
+        $selection = CropsSelection::get();
 
-
-        return view('dalolatnoma.edit', compact('test', 'result', 'certificate', 'gin_balles'));
+        return view('dalolatnoma.edit', compact('test', 'result', 'certificate', 'gin_balles','selection'));
     }
 
 

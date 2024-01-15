@@ -9,7 +9,7 @@ return[
 
         //Dashbord page
     'AGROINSPEKSIYA'=>'АГРОИНСПЕКЦИЯ',
-    'Dashboard'=>'Asboblar paneli',
+    'Dashboard'=>'Aсбоблар панели',
     'Bosh sahifa'=>'Бош саҳифа',
     'Umumiy ro\'yxat'=>'Умумий рўйхат',
     'Arizalar'=>'Аризалар',
@@ -19,11 +19,12 @@ return[
     'Og\'irlik bo\'yicha dalolatnomalar'=>'Оғирлик бўйича далолатномалар',
     'Laboratoriya ma\'lumotlari'=>'Лаборатория маълумотлари',
     'Yakuniy natijalar'=>'Якуний натижалар',
-    'Tizim sozlamalari'=>'Tizim sozlamalari',
+    'Tizim sozlamalari'=>'Тизим созламалари',
     'Paxta'=>'Пахта',
     'Nomlar ro\'yxati'=>'Номлар рўйхати',
     'Navlar ro\'yxati'=>'Навлар рўйхати',
-    'Sinflar ro\'yxatii'=>'Sinflar ro\'yxatii',
+    'Sinflar ro\'yxatii'=>'Синфлар рўйхатии',
+    'Seleksiya turlari'=>'Селексия турлари',
     'Korxona va tashkilotlar'=>'Корхона ва ташкилотлар',
     'Buyurtmachilar korxonalar'=>'Буюртмачилар корхоналар',
     'Ishlab chiqaruvchi zavodlar'=>'Ишлаб чиқарувчи заводлар',
@@ -69,5 +70,31 @@ return[
     'Settings'=>'Созламалар',
     'Tizimdan chiqish'=>'Тизимдан чиқиш',
 
+    // Crops
+    "Yangi qo'shish" => "Янги қўшиш",
+    "Sinf avlodlari" => "Синф авлодлари",
+    "Sinf nomi" => "Синф номи",
+    "Sinf kodi" => "Синф коди",
+    "Mahsulot turi" => "Маҳсулот тури",
+    "Mahsulot nomi" => "Маҳсулот номи",
+    "Tahrirlash oynasi" => "Таҳрирлаш ойнаси",
+    "Sertifikatlanuvchi mahsulot nomlari" => "Сертификатланувчи маҳсулот номлари",
+    "Nomlari" => "Номлари",
+    "Kodi" => "Коди",
+    "Seleksiya kodi" => "Селексия коди",
+    "Seleksiya nomi" => "Селексия номи",
+    "Seleksiya turlari" => "Селексия турлари",
+    "Nav kodi" => "Нав коди",
+    "Nav nomi" => "Нав номи",
+    "Nav ro'yxati" => "Нав рўйхати",
+    "Paxta navlari" => "Пахта навлари",
+    "TN VED kodlari" => "ТН ВЕД кодлари",
+    "Kod TN VED" => "Код ТН ВЕД",
 
+    //warning
+
+    "O'chirishni istaysizmi" => "Ўчиришни истайсизми",
+    "O'chirilgan ma'lumotlar qayta tiklanmaydi" => "Ўчирилган маълумотлар қайта тикланмайди",
+    "Ha, o'chirish" => "Ҳа, ўчириш",
+    "O'chirishni bekor qilish" => "Ўчиришни бекор қилиш",
 ];

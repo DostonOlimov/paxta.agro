@@ -10,7 +10,7 @@
 		<div class="page-header">
 			<ol class="breadcrumb">
 				<li class="breadcrumb-item">
-					<i class="fe fe-life-buoy mr-1"></i>&nbsp Sertifikatlanuvchi mahsulot nomlari
+					<i class="fe fe-life-buoy mr-1"></i>&nbsp {{trans('message.Sertifikatlanuvchi mahsulot nomlari')}}
 				</li>
 			</ol>
 		</div>
@@ -60,8 +60,8 @@
 								<thead>
 									<tr>
 										<th>#</th>
-										<th>Nomlari</th>
-                                        <th>TN VED kodlari</th>
+										<th>{{trans('message.Nomlari')}}</th>
+                                        <th>{{trans('message.TN VED kodlari')}}</th>
 										<th>{{ trans('app.Action')}}</th>
 									</tr>
 								</thead>
@@ -116,13 +116,13 @@
 
 
         swal({
-            title: "O'chirishni istaysizmi?",
-      text: "O'chirilgan ma'lumotlar qayta tiklanmaydi!",
+            title: "{{trans('message.O\'chirishni istaysizmi')}}?",
+      text: "{{trans('message.O\'chirilgan ma\'lumotlar qayta tiklanmaydi')}}!",
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: "#297FCA",
-            confirmButtonText: "Ha, o'chirish!",
-            cancelButtonText:"O'chirishni bekor qilish",
+            confirmButtonText: "{{trans('message.Ha, o\'chirish')}}!",
+            cancelButtonText:"{{trans('message.O\'chirishni bekor qilish')}}",
             closeOnConfirm: false
         }).then((result) => {
       window.location.href = url;

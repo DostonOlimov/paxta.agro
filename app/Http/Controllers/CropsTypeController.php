@@ -54,10 +54,6 @@ class CropsTypeController extends Controller
     public function destory($id)
     {
         $this->authorize('setting_delete', User::class);
-        $app = CropData::where('type_id',$id)->first();
-        if($app){
-            return redirect('crops_type/list')->with('message', 'Cannot Deleted');
-        }
         CropsType::destroy($id);
         return redirect('crops_type/list')->with('message', 'Successfully Deleted');
     }

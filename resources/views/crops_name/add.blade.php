@@ -12,7 +12,7 @@
                 <div class="page-header">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
-                            <i class="fe fe-life-buoy mr-1"></i>&nbsp Yangi qo'shish
+                            <i class="fe fe-life-buoy mr-1"></i>&nbsp {{trans('message.Yangi qo\'shish')}}
                         </li>
                     </ol>
                 </div>
@@ -60,7 +60,7 @@
                                                 <div class="col-12 col-md-4">
                                                     <div class="form-group">
                                                         <label class="form-label"
-                                                               for="first-name">Mahsulot nomi <label
+                                                               for="first-name">{{trans('message.Mahsulot nomi')}} <label
                                                                 class="text-danger">*</label>
                                                         </label>
                                                         <input type="text" required="required" name="name"

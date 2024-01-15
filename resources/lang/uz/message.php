@@ -24,7 +24,8 @@ return[
     'Paxta'=>'Paxta',
     'Nomlar ro\'yxati'=>'Nomlar ro\'yxati',
     'Navlar ro\'yxati'=>'Navlar ro\'yxati',
-    'Sinflar ro\'yxatii'=>'Sinflar ro\'yxatii',
+    'Sinflar ro\'yxatii'=>'Sinflar ro\'yxati',
+    'Seleksiya turlari'=>'Seleksiya turlari',
     'Korxona va tashkilotlar'=>'Korxona va tashkilotlar',
     'Buyurtmachilar korxonalar'=>'Buyurtmachilar korxonalar',
     'Ishlab chiqaruvchi zavodlar'=>'Ishlab chiqaruvchi zavodlar',
@@ -122,4 +123,32 @@ return[
     "Tahrirlash" => "Tahrirlash",
     "Berish" => "Berish",
 
+
+        // Crops
+        "Yangi qo'shish" => "Yangi qo'shish",
+        "Sinf avlodlari" => "Sinf avlodlari",
+        "Sinf nomi" => "Sinf nomi",
+        "Sinf kodi" => "Sinf kodi",
+        "Mahsulot turi" => "Mahsulot turi",
+        "Mahsulot nomi" => "Mahsulot nomi",
+        "Tahrirlash oynasi" => "Tahrirlash oynasi",
+        "Sertifikatlanuvchi mahsulot nomlari" => "Sertifikatlanuvchi mahsulot nomlari",
+        "Nomlari" => "Nomlari",
+        "Kodi" => "Kodi",
+        "Seleksiya kodi" => "Seleksiya kodi",
+        "Seleksiya nomi" => "Seleksiya nomi",
+        "Seleksiya turlari" => "Seleksiya turlari",
+        "Nav kodi" => "Nav kodi",
+        "Nav nomi" => "Nav nomi",
+        "Nav ro'yxati" => "Nav ro'yxati",
+        "Paxta navlari" => "Paxta navlari",
+        "TN VED kodlari" => "TN VED kodlari",
+        "Kod TN VED" => "Kod TN VED",
+
+        //warning
+
+    "O'chirishni istaysizmi" => "O'chirishni istaysizmi",
+    "O'chirilgan ma'lumotlar qayta tiklanmaydi" => "O'chirilgan ma'lumotlar qayta tiklanmaydi",
+    "Ha, o'chirish" => "Ha, o'chirish",
+    "O'chirishni bekor qilish" => "O'chirishni bekor qilish",
 ];

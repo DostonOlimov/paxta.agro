@@ -8,11 +8,13 @@
     </style>
     <?php $userid = Auth::user()->id; ?>
     @can('create', \App\Models\Application::class)
+
             <div class="section">
                 <div class="page-header">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
-                            <i class="fe fe-life-buoy mr-1"></i>&nbsp {{trans('message.Yangi qo\'shish')}}
+                            <a ><i class="fe fe-life-buoy mr-1"></i>&nbsp {{trans('message.Seleksiya turlari')}}
+                            </a>
                         </li>
                     </ol>
                 </div>
@@ -20,8 +22,7 @@
                 @if(session('message'))
                     <div class="row massage">
                         <div class="col-md-12 col-sm-12 col-xs-12">
-                            <div class="alert alert-success danger text-center">
-
+                            <div class="alert alert-success text-center">
                                 <label for="checkbox-10 colo_success"> {{ trans('app.Duplicate Data')}} </label>
                             </div>
                         </div>
@@ -35,17 +36,17 @@
                                     <div class="tab_wrapper page-tab">
                                         <ul class="tab_list">
                                             <li>
-                                                <a href="{!! url('/crops_type/list')!!}">
+                                                <a href="{!! url('/crops_selection/list' )!!}">
                                                     <span class="visible-xs"></span>
                                                     <i class="fa fa-list fa-lg">&nbsp;</i>
                                                     {{ trans('app.Ro\'yxat')}}
                                                 </a>
                                             </li>
                                             <li class="active">
-                                                <a href="{!! url('/crops_type/add')!!}">
+                                                <a href="{!! url('/crops_selection/list/edit/'.$editid )!!}">
                                                     <span class="visible-xs"></span>
                                                     <i class="fa fa-plus-circle fa-lg">&nbsp;</i> <b>
-                                                        {{ trans('app.Qo\'shish')}}</b>
+                                                        {{ trans('app.Tahrirlash')}}</b>
                                                 </a>
                                             </li>
                                         </ul>
@@ -53,29 +54,25 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12 col-sm-12 col-xs-12">
-                                        <form action="{{ url('/crops_type/store') }}" method="post"
+                                        <form action="update/{{ $type->id }}" method="post"
                                               enctype="multipart/form-data" data-parsley-validate
                                               class="form-horizontal form-label-left">
                                             <div class="row">
                                                 <div class="col-12 col-md-4">
-                                                    <div class="form-group">
-                                                        <label class="form-label"
-                                                               for="first-name">{{trans('message.Nav nomi')}} <label
-                                                                class="text-danger">*</label>
-                                                        </label>
-                                                        <input type="text" required="required" name="name"
-                                                               class="form-control">
-                                                    </div>
+                                                    <label class="form-label"
+                                                           for="first-name">{{trans('message.Seleksiya nomi ')}}<label
+                                                            class="text-danger">*</label>
+                                                    </label>
+                                                    <input type="text" required="required" name="name"
+                                                           value="{{ $type->name }}" class="form-control">
                                                 </div>
                                                 <div class="col-12 col-md-4">
-                                                    <div class="form-group">
-                                                        <label class="form-label"
-                                                               for="first-name">{{trans('message.Nav kodi')}} <label
-                                                                class="text-danger">*</label>
-                                                        </label>
-                                                        <input type="integer" required="required" name="kod"
-                                                               class="form-control">
-                                                    </div>
+                                                    <label class="form-label"
+                                                           for="first-name">{{trans('message.Seleksiya kodi')}} <label
+                                                            class="text-danger">*</label>
+                                                    </label>
+                                                    <input type="number" required="required" name="kod"
+                                                           value="{{ $type->kod }}" class="form-control">
                                                 </div>
                                                 <div class="col-12 col-md-4">
                                                     <div class="form-group">
@@ -83,25 +80,26 @@
                                                                for="first-name">{{trans('message.Mahsulot turi')}} <label
                                                                 class="text-danger">*</label>
                                                         </label>
-                                                        <select name="crop" class="region" required>
+                                                        <select name="crop" class="crop" required>
                                                             @if(!empty($crops))
                                                                 @foreach($crops as $crop)
                                                                     <option
+                                                                        @if($type->state_id==$crop->id)
+                                                                        selected
+                                                                        @endif
                                                                         value="{{ $crop->id }}">{{ $crop->name }}</option>
                                                                 @endforeach
                                                             @endif
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <input type="hidden" name="_token" value="{{csrf_token()}}">
                                                 <div class="col-12 col-md-6">
                                                     <label class="form-label" style="visibility: hidden;">label</label>
-                                                    <div class="form-group">
-                                                        <a class="btn btn-primary"
-                                                           href="{{ URL::previous() }}">{{ trans('app.Cancel')}}</a>
-                                                        <button type="submit"
-                                                                class="btn btn-success">{{ trans('app.Submit')}}</button>
-                                                    </div>
+                                                    <input type="hidden" name="_token" value="{{csrf_token()}}">
+                                                    <a class="btn btn-primary"
+                                                       href="{{ URL::previous() }}">{{ trans('app.Cancel')}}</a>
+                                                    <button type="submit"
+                                                            class="btn btn-success">{{ trans('app.Update')}}</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -120,12 +118,11 @@
                     </div>
                 </div>
             </div>
-
         @endcan
     <script src="{{ URL::asset('vendors/jquery/dist/jquery.min.js') }}"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            $('.region').select2({
+            $('.crop').select2({
                 minimumResultsForSearch: Infinity
             });
         })

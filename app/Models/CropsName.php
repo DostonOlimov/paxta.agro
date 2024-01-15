@@ -37,4 +37,8 @@ class CropsName extends Model
     {
         return $this->hasMany(CropsGeneration::class, 'crop_id');
     }
+    public function selecton(): HasMany
+    {
+        return $this->hasMany(CropsSelection::class, 'crop_id');
+    }
 }
