@@ -60,7 +60,7 @@
                                         <thead>
                                         <tr>
                                             <th>{{trans('message.Seleksiya kodi')}}</th>
-                                            <t>{{trans('message.Seleksiya nomi')}}</t{{trans('message.h')}}>
+                                            <th>{{trans('message.Seleksiya nomi')}}</th>
                                             <th>{{trans('message.Mahsulot turi')}}</th>
                                             <th>{{ trans('app.Action')}}</th>
                                         </tr>
@@ -114,13 +114,13 @@
 
 
             swal({
-                title: "{{trans('message.O'chirishni istaysizmi')}}"?,
-                text: "{{trans('message.O'chirilgan ma'lumotlar qayta tiklanmaydi')}}"!,
+                title: "{{trans('message.O\'chirishni istaysizmi')}}"?,
+                text: "{{trans('message.O\'chirilgan ma\'lumotlar qayta tiklanmaydi')}}"!,
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#297FCA",
-                confirmButtonText: "{{trans('message.Ha, o'chirish')}}"!,
-                cancelButtonText:"{{trans('message.O'chirishni bekor qilish')}}",
+                confirmButtonText: "{{trans('message.Ha, o\'chirish')}}"!,
+                cancelButtonText:"{{trans('message.O\'chirishni bekor qilish')}}",
                 closeOnConfirm: false
             }).then((result) => {
                 window.location.href = url;
