@@ -257,6 +257,7 @@ class FinalResultsController extends Controller
 
         $counts = ClampData::select('sort', 'class', \DB::raw('count(*) as count'))
             ->groupBy('sort', 'class')
+            ->where('dalolatnoma_id',$id)
             ->get();
         $mic = ClampData::avg('mic');
         $length = ClampData::avg('fiblength');
