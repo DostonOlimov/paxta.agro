@@ -41,6 +41,7 @@ $regions = Region::get();
 
     public function report(Request $request)
     {
+        $user = Auth::User();
         $app_type_selector = $request->input('app_type_selector');
         $city = $request->input('city');
         $crop = $request->input('crop');
@@ -62,6 +63,14 @@ $regions = Region::get();
             ->with('tests.result.certificate')
             ->whereIn('status',[Application::STATUS_ACCEPTED,Application::STATUS_FINISHED]);
 
+        if($user->role == \App\Models\User::STATE_EMPLOYEE){
+            $user_city = $user->state_id;
+            $apps = $apps->whereHas('organization', function ($query) use ($user_city) {
+                $query->whereHas('city', function ($query) use ($user_city) {
+                    $query->where('state_id', '=', $user_city);
+                });
+            });
+        }
         if ($from && $till) {
             $fromTime = join('-', array_reverse(explode('-', $from)));
             $tillTime = join('-', array_reverse(explode('-', $till)));
