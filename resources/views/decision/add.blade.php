@@ -53,7 +53,7 @@
                                 </div>
                                 <div class="col-md-4 form-group has-feedback {{ $errors->has('number') ? ' has-error' : '' }}">
                                     <label for="middle-name" class="form-label">Buyruq raqami <label class="text-danger">*</label></label>
-                                    <input type="number" class="form-control" maxlength="25" value="{{ old('number')}}"  name="number">
+                                    <input type="text" class="form-control" maxlength="25" value="{{ old('number')}}"  name="number">
                                     @if ($errors->has('number'))
                                         <span class="help-block">
 											 <strong>Buyruq raqami noto'g'ri shaklda kiritilgan</strong>

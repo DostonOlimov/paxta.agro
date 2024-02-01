@@ -126,6 +126,7 @@ class FinalResultsController extends Controller
             foreach($counts as $count){
                 $result = new FinalResult();
                 $result->dalolatnoma_id = $id;
+                $result->test_program_id = $id;
                 $result->sort = $count->sort;
                 $result->class = $count->class;
                 $result->count = $count->count;
