@@ -143,63 +143,36 @@
                                             @endif
                                         </div>
                                     </div>
-
                                     {{-- start --}}
                                     <div class="certificate row" id="forms">
-
-
                                         <div class="col-md-5 row">
-                                            <label for="number" class="form-label">Shtrix kod raqami:<label
-                                                    class="text-danger">*</label></label>
-                                            <div
-                                                class="col-md-6 form-group has-feedback {{ $errors->has('kod_toy[0][0]') ? ' has-error' : '' }}">
+                                            <label for="number" class="form-label">Shtrix kod raqami:<label class="text-danger">*</label></label>
+                                            <div class="col-md-6 form-group has-feedback">
                                                 <input type="number" class="form-control" maxlength="10"
-                                                    value="{{old('kod_toy[0][0]', 'default') }}" name="kod_toy[0][0]" required min="1">
+                                                    value="@if(old('kod_toy')){{old('kod_toy')[0][0]}}@endif" name="kod_toy[0][0]" required min="1">
                                                 <label for="number" class="form-label">dan</label>
-                                                @if ($errors->has('kod_toy[0][0]'))
-                                                    <span class="help-block">
-                                                        <strong
-                                                            class="text-danger">{{ $errors->first('kod_toy[0][0]') }}</strong>
-                                                    </span>
-                                                @endif
                                             </div>
 
-                                            <div
-                                                class="col-md-6 form-group has-feedback {{ $errors->has('kod_toy[0][1]') ? ' has-error' : '' }}">
+                                            <div class="col-md-6 form-group has-feedback">
                                                 <input type="number" class="form-control"
-                                                    value="{{ old('kod_toy[0][1]') }}" name="kod_toy[0][1]" required>
+                                                    value="@if(old('kod_toy')){{ old('kod_toy')[0][1] }}@endif" name="kod_toy[0][1]" required>
                                                 <label for="number" class="form-label">gacha </label>
-                                                @if ($errors->has('kod_toy[0][1]'))
-                                                    <span class="help-block">
-                                                        <strong
-                                                            class="text-danger">{{ $errors->first('kod_toy[0][1]') }}</strong>
-                                                    </span>
-                                                @endif
                                             </div>
                                         </div>
                                         <div class="col-md-5 row">
-                                            <label for="number" class="form-label">Toylar ketma-ketligi:<label
-                                                    class="text-danger">*</label></label>
+                                            <label for="number" class="form-label">Toylar ketma-ketligi:<label class="text-danger">*</label></label>
                                             <div
                                                 class="col-md-6 form-group has-feedback {{ $errors->has('kod_toy[0][2]') ? ' has-error' : '' }}">
                                                 <input type="number" class="form-control" maxlength="10"
-                                                    value="{{ old('kod_toy[0][2]') }}" name="kod_toy[0][2]" required min="1">
+                                                    value="@if(old('kod_toy')){{ old('kod_toy')[0][2] }}@endif" name="kod_toy[0][2]" required min="1">
                                                 <label for="number" class="form-label">dan</label>
                                             </div>
-                                            <div
-                                                class="col-md-6 form-group has-feedback {{ $errors->has('kod_toy[0][3]') ? ' has-error' : '' }}">
+                                            <div class="col-md-6 form-group has-feedback ">
                                                 <input type="number" class="form-control"
-                                                    value="{{ old('kod_toy[0][3]') }}" name="kod_toy[0][3]" required>
+                                                    value="@if(old('kod_toy')){{ old('kod_toy')[0][3] }}@endif" name="kod_toy[0][3]" required>
                                                 <label for="number" class="form-label">gacha </label>
-                                                @if ($errors->has('kod_toy[0][3]'))
-                                                    <span class="help-block">
-                                                        <strong
-                                                            class="text-danger">{{ $errors->first('kod_toy[0][3]') }}</strong>
-                                                    </span>
-                                                @endif
                                             </div>
                                         </div>
-
                                         <div class="col-md-2 row ">
                                             <label></label>
                                             <div class="col-md-6 col-sm-6">
@@ -209,84 +182,29 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        @if(old('kod_toy'))
+                                            @for($i=1; $i < count(old('kod_toy')); $i++)
+                                            <div class="col-md-5 row">
+                                                <div class="col-md-6 form-group has-feedback">
+                                                    <input type="number" class="form-control" maxlength="10" value="{{old('kod_toy')[$i][0] }}" name="kod_toy[{{$i}}][0]" required min="1">
+                                                </div>
+                                                <div class="col-md-6 form-group has-feedback">
+                                                    <input type="number" class="form-control" value="{{ old('kod_toy')[$i][1] }}" name="kod_toy[{{$i}}][1]" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5 row">
+                                                <div class="col-md-6 form-group has-feedback">
+                                                    <input type="number" class="form-control" maxlength="10" value="{{ old('kod_toy')[$i][2] }}" name="kod_toy[{{$i}}][2]" required min="1">
+                                                </div>
+                                                <div class="col-md-6 form-group has-feedback ">
+                                                    <input type="number" class="form-control" value="{{ old('kod_toy')[$i][3] }}" name="kod_toy[{{$i}}][3]" required>
+                                                </div>
+                                            </div>
+                                            @endfor
+                                        @endif
                                     </div>
 
-                                    <script>
-                                        var fieldId = 0;
 
-                                        function addElement(parentId, elementTag, elementId, html) {
-                                            var id = document.getElementById(parentId);
-                                            var newElement = document.createElement(elementTag);
-                                            newElement.setAttribute('id', elementId);
-                                            newElement.innerHTML = html;
-                                            id.appendChild(newElement);
-                                        }
-
-                                        function removeField(elementId) {
-                                            var fieldId = "field-" + elementId;
-                                            var element = document.getElementById(fieldId);
-                                            element.parentNode.removeChild(element);
-                                        }
-
-                                        function addField() {
-                                            fieldId++;
-                                            var html =
-                                                `<br>  <div class="row">  <div class="col-md-5 row">
-                                            <div
-                                                class="col-md-6 form-group has-feedback {{ $errors->has('kod_toy[`+ fieldId + `][0]') ? ' has-error' : '' }}">
-                                                <input type="number" class="form-control" maxlength="10"
-                                                    value="{{ old('kod_toy[`+ fieldId + `][0]') }}" name="kod_toy[` +
-                                                fieldId + `][]" required>
-                                                @if ($errors->has('kod_toy[`+ fieldId + `][0]'))
-                                                    <span class="help-block">
-                                                        <strong
-                                                            class="text-danger">{{ $errors->first('kod_toy[`+ fieldId + `][0]') }}</strong>
-                                                    </span>
-                                                @endif
-                                            </div>
-                                            <div
-                                                class="col-md-6 form-group has-feedback {{ $errors->has('kod_toy[`+ fieldId + `][1]') ? ' has-error' : '' }}">
-                                                <input type="number" class="form-control" value="{{ old('kod_toy[`+ fieldId + `][1]') }}"
-                                                    name="kod_toy[` + fieldId + `][]" required>
-                                                @if ($errors->has('kod_toy[`+ fieldId + `][1]'))
-                                                    <span class="help-block">
-                                                        <strong
-                                                            class="text-danger">{{ $errors->first('kod_toy[`+ fieldId + `][1]') }}</strong>
-                                                    </span>
-                                                @endif
-                                            </div>
-                                        </div>
-                                        <div class="col-md-5 row">
-                                            <div
-                                                class="col-md-6 form-group has-feedback {{ $errors->has('kod_toy[`+ fieldId + `][2]') ? ' has-error' : '' }}">
-                                                <input type="number" class="form-control" maxlength="10"
-                                                    value="{{ old('kod_toy[`+ fieldId + `][2]') }}" name="kod_toy[` +
-                                                fieldId + `][]" required>
-                                            </div>
-                                            <div
-                                                class="col-md-6 form-group has-feedback {{ $errors->has('kod_toy[`+ fieldId + `][3]') ? ' has-error' : '' }}">
-                                                <input type="number" class="form-control" value="{{ old('kod_toy[`+ fieldId + `][3]') }}"
-                                                    name="kod_toy[` + fieldId + `][]" required>
-                                                @if ($errors->has('kod_toy[`+ fieldId + `][3]'))
-                                                    <span class="help-block">
-                                                        <strong
-                                                            class="text-danger">{{ $errors->first('kod_toy[`+ fieldId + `][3]') }}</strong>
-                                                    </span>
-                                                @endif
-                                            </div>
-                                        </div>` +
-                                                `
-                                                <div class="col-md-2 row "> <label></label>
-                                                     <div class="col-md-6 col-sm-6"> <div onclick="removeField(` +
-                                                fieldId + `);" class="btn btn-danger">
-                                                         <i class="fa fa-minus-circle fa-lg">&nbsp;</i>
-                                                    <b>{{ trans('app.Olib tashlash') }}</b></div>
-                                            </div>
-                                        </div>
-                                         </div>`;
-                                            addElement('forms', 'div', 'field-' + fieldId, html);
-                                        }
-                                    </script>
 
 
 
@@ -434,5 +352,81 @@
         }
     });
 </script>
+    <script>
+        var fieldId = 0;
+
+        function addElement(parentId, elementTag, elementId, html) {
+            var id = document.getElementById(parentId);
+            var newElement = document.createElement(elementTag);
+            newElement.setAttribute('id', elementId);
+            newElement.innerHTML = html;
+            id.appendChild(newElement);
+        }
+
+        function removeField(elementId) {
+            var fieldId = "field-" + elementId;
+            var element = document.getElementById(fieldId);
+            element.parentNode.removeChild(element);
+        }
+
+        function addField() {
+            fieldId++;
+            var html =
+                `<br>  <div class="row">  <div class="col-md-5 row">
+                                            <div
+                                                class="col-md-6 form-group has-feedback {{ $errors->has('kod_toy[`+ fieldId + `][0]') ? ' has-error' : '' }}">
+                                                <input type="number" class="form-control" maxlength="10"
+                                                    value="{{ old('kod_toy[`+ fieldId + `][0]') }}" name="kod_toy[` +
+                fieldId + `][]" required>
+                                                @if ($errors->has('kod_toy[`+ fieldId + `][0]'))
+                <span class="help-block">
+                    <strong
+                        class="text-danger">{{ $errors->first('kod_toy[`+ fieldId + `][0]') }}</strong>
+                                                    </span>
+                                                @endif
+                </div>
+                <div
+                    class="col-md-6 form-group has-feedback {{ $errors->has('kod_toy[`+ fieldId + `][1]') ? ' has-error' : '' }}">
+                                                <input type="number" class="form-control" value="{{ old('kod_toy[`+ fieldId + `][1]') }}"
+                                                    name="kod_toy[` + fieldId + `][]" required>
+                                                @if ($errors->has('kod_toy[`+ fieldId + `][1]'))
+                <span class="help-block">
+                    <strong
+                        class="text-danger">{{ $errors->first('kod_toy[`+ fieldId + `][1]') }}</strong>
+                                                    </span>
+                                                @endif
+                </div>
+            </div>
+            <div class="col-md-5 row">
+                <div
+                    class="col-md-6 form-group has-feedback {{ $errors->has('kod_toy[`+ fieldId + `][2]') ? ' has-error' : '' }}">
+                                                <input type="number" class="form-control" maxlength="10"
+                                                    value="{{ old('kod_toy[`+ fieldId + `][2]') }}" name="kod_toy[` +
+                fieldId + `][]" required>
+                                            </div>
+                                            <div
+                                                class="col-md-6 form-group has-feedback {{ $errors->has('kod_toy[`+ fieldId + `][3]') ? ' has-error' : '' }}">
+                                                <input type="number" class="form-control" value="{{ old('kod_toy[`+ fieldId + `][3]') }}"
+                                                    name="kod_toy[` + fieldId + `][]" required>
+                                                @if ($errors->has('kod_toy[`+ fieldId + `][3]'))
+                <span class="help-block">
+                    <strong
+                        class="text-danger">{{ $errors->first('kod_toy[`+ fieldId + `][3]') }}</strong>
+                                                    </span>
+                                                @endif
+                </div>
+            </div>` +
+                `
+                                                <div class="col-md-2 row "> <label></label>
+                                                     <div class="col-md-6 col-sm-6"> <div onclick="removeField(` +
+                fieldId + `);" class="btn btn-danger">
+                                                         <i class="fa fa-minus-circle fa-lg">&nbsp;</i>
+                                                    <b>{{ trans('app.Olib tashlash') }}</b></div>
+                                            </div>
+                                        </div>
+                                         </div>`;
+            addElement('forms', 'div', 'field-' + fieldId, html);
+        }
+    </script>
 @endsection
 

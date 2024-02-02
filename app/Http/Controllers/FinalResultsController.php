@@ -120,6 +120,7 @@ class FinalResultsController extends Controller
                 DB::raw('AVG(clamp_data.uniform) as uniform'),
                 DB::raw('AVG(clamp_data.humidity) as humidity')
             )
+                ->where('clamp_data.dalolatnoma_id',$id)
                 ->join('akt_amount', 'akt_amount.shtrix_kod', '=', 'clamp_data.gin_bale')
                 ->groupBy('sort', 'class')
                 ->get();
