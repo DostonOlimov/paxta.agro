@@ -40,7 +40,7 @@
 
 
         <li class="nav-title">{{trans('message.Tizim sozlamalari')}}</li>
-        @if(auth()->user()->role != \App\Models\User::ROLE_DIROCTOR and auth()->user()->role != \App\Models\User::STATE_EMPLOYEE)
+        @if(auth()->user()->role != \App\Models\User::ROLE_DIROCTOR)
         <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
                 <svg class="nav-icon">
                     <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-plant"></use>
@@ -79,7 +79,7 @@
                 </li>
             </ul>
         </li>
-            @if(auth()->user()->role != \App\Models\User::ROLE_DIROCTOR and auth()->user()->role != \App\Models\User::STATE_EMPLOYEE )
+            @if(auth()->user()->role != \App\Models\User::ROLE_DIROCTOR )
             <li class="nav-item"><a class="nav-link" href="{!! url('/laboratories/list') !!}"> <svg class="nav-icon">
                         <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-beaker"></use>
                     </svg> {{trans('message.Laboratoriyalar')}}</a></li>
