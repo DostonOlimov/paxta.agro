@@ -171,9 +171,18 @@
                                 pencilIcon.classList.add('fa', 'fa-pencil');
                                 pencilIcon.setAttribute('onclick', 'changeDisplay(this,'+id+')');
                                 elm.parentNode.appendChild(pencilIcon);
+                                // Find the next input element
+                                var nextId = id + 1;
+                                var nextInput = document.getElementById('amount' + nextId);
+
+                                // If the next input element exists, set focus on it
+                                if (nextInput) {
+                                    nextInput.focus();
+                                }
                             }
                         });
                     }
                 }
+
             </script>
 @endsection
