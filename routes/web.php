@@ -227,6 +227,7 @@ Route::group(['prefix' => 'laboratories', 'middleware' => 'auth'], function () {
 //Dalolatnoma
     Route::group(['prefix' => 'dalolatnoma', 'middleware' => 'auth'], function () {
     Route::get('/search', '\App\Http\Controllers\DalolatnomaController@search');
+    Route::get('/myadd', '\App\Http\Controllers\DalolatnomaController@myadd');
     Route::get('/add/{id}', '\App\Http\Controllers\DalolatnomaController@add');
     Route::get('/list', '\App\Http\Controllers\DalolatnomaController@list');
     Route::get('/list/delete/{id}', '\App\Http\Controllers\DalolatnomaController@destory');

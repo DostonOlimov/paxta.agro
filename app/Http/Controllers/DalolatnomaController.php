@@ -282,5 +282,19 @@ class DalolatnomaController extends Controller
             'result' => $tests,
         ]);
     }
+    public function myadd()
+    {
+        $amounts = [];
 
+            for ($j =81252 ; $j <=81471  ; $j++) {
+                $amounts[] = [
+                    'dalolatnoma_id' => 10,
+                    'shtrix_kod' => $j,
+                ];
+            }
+
+        DB::transaction(function () use ($amounts) {
+            AktAmount::insert($amounts);
+        });
+    }
 }
