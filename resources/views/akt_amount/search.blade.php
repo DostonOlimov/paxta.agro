@@ -40,8 +40,8 @@
                                     <thead>
                                     <tr>
                                         <th class="border-bottom-0 border-top-0">#</th>
-                                        <th>{{trans('app.Sinov dasturi raqami')}}</th>
-                                        <th>{{trans('app.Sinov bayonnomasi sanasi')}}</th>
+                                        <th>Dalolatnoma raqami</th>
+                                        <th>Dalolatnoma sanasi</th>
                                         <th>{{trans('app.Buyurtmachi korxona yoki tashkilot nomi')}}</th>
                                         <th>{{trans('app.Sertifikatlanuvchi mahsulot')}}</th>
                                         <th>{{trans('app.amount')}}</th>
@@ -56,8 +56,8 @@
                                     @foreach($tests as $test)
                                         <tr>
                                             <td>{{$offset + $loop->iteration}}</td>
-                                            <td>{{ optional(optional($test->test_program->application)->decision)->number }}</td>
-                                            <td>{{ optional(optional($test->test_program->application)->decision)->date }}</td>
+                                            <td>{{ $test->number }}</td>
+                                            <td>{{ $test->date }}</td>
                                             <td><a href="{!! url('/organization/view/'.$test->test_program->application->organization_id) !!}">{{ $test->test_program->application->organization->name }}</a></td>
                                             <td>{{ $test->test_program->application->crops->name->name }}</td>
                                             <td>{{ optional($test->test_program->application)->crops->amount_name }}</td>
