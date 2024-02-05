@@ -16,6 +16,7 @@ use App\Rules\DifferentsShtrixKod;
 use App\Rules\EqualToyCount;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AktAmountController extends Controller
 {
@@ -100,6 +101,24 @@ class AktAmountController extends Controller
     public function edit($id)
     {
         $tests = AktAmount::where('dalolatnoma_id',$id)->get()->toArray();
+        if(!$tests){
+            $amounts = [];
+            $balls = GinBalles::where('dalolatnoma_id',$id)->get();
+            foreach ($balls as $ball){
+                for ($j = $ball->from_number; $j <= $ball->to_number; $j++) {
+                    $amounts[] = [
+                        'dalolatnoma_id' => $id,
+                        'shtrix_kod' => $j,
+                    ];
+                }
+            }
+            DB::transaction(function () use ($amounts) {
+                AktAmount::insert($amounts);
+            });
+
+            $tests = AktAmount::where('dalolatnoma_id',$id)->get()->toArray();
+        }
+
 
         $data1 =  array_chunk($tests, ceil(count($tests)/4));
 
