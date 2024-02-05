@@ -145,6 +145,21 @@ class DalolatnomaController extends Controller
         $test->sinf = $sinf;
         $test->save();
 
+        $balls = [];
+        for ($i = 0; $i < count($kod_toy); $i++) {
+            if ($kod_toy[$i][0] && $kod_toy[$i][1] && $kod_toy[$i][2] && $kod_toy[$i][3]) {
+                $balls[] = [
+                    'dalolatnoma_id' => $test->id,
+                    'from_number' => $kod_toy[$i][0],
+                    'to_number' => $kod_toy[$i][1],
+                    'from_toy' => $kod_toy[$i][2],
+                    'to_toy' => $kod_toy[$i][3],
+                ];
+            }
+        }
+        DB::transaction(function () use ($balls) {
+            GinBalles::insert($balls);
+        });
         $amounts = [];
 
         for ($i = 0; $i < count($kod_toy); $i++) {
@@ -160,18 +175,6 @@ class DalolatnomaController extends Controller
         DB::transaction(function () use ($amounts) {
             AktAmount::insert($amounts);
         });
-
-        for ($i = 0; $i < count($kod_toy); $i++) {
-            if ($kod_toy[$i][0] && $kod_toy[$i][1] && $kod_toy[$i][2] && $kod_toy[$i][3]) {
-                $ball = new GinBalles();
-                $ball->dalolatnoma_id = $test->id;
-                $ball->from_number = $kod_toy[$i][0];
-                $ball->to_number = $kod_toy[$i][1];
-                $ball->from_toy = $kod_toy[$i][2];
-                $ball->to_toy = $kod_toy[$i][3];
-                $ball->save();
-            }
-        }
 
         $active = new tbl_activities;
         $active->ip_adress = $_SERVER['REMOTE_ADDR'];
