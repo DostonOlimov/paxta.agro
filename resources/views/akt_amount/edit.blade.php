@@ -76,71 +76,40 @@
                                             <table id="examples1" class="table table-striped table-bordered nowrap" style="margin-top:20px;" >
                                                 <thead>
                                                 <tr>
-                                                    <th class="border-bottom-0 border-top-0">#</th>
-                                                    <th>Shtrix kod</th>
-                                                    <th>Og'irlik (kg)</th>
-                                                    <th class="border-bottom-0 border-top-0">#</th>
-                                                    <th>Shtrix kod</th>
-                                                    <th>Og'irlik (kg)</th>
-                                                    <th class="border-bottom-0 border-top-0">#</th>
-                                                    <th>Shtrix kod</th>
-                                                    <th>Og'irlik (kg)</th>
-                                                    <th class="border-bottom-0 border-top-0">#</th>
-                                                    <th>Shtrix kod</th>
-                                                    <th>Og'irlik (kg)</th>
+                                                    @foreach($data1 as $data)
+                                                        <th class="border-bottom-0 border-top-0">#</th>
+                                                        <th>Shtrix kod</th>
+                                                        <th>Og'irlik (kg)</th>
+                                                    @endforeach
                                                 </tr>
                                                 </thead>
                                                 <tbody>
                                                 <form method="post" enctype="multipart/form-data"
                                                       data-parsley-validate class="form-horizontal form-label-left">
                                                     @csrf
-                                                    @php $count = count($results[0]); @endphp
-                                                    @for($i = 0; $i < $count; $i++)
+                                                    @for($i = 0; $i < 50; $i++)
                                                         <tr>
-                                                            <td>{{ $i+1}}</td>
-                                                            <td>{{ $results[0][$i]['shtrix_kod'] }}</td>
+                                                            @foreach($data1 as $data)
+                                                            <td>{{ 50 * ($loop->iteration-1) + $i +1 }}</td>
+                                                            <td>@if(isset($data[$i])) {{$data[$i]['shtrix_kod']}}  @endif</td>
                                                             <td>
-                                                                <div class="input-container">
-                                                                    <input type="number" step="0.01" class="form-control" name="amount" id="amount{{$results[0][$i]['id']}}"
-                                                                           onchange="saveAnswer({{$results[0][$i]['id']}} , this)"  value="{{$results[0][$i]['amount']}}" @if($results[0][$i]['amount']) {{'disabled'}} @endif>
-                                                                    @if($results[0][$i]['amount']) <i class="fa fa-pencil" onclick="changeDisplay(this,{{$results[0][$i]['id']}})"></i> @endif
-                                                                </div>
-                                                            </td>
-                                                            <td>{{ $count + $i+1 }}</td>
-                                                            <td>{{$results[1][$i]['shtrix_kod']}}</td>
-                                                            <td>
-                                                                <div class="input-container">
-                                                                    <input type="number" step="0.01" class="form-control" name="amount" id="amount{{$results[1][$i]['id']}}"
-                                                                           onchange="saveAnswer({{$results[1][$i]['id']}} , this)"  value="{{$results[1][$i]['amount']}}" @if($results[1][$i]['amount']) {{'disabled'}} @endif>
-                                                                    @if($results[1][$i]['amount']) <i class="fa fa-pencil" onclick="changeDisplay(this,{{$results[1][$i]['id']}})"></i> @endif
-                                                                </div>
-                                                            </td>
-                                                            <td>{{ 2 * $count + $i +1}}</td>
-                                                            <td>{{$results[2][$i]['shtrix_kod']}}</td>
-                                                            <td>
-                                                                <div class="input-container">
-                                                                    <input type="number" step="0.01" class="form-control" name="amount" id="amount{{$results[2][$i]['id']}}"
-                                                                           onchange="saveAnswer({{$results[2][$i]['id']}} , this)"  value="{{$results[2][$i]['amount']}}" @if($results[2][$i]['amount']) {{'disabled'}} @endif>
-                                                                    @if($results[2][$i]['amount']) <i class="fa fa-pencil" onclick="changeDisplay(this,{{$results[2][$i]['id']}})"></i> @endif
-                                                                </div>
-                                                            </td>
-                                                            <td>{{ 3 * $count + $i +1}}</td>
-                                                            <td>@if(array_key_exists($i,$results[3])) {{$results[3][$i]['shtrix_kod']}}  @endif</td>
-                                                            <td>
-                                                                @if(array_key_exists($i,$results[3]))
+                                                                @if(isset($data[$i]))
                                                                     <div class="input-container">
-                                                                        <input type="number" step="0.01" class="form-control" name="amount" id="amount{{$results[3][$i]['id']}}"
-                                                                               onchange="saveAnswer({{$results[3][$i]['id']}} , this)"  value="{{$results[3][$i]['amount']}}" @if($results[3][$i]['amount']) {{'disabled'}} @endif>
-                                                                        @if($results[3][$i]['amount']) <i class="fa fa-pencil" onclick="changeDisplay(this,{{$results[3][$i]['id']}})"></i> @endif
+                                                                        <input type="number" step="0.01" class="form-control" name="amount" id="amount{{$data[$i]['id']}}"
+                                                                               onchange="saveAnswer({{$data[$i]['id']}} , this)"  value="{{$data[$i]['amount']}}" @if($data[$i]['amount']) {{'disabled'}} @endif>
+                                                                        @if($data[$i]['amount']) <i class="fa fa-pencil" onclick="changeDisplay(this,{{$data[$i]['id']}})"></i> @endif
                                                                     </div>
                                                                 @endif
                                                             </td>
+                                                            @endforeach
                                                         </tr>
+
                                                     @endfor
                                                 </form>
                                                 </tbody>
                                             </table>
                                         </div>
+                                        <a  class="p-2" href="{!! url('/akt_amount/view/'.$id) !!}"><button type="button" class="btn btn-round btn-success">&nbsp;&nbsp;{{ trans('app.Submit')}}&nbsp;&nbsp;</button></a>
                                     </div>
                                 </div>
                             </div>

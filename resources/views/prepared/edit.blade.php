@@ -57,7 +57,7 @@
                                               enctype="multipart/form-data" data-parsley-validate
                                               class="form-horizontal form-label-left">
                                             <div class="row">
-                                                <div class="col-12 col-md-4">
+                                                <div class="col-12 col-md-6">
                                                     <label class="form-label"
                                                            for="first-name">{{trans('app.Zavod nomi')}} <label
                                                             class="text-danger">*</label>
@@ -65,15 +65,8 @@
                                                     <input type="text" required="required" name="name"
                                                            value="{{ $company->name }}" class="form-control">
                                                 </div>
-                                                <div class="col-12 col-md-4">
-                                                    <label class="form-label"
-                                                           for="first-name">{{'app.Zavod kodi'}} <label
-                                                            class="text-danger">*</label>
-                                                    </label>
-                                                    <input type="text" required="required" name="kod"
-                                                           value="{{ $company->kod }}" class="form-control">
-                                                </div>
-                                                <div class="col-12 col-md-4">
+
+                                                <div class="col-12 col-md-6">
                                                     <div class="form-group">
                                                         <label class="form-label"
                                                                for="first-name">{{ trans('app.Viloyat nomi')}} <label
@@ -91,6 +84,22 @@
                                                             @endif
                                                         </select>
                                                     </div>
+                                                </div>
+                                                <div class="col-12 col-md-6">
+                                                    <label class="form-label"
+                                                           for="first-name">{{'app.Zavod kodi'}} <label
+                                                            class="text-danger">*</label>
+                                                    </label>
+                                                    <input type="text" required="required" name="kod"
+                                                           value="{{ $company->kod }}" class="form-control">
+                                                </div>
+                                                <div class="col-12 col-md-6">
+                                                    <label class="form-label"
+                                                           for="first-name">Tara og'irligi <label
+                                                            class="text-danger">*</label>
+                                                    </label>
+                                                    <input type="text" required="required" name="tara"
+                                                           value="{{ $company->tara }}" class="form-control">
                                                 </div>
 
                                                 <div class="col-12 col-md-6">

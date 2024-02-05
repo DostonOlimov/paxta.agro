@@ -61,6 +61,7 @@
 										<th>#</th>
 										<th>{{trans('app.Zavod nomi')}}</th>
 										<th>{{trans('app.Zavod kodi')}}</th>
+										<th>Tara og'irligi(kg)</th>
 										<th>{{ trans('app.Viloyat nomi')}}</th>
 										<th>{{ trans('app.Action')}}</th>
 									</tr>
@@ -72,6 +73,7 @@
 										<td>{{ $i }}</td>
 										<td>{{ $company->name }}</td>
 										<td>{{ $company->kod }}</td>
+										<td>{{ $company->tara}}</td>
 										<td>{{ optional($company->region)->name }}</td>
 										<td>
 											<a href="{!! url ('/prepared/list/edit/'.$company->id) !!}"> <button type="button" class="btn btn-round btn-success">{{ trans('app.Edit')}}</button></a>

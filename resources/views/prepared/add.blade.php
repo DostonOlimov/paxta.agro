@@ -59,7 +59,7 @@
                                               class="form-horizontal form-label-left">
                                             <input type="hidden" value="{{$redirect_id}}" name="redirect_id">
                                             <div class="row">
-                                                <div class="col-12 col-md-4">
+                                                <div class="col-12 col-md-6">
                                                     <div class="form-group">
                                                         <label class="form-label"
                                                                for="first-name">{{trans('app.Zavod nomi')}} <label
@@ -69,17 +69,7 @@
                                                                class="form-control">
                                                     </div>
                                                 </div>
-                                                <div class="col-12 col-md-4">
-                                                    <div class="form-group">
-                                                        <label class="form-label"
-                                                               for="first-name">{{trans('app.Zavod kodi')}} <label
-                                                                class="text-danger">*</label>
-                                                        </label>
-                                                        <input type="number" required="required" name="kod" min="0" max="1000"
-                                                               class="form-control">
-                                                    </div>
-                                                </div>
-                                                <div class="col-12 col-md-4">
+                                                <div class="col-12 col-md-6">
                                                     <div class="form-group">
                                                         <label class="form-label"
                                                                for="first-name">{{ trans('app.Viloyat nomi')}} <label
@@ -93,6 +83,26 @@
                                                                 @endforeach
                                                             @endif
                                                         </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label"
+                                                               for="first-name">{{trans('app.Zavod kodi')}} <label
+                                                                class="text-danger">*</label>
+                                                        </label>
+                                                        <input type="number" required="required" name="kod" min="0" max="1000"
+                                                               class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label"
+                                                               for="first-name">Tara og'irligi <label
+                                                                class="text-danger">*</label>
+                                                        </label>
+                                                        <input type="number" required="required" name="tara" min="0" max="1000"
+                                                               class="form-control">
                                                     </div>
                                                 </div>
 

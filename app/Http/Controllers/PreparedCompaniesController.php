@@ -51,6 +51,7 @@ class PreparedCompaniesController extends Controller
         $name = $request->input('name');
         $region = $request->input('region');
         $kod = $request->input('kod');
+        $tara = $request->input('tara');
         $count = DB::table('prepared_companies')
             ->where('name', '=', $name)
             ->where('state_id','=',$region)
@@ -60,6 +61,7 @@ class PreparedCompaniesController extends Controller
             $cityname->name = $name;
             $cityname->state_id = $region;
             $cityname->kod = $kod;
+            $cityname->tara = $tara;
             $cityname->save();
             if($request->input('redirect_id') == 2){
                 return redirect('application/add')->with('message', 'Successfully Submitted');
@@ -104,6 +106,8 @@ class PreparedCompaniesController extends Controller
         $this->authorize('update', User::class);
         $state = PreparedCompanies::findOrFail($id);
         $state->name = $request->input('name');
+        $state->kod = $request->input('kod');
+        $state->tara = $request->input('tara');
         $state->state_id = $request->input('region');
         $state->save();
 

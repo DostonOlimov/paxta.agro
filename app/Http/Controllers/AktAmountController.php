@@ -119,11 +119,12 @@ class AktAmountController extends Controller
             $tests = AktAmount::where('dalolatnoma_id',$id)->get()->toArray();
         }
 
+        $data1 = array_chunk($tests, 50);
 
-        $data1 =  array_chunk($tests, ceil(count($tests)/4));
 
         return view('akt_amount.edit', [
-            'results' => $data1,
+            'data1' => $data1,
+            'id'=>$id
         ]);
     }
 
@@ -145,13 +146,15 @@ class AktAmountController extends Controller
     public function view($id)
     {
         $tests = AktAmount::where('dalolatnoma_id',$id)->get()->toArray();
+        $sum_amount = AktAmount::where('dalolatnoma_id',$id)->sum('amount');
+        $count= AktAmount::where('dalolatnoma_id',$id)->count();
+        $tara = optional(Dalolatnoma::find($id)->test_program->application->prepared)->tara;
 
-        $data1 =  array_chunk($tests, ceil(count($tests)/4));
+        if($tests){
+            $data1 =array_chunk($tests, 50);
+        }
 
-        return view('akt_amount.show', [
-            'results' => $data1,
-            'id' => $id
-        ]);
+        return view('akt_amount.show', compact('data1','id','sum_amount','count','tara'));
     }
 
 }

@@ -65,87 +65,53 @@
                             <div class="col-md-12">
                                 <div class="card">
                                     <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">Brutto : {{$sum_amount}} kg</div>
+                                            <div class="col-3">Og'irlik : {{$sum_amount - $count * $tara}} kg</div>
+                                            <div class="col-3">Kip soni : {{$count}} ta</div>
+                                            <div class="col-3">Tara : {{$count * $tara }} kg, Tara(1) : {{$tara}} kg</div>
+                                        </div>
                                         <div class="table-responsive row">
                                             <table id="examples1" class="table table-striped table-bordered nowrap" style="margin-top:20px;" >
                                                 <thead>
                                                 <tr>
-                                                    <th class="border-bottom-0 border-top-0">Kip №</th>
-                                                    <th>Shtrix kod</th>
-                                                    <th>Og'irlik (kg)</th>
-                                                    <th class="border-bottom-0 border-top-0">#</th>
-                                                    <th>Shtrix kod</th>
-                                                    <th>Og'irlik (kg)</th>
-                                                    <th class="border-bottom-0 border-top-0">#</th>
-                                                    <th>Shtrix kod</th>
-                                                    <th>Og'irlik (kg)</th>
-                                                    <th class="border-bottom-0 border-top-0">#</th>
-                                                    <th>Shtrix kod</th>
-                                                    <th>Og'irlik (kg)</th>
+                                                    @foreach($data1 as $data)
+                                                        <th class="border-bottom-0 border-top-0">#</th>
+                                                        <th>Shtrix kod</th>
+                                                        <th>Og'irlik (kg)</th>
+                                                    @endforeach
                                                 </tr>
                                                 </thead>
                                                 <tbody>
                                                 <form method="post" enctype="multipart/form-data"
                                                       data-parsley-validate class="form-horizontal form-label-left">
                                                     @csrf
-                                                    @php $count = count($results[0]); @endphp
-                                                     @for($i = 0; $i < $count; $i++)
+                                                    @for($i = 0; $i < 50; $i++)
                                                         <tr>
-                                                            <td>{{ $i+1}}</td>
-                                                            <td>{{ $results[0][$i]['shtrix_kod'] }}</td>
-                                                                @if($results[0][$i]['amount'])
-                                                                <td class="bg-info text-white">
-                                                                    {{$results[0][$i]['amount']}} kg
-                                                                </td>
-                                                                @else
-                                                                <td class="bg-danger text-white">
-                                                                    0 kg
-                                                                </td>
-                                                                @endif
-
-                                                            <td>{{ $count + $i+1 }}</td>
-                                                            <td>{{$results[1][$i]['shtrix_kod']}}</td>
-                                                            @if($results[1][$i]['amount'])
-                                                                <td class="bg-info text-white">
-                                                                    {{$results[1][$i]['amount']}} kg
-                                                                </td>
-                                                            @else
-                                                                <td class="bg-danger text-white">
-                                                                    0 kg
-                                                                </td>
-                                                            @endif
-
-                                                            <td>{{ 2 * $count + $i +1}}</td>
-                                                            <td>{{$results[2][$i]['shtrix_kod']}}</td>
-                                                            @if($results[2][$i]['amount'])
-                                                                <td class="bg-info text-white">
-                                                                    {{$results[2][$i]['amount']}} kg
-                                                                </td>
-                                                            @else
-                                                                <td class="bg-danger text-white">
-                                                                    0 kg
-                                                                </td>
-                                                            @endif
-
-                                                            <td>{{ 3 * $count + $i +1}}</td>
-                                                            <td>@if(array_key_exists($i,$results[3])) {{$results[3][$i]['shtrix_kod']}}  @endif</td>
-
-                                                            @if(array_key_exists($i,$results[3]))
-                                                                @if($results[3][$i]['amount'])
+                                                            @foreach($data1 as $data)
+                                                                <td>{{ 50 * ($loop->iteration-1) + $i +1 }}</td>
+                                                                <td>@if(isset($data[$i])) {{ $data[$i]['shtrix_kod'] }}@endif</td>
+                                                                @if(isset($data[$i]))
+                                                                    @if($data[$i]['amount'])
                                                                     <td class="bg-info text-white">
-                                                                        {{$results[3][$i]['amount']}} kg
+                                                                        {{$data[$i]['amount']}} kg
                                                                     </td>
-                                                                @else
+                                                                    @else
                                                                     <td class="bg-danger text-white">
                                                                         0 kg
                                                                     </td>
                                                                 @endif
-                                                            @else
-                                                                <td></td>
-                                                            @endif
-
+                                                                @endif
+                                                            @endforeach
                                                         </tr>
                                                     @endfor
                                                  </form>
+                                                <tr>
+                                                @foreach($data1 as $d)
+                                                    <td colspan="2"></td>
+                                                    <td  >{{$sum = array_sum(array_column($d, 'amount'))}} kg</td>
+                                                @endforeach
+                                                </tr>
                                                 </tbody>
                                             </table>
                                         </div>
