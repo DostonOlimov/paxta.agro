@@ -72,7 +72,7 @@
                                             <div class="col-md-3 ">Partiya raqami : {{$dalolatnoma->party}}</div>
                                             <div class="col-md-3">Kip soni : {{$dalolatnoma->toy_count}}</div>
                                             <div class="col-md-3">Mikroneyr : {{round($mic,1)}}</div>
-                                            <div class="col-md-3">Uzunlik : {{round($length/100,2)}}</div>
+                                            <div class="col-md-3">Uzunlik : {{round($length)/100}}</div>
                                             <div class="col-md-6">Maxsus uzilish og'irligi, gf/tex : {{round($strength,1)}}</div>
                                             <div class="col-md-6">Uzunligi bo'yicha bir xillik ko'rsatkichi,%: {{round($uniform,1)}}</div>
                                             <!-- Add styles for the date -->
