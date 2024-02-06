@@ -260,10 +260,10 @@ class FinalResultsController extends Controller
             ->groupBy('sort', 'class')
             ->where('dalolatnoma_id',$id)
             ->get();
-        $mic = ClampData::avg('mic');
-        $length = ClampData::avg('fiblength');
-        $strength = ClampData::avg('strength');
-        $uniform = ClampData::avg('uniform');
+        $mic = ClampData::where('dalolatnoma_id',$id)->avg('mic');
+        $length = ClampData::where('dalolatnoma_id',$id)->avg('fiblength');
+        $strength = ClampData::where('dalolatnoma_id',$id)->avg('strength');
+        $uniform = ClampData::where('dalolatnoma_id',$id)->avg('uniform');
 
         return view('final_results.show', [
             'results' => $data1,
