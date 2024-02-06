@@ -105,7 +105,7 @@
                                                                 <td> {{ $count->sort}}</td>
                                                                 <td> {{ optional(\App\Models\CropsGeneration::where('kod','=',$count->class)->first())->name}}</td>
                                                                 <td> {{ round($count->staple)}}</td>
-                                                                <td> {{ round($count->mic,2)}}</td>
+                                                                <td> {{ round($count->mic,1)}}</td>
                                                                 <td> {{ round($count->strength,1)}}</td>
                                                                 <td> {{ round($count->uniform,1)}}</td>
                                                                 <td> {{ round(($count->humidity/10),1)}}</td>
