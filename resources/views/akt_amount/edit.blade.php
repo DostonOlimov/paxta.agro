@@ -95,7 +95,7 @@
                                                             <td>
                                                                 @if(isset($data[$i]))
                                                                     <div class="input-container">
-                                                                        <input type="number" step="0.01" class="form-control" name="amount" id="amount{{$data[$i]['id']}}"
+                                                                        <input type="number" step="0.1" class="form-control" name="amount" id="amount{{$data[$i]['id']}}"
                                                                                onchange="saveAnswer({{$data[$i]['id']}} , this)"  value="{{$data[$i]['amount']}}" @if($data[$i]['amount']) {{'disabled'}} @endif>
                                                                         @if($data[$i]['amount']) <i class="fa fa-pencil" onclick="changeDisplay(this,{{$data[$i]['id']}})"></i> @endif
                                                                     </div>

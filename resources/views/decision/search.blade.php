@@ -38,6 +38,7 @@
                                     <thead>
                                     <tr>
                                         <th class="border-bottom-0 border-top-0">#</th>
+                                        <th>To'da partya raqami</th>
                                         <th>{{trans('app.Ariza sanasi')}}</th>
                                         <th>{{trans('app.Buyurtmachi korxona yoki tashkilot nomi')}}</th>
                                         <th>{{trans('app.Sertifikatlanuvchi mahsulot')}}</th>
@@ -54,6 +55,7 @@
                                     @foreach($apps as $app)
                                         <tr>
                                             <td>{{$offset + $loop->iteration}}</td>
+                                            <td> {{ optional($app->crops)->party_number }}</td>
                                             <td> <a href="{!! url('/application/view/'.$app->id) !!}">{{ $app->date }}</a></td>
                                             <td><a href="{!! url('/organization/view/'.$app->organization_id) !!}">{{ optional($app->organization)->name }}</a></td>
                                             <td>{{ optional($app->crops->name)->name }}</td>

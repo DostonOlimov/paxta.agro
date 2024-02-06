@@ -138,8 +138,9 @@ class DecisionController extends Controller
 
     public function destory($id)
     {
-        $this->authorize('delete', User::class);
+        $this->authorize('edit', User::class);
         Decision::destroy($id);
+        TestPrograms::destroy($id);
         return redirect('decision/search')->with('message', 'Successfully Deleted');
     }
     public function view($id)
