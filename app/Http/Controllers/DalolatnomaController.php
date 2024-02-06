@@ -217,26 +217,27 @@ class DalolatnomaController extends Controller
         $userA = Auth::user();
         $result = Dalolatnoma::find($id);
         $result->number = $request->input('number');
-        if($result->date != $request->input('date')){
+        if ($result->date != $request->input('date')) {
             $result->date = join('-', array_reverse(explode('-', $request->input('date'))));
         }
         $result->selection_code = $request->input('selection_code');
         $result->toy_count = $request->input('toy_count');
         $result->amount = $request->input('amount');
         $result->party = $request->input('party_number');
-        $result->nav =  $request->input('nav');
+        $result->nav = $request->input('nav');
         $result->sinf = $request->input('sinf');
         $result->save();
-
+        $akt_amount = AktAmount::where('dalolatnoma_id', $id)->sum('amount');
+        if ($akt_amount = 0) {
         foreach ($kod_toy as $item) {
-                $conditions = ['id' => $item[0]];
-                $data = [
-                    'dalolatnoma_id' => $id,
-                    'from_number' => $item[1],
-                    'to_number' => $item[2],
-                    'from_toy' => $item[3],
-                    'to_toy' => $item[4],
-                ];
+            $conditions = ['id' => $item[0]];
+            $data = [
+                'dalolatnoma_id' => $id,
+                'from_number' => $item[1],
+                'to_number' => $item[2],
+                'from_toy' => $item[3],
+                'to_toy' => $item[4],
+            ];
 
             GinBalles::updateOrCreate($conditions, $data);
         }
@@ -245,20 +246,21 @@ class DalolatnomaController extends Controller
         $amount = new AktAmount();
 
         $amounts = [];
-    for ($i = 0; $i < count($kod_toy); $i++) {
+        for ($i = 0; $i < count($kod_toy); $i++) {
             $from_kod = $kod_toy[$i][0];
             $to_kod = $kod_toy[$i][1];
-        for ($j = $from_kod; $j <= $to_kod; $j++) {
-            $amounts[] = [
-                'dalolatnoma_id' => $id,
-                'shtrix_kod' => $j,
-            ];
+            for ($j = $from_kod; $j <= $to_kod; $j++) {
+                $amounts[] = [
+                    'dalolatnoma_id' => $id,
+                    'shtrix_kod' => $j,
+                ];
+            }
         }
-    }
 
-    DB::transaction(function () use ($amounts) {
-        AktAmount::insert($amounts);
-    });
+        DB::transaction(function () use ($amounts) {
+            AktAmount::insert($amounts);
+        });
+    }
 
         $active = new tbl_activities;
         $active->ip_adress = $_SERVER['REMOTE_ADDR'];
