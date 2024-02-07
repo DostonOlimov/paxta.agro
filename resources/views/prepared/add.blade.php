@@ -101,7 +101,7 @@
                                                                for="first-name">Tara og'irligi <label
                                                                 class="text-danger">*</label>
                                                         </label>
-                                                        <input type="number" required="required" name="tara" min="0" max="1000"
+                                                        <input type="number" required="required" name="tara" step="0.001"
                                                                class="form-control">
                                                     </div>
                                                 </div>
