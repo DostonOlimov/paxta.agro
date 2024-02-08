@@ -120,8 +120,9 @@ class FinalResultsController extends Controller
                 DB::raw('AVG(clamp_data.uniform) as uniform'),
                 DB::raw('AVG(clamp_data.humidity) as humidity')
             )
-                ->where('clamp_data.dalolatnoma_id',$id)
                 ->join('akt_amount', 'akt_amount.shtrix_kod', '=', 'clamp_data.gin_bale')
+                ->where('clamp_data.dalolatnoma_id',$id)
+                ->where('akt_amount.dalolatnoma_id', $id)
                 ->groupBy('sort', 'class')
                 ->get();
             foreach($counts as $count){
@@ -235,10 +236,11 @@ class FinalResultsController extends Controller
                 DB::raw('AVG(clamp_data.uniform) as uniform'),
                 DB::raw('AVG(clamp_data.humidity) as humidity')
             )
+                ->join('akt_amount', 'akt_amount.shtrix_kod', '=', 'clamp_data.gin_bale')
                 ->where('clamp_data.dalolatnoma_id', $result->dalolatnoma_id)
+                ->where('akt_amount.dalolatnoma_id', $result->dalolatnoma_id)
                 ->where('clamp_data.sort', $result->sort)
                 ->where('clamp_data.class', $result->class)
-                ->join('akt_amount', 'akt_amount.shtrix_kod', '=', 'clamp_data.gin_bale')
                 ->groupBy('sort', 'class')
                 ->get();
 
