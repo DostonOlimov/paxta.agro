@@ -188,60 +188,6 @@ class FinalResultsController extends Controller
 
     }
 
-    public function edit($id)
-    {
-        $userA = Auth::user();
-        $result = FinalResult::find($id);
-        $test = TestPrograms::find($result->test_program_id);
-        $certificate =  Sertificate::where('final_result_id','=',$result->id)->first() ;
-
-        return view('final_results.edit', compact('test','result','certificate'));
-    }
-
-
-    // application update
-
-    public function update($id, Request $request)
-    {
-        $userA = Auth::user();
-        $result = FinalResult::find($id);
-        $test = TestPrograms::find($result->test_program_id);
-        $certificate =  Sertificate::where('final_result_id','=',$result->id)->first() ;
-
-        $number = $request->input('number');
-        $reestr_number = $request->input('reestr_number');
-        $type = $certificate ? 2 : $request->input('type');
-        $folder_number = !$certificate ? $request->input('folder_number') : null;
-        $comment = !$certificate ? $request->input('comment') : null;
-
-        $result->number = $number;
-        $result->date = join('-', array_reverse(explode('-', $request->input('date'))));
-        $result->type = $type;
-        $result->folder_number = $folder_number;
-        $result->comment = $comment;
-        $result->save();
-        if(!$certificate){
-            $cer = Sertificate::find($certificate->id);
-            $cer->reestr_number = $reestr_number;
-            $cer->given_date = join('-', array_reverse(explode('-', $request->input('given_date'))));;;
-            $cer->save();
-        }
-        if ($request->hasFile('reason-file')) {
-            $this->attachmentService->upload($request->file('reason-file'), $result);
-        }
-        $active = new tbl_activities;
-        $active->ip_adress = $_SERVER['REMOTE_ADDR'];
-        $active->user_id = $userA->id;
-        $active->action_id = $result->id;
-        $active->action_type = 'edit_final_result';
-        $active->action = "Yakuniy natijalar o'zgartirildi";
-        $active->time = date('Y-m-d H:i:s');
-        $active->save();
-        return redirect('/final_results/search')->with('message', 'Successfully Updated');
-
-    }
-
-
     public function destory($id)
     {
         Decision::destroy($id);
@@ -275,5 +221,41 @@ class FinalResultsController extends Controller
             'uniform' => $uniform
         ]);
     }
+    public function update($id)
+    {
+       $result = FinalResult::find($id);
+
+        if ($result) {
+            $counts = ClampData::select('sort', 'class',
+                \DB::raw('count(*) as count'),
+                DB::raw('SUM(akt_amount.amount) as total_amount'),
+                DB::raw('AVG(clamp_data.mic) as mic'),
+                DB::raw('AVG(clamp_data.staple) as staple'),
+                DB::raw('AVG(clamp_data.strength) as strength'),
+                DB::raw('AVG(clamp_data.uniform) as uniform'),
+                DB::raw('AVG(clamp_data.humidity) as humidity')
+            )
+                ->where('clamp_data.dalolatnoma_id', $result->dalolatnoma_id)
+                ->where('clamp_data.sort', $result->sort)
+                ->where('clamp_data.class', $result->class)
+                ->join('akt_amount', 'akt_amount.shtrix_kod', '=', 'clamp_data.gin_bale')
+                ->groupBy('sort', 'class')
+                ->get();
+
+            foreach ($counts as $count) {
+                $result->count = $count->count;
+                $result->amount = $count->total_amount;
+                $result->mic = $count->mic;
+                $result->staple = $count->staple;
+                $result->strength = $count->strength;
+                $result->uniform = $count->uniform;
+                $result->humidity = $count->humidity;
+                $result->save();
+            }
+        }
+        return redirect('/final_results/add/'.$result->dalolatnoma_id)->with('message', 'Successfully Submitted');
+
+    }
+
 
 }

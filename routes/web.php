@@ -271,6 +271,7 @@ Route::group(['prefix' => 'akt_laboratory', 'middleware' => 'auth'], function ()
     Route::post('/list/edit/update/{id}', '\App\Http\Controllers\FinalResultsController@update');
     Route::get('/view/{id}', '\App\Http\Controllers\FinalResultsController@view');
     Route::post('/store', '\App\Http\Controllers\FinalResultsController@store');
+    Route::get('/update/{id}', '\App\Http\Controllers\FinalResultsController@update');
     });
 //Sertificates
 Route::group(['prefix' => 'sertificate', 'middleware' => 'auth'], function () {

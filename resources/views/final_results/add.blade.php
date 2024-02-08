@@ -79,6 +79,7 @@
                                                         <th>Solishtirma uzunlik kuchi</th>
                                                         <th>Uzunligi bo'yicha bir xillik ko'rsatkichi,%</th>
                                                         <th>Namlik ko'rsatkichi,%</th>
+                                                        <th>Harakat</th>
 
                                                     </tr>
                                                     </thead>
@@ -109,6 +110,9 @@
                                                                 <td> {{ round($count->strength,1)}}</td>
                                                                 <td> {{ round($count->uniform,1)}}</td>
                                                                 <td> {{ round(($count->humidity/10),1)}}</td>
+                                                                <td>
+                                                                    <a href="{!! url('/final_results/update/'.$count->id) !!}"><button type="button" class="btn btn-round btn-success">Yangilash</button></a>
+                                                                </td>
                                                             </tr>
                                                             @php $amount +=  $count->amount @endphp
                                                         @endforeach
