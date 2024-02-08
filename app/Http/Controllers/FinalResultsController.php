@@ -120,7 +120,10 @@ class FinalResultsController extends Controller
                 DB::raw('AVG(clamp_data.uniform) as uniform'),
                 DB::raw('AVG(clamp_data.humidity) as humidity')
             )
-                ->join('akt_amount', 'akt_amount.shtrix_kod', '=', 'clamp_data.gin_bale')
+                ->join('akt_amount', function($join) {
+                    $join->on('akt_amount.shtrix_kod', '=', 'clamp_data.gin_bale')
+                        ->on('akt_amount.dalolatnoma_id', '=', 'clamp_data.dalolatnoma_id');
+                })
                 ->where('clamp_data.dalolatnoma_id',$id)
                 ->where('akt_amount.dalolatnoma_id', $id)
                 ->groupBy('sort', 'class')
@@ -236,7 +239,10 @@ class FinalResultsController extends Controller
                 DB::raw('AVG(clamp_data.uniform) as uniform'),
                 DB::raw('AVG(clamp_data.humidity) as humidity')
             )
-                ->join('akt_amount', 'akt_amount.shtrix_kod', '=', 'clamp_data.gin_bale')
+                ->join('akt_amount', function($join) {
+                    $join->on('akt_amount.shtrix_kod', '=', 'clamp_data.gin_bale')
+                        ->on('akt_amount.dalolatnoma_id', '=', 'clamp_data.dalolatnoma_id');
+                })
                 ->where('clamp_data.dalolatnoma_id', $result->dalolatnoma_id)
                 ->where('akt_amount.dalolatnoma_id', $result->dalolatnoma_id)
                 ->where('clamp_data.sort', $result->sort)
