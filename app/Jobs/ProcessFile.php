@@ -42,7 +42,6 @@ class ProcessFile implements ShouldQueue
             $gin_balles = GinBalles::where('dalolatnoma_id',$this->id)->get();
         $table = new TableReader($file);
         foreach ($gin_balles as $balles){
-
             for($i=$balles->from_number;$i<=$balles->to_number;$i++){
                 $data = ClampData::where('gin_id', $gin_id)
                     ->where('gin_bale', $i)

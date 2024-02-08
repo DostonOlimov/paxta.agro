@@ -13,13 +13,13 @@ class CreateCropsSelectionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('crops_selection', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->integer('kod');
-            $table->integer('crop_id');
-            $table->timestamps();
-        });
+//        Schema::create('crops_selection', function (Blueprint $table) {
+//            $table->id();
+//            $table->string('name');
+//            $table->integer('kod');
+//            $table->integer('crop_id');
+//            $table->timestamps();
+//        });
     }
 
     /**
