@@ -8,6 +8,8 @@ use App\Models\Dalolatnoma;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use XBase\TableReader;
+use App\Jobs\ProcessFile;
+
 
 class AktLaboratoryController extends Controller
 {
@@ -85,83 +87,28 @@ class AktLaboratoryController extends Controller
     //index
     public function add($id)
     {
-        $test = Dalolatnoma::find($id);
+        $test = Dalolatnoma::with('gin_balles')->find($id);
         return view('akt_laboratory.add', compact('test'));
     }
 
     public function store(Request $request)
     {
         $id = $request->input('id');
-        $dalolatnoma = Dalolatnoma::find($id);
-        $gin_id = 0;
-        $from_number = 0;
-        $to_number = 0;
-        if($dalolatnoma){
-            $gin_id = 1000 * $dalolatnoma->test_program->application->prepared->region->clamp_id + $dalolatnoma->test_program->application->prepared->kod;
-            $from_number = $dalolatnoma->gin_ball->from_number;
-            $to_number = $dalolatnoma->gin_ball->to_number;
-        }
+        $user = Auth::user();
+
         if ($request->hasFile('file')) {
             $file = $request->file('file');
+            $filePath = $file->storeAs('uploads/'.$user->state_id, $file->getClientOriginalName());
+            $fileData = [
+                'path' => $filePath,
+                'id'=>$id,
+            ];
+
+            // Dispatch the job
+            ProcessFile::dispatch($fileData);
+
         }
-              $table = new TableReader($file);
 
-              while ($record = $table->nextRecord()) {
-              if($record->gin_id == $gin_id){
-                  if($record->gin_bale >= $from_number and $record->gin_bale <= $to_number){
-                      $data = ClampData::where('gin_id',$record->gin_id)
-                          ->where('gin_bale',$record->gin_bale)
-                          ->first();
-                      if(!$data){
-                          $data = new ClampData();
-                          $data->dalolatnoma_id = $id;
-                          $data->gin_id = $record->gin_id;
-                          $data->gin_bale = $record->gin_bale;
-                          $data->lot_number = $record->lot_num;
-                          $data->weight = $record->weight;
-                          $data->selection = $record->selection;
-                          $data->date_recvd = $record->date_recvd;
-                          $data->time_recvd = $record->time_recvd;
-                          $data->date_hvid = $record->date_hvid;
-                          $data->time_hvid = $record->time_hvid;
-                          $data->date_class = $record->date_class;
-                          $data->time_class = $record->time_class;
-                          $data->classer_id = $record->classer_id;
-                          $data->qual_ctrl = $record->qual_ctrl;
-                          $data->cutout = $record->cutout;
-                          $data->reclass = $record->reclass;
-                          $data->times_hvid = $record->times_hvid;
-                          $data->attempts = $record->attempts;
-                          $data->status = $record->status;
-                          $data->correction = $record->correction;
-                          $data->croptype = $record->croptype;
-                          $data->firstgrade = $record->firstgrade;
-                          $data->grade = $record->grade;
-                          $data->sort = $record->sort;
-                          $data->class = $record->class;
-                          $data->staple = $record->staple;
-                          $data->mic = $record->mic;
-                          $data->leaf = $record->leaf;
-                          $data->ext_matter = $record->ext_matter;
-                          $data->remarks = $record->remarks;
-                          $data->strength = $record->strength;
-                          $data->color_gr = $record->color_gr;
-                          $data->color_rd = $record->color_rd;
-                          $data->color_b = $record->color_b;
-                          $data->trash = $record->trash;
-                          $data->uniform = $record->uniform;
-                          $data->fiblength = $record->fiblength;
-                          $data->elongation = $record->elongation;
-                          $data->sfi = $record->sfi;
-                          $data->temperatur = $record->temperatur;
-                          $data->humidity = $record->humidity;
-                          $data->hvi_num = $record->hvi_num;
-                          $data->save();
-                    }
-                  }
-              }
-
-          }
         return redirect()->route('akt_laboratory.view',$id)->with('success','Role muvaffaqatli yaratildi.');
 
     }

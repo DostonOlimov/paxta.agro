@@ -26,9 +26,9 @@ class Dalolatnoma  extends Model
     {
         return $this->belongsTo(TestPrograms::class, 'test_program_id', 'id');
     }
-    public function gin_ball(): BelongsTo
+    public function gin_balles()
     {
-        return $this->belongsTo(GinBalles::class,'id','dalolatnoma_id');
+        return $this->hasMany(GinBalles::class);
     }
     public function akt_amount()
     {

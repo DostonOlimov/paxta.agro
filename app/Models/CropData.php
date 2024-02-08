@@ -71,7 +71,7 @@ class CropData extends Model
     }
     public function getAmountNameAttribute()
     {
-        if($this->amount){
+        if($this->amount and $this->amount){
             return$this->amount. ' ' .self::getMeasureType($this->measure_type);
         }
       return null;

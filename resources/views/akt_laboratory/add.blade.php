@@ -35,32 +35,36 @@
                             <div class="row">
                                 <input type="hidden" name="_token" value="{{csrf_token()}}">
                                 <input type="hidden" name="id" value="{{$test->id}}">
-                                <div class="col-md-4 form-group has-feedback">
-                                   <label class="form-label" >Boshlang'ich shtrix kod</label>
-                                    <div class="form-control">
-                                        <input name="text" type="text" readonly class="form-control" value="{{$test->gin_ball->from_number}}">
-                                    </div>
-                                </div>
-                                <div class="col-md-4 form-group has-feedback">
-                                    <label class="form-label" >Oxirgi shtrix kod</label>
-                                    <div class="form-control">
-                                        <input name="text" type="text" readonly class="form-control" value="{{$test->gin_ball->to_number}}">
-                                    </div>
-                                </div>
-                                <div class="col-md-4 form-group has-feedback">
+                                <div class="col-md-6 form-group has-feedback">
                                     <label class="form-label" for="file">Iclass.dbf faylini yuklang <label class="text-danger">*</label></label>
                                     <div class="form-control">
-                                        <input name="file" type="file" class="" >
+                                        <input name="file" type="file" class="form-control-file" required >
                                     </div>
                                 </div>
+                                <div class="form-group col-md-6 form-group has-feedback">
+                                    <label class="form-label" for="file">&nbsp;</label>
 
-                                <div class="form-group col-md-12 col-sm-12">
-                                    <div class="col-md-12 col-sm-12 text-center">
                                         <a class="btn btn-primary" href="{{ URL::previous() }}">{{ trans('app.Cancel')}}</a>
                                         <button type="submit" class="btn btn-success">{{ trans('app.Submit')}}</button>
-                                    </div>
+
                                 </div>
                             </div>
+                            <div class="row">
+                                <h2 class="form-control" style="text-align: center"><b>Shtrix kodlar</b></h2>
+                                @foreach($test->gin_balles as $ball)
+                                <div class="col-md-3 form-group has-feedback">
+                                    <div class="form-control">
+                                        <input name="text" type="text" readonly class="form-control" value="{{$ball->from_number}}">
+                                    </div>
+                                </div>
+                                <div class="col-md-3 form-group has-feedback">
+                                    <div class="form-control">
+                                        <input name="text" type="text" readonly class="form-control" value="{{$ball->to_number}}">
+                                    </div>
+                                </div>
+                                @endforeach
+                            </div>
+
                         </form>
                     </div>
                 </div>

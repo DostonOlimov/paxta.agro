@@ -78,7 +78,6 @@
                                                 <tr>
                                                     @foreach($data1 as $data)
                                                         <th class="border-bottom-0 border-top-0">#</th>
-                                                        <th>Shtrix kod</th>
                                                         <th>Og'irlik (kg)</th>
                                                     @endforeach
                                                 </tr>
@@ -91,11 +90,10 @@
                                                         <tr>
                                                             @foreach($data1 as $data)
                                                             <td>{{ 50 * ($loop->iteration-1) + $i +1 }}</td>
-                                                            <td>@if(isset($data[$i])) {{$data[$i]['shtrix_kod']}}  @endif</td>
                                                             <td>
                                                                 @if(isset($data[$i]))
                                                                     <div class="input-container">
-                                                                        <input type="number" step="0.1" class="form-control" name="amount" id="amount{{$data[$i]['id']}}"
+                                                                        <input type="text" step="0.1" class="form-control" name="amount" id="amount{{$data[$i]['id']}}"  oninput="formatNumber({{$data[$i]['id']}})"
                                                                                onchange="saveAnswer({{$data[$i]['id']}} , this)"  value="{{$data[$i]['amount']}}" @if($data[$i]['amount']) {{'disabled'}} @endif>
                                                                         @if($data[$i]['amount']) <i class="fa fa-pencil" onclick="changeDisplay(this,{{$data[$i]['id']}})"></i> @endif
                                                                     </div>
@@ -124,6 +122,31 @@
                 }
             </script>
             <script>
+                function formatNumber(number) {
+
+                    let numberInput = document.getElementById('amount'+number);
+                    let value = numberInput.value.replace(/\D/g, ''); // Remove non-numeric characters
+                    let formattedValue = '';
+
+                    if (value.length === 3) {
+                        formattedValue = value.substring(0, 2) + '.' + value.substring(2);
+                    } else if (value.length === 4) {
+                        formattedValue = value.substring(0, 3) + '.' + value.substring(3);
+                        // Find the next input element
+                        var nextId = number + 1;
+                        var nextInput = document.getElementById('amount' + nextId);
+
+                        // If the next input element exists, set focus on it
+                        if (nextInput) {
+                            nextInput.focus();
+                        }
+                    } else {
+                        formattedValue = value;
+                    }
+
+
+                    numberInput.value = formattedValue;
+                }
                 function saveAnswer(id,elm) {
                     if (elm.value > 0){
                         $.ajax({
@@ -140,14 +163,7 @@
                                 pencilIcon.classList.add('fa', 'fa-pencil');
                                 pencilIcon.setAttribute('onclick', 'changeDisplay(this,'+id+')');
                                 elm.parentNode.appendChild(pencilIcon);
-                                // Find the next input element
-                                var nextId = id + 1;
-                                var nextInput = document.getElementById('amount' + nextId);
 
-                                // If the next input element exists, set focus on it
-                                if (nextInput) {
-                                    nextInput.focus();
-                                }
                             }
                         });
                     }
