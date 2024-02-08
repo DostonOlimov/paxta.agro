@@ -47,59 +47,64 @@ class ProcessFile implements ShouldQueue
                     ->where('gin_bale', $i)
                     ->where('dalolatnoma_id',$this->id)
                     ->first();
+                $my_data = [];
                 if(!$data){
                     while ($record = $table->nextRecord()) {
                         if ($record->gin_id == $gin_id and $record->gin_bale == $i) {
                                 if (!$data) {
-                                    $data = new ClampData();
-                                    $data->dalolatnoma_id = $this->id;
-                                    $data->gin_id = $record->gin_id;
-                                    $data->gin_bale = $record->gin_bale;
-                                    $data->lot_number = $record->lot_num;
-                                    $data->weight = $record->weight;
-                                    $data->selection = $record->selection;
-                                    $data->date_recvd = $record->date_recvd;
-                                    $data->time_recvd = $record->time_recvd;
-                                    $data->date_hvid = $record->date_hvid;
-                                    $data->time_hvid = $record->time_hvid;
-                                    $data->date_class = $record->date_class;
-                                    $data->time_class = $record->time_class;
-                                    $data->classer_id = $record->classer_id;
-                                    $data->qual_ctrl = $record->qual_ctrl;
-                                    $data->cutout = $record->cutout;
-                                    $data->reclass = $record->reclass;
-                                    $data->times_hvid = $record->times_hvid;
-                                    $data->attempts = $record->attempts;
-                                    $data->status = $record->status;
-                                    $data->correction = $record->correction;
-                                    $data->croptype = $record->croptype;
-                                    $data->firstgrade = $record->firstgrade;
-                                    $data->grade = $record->grade;
-                                    $data->sort = $record->sort;
-                                    $data->class = $record->class;
-                                    $data->staple = $record->staple;
-                                    $data->mic = $record->mic;
-                                    $data->leaf = $record->leaf;
-                                    $data->ext_matter = $record->ext_matter;
-                                    $data->remarks = $record->remarks;
-                                    $data->strength = $record->strength;
-                                    $data->color_gr = $record->color_gr;
-                                    $data->color_rd = $record->color_rd;
-                                    $data->color_b = $record->color_b;
-                                    $data->trash = $record->trash;
-                                    $data->uniform = $record->uniform;
-                                    $data->fiblength = $record->fiblength;
-                                    $data->elongation = $record->elongation;
-                                    $data->sfi = $record->sfi;
-                                    $data->temperatur = $record->temperatur;
-                                    $data->humidity = $record->humidity;
-                                    $data->hvi_num = $record->hvi_num;
-                                    $data->save();
+                                    $my_data[] = [
+                                        'dalolatnoma_id' => $this->id,
+                                    'gin_id' => $record->gin_id,
+                                    'gin_bale' => $record->gin_bale,
+                                    'lot_number' => $record->lot_num,
+                                    'weight' => $record->weight,
+                                    'selection' => $record->selection,
+                                    'date_recvd' => $record->date_recvd,
+                                    'time_recvd' => $record->time_recvd,
+                                    'date_hvid' => $record->date_hvid,
+                                    'time_hvid' => $record->time_hvid,
+                                    'date_class' => $record->date_class,
+                                    'time_class' => $record->time_class,
+                                    'classer_id' => $record->classer_id,
+                                    'qual_ctrl' => $record->qual_ctrl,
+                                    'cutout' => $record->cutout,
+                                    'reclass' => $record->reclass,
+                                    'times_hvid' => $record->times_hvid,
+                                    'attempts' => $record->attempts,
+                                    'status' => $record->status,
+                                    'correction' => $record->correction,
+                                    'croptype' => $record->croptype,
+                                    'firstgrade' => $record->firstgrade,
+                                    'grade' => $record->grade,
+                                    'sort' => $record->sort,
+                                    'class' => $record->class,
+                                    'staple' => $record->staple,
+                                    'mic' => $record->mic,
+                                    'leaf' => $record->leaf,
+                                    'ext_matter' => $record->ext_matter,
+                                    'remarks' => $record->remarks,
+                                    'strength' => $record->strength,
+                                    'color_gr' => $record->color_gr,
+                                    'color_rd' => $record->color_rd,
+                                    'color_b' => $record->color_b,
+                                    'trash' => $record->trash,
+                                    'uniform' => $record->uniform,
+                                    'fiblength' => $record->fiblength,
+                                    'elongation' => $record->elongation,
+                                    'sfi' => $record->sfi,
+                                    'temperatur' => $record->temperatur,
+                                    'humidity' => $record->humidity,
+                                    'hvi_num' => $record->hvi_num,
+                                    ];
                                 }
                             }
                         }
                     }
                 }
+            // Bulk insert data
+            if (!empty($my_data)) {
+                ClampData::insert($my_data);
+            }
 
             }
         }
