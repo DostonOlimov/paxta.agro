@@ -243,7 +243,7 @@
         setTimeout(function() {
             button.disabled = false;
             button.innerText = 'Saqlash'; // Restore the button text
-        }, 1000);
+        }, 2000);
     }
 
 </script>

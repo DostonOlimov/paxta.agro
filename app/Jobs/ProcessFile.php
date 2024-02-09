@@ -34,24 +34,27 @@ class ProcessFile implements ShouldQueue
      */
     public function handle()
     {
+
         $file = storage_path('app/' . $this->file);
         $dalolatnoma = Dalolatnoma::find($this->id);
         $gin_id = 0;
         if($dalolatnoma){
             $gin_id = 1000 * $dalolatnoma->test_program->application->prepared->region->clamp_id + $dalolatnoma->test_program->application->prepared->kod;
             $gin_balles = GinBalles::where('dalolatnoma_id',$this->id)->get();
-        $table = new TableReader($file);
+
         foreach ($gin_balles as $balles){
+            $my_data = [];
             for($i=$balles->from_number;$i<=$balles->to_number;$i++){
                 $data = ClampData::where('gin_id', $gin_id)
                     ->where('gin_bale', $i)
                     ->where('dalolatnoma_id',$this->id)
                     ->first();
-                $my_data = [];
+
                 if(!$data){
+                    $table = new TableReader($file);
                     while ($record = $table->nextRecord()) {
                         if ($record->gin_id == $gin_id and $record->gin_bale == $i) {
-                                if (!$data) {
+
                                     $my_data[] = [
                                         'dalolatnoma_id' => $this->id,
                                     'gin_id' => $record->gin_id,
@@ -96,15 +99,12 @@ class ProcessFile implements ShouldQueue
                                     'humidity' => $record->humidity,
                                     'hvi_num' => $record->hvi_num,
                                     ];
-                                }
                             }
                         }
                     }
                 }
             // Bulk insert data
-            if (!empty($my_data)) {
                 ClampData::insert($my_data);
-            }
 
             }
         }

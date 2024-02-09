@@ -45,7 +45,7 @@
                                     <label class="form-label" for="file">&nbsp;</label>
 
                                         <a class="btn btn-primary" href="{{ URL::previous() }}">{{ trans('app.Cancel')}}</a>
-                                        <button type="submit" class="btn btn-success">{{ trans('app.Submit')}}</button>
+                                        <button type="submit" onclick="disableButton()"  class="btn btn-success" id="submitter">{{ trans('app.Submit')}}</button>
 
                                 </div>
                             </div>
@@ -84,7 +84,7 @@
             setTimeout(function() {
                 button.disabled = false;
                 button.innerText = 'Saqlash'; // Restore the button text
-            }, 3000);
+            }, 10000);
         }
     </script>
 

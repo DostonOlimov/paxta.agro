@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AktAmount;
 use App\Models\ClampData;
 use App\Models\Dalolatnoma;
+use App\Models\GinBalles;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use XBase\TableReader;
@@ -99,13 +100,79 @@ class AktLaboratoryController extends Controller
         if ($request->hasFile('file')) {
             $file = $request->file('file');
             $filePath = $file->storeAs('uploads/'.$user->state_id, $file->getClientOriginalName());
-            $fileData = [
-                'path' => $filePath,
-                'id'=>$id,
-            ];
 
-            // Dispatch the job
-            ProcessFile::dispatch($fileData);
+            $dalolatnoma = Dalolatnoma::find($id);
+            $gin_id = 0;
+            if($dalolatnoma){
+                $gin_id = 1000 * $dalolatnoma->test_program->application->prepared->region->clamp_id + $dalolatnoma->test_program->application->prepared->kod;
+                $gin_balles = GinBalles::where('dalolatnoma_id',$id)->get();
+
+                foreach ($gin_balles as $balles){
+                    $my_data = [];
+                    for($i=$balles->from_number;$i<=$balles->to_number;$i++){
+                        $data = ClampData::where('gin_id', $gin_id)
+                            ->where('gin_bale', $i)
+                            ->where('dalolatnoma_id',$id)
+                            ->first();
+                        if(!$data){
+                            $table = new TableReader($file);
+                            while ($record = $table->nextRecord()) {
+                                if ($record->gin_id == $gin_id and $record->gin_bale == $i) {
+
+                                    $my_data[] = [
+                                        'dalolatnoma_id' => $id,
+                                        'gin_id' => $record->gin_id,
+                                        'gin_bale' => $record->gin_bale,
+                                        'lot_number' => $record->lot_num,
+                                        'weight' => $record->weight,
+                                        'selection' => $record->selection,
+                                        'date_recvd' => $record->date_recvd,
+                                        'time_recvd' => $record->time_recvd,
+                                        'date_hvid' => $record->date_hvid,
+                                        'time_hvid' => $record->time_hvid,
+                                        'date_class' => $record->date_class,
+                                        'time_class' => $record->time_class,
+                                        'classer_id' => $record->classer_id,
+                                        'qual_ctrl' => $record->qual_ctrl,
+                                        'cutout' => $record->cutout,
+                                        'reclass' => $record->reclass,
+                                        'times_hvid' => $record->times_hvid,
+                                        'attempts' => $record->attempts,
+                                        'status' => $record->status,
+                                        'correction' => $record->correction,
+                                        'croptype' => $record->croptype,
+                                        'firstgrade' => $record->firstgrade,
+                                        'grade' => $record->grade,
+                                        'sort' => $record->sort,
+                                        'class' => $record->class,
+                                        'staple' => $record->staple,
+                                        'mic' => $record->mic,
+                                        'leaf' => $record->leaf,
+                                        'ext_matter' => $record->ext_matter,
+                                        'remarks' => $record->remarks,
+                                        'strength' => $record->strength,
+                                        'color_gr' => $record->color_gr,
+                                        'color_rd' => $record->color_rd,
+                                        'color_b' => $record->color_b,
+                                        'trash' => $record->trash,
+                                        'uniform' => $record->uniform,
+                                        'fiblength' => $record->fiblength,
+                                        'elongation' => $record->elongation,
+                                        'sfi' => $record->sfi,
+                                        'temperatur' => $record->temperatur,
+                                        'humidity' => $record->humidity,
+                                        'hvi_num' => $record->hvi_num,
+                                    ];
+                                }
+                            }
+                        }
+                    }
+
+                    // Bulk insert data
+                    ClampData::insert($my_data);
+
+                }
+            }
 
         }
 
