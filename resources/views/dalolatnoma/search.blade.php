@@ -43,9 +43,8 @@
                                         <th class="border-bottom-0 border-top-0">To'da (partya) raqami</th>
                                         <th>{{trans('app.Sinov dasturi raqami')}}</th>
                                         <th>{{trans('app.Sinov bayonnomasi sanasi')}}</th>
-                                        <th>{{trans('app.Buyurtmachi korxona yoki tashkilot nomi')}}</th>
+                                        <th>{{trans('app.Buyurtmachi tashkilot nomi')}}</th>
                                         <th>{{trans('app.Sertifikatlanuvchi mahsulot')}}</th>
-                                        <th>{{trans('app.Hosil yili')}}</th>
                                         <th>{{trans('app.Action')}}</th>
                                     </tr>
 
@@ -62,7 +61,6 @@
                                             <td><a href="{!! url('/tests/view/'.$test->id) !!}">{{ optional(optional($test->application)->decision)->date }}</td>
                                             <td><a href="{!! url('/organization/view/'.$test->application->organization_id) !!}">{{ $test->application->organization->name }}</a></td>
                                             <td>{{ $test->application->crops->name->name }}</td>
-                                            <td>{{ optional($test->application)->crops->year }}</td>
                                             <td>
                                             <?php $testid=Auth::User()->id; ?>
                                                 @if($result = $test->dalolatnoma)

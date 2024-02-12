@@ -42,7 +42,6 @@
                                         <th class="border-bottom-0 border-top-0">#</th>
                                         <th>Dalolatnoma raqami</th>
                                         <th class="border-bottom-0 border-top-0">To'da (partya) raqami</th>
-                                        <th>Dalolatnoma sanasi</th>
                                         <th>{{trans('app.Buyurtmachi korxona yoki tashkilot nomi')}}</th>
                                         <th>{{trans('app.Sertifikatlanuvchi mahsulot')}}</th>
                                         <th>{{trans('app.amount')}}</th>
@@ -59,7 +58,6 @@
                                             <td>{{$offset + $loop->iteration}}</td>
                                             <td>{{ $test->number }}</td>
                                             <td> {{ optional($test->test_program->application->crops)->party_number }}</td>
-                                            <td>{{ $test->date }}</td>
                                             <td><a href="{!! url('/organization/view/'.$test->test_program->application->organization_id) !!}">{{ $test->test_program->application->organization->name }}</a></td>
                                             <td>{{ $test->test_program->application->crops->name->name }}</td>
                                             <td>{{ optional($test->test_program->application)->crops->amount_name }}</td>
