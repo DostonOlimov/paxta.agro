@@ -83,7 +83,7 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <form method="post" enctype="multipart/form-data"
+                                                <form id="myForm" method="get" enctype="multipart/form-data"
                                                       data-parsley-validate class="form-horizontal form-label-left">
                                                     @csrf
                                                     @for($i = 0; $i < 50; $i++)
@@ -107,7 +107,6 @@
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <a  class="p-2" href="{!! url('/akt_amount/view/'.$id) !!}"><button type="button" class="btn btn-round btn-success">&nbsp;&nbsp;{{ trans('app.Submit')}}&nbsp;&nbsp;</button></a>
                                     </div>
                                 </div>
                             </div>
@@ -169,6 +168,20 @@
                         });
                     }
                 }
+            </script>
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    document.getElementById("myForm").addEventListener("submit", function(event) {
+                        event.preventDefault(); // Prevent default form submission
+                    });
 
+                    // Prevent form submission when Enter key is pressed
+                    document.getElementById("myForm").addEventListener("keydown", function(event) {
+                        if (event.key === "Enter") {
+                            event.preventDefault();
+                            return false;
+                        }
+                    });
+                });
             </script>
 @endsection
