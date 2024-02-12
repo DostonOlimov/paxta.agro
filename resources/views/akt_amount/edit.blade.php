@@ -128,9 +128,7 @@
                     let value = numberInput.value.replace(/\D/g, ''); // Remove non-numeric characters
                     let formattedValue = '';
 
-                    if (value.length === 3) {
-                        formattedValue = value.substring(0, 2) + '.' + value.substring(2);
-                    } else if (value.length === 4) {
+                   if (value.length === 4) {
                         formattedValue = value.substring(0, 3) + '.' + value.substring(3);
                         // Find the next input element
                         var nextId = number + 1;
@@ -138,6 +136,9 @@
 
                         // If the next input element exists, set focus on it
                         if (nextInput) {
+                            numberInput.value = numberInput.value / 10;
+                            nextInput.removeAttribute('disabled');
+                            nextInput.value = null;
                             nextInput.focus();
                         }
                     } else {

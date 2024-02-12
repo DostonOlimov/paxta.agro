@@ -133,12 +133,17 @@ class AktAmountController extends Controller
     {
 
         $id = $request->input('id');
-        $amount = $request->input('amount');
+        $amount = (double)$request->input('amount');
+
         $result = AktAmount::find($id);
+
         if($amount > 0 and $amount < 1000){
+
             $result->amount = $amount;
+            $result->save();
+
         }
-        $result->save();
+
 
 
         return response()->json(['message' => 'Answer saved successfully']);

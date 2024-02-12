@@ -87,6 +87,7 @@
 								@endforeach
 								</tbody>
 							</table>
+                                {{$companies->links()}}
 						</div>
 					</div>
 				</div>
@@ -103,6 +104,7 @@
 	</div>
 
 @endcan
+
 <script src="{{ URL::asset('vendors/jquery/dist/jquery.min.js') }}"></script>
 <!-- delete vehicalbrand -->
 <script>

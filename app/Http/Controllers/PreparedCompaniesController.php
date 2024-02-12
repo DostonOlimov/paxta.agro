@@ -40,7 +40,7 @@ class PreparedCompaniesController extends Controller
                 $query->where('state_id', '=', $user_city);
             });
         }
-        $companies = $companies->orderBy('id','desc')->get();
+        $companies = $companies->orderBy('id','desc')->paginate(50);
         return view('prepared.list', compact('companies','title'));
     }
 
