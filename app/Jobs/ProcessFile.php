@@ -38,25 +38,28 @@ class ProcessFile implements ShouldQueue
         $file = storage_path('app/' . $this->file);
         $dalolatnoma = Dalolatnoma::find($this->id);
         $gin_id = 0;
+
         if($dalolatnoma){
             $gin_id = 1000 * $dalolatnoma->test_program->application->prepared->region->clamp_id + $dalolatnoma->test_program->application->prepared->kod;
             $gin_balles = GinBalles::where('dalolatnoma_id',$this->id)->get();
 
-        foreach ($gin_balles as $balles){
-            $my_data = [];
-            for($i=$balles->from_number;$i<=$balles->to_number;$i++){
-                $data = ClampData::where('gin_id', $gin_id)
-                    ->where('gin_bale', $i)
-                    ->where('dalolatnoma_id',$this->id)
-                    ->first();
+            foreach ($gin_balles as $balles){
+                $my_data = [];
+                $clampedData = ClampData::where('gin_id', $gin_id)
+                    ->whereIn('gin_bale', range($balles->from_number, $balles->to_number))
+                    ->where('dalolatnoma_id', $this->id)
+                    ->get();
+                $clampedDataMap = $clampedData->keyBy('gin_bale');
 
-                if(!$data){
-                    $table = new TableReader($file);
-                    while ($record = $table->nextRecord()) {
-                        if ($record->gin_id == $gin_id and $record->gin_bale == $i) {
+                for($i=$balles->from_number;$i<=$balles->to_number;$i++){
 
-                                    $my_data[] = [
-                                        'dalolatnoma_id' => $this->id,
+                    if (!$clampedDataMap->has($i)) {
+                        $table = new TableReader($file);
+                        while ($record = $table->nextRecord()) {
+                            if ($record->gin_id == $gin_id and $record->gin_bale == $i) {
+
+                                $my_data[] = [
+                                    'dalolatnoma_id' => $this->id,
                                     'gin_id' => $record->gin_id,
                                     'gin_bale' => $record->gin_bale,
                                     'lot_number' => $record->lot_num,
@@ -98,13 +101,15 @@ class ProcessFile implements ShouldQueue
                                     'temperatur' => $record->temperatur,
                                     'humidity' => $record->humidity,
                                     'hvi_num' => $record->hvi_num,
-                                    ];
+                                ];
                             }
                         }
                     }
                 }
-            // Bulk insert data
-                ClampData::insert($my_data);
+                if(!empty($my_data)){
+                    ClampData::insert($my_data);
+                }
+
 
             }
         }
