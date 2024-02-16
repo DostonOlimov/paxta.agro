@@ -110,7 +110,7 @@ class AktLaboratoryController extends Controller
                         'path' => $filePath,
                         'id' => $id,
                         'i' => $i,
-                    ])->onQueue('your_queue_name');
+                    ]);
                 }
 
 
