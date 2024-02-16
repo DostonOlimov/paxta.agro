@@ -37,8 +37,8 @@ class Region extends Model
         return $this->hasMany(ListRegion::class, 'list_id');
     }
 
-//    public function vehicles(): HasManyThrough
-//    {
-//        return $this->hasManyThrough(Vehicle::class, Area::class, 'state_id');
-//    }
+    public function hvi_file()
+    {
+        return $this->belongsTo(HviFiles::class, 'id','state_id');
+    }
 }

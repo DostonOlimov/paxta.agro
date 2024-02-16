@@ -9,13 +9,8 @@ use XBase\TableReader;
 
 class MyTableReader extends TableReader
 {
- public function getNumber(){
+ public function getTotalCount(){
 
-     for($i=0;$i<$this->getHeader()->recordCount;$i++){
-         $record = RecordFactory::create($this->table, $this->encoder, $i, $this->getStream()
-             ->read($this->getHeader()->recordByteLength));
-     }
-
-     return $record;
+     return $this->getHeader()->recordCount;
  }
 }

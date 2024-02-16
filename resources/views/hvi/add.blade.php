@@ -6,7 +6,7 @@
         <div class="page-header">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <i class="bi bi-people-fill mr-1"></i>&nbsp Laboratoriya xulosasini yuklash
+                    <i class="bi bi-people-fill mr-1"></i>&nbsp HVI ma'lumotlarini yuklash
                 </li>
             </ol>
         </div>
@@ -18,7 +18,7 @@
                             <div class="tab_wrapper page-tab">
                                 <ul class="tab_list">
                                     <li>
-                                        <a href="{!! url('/akt_laboratory/search')!!}">
+                                        <a href="{!! url('/hvi/list')!!}">
                                             <span class="visible-xs"></span>
                                             <i class="fa fa-list">&nbsp;</i> {{ trans('app.Ro\'yxat')}}
                                         </a>
@@ -31,14 +31,14 @@
                                 </ul>
                             </div>
                         </div>
-                        <form method="post" action="{!! url('akt_laboratory/store') !!}" enctype="multipart/form-data"  class="form-horizontal upperform">
+                        <form method="post" action="{!! url('hvi/store') !!}" enctype="multipart/form-data"  class="form-horizontal upperform">
                             <div class="row">
                                 <input type="hidden" name="_token" value="{{csrf_token()}}">
-                                <input type="hidden" name="id" value="{{$test->id}}">
+                                <input type="hidden" name="id" value="{{$id}}">
                                 <div class="col-md-6 form-group has-feedback">
                                     <label class="form-label" for="file">Iclass.dbf faylini yuklang <label class="text-danger">*</label></label>
                                     <div class="form-control">
-                                        <input name="file" type="file" class="form-control-file" required >
+                                        <input name="file" type="file" class="form-control-file file_group" required="required" >
                                     </div>
                                 </div>
                                 <div class="form-group col-md-6 form-group has-feedback">
@@ -49,22 +49,6 @@
 
                                 </div>
                             </div>
-                            <div class="row">
-                                <h2 class="form-control" style="text-align: center"><b>Shtrix kodlar</b></h2>
-                                @foreach($test->gin_balles as $ball)
-                                <div class="col-md-3 form-group has-feedback">
-                                    <div class="form-control">
-                                        <input name="text" type="text" readonly class="form-control" value="{{$ball->from_number}}">
-                                    </div>
-                                </div>
-                                <div class="col-md-3 form-group has-feedback">
-                                    <div class="form-control">
-                                        <input name="text" type="text" readonly class="form-control" value="{{$ball->to_number}}">
-                                    </div>
-                                </div>
-                                @endforeach
-                            </div>
-
                         </form>
                     </div>
                 </div>

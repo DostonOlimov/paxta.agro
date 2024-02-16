@@ -30,6 +30,10 @@ class Dalolatnoma  extends Model
     {
         return $this->hasMany(GinBalles::class);
     }
+    public function clamp_data()
+    {
+        return $this->hasMany(ClampData::class);
+    }
     public function akt_amount()
     {
         return $this->hasMany(AktAmount::class,'id','dalolatnoma_id');

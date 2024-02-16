@@ -4,7 +4,6 @@ namespace App\Jobs;
 
 use App\Models\ClampData;
 use App\Models\Dalolatnoma;
-use App\Models\DefaultModels\MyTableReader;
 use App\Models\GinBalles;
 use App\Models\Region;
 use Illuminate\Bus\Queueable;
@@ -13,29 +12,25 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Storage;
 use XBase\TableReader;
 
-class ProcessFile implements ShouldQueue
+class InsideQueueJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $path;
-    protected $balles;
-    protected $state_id;
-    protected $index;
-    protected $count;
-    protected $gin_id;
-
+    protected $id;
+    protected $i;
+    /**
+     * Create a new job instance.
+     *
+     * @return void
+     */
     public function __construct($array)
     {
-
         $this->path = $array['path'];
-        $this->balles = $array['balles'];
-        $this->state_id = $array['state_id'];
-        $this->index = $array['index'];
-        $this->count = $array['count'];
-        $this->gin_id = $array['gin_id'];
+        $this->id = $array['id'];
+        $this->i = $array['i'];
     }
 
     /**
@@ -45,29 +40,34 @@ class ProcessFile implements ShouldQueue
      */
     public function handle()
     {
-
         $file = storage_path('app/' . $this->path);
+        $dalolatnoma = Dalolatnoma::with('test_program.application.prepared.region')->find($this->id);
+        $gin_balles = GinBalles::where('dalolatnoma_id',$this->id)->get();
+        $gin_id = 0;
+        $gin_id = 1000 * $dalolatnoma->test_program->application->prepared->region->clamp_id + $dalolatnoma->test_program->application->prepared->kod;
 
-        $clampedData = ClampData::whereIn('gin_bale', range($this->balles->from_number, $this->balles->to_number))
-            ->where('gin_id', $this->gin_id)
-            ->where('dalolatnoma_id', $this->balles->dalolatnoma_id)
-            ->get();
+        foreach ($gin_balles as $balles){
 
-        $clampedDataMap = $clampedData->keyBy('gin_bale');
+            $clampedData = ClampData::whereIn('gin_bale', range($balles->from_number, $balles->to_number))
+                ->where('gin_id', $gin_id)
+                ->where('dalolatnoma_id', $this->id)
+                ->get();
 
-        for ($k = 1000 * ($this->index - 1); $k <= 1000 * $this->index; $k++) {
+            $clampedDataMap = $clampedData->keyBy('gin_bale');
 
-            if($k < $this->count) {
+            for ($k = 500 * ($this->i - 1); $k <= 500 * $this->i; $k++) {
+
                 $table = new TableReader($file);
                 $record = $table->pickRecord($k);
 
-                for ($i = $this->balles->from_number; $i <= $this->balles->to_number; $i++) {
+                for ($i = $balles->from_number; $i <= $balles->to_number; $i++) {
                     $my_data = [];
 
-                    if ($record->gin_id == $this->gin_id and $record->gin_bale == $i) {
+                    if ($record->gin_id == $gin_id and $record->gin_bale == $i) {
+
                         if (!$clampedDataMap->has($i)) {
                             $my_data[] = [
-                                'dalolatnoma_id' => $this->balles->dalolatnoma_id,
+                                'dalolatnoma_id' => $this->id,
                                 'gin_id' => $record->gin_id,
                                 'gin_bale' => $record->gin_bale,
                                 'lot_number' => $record->lot_num,

@@ -21,4 +21,8 @@ class GinBalles  extends Model
         'to_toy'
     ];
 
+    public function dalolatnoma()
+    {
+        return $this->belongsTo(Dalolatnoma::class);
+    }
 }
