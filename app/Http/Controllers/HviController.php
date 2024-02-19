@@ -88,17 +88,12 @@ class HviController extends Controller
                     $gin_id = 0;
                     $gin_id = 1000 * $state->clamp_id + $balles->dalolatnoma->test_program->application->prepared->kod;
 
-                    for ($i = 1; ($i - 1) * 200 < $count; $i++) {
-
-                        ProcessFile::dispatch([
-                            'path' => $filePath,
-                            'balles' => $balles,
-                            'state_id' => $state_id,
-                            'index' => $i,
-                            'count' => $count,
-                            'gin_id'=>$gin_id,
-                        ]);
-                    }
+                    ProcessFile::dispatch([
+                        'path' => $filePath,
+                        'balles' => $balles,
+                        'count' => $count,
+                        'gin_id'=>$gin_id,
+                    ]);
                 }
             }else{
                 if(!$hvi->count != $count){
@@ -116,17 +111,12 @@ class HviController extends Controller
                         $gin_id = 0;
                         $gin_id = 1000 * $state->clamp_id + $balles->dalolatnoma->test_program->application->prepared->kod;
 
-                        for ($i = 1; 1000 * ($i - 1)< $count; $i++) {
-
-                            ProcessFile::dispatch([
-                                'path' => $filePath,
-                                'balles' => $balles,
-                                'state_id' => $state_id,
-                                'index' => $i,
-                                'count' => $count,
-                                'gin_id'=>$gin_id,
-                            ]);
-                        }
+                        ProcessFile::dispatch([
+                            'path' => $filePath,
+                            'balles' => $balles,
+                            'count' => $count,
+                            'gin_id'=>$gin_id,
+                        ]);
                     }
                 }else{
                     $hvi->user_id = Auth::user()->id;

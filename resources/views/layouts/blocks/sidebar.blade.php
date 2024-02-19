@@ -30,11 +30,10 @@
         <li class="nav-item"><a class="nav-link" href="{!! url('/akt_amount/search') !!}"> <svg class="nav-icon">
                     <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-balance-scale"></use>
                 </svg>{{trans('message.Og\'irlik bo\'yicha dalolatnomalar')}}</a></li>
-        @if(auth()->user()->role == 'admin')
+
         <li class="nav-item"><a class="nav-link" href="{!! url('/hvi/list') !!}"> <svg class="nav-icon">
                     <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-devices"></use>
                 </svg>{{trans('message.HVI ma\'lumotlari')}}</a></li>
-        @endif
         <li class="nav-item"><a class="nav-link" href="{!! url('/akt_laboratory/search') !!}"> <svg class="nav-icon">
                     <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-search"></use>
                 </svg>{{trans('message.Laboratoriya ma\'lumotlari')}}</a></li>

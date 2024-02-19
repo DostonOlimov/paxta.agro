@@ -89,6 +89,9 @@ return[
     'Zavod nomi'=>'Zavod nomi',
     'Zavod kodi'=>'Zavod kodi',
     'Zavod nomini qo\'shish'=>'Zavod nomini qo\'shish',
+    'Yangilash'=>'Yangilash',
+    'Yakuniy natijalar'=>'Yakuniy natijalar',
+    'Barcha ma\'lumotlar'=>'Barcha ma\'lumotlar',
 
 
 
@@ -110,11 +113,6 @@ return[
     'Supplier'=>'Yetkazib beruvchi',
     "Supplier List"=>"Yetkazib beruvchilar ro'yxati",
     "Add Supplier"=>"Yetkazib beruvchi qo'shish",
-    'Image'=>'Image',
-    'First Name'=>'Ismi',
-    'Last Name'=>'Familiya',
-    'Email'=>'Email',
-    'Action'=>'Harakat',
     'View'=>"Ko'rish",
     'Edit'=>"O'zgartirish",
     'Delete'=>"O'chirish",

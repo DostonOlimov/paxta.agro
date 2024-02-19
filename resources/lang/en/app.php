@@ -86,6 +86,9 @@ return[
     'Zavod nomi'=>'Factory name',
     'Zavod kodi'=>'Factory code',
     'Zavod nomini qo\'shish'=>'Add factory name',
+    'Yangilash'=>'Refresh',
+    'Yakuniy natijalar'=>'Final Results',
+    'Barcha ma\'lumotlar'=>'All Data',
 
     //General Settings
     'Day'=>'Day',

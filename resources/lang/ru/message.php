@@ -17,6 +17,7 @@ return[
     'Qaror va Sinov dasturlari'=>'Программы принятия решений и испытаний',
     'Na\'muna olish dalolatnomalari'=>'Выборочные записи',
     'Og\'irlik bo\'yicha dalolatnomalar'=>'Рекорды веса',
+    'HVI ma\'lumotlari' => 'Данные HVI',
     'Laboratoriya ma\'lumotlari'=>'Лабораторные данные',
     'Yakuniy natijalar'=>'Окончательные результаты',
     'Tizim sozlamalari'=>'Настройки системы',

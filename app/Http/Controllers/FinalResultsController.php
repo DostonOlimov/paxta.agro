@@ -153,6 +153,56 @@ class FinalResultsController extends Controller
         ]);
     }
 
+    //index
+    public function add_view($id)
+    {
+        $dalolatnoma = Dalolatnoma::find($id);
+        $tests = ClampData::where('dalolatnoma_id',$id)->count();
+        $data_count = FinalResult::where('dalolatnoma_id',$id)->count();
+
+        if($data_count == 0){
+            $counts = ClampData::select('sort', 'class',
+                \DB::raw('count(*) as count'),
+                DB::raw('SUM(akt_amount.amount) as total_amount'),
+                DB::raw('AVG(clamp_data.mic) as mic'),
+                DB::raw('AVG(clamp_data.staple) as staple'),
+                DB::raw('AVG(clamp_data.strength) as strength'),
+                DB::raw('AVG(clamp_data.uniform) as uniform'),
+                DB::raw('AVG(clamp_data.humidity) as humidity')
+            )
+                ->join('akt_amount', function($join) {
+                    $join->on('akt_amount.shtrix_kod', '=', 'clamp_data.gin_bale')
+                        ->on('akt_amount.dalolatnoma_id', '=', 'clamp_data.dalolatnoma_id');
+                })
+                ->where('clamp_data.dalolatnoma_id',$id)
+                ->where('akt_amount.dalolatnoma_id', $id)
+                ->groupBy('sort', 'class')
+                ->get();
+            foreach($counts as $count){
+                $result = new FinalResult();
+                $result->dalolatnoma_id = $id;
+                $result->test_program_id = $id;
+                $result->sort = $count->sort;
+                $result->class = $count->class;
+                $result->count = $count->count;
+                $result->amount = $count->total_amount;
+                $result->mic = $count->mic;
+                $result->staple = $count->staple;
+                $result->strength = $count->strength;
+                $result->uniform = $count->uniform;
+                $result->humidity = $count->humidity;
+                $result->save();
+            }
+        }
+
+
+        return view('final_results.add_view', [
+            'results' => $tests,
+            'counts' => FinalResult::where('dalolatnoma_id',$id)->get(),
+            'dalolatnoma'=>$dalolatnoma,
+        ]);
+    }
+
     public function add2($id)
     {
 

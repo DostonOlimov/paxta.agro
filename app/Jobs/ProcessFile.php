@@ -22,8 +22,6 @@ class ProcessFile implements ShouldQueue
 
     protected $path;
     protected $balles;
-    protected $state_id;
-    protected $index;
     protected $count;
     protected $gin_id;
 
@@ -32,8 +30,6 @@ class ProcessFile implements ShouldQueue
 
         $this->path = $array['path'];
         $this->balles = $array['balles'];
-        $this->state_id = $array['state_id'];
-        $this->index = $array['index'];
         $this->count = $array['count'];
         $this->gin_id = $array['gin_id'];
     }
@@ -54,18 +50,14 @@ class ProcessFile implements ShouldQueue
             ->get();
 
         $clampedDataMap = $clampedData->keyBy('gin_bale');
+        $table = new TableReader($file);
+        $my_data = [];
 
-        for ($k = 1000 * ($this->index - 1); $k <= 1000 * $this->index; $k++) {
+        while($record = $table->nextRecord()){
 
-            if($k < $this->count) {
-                $table = new TableReader($file);
-                $record = $table->pickRecord($k);
+            if ($record->gin_id == $this->gin_id and $record->gin_bale >= $this->balles->from_number and $record->gin_bale <= $this->balles->to_number) {
 
-                for ($i = $this->balles->from_number; $i <= $this->balles->to_number; $i++) {
-                    $my_data = [];
-
-                    if ($record->gin_id == $this->gin_id and $record->gin_bale == $i) {
-                        if (!$clampedDataMap->has($i)) {
+                if (!$clampedDataMap->has($record->gin_bale)) {
                             $my_data[] = [
                                 'dalolatnoma_id' => $this->balles->dalolatnoma_id,
                                 'gin_id' => $record->gin_id,
@@ -112,11 +104,9 @@ class ProcessFile implements ShouldQueue
                             ];
                         }
                     }
-                    if (!empty($my_data)) {
-                        ClampData::insert($my_data);
-                    }
                 }
-            }
+        if (!empty($my_data)) {
+            ClampData::insert($my_data);
         }
     }
 }

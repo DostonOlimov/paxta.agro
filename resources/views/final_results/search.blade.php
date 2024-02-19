@@ -62,8 +62,8 @@
                                             <td>{{ $test->test_program->application->crops->name->name }}</td>
                                             <td>{{ optional($test->test_program->application)->crops->amount_name }}</td>
                                             <td>
-                                                <a href="{!! url('/final_results/view/'.$test->id) !!}"><button type="button" class="btn btn-round btn-info">{{ trans('app.View')}}</button></a>
                                                 <a href="{!! url('/final_results/add/'.$test->id) !!}"><button type="button" class="btn btn-round btn-success">{{ trans('app.Qo\'shish')}}</button></a>
+                                                <a href="{!! url('/final_results/add/view/'.$test->id) !!}"><button type="button" class="btn btn-round btn-info">{{ trans('app.View')}}</button></a>
                                             </td>
                                         </tr>
                                     @endforeach

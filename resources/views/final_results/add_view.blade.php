@@ -59,6 +59,9 @@
                                 </ul>
                             </div>
                         </div>
+                        <h4>Laboratoriya : {{optional($dalolatnoma->decision->laboratory)->name}}</h4>
+                        <h4>Buyurtmachi : {{optional($dalolatnoma->test_program->application)->prepared->name}}</h4>
+                        <h4>Sertifikatlanuvchi mahsulot : {{optional($dalolatnoma->test_program->application)->crops->name->name}}</h4>
                         @if($results != 0)
                             <div class="row">
                                 <div class="col-md-12">
@@ -68,49 +71,50 @@
                                                 <table id="examples1" class="table table-striped table-bordered nowrap" style="margin-top:20px;" >
                                                     <thead>
                                                     <tr>
-                                                        <th>Yakuniy natija fayli</th>
-                                                        <th>To'dadagi toylar soni (dona)</th>
-                                                        <th>Og'irligi(kg)</th>
+                                                        <th rowspan="2">Zavod raqami</th>
+                                                        <th rowspan="2">Partiya raqami</th>
+                                                        <th rowspan="2">To'dadagi toylar soni (dona)</th>
+                                                        <th rowspan="2">Jami og'irlik(kg)</th>
+                                                        <th rowspan="2">Sof Og'irlik(kg)</th>
+                                                        <th colspan="8>" style="text-align: center">Sifat nazorati natijalari</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Tip</th>
                                                         <th>Sort</th>
                                                         <th>Sinf</th>
-                                                        <th>Harakat</th>
-
+                                                        <th>Shtaple uzunligi</th>
+                                                        <th>Mikroneyr</th>
+                                                        <th>Solishtirma uzunlik kuchi</th>
+                                                        <th>Uzunligi bo'yicha bir xillik ko'rsatkichi,%</th>
+                                                        <th>Namlik ko'rsatkichi,%</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
-                                                  @php $amount = 0; @endphp
-                                                        @foreach ($counts as $count)
-                                                            <tr>
-                                                                <td>
-                                                                    @if(!$count->certificate)
-                                                                    <a href="{!! url('/final_results/add2/'.$count->id) !!}"><button type="button" class="btn btn-round btn-success">{{ trans('app.Qo\'shish')}}</button></a>
-                                                                    @else
-                                                                        <span class="txt_color">
-                                                                            @if(\App\Models\Sertificate::find($count->certificate->id)->attachment)
-                                                                                <a href="{{route('attachment.download', ['id' => $count->certificate->attachment->id])}}" class="text-azure">
-                                                                                <i class="fa fa-download"></i> Asos fayli
-                                                                                    </a>
-                                                                            @endif
-                                                                        </span>
-                                                                    @endif
-                                                                </td>
-                                                                <td> {{ $count->count}}</td>
-                                                                <td> {{ $count->amount}}</td>
-                                                                <td> {{ $count->sort}}</td>
-                                                                <td> {{ optional(\App\Models\CropsGeneration::where('kod','=',$count->class)->first())->name}}</td>
-
-                                                                <td>
-                                                                    <a href="{!! url('/final_results/update/'.$count->id) !!}"><button type="button" class="btn btn-round btn-success">Yangilash</button></a>
-                                                                </td>
-                                                            </tr>
-                                                            @php $amount +=  $count->amount @endphp
-                                                        @endforeach
+                                                    @php $amount = 0; @endphp
+                                                    @foreach ($counts as $count)
                                                         <tr>
-                                                            <td >Jami:</td>
-                                                            <td>{{$dalolatnoma->toy_count}}</td>
-                                                            <td>{{$amount}}</td>
-                                                            <td colspan="7"></td>
+                                                            <td>{{optional(optional($dalolatnoma->test_program->application)->prepared)->kod}}</td>
+                                                            <td>{{optional(optional($dalolatnoma->test_program->application)->crops)->party_number}}</td>
+                                                            <td> {{ $count->count}}</td>
+                                                            <td> {{ $count->amount}}</td>
+                                                            <td> {{ $count->amount - $count->count * optional(optional($dalolatnoma->test_program->application)->prepared)->tara}}</td>
+                                                            <td> 4</td>
+                                                            <td> {{ $count->sort}}</td>
+                                                            <td> {{ optional(\App\Models\CropsGeneration::where('kod','=',$count->class)->first())->name}}</td>
+                                                            <td> {{ round($count->staple)}}</td>
+                                                            <td> {{ round($count->mic,1)}}</td>
+                                                            <td> {{ round($count->strength,1)}}</td>
+                                                            <td> {{ round($count->uniform,1)}}</td>
+                                                            <td> {{ round(($count->humidity/10),1)}}</td>
                                                         </tr>
+                                                        @php $amount +=  $count->amount @endphp
+                                                    @endforeach
+                                                    <tr>
+                                                        <td colspan="2">Jami:</td>
+                                                        <td>{{$dalolatnoma->toy_count}}</td>
+                                                        <td>{{$amount}}</td>
+                                                        <td colspan="9"></td>
+                                                    </tr>
                                                     </tbody>
                                                 </table>
                                             </div>

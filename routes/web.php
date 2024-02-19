@@ -270,6 +270,7 @@ Route::group(['prefix' => 'hvi', 'middleware' => 'auth'], function () {
     Route::group(['prefix' => 'final_results', 'middleware' => 'auth'], function () {
     Route::get('/search', '\App\Http\Controllers\FinalResultsController@search');
     Route::get('/add/{id}', '\App\Http\Controllers\FinalResultsController@add');
+    Route::get('/add/view/{id}', '\App\Http\Controllers\FinalResultsController@add_view');
     Route::get('/add2/{id}', '\App\Http\Controllers\FinalResultsController@add2');
     Route::get('/list', '\App\Http\Controllers\FinalResultsController@list');
     Route::get('/list/delete/{id}', '\App\Http\Controllers\FinalResultsController@destory');

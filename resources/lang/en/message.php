@@ -16,6 +16,7 @@ return [
     'Bo\'limlar' => 'Sections',
     'Qaror va Sinov dasturlari' => 'Decision and Test programs',
     'Na\'muna olish dalolatnomalari' => 'Sampling records',
+    'HVI ma\'lumotlari' => 'HVI Data',
     'Og\'irlik bo\'yicha dalolatnomalar' => 'Weight records',
     'Laboratoriya ma\'lumotlari' => 'Laboratory data',
     'Yakuniy natijalar' => 'Final results',

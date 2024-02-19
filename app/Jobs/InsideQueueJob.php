@@ -30,7 +30,6 @@ class InsideQueueJob implements ShouldQueue
     {
         $this->path = $array['path'];
         $this->id = $array['id'];
-        $this->i = $array['i'];
     }
 
     /**
@@ -46,8 +45,10 @@ class InsideQueueJob implements ShouldQueue
         $gin_id = 0;
         $gin_id = 1000 * $dalolatnoma->test_program->application->prepared->region->clamp_id + $dalolatnoma->test_program->application->prepared->kod;
 
-        foreach ($gin_balles as $balles){
+        $table = new TableReader($file);
 
+        foreach ($gin_balles as $balles){
+            $my_data = [];
             $clampedData = ClampData::whereIn('gin_bale', range($balles->from_number, $balles->to_number))
                 ->where('gin_id', $gin_id)
                 ->where('dalolatnoma_id', $this->id)
@@ -55,17 +56,11 @@ class InsideQueueJob implements ShouldQueue
 
             $clampedDataMap = $clampedData->keyBy('gin_bale');
 
-            for ($k = 500 * ($this->i - 1); $k <= 500 * $this->i; $k++) {
+            while($record = $table->nextRecord()){
 
-                $table = new TableReader($file);
-                $record = $table->pickRecord($k);
+                    if ($record->gin_id == $gin_id and $record->gin_bale >=  $balles->from_number and $record->gin_bale <= $balles->to_number) {
 
-                for ($i = $balles->from_number; $i <= $balles->to_number; $i++) {
-                    $my_data = [];
-
-                    if ($record->gin_id == $gin_id and $record->gin_bale == $i) {
-
-                        if (!$clampedDataMap->has($i)) {
+                        if (!$clampedDataMap->has($record->gin_bale)) {
                             $my_data[] = [
                                 'dalolatnoma_id' => $this->id,
                                 'gin_id' => $record->gin_id,
@@ -112,11 +107,11 @@ class InsideQueueJob implements ShouldQueue
                             ];
                         }
                     }
-                    if (!empty($my_data)) {
-                        ClampData::insert($my_data);
-                    }
+
                 }
+            if (!empty($my_data)) {
+                ClampData::insert($my_data);
             }
-        }
+            }
     }
 }

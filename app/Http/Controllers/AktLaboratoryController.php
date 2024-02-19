@@ -103,17 +103,11 @@ class AktLaboratoryController extends Controller
             $file = $request->file('file');
 
                 $filePath = $file->storeAs('uploads/' . $state_id, $file->getClientOriginalName());
-                $table = new MyTableReader($file);
 
-                for ($i = 1; $i * 500 < $table->getTotalCount(); $i++) {
                     InsideQueueJob::dispatch([
                         'path' => $filePath,
                         'id' => $id,
-                        'i' => $i,
                     ]);
-                }
-
-
         }
 
         return redirect('/akt_laboratory/search')->with('success','Role muvaffaqatli yaratildi.');
@@ -153,18 +147,6 @@ class AktLaboratoryController extends Controller
             'id' => $id
         ]);
     }
-//    protected function generateFileIdentifier($file)
-//    {
-//        return md5($file->getClientOriginalName() . $file->getSize());
-//    }
-//
-//// Method to check if a similar job is already queued or processing
-//    protected function isJobQueuedOrProcessing( $fileIdentifier)
-//    {
-//        // Check if a job with the same file identifier is already queued or being processed
-//        return Job::where('queue', 'InsideQueueJob') // Replace 'your_queue_name' with your actual queue name
-//        ->where('payload', 'like', '%"file_identifier":"'.$fileIdentifier.'"%')
-//            ->exists();
-//    }
+
 
 }

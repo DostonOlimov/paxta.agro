@@ -18,6 +18,7 @@ return[
     'Qaror va Sinov dasturlari'=>'Qaror va Sinov dasturlari',
     'Na\'muna olish dalolatnomalari'=>'Na\'muna olish dalolatnomalari',
     'Og\'irlik bo\'yicha dalolatnomalar'=>'Og\'irlik bo\'yicha dalolatnomalar',
+    'HVI ma\'lumotlari' => 'HVI ma\'lumotlari',
     'Laboratoriya ma\'lumotlari'=>'Laboratoriya ma\'lumotlari',
     'Yakuniy natijalar'=>'Yakuniy natijalar',
     'Tizim sozlamalari'=>'Tizim sozlamalari',

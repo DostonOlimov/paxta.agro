@@ -85,7 +85,9 @@ return[
     'Zavod nomi'=>'Название завода',
     'Zavod kodi'=>'Заводской код',
     'Zavod nomini qo\'shish'=>'Добавить название завода',
-
+    'Yangilash'=>'Обновить',
+    'Yakuniy natijalar'=>'Окончательные результаты',
+    'Barcha ma\'lumotlar'=>'Все данные',
 
 
 

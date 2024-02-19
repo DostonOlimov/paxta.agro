@@ -74,6 +74,9 @@ return[
     'Zavod nomi'=>'Завод номи',
     'Zavod kodi'=>'Завод коди',
     'Zavod nomini qo\'shish'=>'Завод номини қўшиш',
+    'Yangilash'=>'Янгилаш',
+    'Yakuniy natijalar'=>'Якуний натижалар',
+    'Barcha ma\'lumotlar'=>'Барча малумотлар',
 
     //messages
     'Successfully Submitted'=>'Муваффақиятли сақланди',
