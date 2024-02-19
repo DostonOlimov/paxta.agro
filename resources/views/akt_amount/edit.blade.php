@@ -101,11 +101,18 @@
                                                             </td>
                                                             @endforeach
                                                         </tr>
-
                                                     @endfor
                                                 </form>
+                                                @foreach($data1 as $d)
+                                                    <td></td>
+                                                    <td  >{{$sum = array_sum(array_column($d, 'amount'))}} kg</td>
+                                                @endforeach
                                                 </tbody>
                                             </table>
+                                            <div>
+                                                <a href="{!! url('/akt_amount/view/'.$id) !!}"><button type="button" class="btn btn-round btn-success">{{ trans('app.Submit')}}</button></a>
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
@@ -137,7 +144,6 @@
                         if (nextInput) {
                             numberInput.value = numberInput.value / 10;
                             nextInput.removeAttribute('disabled');
-                            nextInput.value = null;
                             nextInput.focus();
                         }
                     } else {
