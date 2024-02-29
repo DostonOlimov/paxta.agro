@@ -31,14 +31,8 @@ class HviController extends Controller
 
         if ($user->role == \App\Models\User::STATE_EMPLOYEE) {
             $user_city = $user->state_id;
-            $apps = $apps->where('state_id', '=', $user_city);
+            $apps = $apps->where('id', '=', $user_city);
         }
-
-        if ($city) {
-            $apps = $apps->where('state_id', '=', $city);
-
-        }
-
 
         $states = $apps->get();
 
