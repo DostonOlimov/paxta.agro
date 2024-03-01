@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AktAmount;
 use App\Models\Application;
 use App\Models\CropsName;
 use App\Models\Region;
@@ -95,10 +96,12 @@ class HomeController extends Controller
         $states = DB::table('tbl_states')->where('country_id', '=', 234)->get()->toArray();
         $crop_names = DB::table('crops_name')->get()->toArray();
 
+        $sum_amount = AktAmount::sum('amount');
+
         return view('dashboard.dashboard',
             compact('crops','app_states','states','crop_names','role','all_app_count',
                 'month_app_count','month_cer_count','all_cer_count','local_app','global_app',
-                'from','till','city','crop','app_type_selector')
+                'from','till','city','crop','app_type_selector','sum_amount')
         );
     }
 }
