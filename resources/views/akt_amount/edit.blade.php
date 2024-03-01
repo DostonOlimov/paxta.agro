@@ -21,7 +21,7 @@
             padding-right: 30px; /* Adjust this value as needed to make space for the icon */
         }
 
-        .input-container i.fa-pencil {
+        .input-container i.pencil {
             position: absolute;
             top: 50%;
             right: 10px;
@@ -94,8 +94,8 @@
                                                                 @if(isset($data[$i]))
                                                                     <div class="input-container">
                                                                         <input type="text" step="0.1" class="form-control" name="amount" id="amount{{$data[$i]['id']}}"  oninput="formatNumber({{$data[$i]['id']}})"
-                                                                               onchange="saveAnswer({{$data[$i]['id']}} , this)"  value="{{$data[$i]['amount']}}" @if($data[$i]['amount']) {{'disabled'}} @endif>
-                                                                        @if($data[$i]['amount']) <i class="fa fa-pencil" onclick="changeDisplay(this,{{$data[$i]['id']}})"></i> @endif
+                                                                               onchange="saveAnswer({{$data[$i]['id']}} , this ,{{$loop->iteration}})"  value="{{$data[$i]['amount']}}" @if($data[$i]['amount']) {{'disabled'}} @endif>
+                                                                        @if($data[$i]['amount']) <i class="fa fa-pencil pencil" onclick="changeDisplay(this,{{$data[$i]['id']}})"></i> @endif
                                                                     </div>
                                                                 @endif
                                                             </td>
@@ -105,7 +105,9 @@
                                                 </form>
                                                 @foreach($data1 as $d)
                                                     <td></td>
-                                                    <td  >{{$sum = array_sum(array_column($d, 'amount'))}} kg</td>
+                                                    <td><div class="input-container">
+                                                            <input type="number" step="0.001" name="sum"  class="form-control" id="sum{{$loop->iteration}}" disabled value="{{array_sum(array_column($d, 'amount'))}}">
+                                                            <i class="pencil ">kg</i> </div></td>
                                                 @endforeach
                                                 </tbody>
                                             </table>
@@ -142,33 +144,46 @@
 
                         // If the next input element exists, set focus on it
                         if (nextInput) {
-                            numberInput.value = numberInput.value / 10;
+                            // numberInput.value = numberInput.value / 10;
                             nextInput.removeAttribute('disabled');
                             nextInput.focus();
                         }
-                    } else {
-                        formattedValue = value;
+                    } else  {
+                       if((value.length === 3)){
+                           formattedValue = value.substring(0, 2) + '.' + value.substring(2);
+                       }else{
+                           formattedValue = value;
+                       }
                     }
 
 
                     numberInput.value = formattedValue;
                 }
-                function saveAnswer(id,elm) {
+                function saveAnswer(id,elm,row) {
                     if (elm.value > 0){
+                        let amount = elm.value;
+                        if(elm.value.length === 5){
+                             amount = 10 * elm.value;
+                        }
+
                         $.ajax({
                             type: 'POST',
                             url: '{{ route('save.amount') }}',
                             data: {
                                 _token: '{{ csrf_token() }}',
                                 id: id,
-                                amount: elm.value
+                                amount: amount
                             },
                             success: function(response) {
                                 elm.setAttribute("disabled", "disabled");
                                 const pencilIcon = document.createElement('i');
-                                pencilIcon.classList.add('fa', 'fa-pencil');
+                                pencilIcon.classList.add('fa', 'fa-pencil','pencil');
                                 pencilIcon.setAttribute('onclick', 'changeDisplay(this,'+id+')');
                                 elm.parentNode.appendChild(pencilIcon);
+                                //calculate sum of each row
+                                let rowSum = document.getElementById('sum' + row);
+                                let newSum = parseFloat(rowSum.value);
+                                rowSum.value = newSum + amount;
 
                             }
                         });
