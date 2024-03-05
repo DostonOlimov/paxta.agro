@@ -93,7 +93,7 @@
                                                             <td>
                                                                 @if(isset($data[$i]))
                                                                     <div class="input-container">
-                                                                        <input type="text" step="0.1" class="form-control" name="amount" id="amount{{$data[$i]['id']}}"  oninput="formatNumber({{$data[$i]['id']}})"
+                                                                        <input type="text" step="0.1" class="form-control" name="amount" id="amount{{$data[$i]['id']}}"  oninput="formatNumber({{$data[$i]['id']}})" myattr = {{$loop->iteration}}
                                                                                onchange="saveAnswer({{$data[$i]['id']}} , this ,{{$loop->iteration}})"  value="{{$data[$i]['amount']}}" @if($data[$i]['amount']) {{'disabled'}} @endif>
                                                                         @if($data[$i]['amount']) <i class="fa fa-pencil pencil" onclick="changeDisplay(this,{{$data[$i]['id']}})"></i> @endif
                                                                     </div>
@@ -147,6 +147,9 @@
                             // numberInput.value = numberInput.value / 10;
                             nextInput.removeAttribute('disabled');
                             nextInput.focus();
+                        }else{
+                            let elm = document.getElementById('amount' + number);
+                            saveAnswer(number,elm,elm.getAttribute('myattr'));
                         }
                     } else  {
                        if((value.length === 3)){
