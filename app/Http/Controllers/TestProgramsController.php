@@ -216,8 +216,8 @@ class TestProgramsController extends Controller
     }
     public function view($id)
     {
-        $tests = TestPrograms::with('director')
-            ->with('application.crops')
+        $tests = TestPrograms::with('application.crops')
+            ->with('application.decision.director')
             ->with('application.crops.name')
             ->with('application.crops.name.nds')
             ->with('application.crops.type')

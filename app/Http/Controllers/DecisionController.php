@@ -111,7 +111,7 @@ class DecisionController extends Controller
 
             $decision = new Decision();
             $decision->app_id = $app_id;
-            $decision->director_id = $userA->id;
+            $decision->director_id = 27;
             $decision->number = $number;
             $decision->laboratory_id = $laboratory_id;
             $decision->created_by = $userA->id;
@@ -130,7 +130,6 @@ class DecisionController extends Controller
 
             $tests = new TestPrograms();
             $tests->app_id = $app_id;
-            $tests->director_id = $userA->id;
             $tests->save();
 
         return redirect('/decision/search')->with('message', 'Successfully Submitted');

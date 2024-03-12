@@ -2,32 +2,14 @@
 
 @section('content')
     @can('view', \App\Models\User::class)
-        @php $address = $decision->laboratory->full_address  @endphp;
+        @php $address = $decision->laboratory->full_address  @endphp
     <div class=" content-area ">
         <div class="page-header">
-            <h4 class="page-title mb-0">Qaror</h4>
+            <h4 class="page-title mb-0" style="color:white">Qaror</h4>
         </div>
         <div class="row">
             <div class="col-12">
                 <div class="card p-4">
-                    <div class="table-responsive">
-                        <table class="table table-hover card-table table-striped table-vcenter table-outline">
-                            <tr>
-                                <td>Ariza raqami</td>
-                                <td>{{ $decision->application->app_number}}</td>
-                            </tr>
-                            <tr>
-                                <td>Tashkilot yoki korxona nomi</td>
-                                <td>{{ $decision->application->organization->name }}</td>
-                            </tr>
-                            <tr>
-                                <td>Sana</td>
-                                <td>{{(new DateTime($decision->date))->format('d-m-Y')}}</td>
-                            </tr>
-
-                            <tbody>
-                        </table>
-                    </div>
                     <div class="row">
                             @include('decision._cheque')
 

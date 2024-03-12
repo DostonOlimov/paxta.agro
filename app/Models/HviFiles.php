@@ -17,6 +17,14 @@ class HviFiles extends Model
 {
     protected $table = 'hvi_files';
 
+    protected $fillable = [
+        'state_id',
+        'path',
+        'user_id',
+        'date',
+        'count',
+    ];
+
     public function state()
     {
         return $this->belongsTo(Region::class, 'state_id');

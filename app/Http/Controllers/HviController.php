@@ -50,10 +50,8 @@ class HviController extends Controller
         $user = Auth::user();
 
         if ($request->hasFile('file')) {
-
             $file = $request->file('file');
-            $hvi = HviFiles::where('state_id',$state_id)->first();
-
+            $hvi = HviFiles::where('state_id', $state_id)->first();
             $table = new MyTableReader($file);
             $count = $table->getTotalCount();
 
@@ -65,63 +63,52 @@ class HviController extends Controller
                 $query->havingRaw('COUNT(*) != dalolatnoma.toy_count');
             })->get();
 
-            if(!$hvi){
-
+            if (!$hvi) {
                 $filePath = $file->storeAs('uploads/'.$user->state_id, $file->getClientOriginalName());
 
-                $hvi = new HviFiles();
-                $hvi->state_id = $state_id;
-                $hvi->path = $filePath;
-                $hvi->user_id = Auth::user()->id;
-                $hvi->date =date('Y-m-d');
-                $hvi->count =$count;
-                $hvi->save();
-
+                HviFiles::create([
+                    'state_id' => $state_id,
+                    'path' => $filePath,
+                    'user_id' => $user->id,
+                    'date' => date('Y-m-d'), // Using now() helper to get the current date
+                    'count' => $count,
+                ]);
                 foreach ($gin_balles as $balles){
                     $state = Region::find($state_id);
-                    $gin_id = 0;
                     $gin_id = 1000 * $state->clamp_id + $balles->dalolatnoma->test_program->application->prepared->kod;
-
                     ProcessFile::dispatch([
                         'path' => $filePath,
                         'balles' => $balles,
                         'count' => $count,
-                        'gin_id'=>$gin_id,
+                        'gin_id' => $gin_id,
                     ]);
                 }
-            }else{
-                if(!$hvi->count != $count){
-
-                    $filePath = $file->storeAs('uploads/'.$user->state_id, $file->getClientOriginalName());
-
-                    $hvi->path = $filePath;
-                    $hvi->user_id = Auth::user()->id;
-                    $hvi->date =date('Y-m-d');
-                    $hvi->count =$count;
-                    $hvi->save();
-
-                    foreach ($gin_balles as $balles){
-                        $state = Region::find($state_id);
-                        $gin_id = 0;
-                        $gin_id = 1000 * $state->clamp_id + $balles->dalolatnoma->test_program->application->prepared->kod;
-
-                        ProcessFile::dispatch([
-                            'path' => $filePath,
-                            'balles' => $balles,
-                            'count' => $count,
-                            'gin_id'=>$gin_id,
-                        ]);
-                    }
-                }else{
-                    $hvi->user_id = Auth::user()->id;
-                    $hvi->date =date('Y-m-d');
-                    $hvi->save();
+            } elseif ($hvi->count != $count) {
+                $filePath = $file->storeAs('uploads/'.$user->state_id, $file->getClientOriginalName());
+                $hvi->path = $filePath;
+                $hvi->user_id = $user->id;
+                $hvi->date = date('Y-m-d');
+                $hvi->count = $count;
+                $hvi->save();
+                foreach ($gin_balles as $balles){
+                    $state = Region::find($state_id);
+                    $gin_id = 1000 * $state->clamp_id + $balles->dalolatnoma->test_program->application->prepared->kod;
+                    ProcessFile::dispatch([
+                        'path' => $filePath,
+                        'balles' => $balles,
+                        'count' => $count,
+                        'gin_id' => $gin_id,
+                    ]);
                 }
-
+            } else {
+                $hvi->user_id = $user->id;
+                $hvi->date = date('Y-m-d');
+                $hvi->save();
             }
-        }
-        return redirect('hvi/list')->with('message', 'Successfully Submitted');
 
+        }
+
+        return redirect('hvi/list')->with('message', 'Successfully Submitted');
     }
 
 }

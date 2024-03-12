@@ -40,10 +40,6 @@ class TestPrograms  extends Model
     {
         return $this->belongsTo(Laboratories::class, 'laboratory_id', 'id');
     }
-    public function director(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'director_id', 'id');
-    }
     public function result(): BelongsTo
     {
         return $this->belongsTo(FinalResult::class, 'id', 'test_program_id');
