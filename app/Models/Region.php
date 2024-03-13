@@ -28,9 +28,9 @@ class Region extends Model
         return $this->hasMany(Area::class, 'state_id');
     }
 
-    public function organization(): HasMany
+    public function applications(): HasManyThrough
     {
-        return $this->hasMany(OrganizationCompanies::class, 'city_id');
+        return $this->hasManyThrough(Application::class, OrganizationCompanies::class, 'city_id', 'organization_id', 'id', 'id');
     }
     public function listRegion(): HasMany
     {

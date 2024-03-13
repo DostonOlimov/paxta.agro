@@ -12,6 +12,10 @@ class OrganizationCompanies extends Model
     {
         return $this->belongsTo(Area::class, 'city_id');
     }
+    public function area()
+    {
+        return $this->belongsTo(Area::class, 'city_id');
+    }
     public function application(): HasMany
     {
         return $this->hasMany(Application::class, 'organization_id');

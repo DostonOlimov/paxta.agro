@@ -130,6 +130,7 @@ class DecisionController extends Controller
 
             $tests = new TestPrograms();
             $tests->app_id = $app_id;
+            $decision->director_id = 27;
             $tests->save();
 
         return redirect('/decision/search')->with('message', 'Successfully Submitted');

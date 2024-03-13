@@ -13,4 +13,8 @@ class AktAmount  extends Model
 {
     protected $table = 'akt_amount';
 
+    public function dalolatnoma()
+    {
+        return $this->belongsTo(Dalolatnoma::class, 'dalolatnoma_id', 'id');
+    }
 }

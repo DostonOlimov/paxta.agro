@@ -66,7 +66,7 @@
                 </div>
                 <div class="circle_persentages__statistics__texts">
                     <h3 class="lineUp">{{trans('message.Jami arizalar')}}</h3>
-                    <p class="lineUp">{{$all_app_count}} {{trans('message.ta')}}</p>
+                    <p class="lineUp">{{$applications_count->all_app_count}} {{trans('message.ta')}}</p>
                 </div>
             </div>
             <div class="circle_persentages__statistics">
@@ -103,12 +103,13 @@
                             <div class="fill"></div>
                         </div>
 
-                        <div class="inside-circle">@php echo round(100 * ($all_app_count > 0 ? $local_app / $all_app_count : 0),1);@endphp%</div>
+                        <div class="inside-circle">
+                            {{ round(100 * ($applications_count->local_percentage),1) }}%</div>
                     </div>
                 </div>
                 <div class="circle_persentages__statistics__texts">
                     <h3 class="lineUp">{{trans('message.Mahaliy arizalar')}}</h3>
-                    <p class="lineUp">{{$local_app}} {{trans('message.ta')}}</p>
+                    <p class="lineUp">{{$applications_count->local_app}} {{trans('message.ta')}}</p>
                 </div>
             </div>
             <div class="circle_persentages__statistics">
@@ -145,12 +146,12 @@
                             <div class="fill"></div>
                         </div>
 
-                        <div class="inside-circle">@php echo round(100 * ($all_app_count > 0 ? $global_app / $all_app_count : 0),1);@endphp%</div>
+                        <div class="inside-circle"> {{ round(100 * ($applications_count->glogal_percentage),1) }}%</div>
                     </div>
                 </div>
                 <div class="circle_persentages__statistics__texts">
                     <h3 class="lineUp">{{trans('message.Xorijiy arizalar:')}}</h3>
-                    <p class="lineUp">{{$global_app}} {{trans('message.ta')}}</p>
+                    <p class="lineUp">{{$applications_count->global_app}} {{trans('message.ta')}}</p>
                 </div>
             </div>
         </div>
@@ -268,13 +269,13 @@
                     >
                 </div>
                 <div class="workblocks__info__row__duration">
-                    <a href="{{ url('full-report?till='.$till.'&from='.$from.'&city='.$city.'&crop='.$item->id.'&app_type_selector='.$app_type_selector) }}" target="_blank" rel="noopener noreferrer">{{$item->count}} {{trans('message.ta')}}</a>
+                    <a href="{{ url('full-report?till='.$till.'&from='.$from.'&city='.$city.'&crop='.$item->id.'&app_type_selector='.$app_type_selector) }}" target="_blank" rel="noopener noreferrer">{{$item->applications_count}} {{trans('message.ta')}}</a>
                 </div>
                 <div class="workblocks__info__row__score">
                     <a href="{{ url('full-report?till='.$till.'&from='.$from.'&city='.$city.'&crop='.$item->id.'&app_type_selector='.$app_type_selector) }}" target="_blank" rel="noopener noreferrer">{{round($sum_amount/1000,3)}}</a>
                 </div>
                 <div class="workblocks__info__row__score">
-                    <a href="{{ url('full-report?till='.$till.'&from='.$from.'&city='.$city.'&crop='.$item->id.'&app_type_selector='.$app_type_selector) }}" target="_blank" rel="noopener noreferrer">@if($item->id == 20 or $item->id == 8) {{'dona'}} @else {{trans('message.tonna')}} @endif</a>
+                    <a href="{{ url('full-report?till='.$till.'&from='.$from.'&city='.$city.'&crop='.$item->id.'&app_type_selector='.$app_type_selector) }}" target="_blank" rel="noopener noreferrer"> {{trans('message.tonna')}}  </a>
                 </div>
             </div>
             @endforeach

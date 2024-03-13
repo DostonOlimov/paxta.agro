@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 /**
  * Class Area
@@ -25,8 +27,9 @@ class Area extends Model
         return $this->belongsTo(Region::class, 'state_id');
     }
 
-    public function listArea(): BelongsTo
+    public function organization(): HasMany
     {
-        return $this->belongsTo(ListArea::class, 'list_id');
+        return $this->hasMany(OrganizationCompanies::class, 'city_id');
     }
+
 }

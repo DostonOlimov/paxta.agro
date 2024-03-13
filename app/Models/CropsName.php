@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 /**
  * Class Area
@@ -40,5 +42,10 @@ class CropsName extends Model
     public function selecton(): HasMany
     {
         return $this->hasMany(CropsSelection::class, 'crop_id');
+    }
+    // Define the relationships (corrected)
+    public function applications(): HasManyThrough
+    {
+        return $this->hasManyThrough(Application::class, CropData::class, 'name_id', 'crop_data_id','id','id'); // Corrected foreign keys
     }
 }
