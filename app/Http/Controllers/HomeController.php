@@ -111,8 +111,8 @@ class HomeController extends Controller
         $app_states = $app_states->groupBy('tbl_states.id', 'tbl_states.name')
             ->orderBy('application_count', 'desc')
             ->get();
-        $crops = $crops->orderBy('applications_count','desc')
-            ->get();
+            $crops = $crops->orderBy('applications_count','desc')
+                ->get();
         $sum_amount = $sum_amount->sum('amount');
 
         $states = DB::table('tbl_states')->where('country_id', '=', 234)->get()->toArray();

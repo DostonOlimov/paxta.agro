@@ -37,6 +37,11 @@ class Region extends Model
         return $this->hasMany(ListRegion::class, 'list_id');
     }
 
+    public function organization(): HasMany
+    {
+        return $this->hasMany(OrganizationCompanies::class, 'city_id');
+    }
+
     public function hvi_file()
     {
         return $this->belongsTo(HviFiles::class, 'id','state_id');

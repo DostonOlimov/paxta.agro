@@ -172,7 +172,7 @@
                                                 <option value="">{{trans('app.O\'lchov turini tanlang')}}</option>
                                             @endif
                                             @foreach($measure_types as $key=>$name)
-                                                <option value="{{ $key }}"   @if($key == old('measure_type')) selected @endif
+                                                <option value="{{ $key }}"   @if($key == old('measure_type') or $key == 2) selected @endif
                                                 > {{$name}} </option>
                                             @endforeach
                                         </select>
