@@ -115,23 +115,27 @@ class PreparedCompaniesController extends Controller
     }
     public function search(Request $request)
     {
+        $user = auth()->user();
         $ownername = $request->input('search');
 
-        if ($ownername != '') {
+        if (!empty($ownername)) {
             $owners = DB::table('prepared_companies')
-                ->select('id','name');
+                ->select('id', 'name')
+                ->where(function ($query) use ($ownername) {
+                    $query->where('name', 'like', '%' . $ownername . '%');
+                });
 
-            $owners = $owners->where(function($query) use($ownername){
-                $query->where('name', 'like', '%'.$ownername.'%');
-            });
-            $owners = $owners->take(15)->get()->toArray();
-
-            if(!empty($owners)) {
-                echo json_encode($owners);
-            }else{
-                echo 'Nothing to show';
+            if ($user->role == \App\Models\User::STATE_EMPLOYEE) {
+                $owners->where('state_id', $user->state_id);
             }
 
+            $owners = $owners->take(15)->get()->toArray();
+
+            if (!empty($owners)) {
+                return response()->json($owners);
+            } else {
+                return 'Nothing to show';
+            }
         }
     }
 

@@ -147,22 +147,28 @@ class OrganizationCompaniesController extends Controller
         $user = auth()->user();
         $ownername = $request->input('search');
 
-        if ($ownername != '') {
-            $owners = DB::table('organization_companies')
-                ->select('id','name', 'inn');
+        if ($ownername !== '') {
+            $owners = OrganizationCompanies::select('id', 'name', 'inn')
+                ->where(function ($query) use ($ownername) {
+                    $query->where('name', 'like', '%' . $ownername . '%')
+                        ->orWhere('inn', 'like', '%' . $ownername . '%');
+                });
 
-            $owners = $owners->where(function($query) use($ownername){
-                $query->where('name', 'like', '%'.$ownername.'%')
-                    ->orWhere('inn', 'like', '%'.$ownername.'%');
-            });
-            $owners = $owners->take(15)->get()->toArray();
+            if ($user->role == \App\Models\User::STATE_EMPLOYEE) {
+                $user_city = $user->state_id;
+                $owners->whereHas('city', function ($query) use ($user_city) {
+                    $query->where('state_id', $user_city);
 
-            if(!empty($owners)) {
-                echo json_encode($owners);
-            }else{
-                echo 'Nothing to show';
+                });
             }
 
+            $owners = $owners->take(15)->get()->toArray();
+
+            if (!empty($owners)) {
+                return response()->json($owners);
+            } else {
+                return 'Nothing to show';
+            }
         }
     }
 
