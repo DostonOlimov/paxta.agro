@@ -26,6 +26,7 @@ Route::post('/change-language', [\App\Http\Controllers\LanguageController::class
 
 //profile
 Route::get('/full-report', '\App\Http\Controllers\ReportController@report')->name('report.full_report');
+Route::get('/report', '\App\Http\Controllers\ReportController@myreport')->name('report.report');
 
 
     Route::group(['prefix' => 'user', 'middleware' => 'auth'], function () {
@@ -64,6 +65,7 @@ Route::group(['prefix' => 'employee'], function () {
     Route::get('/getkodtnved/{id}', '\App\Http\Controllers\CropAjaxController@getkodtnved');
     Route::get('/getcompany', '\App\Http\Controllers\CropAjaxController@getcompany')->name('get.company');
 
+    Route::get('/process-excel', '\App\Http\Controllers\CropAjaxController@processExcel');
 
 // Cities
     Route::group(['prefix' => 'cities', 'middleware' => 'auth'], function () {
@@ -213,6 +215,8 @@ Route::group(['prefix' => 'laboratories', 'middleware' => 'auth'], function () {
     Route::get('decision/{invoice_id}/serve', '\App\Http\Controllers\DecisionController@serve')->name('decision.serve');
     Route::get('decision/{id}/redo', '\App\Http\Controllers\DecisionController@redo')->name('decision.redo');
     Route::get('decision/view/{id}', '\App\Http\Controllers\DecisionController@view')->name('decision.view');
+    Route::get('decision/show/{id}', '\App\Http\Controllers\DecisionController@my_view')->name('decision.show');
+    Route::get('decision/send/{id}', '\App\Http\Controllers\DecisionController@send')->name('decision.send');
 //Test programs
     Route::group(['prefix' => 'tests', 'middleware' => 'auth'], function () {
     Route::get('/search', '\App\Http\Controllers\TestProgramsController@search');
@@ -222,6 +226,7 @@ Route::group(['prefix' => 'laboratories', 'middleware' => 'auth'], function () {
     Route::get('/list/edit/{id}', '\App\Http\Controllers\TestProgramsController@edit');
     Route::post('/list/edit/update/{id}', '\App\Http\Controllers\TestProgramsController@update');
     Route::get('/view/{id}', '\App\Http\Controllers\TestProgramsController@view')->name('tests.view');
+    Route::get('/show/{id}', '\App\Http\Controllers\TestProgramsController@my_view')->name('tests.show');
     Route::post('/store', '\App\Http\Controllers\TestProgramsController@store')->name('tests.store');
     });
 //Dalolatnoma
@@ -296,4 +301,15 @@ Route::group(['prefix' => 'final_decision', 'middleware' => 'auth'], function ()
     Route::get('/search', '\App\Http\Controllers\FinalDecisionController@search');
     Route::get('/list', '\App\Http\Controllers\FinalDecisionController@list');
     Route::get('/view/{id}', '\App\Http\Controllers\FinalDecisionController@view');
+});
+//Namlik
+Route::group(['prefix' => 'humidity', 'middleware' => 'auth'], function () {
+    Route::get('/search', '\App\Http\Controllers\HumidityController@search');
+    Route::get('/add/{id}', '\App\Http\Controllers\HumidityController@add');
+    Route::get('/list', '\App\Http\Controllers\HumidityController@list');
+    Route::get('/list/delete/{id}', '\App\Http\Controllers\HumidityController@destory');
+    Route::get('/edit/{id}', '\App\Http\Controllers\HumidityController@edit');
+    Route::post('/edit/update/{id}', '\App\Http\Controllers\HumidityController@update');
+    Route::get('/view/{id}', '\App\Http\Controllers\HumidityController@view')->name('humidity.view');
+    Route::post('/store', '\App\Http\Controllers\HumidityController@store')->name('humidity.store');
 });

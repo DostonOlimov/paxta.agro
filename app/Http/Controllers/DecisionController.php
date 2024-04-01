@@ -14,9 +14,17 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class DecisionController extends Controller
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->middleware('auth')->except('my_view');
+    }
+
     //search
     public function search(Request $request)
     {
@@ -155,11 +163,69 @@ class DecisionController extends Controller
             ->with('application')
             ->with('laboratory')
             ->find($id);
+        // Generate QR code if available
+        $qrCode = null;
+        if ($decision->status == Decision::STATUS_ACCEPTED) {
+            $url = route('decision.show', $id);
+            $qrCode = QrCode::size(100)->generate($url);
+        }
+
         $nds_type = Nds::getType(Application::find($decision->app_id)->crops->name->nds->type_id);
         return view('decision.show', [
             'decision' => $decision,
-            'nds_type'=>$nds_type
+            'nds_type'=>$nds_type,
+            'qrCode' => $qrCode
         ]);
+    }
+
+    public function my_view($id)
+    {
+        $decision = Decision::with('director')
+            ->with('application.organization')
+            ->with('application.crops')
+            ->with('application.crops.name')
+            ->with('application.crops.name.nds')
+            ->with('application.crops.type')
+            ->with('application.crops.generation')
+            ->with('application')
+            ->with('laboratory')
+            ->find($id);
+        // Generate QR code if available
+        $qrCode = null;
+        if ($decision->status == Decision::STATUS_ACCEPTED) {
+            $url = route('decision.show', $id);
+            $qrCode = QrCode::size(100)->generate($url);
+        }
+
+        $nds_type = Nds::getType(Application::find($decision->app_id)->crops->name->nds->type_id);
+        return view('decision.my_view', [
+            'decision' => $decision,
+            'nds_type'=>$nds_type,
+            'qrCode' => $qrCode
+        ]);
+    }
+
+    public function send($id)
+    {
+        // Get authenticated user
+        $user = Auth::user();
+
+        // Find the test program by ID
+        $test = TestPrograms::firstWhere('app_id',$id);
+        $app = Application::find($id);
+        $decision = Decision::firstWhere('app_id',$id);
+
+        // Authorize the send action
+        $this->authorize('send', $app);
+
+
+        // Update decision
+        $decision->update([
+            'status' => Decision::STATUS_ACCEPTED
+        ]);
+
+        // Redirect with success message
+        return redirect('decision/search')->with('message', 'Successfully Submitted');
     }
 
 }

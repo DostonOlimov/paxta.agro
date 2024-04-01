@@ -95,6 +95,13 @@ class Application extends Model
          }
     }
 
+    public function getYear()
+    {
+        $new_date = \DateTime::createFromFormat("Y-m-d", $this->date);
+        $year = $new_date->format('Y');
+        return $year;
+    }
+
     protected static function boot()
     {
         static::addGlobalScope(function ($query) {

@@ -4,6 +4,33 @@
         .form-group {
             margin-bottom: 0 !important;
         }
+        /* Style for the container holding the file input */
+        .file-input-container {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            border: 2px solid #ccc;
+            background-color: #21c44c;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Style for the actual file input */
+        .file-input {
+            position: absolute;
+            font-size: 100px;
+            opacity: 0;
+            right: 0;
+            top: 0;
+        }
+
+        /* Style for the text label */
+        .file-label {
+            font-size: 14px;
+            pointer-events: none;
+        }
     </style>
 @endsection
 @section('content')
@@ -175,10 +202,16 @@
                                         </div>
                                         <div class="col-md-2 row ">
                                             <label></label>
-                                            <div class="col-md-6 col-sm-6">
-                                                <div onclick="addField();" class="btn btn-success"> <i
+                                            <div class="col-md-6">
+                                                <div id="addButton" onclick="addField();" class="btn btn-success"> <i
                                                         class="fa fa-plus-circle fa-lg">&nbsp;</i>
                                                     <b>{{ trans('app.Qo\'shish') }}</b>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="file-input-container">
+                                                    <span class="file-label"><i class="fa fa-file-excel-o"></i> Fayl yuklash</span>
+                                                    <input type="file" class="file-input" id="excelFile" name="excelFile" accept=".xlsx, .xls">
                                                 </div>
                                             </div>
                                         </div>
@@ -203,52 +236,7 @@
                                             @endfor
                                         @endif
                                     </div>
-
-
-
-
-
-                                    {{--
-
-
-                                <div id="forms" class="form-inline" name="kod_toy[]">
-                                    <input type="number" name="kod_toy[0][]" id="">
-                                    <input type="number" name="kod_toy[0][]" id="">
-                                    <input type="number" name="kod_toy[0][]" id="">
-                                    <input type="number" name="kod_toy[0][]" id="">
-                                    <button type="button" onclick="addField('+fieldId+');">add</button>
-                                </div>
-
-                                <script>
-                                    var fieldId = 0;
-
-                                    function addElement(parentId, elementTag, elementId, html) {
-                                        var id = document.getElementById(parentId);
-                                        var newElement = document.createElement(elementTag);
-                                        newElement.setAttribute('id', elementId);
-                                        newElement.innerHTML = html;
-                                        id.appendChild(newElement);
-                                    }
-
-                                    function removeField(elementId) {
-                                        var fieldId = "field-" + elementId;
-                                        var element = document.getElementById(fieldId);
-                                        element.parentNode.removeChild(element);
-                                    }
-
-                                    function addField() {
-                                        fieldId++;
-                                        var html =
-                                            '<br> <input type="number" name="kod_toy['+ fieldId +'][]" id=""> <input type="number" name="kod_toy['+ fieldId +'][]" id=""> <input type="number" name="kod_toy['+ fieldId +'][]" id=""><input type="number" name="kod_toy['+ fieldId +'][]" id=""> ' +
-                                            '<button type="button" onclick="removeField(' + fieldId + ');">remove</button>';
-                                        addElement('forms', 'div', 'field-' + fieldId, html);
-                                    }
-                                </script> --}}
-
-
-
-                                    {{-- end --}}
-
+                                    <div id="numbersContainer" class="row"></div>
                                     <div class="form-group col-md-12 col-sm-12 mt-2">
                                         <div class="col-md-6 col-sm-6">
                                             <a class="btn btn-primary"
@@ -274,6 +262,7 @@
         </div>
     @endcan
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
     <script src="{{ URL::asset('vendors/moment/min/moment.min.js') }}"></script>
     <script src="{{ URL::asset('vendors/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
     <script src="{{ URL::asset('vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') }}"></script>
@@ -351,7 +340,86 @@
             return words.join(' ');
         }
     });
-</script>
+    </script>
+    <script>
+        document.getElementById('excelFile').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const data = new Uint8Array(event.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                const sheetName = workbook.SheetNames[0]; // Assuming we are reading the first sheet
+                const sheet = workbook.Sheets[sheetName];
+
+                const numbers = [];
+                const columnIndices = ['A', 'B', 'C', 'D']; // Assuming you want to read from columns A, B, C, and D
+
+                // Iterate over each row and each column to read the values
+                let rowIndex = 1; // Start from the first row
+                let cellAddress = '';
+                columnIndices.forEach(columnIndex => {
+                    cellAddress = columnIndex + rowIndex;
+                    let cell = sheet[cellAddress];
+                    while (cell !== undefined) {
+                        const cellValue = cell.v;
+                        if (!numbers[rowIndex - 1]) {
+                            numbers[rowIndex - 1] = [];
+                        }
+                        numbers[rowIndex - 1].push(cellValue);
+                        rowIndex++;
+                        cellAddress = columnIndex + rowIndex;
+                        cell = sheet[cellAddress];
+                    }
+                    rowIndex = 1; // Reset rowIndex for the next column
+                });
+
+                // Display numbers in UI
+                const inputFieldsContainer = document.getElementById('numbersContainer');
+                const addButton = document.getElementById('addButton');
+                addButton.style.display = 'none';
+                inputFieldsContainer.innerHTML = '';
+                numbers.forEach((row, index) => {
+                    if(index === 0){
+                        const inputField = document.querySelector(`input[name="kod_toy[${index}][${0}]"]`);
+                        const inputField1 = document.querySelector(`input[name="kod_toy[${index}][${1}]"]`);
+                        const inputField2 = document.querySelector(`input[name="kod_toy[${index}][${2}]"]`);
+                        const inputField3 = document.querySelector(`input[name="kod_toy[${index}][${3}]"]`);
+                        if (inputField) {
+                            inputField.value = row[0];
+                            inputField1.value = row[1];
+                            inputField2.value = row[2];
+                            inputField3.value = row[3];
+                        }
+                    }else{
+                        inputFieldsContainer.innerHTML += `
+            <div class="col-md-5 row">
+                <div class="col-md-6 form-group has-feedback">
+                    <input type="number" class="form-control" maxlength="10"
+                        value="${row[0]}" name="kod_toy[${index}][0]" required min="1">
+                </div>
+                <div class="col-md-6 form-group has-feedback">
+                    <input type="number" class="form-control" maxlength="10"
+                        value="${row[1]}" name="kod_toy[${index}][1]" required min="1">
+                </div>
+            </div>
+            <div class="col-md-5 row">
+                <div class="col-md-6 form-group has-feedback">
+                    <input type="number" class="form-control" maxlength="10"
+                        value="${row[2]}" name="kod_toy[${index}][2]" required min="1">
+                </div>
+                <div class="col-md-6 form-group has-feedback">
+                    <input type="number" class="form-control" maxlength="10"
+                        value="${row[3]}" name="kod_toy[${index}][3]" required min="1">
+                </div>
+            </div>
+            `;
+                    }
+                });
+            };
+            reader.readAsArrayBuffer(file);
+        });
+    </script>
     <script>
         var fieldId = 0;
 

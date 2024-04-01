@@ -1,58 +1,21 @@
-<!-- Hero Section Begin -->
-<section class="hero">
+<div class="hero" id="hero">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-3">
-                <div class="hero__categories">
-                    <div class="hero__categories__all">
-                        <i class="fa fa-bars"></i>
-                        <span>Barcha urug'lar</span>
-                    </div>
-                    <div class="scroll_categories">
-                        <ul>
-                            @foreach($crops as $crop)
-                                <li><a href="{{ url('/about/'.$crop->id) }}">{{$crop->name}}</a></li>
-                            @endforeach
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-9">
-                <div class="hero__search">
-                    <div class="hero__search__form">
-                        <form action="#">
-                            <div class="hero__search__categories">
-                                Kategoriyalar
-                                <span class="arrow_carrot-down"></span>
-                            </div>
-                            <input type="text" placeholder="...">
-                            <button type="submit" class="site-btn">Qidirish</button>
+        <div class="hero__title animated animatedFadeInUp fadeInUp">
+            <h1>{{trans('app.Qishloq xo\'jalik ekinlari urug\'larini sertifikatlashtirish tizimi')}}</h1>
+        </div>
+        <div class="search-bar-hero animated animatedFadeInUp fadeInUp" style="animation-delay: 0.6s">
+            <div class='form-container'>
+                <div class='form-tab'>
+                    <div class='search-field'>
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <p class='search-placeholder'>{{trans('app.O\'zingizga kerakli ma\'lumotni izlang...')}}</p>
+                        <form action="#" id="myForm">
+                            <input autocomplete="off" type='text' pattern='\S+.*' name='input' id='input' class='text-field'>
                         </form>
                     </div>
-                </div>
-                @php
-                    if($crop_name === 'all')
-                        { $img = 'urug12.jpg';}
-                else  {
-                    $img = ( $crop_name ? $crop_name->pre_name.'.jpg' : 'urug.jpg');
-                    }
-                @endphp
-                <div class="hero__item set-bg" data-setbg="{{ url('/img/crops/'.$img) }}">
-                    <div class="hero__text">
-                        @if($crop_name and $crop_name !== 'all')
-                            <h2 style="color:green">{{$crop_name->name}}</h2>
-                            <p>urug'lik mahsuloti</p>
-                        @else
-                            <span>Agroinspeksiya</span>
-                            <h2>Urug'lar <br /></h2>
-                            <p>va ularning sertifikatlari</p>
-                        @endif
-
-
-                    </div>
+                    <button class="search-btn" id="submitBtn">{{trans('app.qidirish')}}</button>
                 </div>
             </div>
         </div>
     </div>
-</section>
-<!-- Hero Section End -->
+</div>

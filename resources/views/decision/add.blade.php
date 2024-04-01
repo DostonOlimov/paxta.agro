@@ -102,13 +102,7 @@
 								</div>
 							</div>
 						</form>
-                        <div class="row">
-                            @include('decision._cheque', ['classes' => 'd-none'])
-                            <div class="col-12 mt-4 form-actions d-none" id="success-actions">
-                                <button class="btn btn-primary" id="print-invoice-btn">Chop etish</button>
-                                <a id="payment-button" href="{{route('decision.payments.create')}}" class="btn btn-primary d-none">To'lov qo'shish</a>
-                            </div>
-                        </div>
+
 					</div>
 				</div>
 			</div>

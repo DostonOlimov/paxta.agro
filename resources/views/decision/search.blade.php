@@ -63,14 +63,20 @@
                                                 @if($descion = $app->decision)
                                                 <td>
                                                     <a href="{!! url('/decision/view/'.$descion->id) !!}"><button type="button" class="btn btn-round btn-info">{{trans('app.Qaror fayli')}}</button></a>
-                                                    <a url="{!! url('/decision/list/delete/'.$descion->id)!!}" class="sa-warning"> <button type="button" class="btn btn-round btn-danger dgr">{{ trans('app.Delete')}}</button></a>
                                                 </td>
-                                                    <?php $appid=Auth::User()->id; ?>
+                                                <td>
                                                     @if($app->tests)
-                                                        <td>
-                                                            <a href="{!! url('/tests/view/'.$app->tests->id) !!}"><button type="button" class="btn btn-round btn-info">{{trans('app.Sinov dasturi fayli')}}</button></a>
-                                                        </td>
+                                                       <a href="{!! url('/tests/view/'.$app->tests->id) !!}"><button type="button" class="btn btn-round btn-info">{{trans('app.Sinov dasturi fayli')}}</button></a>
                                                     @endif
+                                                </td>
+                                                <td>
+                                                @if($app->decision->status == \App\Models\Decision::STATUS_NEW)
+                                                    <button type="button" class="btn btn-round btn-success sa-warning" url="{{ url('/decision/send/'.$app->id) }}">{{ trans('app.Tasdiqlash')}}</button>
+                                                @else
+                                                     <button type="button" class="btn btn-round btn-warning">{{ trans('app.Tasdiqlangan')}}</button>
+                                                @endif
+                                                </td>
+
                                                 @else
                                                 <td>
                                                     <a href="{!! url('/decision/add/'.$app->id) !!}"><button type="button" class="btn btn-round btn-success">&nbsp;{{trans('app.Qarorni shakllantirish')}} &nbsp;</button></a>
@@ -107,13 +113,13 @@
 
 
             swal({
-                title: "O'chirishni istaysizmi?",
-                text: "O'chirilgan ma'lumotlar qayta tiklanmaydi!",
+                title: "Tasdiqlashni istaysizmi?",
+                text: "Tasdiqlangandan so'ng ma'lumotlarni o'zgartirib bo'lmaydi!",
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#297FCA",
-                confirmButtonText: "Ha, o'chirish!",
-                cancelButtonText: "O'chirishni bekor qilish",
+                confirmButtonText: "Ha, tasdiqlash!",
+                cancelButtonText: "Bekor qilish",
                 closeOnConfirm: false
             }).then((result) => {
                 window.location.href = url;

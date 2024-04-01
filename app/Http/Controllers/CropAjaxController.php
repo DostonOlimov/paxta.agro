@@ -5,16 +5,11 @@ use App\Models\CropsName;
 use App\Models\OrganizationCompanies;
 use App\Services\LocationService;
 use Illuminate\Http\Request;
-use App\Http\Requests;
-use App\tbl_states;
-use App\tbl_cities;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\DB;
 
 class CropAjaxController extends Controller
 {
-    public function __construct(){
-        $this->middleware('auth');
-    }
 
     //get state
     public function gettype(Request $request)
@@ -110,6 +105,20 @@ class CropAjaxController extends Controller
         }else{
             echo 'empty';
         }
+    }
+
+    public function processExcel(Request $request)
+    {
+        $file = $request->file('data');
+        dd($request);
+        $rows = \Maatwebsite\Excel\Facades\Excel::toArray([], $file)[0];
+        // Extract numbers from the Excel file
+        $numbers = [];
+        foreach ($rows as $row) {
+            $numbers[] = $row[0]; // Assuming numbers are in the first column
+        }
+
+        return response()->json($numbers);
     }
 
 }

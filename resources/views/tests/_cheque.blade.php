@@ -9,6 +9,7 @@
         sertifikatlashtirish organi boshligʼi<br>
        <span id="director-name"></span><br>
         <span id="application-date"></span> yil
+        <div class="text-center"> {!! $qrCode !!}</div>
     </h3>
     <b>
         <h3 class="text-center">Paxta tolasini sifatini laboratoriyada aniqlash bo'yicha<br>
@@ -31,17 +32,17 @@
             Quyidagi sifat ko'rsatkichlari bo'yicha laboratoriya sinovlari o'tkazilsin:
         </h3>
 
-    <table class="table table-bordered align-middle first-table" style="font-size: 22px" >
+    <table class="table table-bordered align-middle first-table">
         <tr>
-            <td>T\r</td>
-            <td>Ko'rsatkichlar nomlanishi</td>
-            <td>Me'yoriy hujjatlar</td>
+            <td style="font-size: 20px !important;"  >T\r</td>
+            <td style="font-size: 20px !important;" >Ko'rsatkichlar nomlanishi</td>
+            <td style="font-size: 20px !important;" >Me'yoriy hujjatlar</td>
         </tr>
         @foreach($indicators as $k => $indicator)
             <tr>
-                <td>{{$loop->iteration}}</td>
-                <td>{{$indicator->name}}</td>
-                <td>{!! nl2br($indicator->nd_name) !!}</td>
+                <td style="font-size: 20px !important;" >{{$loop->iteration}}</td>
+                <td style="font-size: 20px !important;" >{{$indicator->name}}</td>
+                <td style="font-size: 20px !important;" >{!! nl2br($indicator->nd_name) !!}</td>
             </tr>
         @endforeach
     </table>

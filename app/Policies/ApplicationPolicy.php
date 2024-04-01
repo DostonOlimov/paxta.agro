@@ -123,9 +123,11 @@ class ApplicationPolicy
      * @param  \App\Models\Application  $application
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Application $application)
+    public function send(User $user, Application $application)
     {
-        //
+        return ( $user->isAdmin() or $user->id == 26)
+            ? Response::allow()
+            : Response::deny('Sizga ushbu sahifadan foydalanishga ruxsat berilmagan.');
     }
 
     /**
