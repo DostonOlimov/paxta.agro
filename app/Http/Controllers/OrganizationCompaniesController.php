@@ -68,6 +68,7 @@ class OrganizationCompaniesController extends Controller
 
         $count = DB::table('organization_companies')
             ->where('inn','=',$inn)
+            ->where('name','=',$name)
             ->count();
         if ($count == 0) {
             $compy = new OrganizationCompanies();
