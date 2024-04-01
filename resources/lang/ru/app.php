@@ -181,5 +181,6 @@ return[
     "Hujjatlar ro'yxati" => "Hujjatlar ro'yxati",
     "Tahrirlash" => "Редактирование",
     "Berish" => "Berish",
-
+    "Tasdiqlash" => "Подтвердить",
+    "Tasdiqlangan" => "Одобрено",
 ];

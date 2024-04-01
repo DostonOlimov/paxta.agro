@@ -171,5 +171,6 @@ return[
     "Hujjatlar ro'yxati" => "Hujjatlar ro'yxati",
     "Tahrirlash" => "Таҳрирлаш",
     "Berish" => "Berish",
-
+    "Tasdiqlash" => "Тасдиқлаш",
+    "Tasdiqlangan" => "Тасдиқланган",
 ];

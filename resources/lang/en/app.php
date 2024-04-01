@@ -174,5 +174,7 @@ return[
     "Hujjatlar ro'yxati" => "Hujjatlar ro'yxati",
     "Tahrirlash" => "Edit",
     "Berish" => "Berish",
+    "Tasdiqlash" => "Confirm",
+    "Tasdiqlangan" => "Approved",
 
 ];

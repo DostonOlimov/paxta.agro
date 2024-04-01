@@ -208,5 +208,7 @@ return[
     "Hujjatlar ro'yxati" => "Hujjatlar ro'yxati",
     "Tahrirlash" => "Tahrirlash",
     "Berish" => "Berish",
+    "Tasdiqlash" => "Tasdiqlash",
+    "Tasdiqlangan" => "Tasdiqlangan",
 
 ];
