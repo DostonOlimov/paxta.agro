@@ -3,17 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Application;
-use App\Models\CropData;
 use App\Models\Decision;
 use App\Models\Laboratories;
 use App\Models\Nds;
 use App\Models\DefaultModels\tbl_activities;
-use App\Models\TestProgramIndicators;
 use App\Models\TestPrograms;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class DecisionController extends Controller

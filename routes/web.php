@@ -226,9 +226,10 @@ Route::group(['prefix' => 'laboratories', 'middleware' => 'auth'], function () {
     Route::get('/list/edit/{id}', '\App\Http\Controllers\TestProgramsController@edit');
     Route::post('/list/edit/update/{id}', '\App\Http\Controllers\TestProgramsController@update');
     Route::get('/view/{id}', '\App\Http\Controllers\TestProgramsController@view')->name('tests.view');
-    Route::get('/show/{id}', '\App\Http\Controllers\TestProgramsController@my_view')->name('tests.show');
     Route::post('/store', '\App\Http\Controllers\TestProgramsController@store')->name('tests.store');
     });
+    Route::get('tests/show/{id}', '\App\Http\Controllers\TestProgramsController@my_view')->name('tests.show');
+
 //Dalolatnoma
     Route::group(['prefix' => 'dalolatnoma', 'middleware' => 'auth'], function () {
     Route::get('/search', '\App\Http\Controllers\DalolatnomaController@search');

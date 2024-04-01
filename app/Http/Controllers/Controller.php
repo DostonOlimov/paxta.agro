@@ -11,7 +11,7 @@ class Controller extends BaseController
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth')->except('my_view');
     }
 
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
