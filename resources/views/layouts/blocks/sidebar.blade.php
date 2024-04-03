@@ -1,7 +1,8 @@
 <div class="sidebar sidebar-dark sidebar-fixed " id="sidebar" >
     <div class="sidebar-brand d-none d-md-flex justify-content-around">
-        <img style="width:70px;" src="/resources/assets/images/paxta_logo.png">
-        <h2 style="font-size: 20px; color: white; margin: 5px; !important;">{{trans('message.AGROINSPEKSIYA')}}</h2>
+        <img style="width:55px; margin-top: 9px;" src="/resources/assets/images/paxta_logo.png">
+                <h2 style="font-size: 20px; color: white; margin: 6px 6px 5px 0; !important;">{{ trans('message.AGROINSPEKSIYA') }}</h2>
+
     </div>
     <ul class="sidebar-nav" data-coreui="navigation" data-simplebar="">
         <li class="nav-item"><a class="nav-link" href="/home">
@@ -22,14 +23,14 @@
                 </svg>{{trans('message.Arizalar')}}</a></li>
         <li class="nav-item"><a class="nav-link" href="{!! url('/decision/search') !!}"> <svg class="nav-icon">
                     <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-folder-open"></use>
-                </svg>{{trans('message.Qaror va Sinov dasturlari')}}</a></li>
+                </svg><?php echo nl2br(trans('message.Qaror va Sinov dasturlari')); ?></a></li>
 
         <li class="nav-item"><a class="nav-link" href="{!! url('/dalolatnoma/search') !!}"> <svg class="nav-icon">
                     <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-inbox"></use>
-                </svg>{{trans('message.Na\'muna olish dalolatnomalari')}}</a></li>
+                </svg><?php echo nl2br(trans('message.Na\'muna olish dalolatnomalari')); ?></a></li>
         <li class="nav-item"><a class="nav-link" href="{!! url('/akt_amount/search') !!}"> <svg class="nav-icon">
                     <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-balance-scale"></use>
-                </svg>{{trans('message.Og\'irlik bo\'yicha dalolatnomalar')}}</a></li>
+                </svg><?php echo nl2br(trans('message.Og\'irlik bo\'yicha dalolatnomalar')); ?></a></li>
 
         <li class="nav-item"><a class="nav-link" href="{!! url('/hvi/list') !!}"> <svg class="nav-icon">
                     <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-devices"></use>

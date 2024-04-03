@@ -89,7 +89,17 @@
     scroll-behavior: smooth;
   }
 }
-
+::-webkit-scrollbar {
+  width: 9px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  border-radius: 15px;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 15px;
+  background: #008DDA;
+}
 body {
   margin: 0;
   font-family: var(--cui-body-font-family);
