@@ -111,7 +111,7 @@ iframe {
 	border-radius: 10px;
 	background: #fff;
 	overflow: hidden;
-	padding: 30px 35px !important;
+	padding: 15px 35px 35px 35px !important;
 	box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
 }
 /*------------------------------------------------------------------

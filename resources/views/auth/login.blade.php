@@ -71,7 +71,7 @@
                     <div class="wrap-login100 p-6">
                         <div class="col col-login mx-auto mb-4">
                             <div class="text-center">
-                                <img style="width: 200px; height: auto;" src="{{ url('img/logoNEW.png') }}"
+                                <img style="width: 200px; height: auto;  filter: drop-shadow(0px 3px 6px rgba(0, 0, 0, 0.47));" src="{{ url('img/logoNEW.png') }}"
                                     class="header-brand-img" alt="logo">
                             </div>
                         </div>
