@@ -5,15 +5,12 @@ body {
 }
 
 .scores {
-
+    height: fit-content;
     outline: 9px solid #7f8c8d;
-    border-radius: 15px;
     box-sizing: border-box;
     margin: 40px 20px;
 }
-
 .my-title {
-    border-radius: 10px 10px 0 0;
     padding: 15px 15px;
     background-color: #66b2ff   ;
 }
@@ -26,7 +23,6 @@ body {
 }
 
 .circle-persentages {
-    border-radius: 0 0 10px 10px;
     padding: 25px 30px;
     display: flex;
     align-items: center;
@@ -115,7 +111,6 @@ svg {
 .workblocks__info {
     display: flex;
     flex-direction: column;
-    border-radius: 0 0 10px 10px;
     padding: 25px 55px;
     background-color: #457b9d;
     row-gap: 8px;
@@ -135,7 +130,7 @@ svg {
 .workblocks__info__row a {
     text-decoration: none;
     color: #fff;
-    font-size: 26px;
+    font-size: 25px;
     line-height: normal;
     transition: 0.3s ease-in-out;
 }
@@ -202,7 +197,6 @@ svg {
 }
 
 .empty-inside {
-    border-radius: 0 0 10px 10px;
     padding: 25px 55px;
     background-color: #457b9d;
 }
@@ -212,7 +206,6 @@ svg {
 }
 
 .welcome-inside {
-    border-radius: 0 0 10px 10px;
     padding: 25px 55px;
     background-color: #457b9d;
 }
