@@ -14,7 +14,7 @@ return[
     'Umumiy ro\'yxat'=>'Общий список',
     'Arizalar'=>'Приложения',
     'Bo\'limlar'=>'Отделы',
-    'Qaror va Sinov dasturlari'=>'Программы принятия решений и испытаний',
+    'Qaror va Sinov dasturlari'=>"Программы принятия \n решений и испытаний",
     'Na\'muna olish dalolatnomalari'=>'Выборочные записи',
     'Og\'irlik bo\'yicha dalolatnomalar'=>'Рекорды веса',
     'HVI ma\'lumotlari' => 'Данные HVI',

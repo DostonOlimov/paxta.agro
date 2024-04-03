@@ -23,14 +23,14 @@
                 </svg>{{trans('message.Arizalar')}}</a></li>
         <li class="nav-item"><a class="nav-link" href="{!! url('/decision/search') !!}"> <svg class="nav-icon">
                     <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-folder-open"></use>
-                </svg>{{trans('message.Qaror va Sinov dasturlari')}}</a></li>
+                </svg><?php echo nl2br(trans('message.Qaror va Sinov dasturlari')); ?></a></li>
 
         <li class="nav-item"><a class="nav-link" href="{!! url('/dalolatnoma/search') !!}"> <svg class="nav-icon">
                     <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-inbox"></use>
-                </svg>{{trans('message.Na\'muna olish dalolatnomalari')}}</a></li>
+                </svg><?php echo nl2br(trans('message.Na\'muna olish dalolatnomalari')); ?></a></li>
         <li class="nav-item"><a class="nav-link" href="{!! url('/akt_amount/search') !!}"> <svg class="nav-icon">
                     <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-balance-scale"></use>
-                </svg>{{trans('message.Og\'irlik bo\'yicha dalolatnomalar')}}</a></li>
+                </svg><?php echo nl2br(trans('message.Og\'irlik bo\'yicha dalolatnomalar')); ?></a></li>
 
         <li class="nav-item"><a class="nav-link" href="{!! url('/hvi/list') !!}"> <svg class="nav-icon">
                     <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-devices"></use>

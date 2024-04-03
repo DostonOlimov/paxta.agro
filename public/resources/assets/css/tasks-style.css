@@ -1719,7 +1719,7 @@ pre code {
 	color: #CFCFCF;
 	opacity: 1;
 }
-.form-control:: {
+.form-control {
 	color:#99c1b2;
 	opacity: 1;
 }
@@ -10756,7 +10756,6 @@ body.fixed-header .header {
 	position: absolute;
 	top: .10rem;
     right: .4rem;
-	background: #ecd93812748;
 	width: .5rem;
 	height: .5rem;
 	border-radius: 50%;
@@ -11539,7 +11538,7 @@ a.bg-purple:hover, a.bg-purple:focus, button.bg-purple:hover, button.bg-purple:f
 .text-lightpink-red {
 	color: #ff7088 !important;
 }
-.text-lightgreen: {
+.text-lightgreen {
 	color: #26eda2 !important;
 }
 .bg-pink {
@@ -11636,7 +11635,7 @@ a.bg-gray:hover, a.bg-gray:focus, button.bg-gray:hover, button.bg-gray:focus {
 .bg-gray-dark {
 	background-color: #343a40 !important;
 }
-.bg-lightpink-red: {
+.bg-lightpink-red {
 	color: #ff7088 !important;
 }
 a.bg-gray-dark:hover, a.bg-gray-dark:focus, button.bg-gray-dark:hover, button.bg-gray-dark:focus {
@@ -12155,7 +12154,7 @@ a.icon:hover {
 		margin: 0 auto;
 	}
 	.dataTables_wrapper .dataTables_info, .dataTables_wrapper .dataTables_paginate{
-		margin-top:10px; !important;
+		margin-top: 10px !important;
 	}
 	div.dataTables_wrapper div.dataTables_paginate ul.pagination {
 		justify-content: center !important;
@@ -13275,8 +13274,8 @@ a.icon:hover {
 	color: #6b6f80;
 	border: 1px solid #e3ebf3;
 	padding: 8px;
-	border-radius:3px
-    transition:all 500ms ease-in-out;
+	border-radius:3px;
+    transition: all 500ms ease-in-out;
     border-radius:4px
 }
 
@@ -14617,11 +14616,6 @@ div.online-status .status.online {
 	margin-left: 20px;
 	margin-top: -3px;
 }
-}
-/**
-Dimmer
-*/
-
 .dimmer {
 	position: relative;
 }
@@ -18191,7 +18185,7 @@ svg {
 	display: -moz-inline-stack;
 	display: inline-block;
 	zoom: 1;
-	*display: inline;
+	display: inline;
 }
 .selectize-control.multi .selectize-input>div {
 	cursor: pointer;

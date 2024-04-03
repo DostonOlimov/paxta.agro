@@ -20,7 +20,7 @@ a.bg-primary:hover, a.bg-primary:focus, button.bg-primary:hover, button.bg-prima
 a.bg-secondary:hover, a.bg-secondary:focus, button.bg-secondary:hover, button.bg-secondary:focus {
 	background-color: #e69a11 !important;
 }
-}
+
 /*--- gradient-backgrounds --*/
 .bg-primary-gradient {
 	background:linear-gradient(to right bottom,#0052cc,#3b44f7) !important;
@@ -125,7 +125,7 @@ a.text-secondary:hover, a.text-secondary:focus {
 }
 .btn-secondary:not(:disabled):not(.disabled):active, .btn-secondary:not(:disabled):not(.disabled).active, .show>.btn-secondary.dropdown-toggle {
 	color: #fff;
-	background-color: ##0099ff;
+	background-color: #0099ff;
 	border-color: #0099ff;
 }
 .btn-secondary:not(:disabled):not(.disabled):active:focus, .btn-secondary:not(:disabled):not(.disabled).active:focus, .show>.btn-secondary.dropdown-toggle:focus {
