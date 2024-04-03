@@ -314,3 +314,25 @@ Route::group(['prefix' => 'humidity', 'middleware' => 'auth'], function () {
     Route::get('/view/{id}', '\App\Http\Controllers\HumidityController@view')->name('humidity.view');
     Route::post('/store', '\App\Http\Controllers\HumidityController@store')->name('humidity.store');
 });
+//measurement mistake
+Route::group(['prefix' => 'measurement_mistake', 'middleware' => 'auth'], function () {
+    Route::get('/search', '\App\Http\Controllers\MeasurementMistakeController@search');
+    Route::get('/add/{id}', '\App\Http\Controllers\MeasurementMistakeController@add');
+    Route::get('/list', '\App\Http\Controllers\MeasurementMistakeController@list');
+    Route::get('/list/delete/{id}', '\App\Http\Controllers\MeasurementMistakeController@destory');
+    Route::get('/edit/{id}', '\App\Http\Controllers\MeasurementMistakeController@edit');
+    Route::post('/edit/update/{id}', '\App\Http\Controllers\MeasurementMistakeController@update');
+    Route::get('/view/{id}', '\App\Http\Controllers\MeasurementMistakeController@view');
+    Route::post('/store', '\App\Http\Controllers\MeasurementMistakeController@store');
+});
+//In xaus
+Route::group(['prefix' => 'in_xaus', 'middleware' => 'auth'], function () {
+    Route::get('/list', '\App\Http\Controllers\InXausController@in_xaus_list');
+    Route::get('/add', '\App\Http\Controllers\InXausController@add');
+    Route::get('/list/delete/{id}', '\App\Http\Controllers\InXausController@destory');
+    Route::get('/edit/{id}', '\App\Http\Controllers\InXausController@edit');
+    Route::post('/edit/update/{id}', '\App\Http\Controllers\InXausController@update');
+    Route::get('/view/{id}', '\App\Http\Controllers\InXausController@view');
+    Route::get('/view2/{id}/{i}', '\App\Http\Controllers\InXausController@view2');
+    Route::post('/store', '\App\Http\Controllers\InXausController@store');
+});
