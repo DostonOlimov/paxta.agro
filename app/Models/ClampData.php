@@ -13,4 +13,5 @@ class ClampData  extends Model
 {
     protected $table = 'clamp_data';
 
+
 }

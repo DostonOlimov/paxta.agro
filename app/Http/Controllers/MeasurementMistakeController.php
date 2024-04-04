@@ -10,8 +10,10 @@ use App\Models\Dalolatnoma;
 use App\Models\FinalResult;
 use App\Models\GinBalles;
 use App\Models\Humidity;
+use App\Models\InXaus;
 use App\Models\LaboratoryResult;
 use App\Models\MeasurementMistake;
+use App\Rules\ExsistInXaus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\DefaultModels\MyTableReader;
@@ -103,8 +105,18 @@ class MeasurementMistakeController extends Controller
     {
         $userA = Auth::user();
         $this->authorize('create', Application::class);
+        $request->validate([
+            'number' => ['required'],
+            'date' => ['required', 'date', new ExsistInXaus()],
+        ]);
         $id = $request->input('dalolatnoma_id');
         $number = $request->input('number');
+        $date =  join('-', array_reverse(explode('-', $request->input('date'))));
+        $in_xaus = InXaus::whereDate('date','<=',$date)
+            ->where('state_id',$userA->state_id)
+            ->orderBy('date', 'desc')
+            ->first();
+        $in_xaus_value = $in_xaus->calculateMetrics();
 
         $dalolatnoma = Dalolatnoma::find($id);
 

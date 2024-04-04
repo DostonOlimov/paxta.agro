@@ -45,7 +45,7 @@
                                         <input type="number" class="form-control" value="{{ old('number')}}"  name="number" required id="number">
                                         @if ($errors->has('number'))
                                             <span class="help-block">
-                                                <strong>Bayonnoma raqami noto'g'ri shaklda kiritilgan</strong>
+                                                <strong class="text-danger">Bayonnoma raqami noto'g'ri shaklda kiritilgan</strong>
                                             </span>
                                         @endif
                                     </div>
@@ -61,8 +61,8 @@
                                         </div>
                                         @if ($errors->has('date'))
                                             <span class="help-block">
-                                                <strong style="margin-left:27%;">Sana noto'g'ti shaklda kiritilgan</strong>
-                                            </span>
+                                                    <strong class="text-danger">{{$errors->first('date')}}</strong>
+                                                </span>
                                         @endif
                                     </div>
                                     <div class="form-group col-md-12 col-sm-12 mt-2">

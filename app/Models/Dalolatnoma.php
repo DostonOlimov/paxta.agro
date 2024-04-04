@@ -50,6 +50,39 @@ class Dalolatnoma  extends Model
     {
         return $this->hasMany(FinalResult::class, 'id', 'dalolatnoma_id');
     }
+    public function calculateMetrics(){
+        $results = [];
 
+        // Fetch all data grouped by type
+        $valuesByType = self::select('mic','strength','uniform','fiblength')->whereIn('type', [
+            InXaus::TYPE_MIC,
+            InXaus::TYPE_STRENGTH,
+            InXaus::TYPE_LENGTH,
+            InXaus::TYPE_INIFORMITY
+        ])->get()->groupBy('type');
+
+        foreach ($valuesByType as $type => $values) {
+            $n = $values->count();
+
+            if ($n <= 1) {
+                $results[$type] = null; // If there's only one record or none, return null to avoid division by zero
+            } else {
+                // Calculate the average
+                $average = $values->avg('value');
+
+                // Calculate the sum of squares of differences from the average
+                $sumOfSquares = $values->sum(function ($record) use ($average) {
+                    return pow($record->value - $average, 2);
+                });
+
+                // Calculate the result
+                $result = sqrt(1 / ($n * ($n - 1)) * $sumOfSquares);
+
+                $results[$type] = $result;
+            }
+        }
+
+        return $results;
+    }
 
 }
