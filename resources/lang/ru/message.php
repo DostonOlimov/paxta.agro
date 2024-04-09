@@ -85,7 +85,6 @@ return[
         "Kodi" => "Коди",
         "Seleksiya kodi" => "Код выбора",
         "Seleksiya nomi" => "Название выбора",
-        "Seleksiya turlari" => "Типы выбора",
         "Nav kodi" => "Введите код",
         "Nav nomi" => "Название сорта",
         "Nav ro'yxati" => "Список сортов",

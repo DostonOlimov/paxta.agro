@@ -117,7 +117,7 @@ class InXausController extends Controller
         $userA = Auth::user();
         $dateOfBirth = join('-', array_reverse(explode('-', $request->input('dob'))));
 
-        $types = ['MIC','STR', 'INF', 'LEN']; // Assuming these are your types
+        $types = ['MIC','LEN','INF','STR']; // Assuming these are your types
 
         // Prepare the data array for batch insertion
         $inXausValueData = [];

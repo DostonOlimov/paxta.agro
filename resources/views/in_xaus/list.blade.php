@@ -77,7 +77,7 @@
 									<tr>
                                         <td>{{$offset + $loop->iteration}}</td>
                                         <td> <a href="{!! url('/in_xaus/view/'.$app->id) !!}">{{ $app->date }}</a></td>
-                                        <td>{{ $app->user->state->name}}</td>
+                                        <td>{{ $app->state->name}}</td>
                                         <td>{{ $app->user->name . ' ' . $app->user->lastname}}</td>
                                         <td class="{{ $app->status === 'active' ? 'text-success' : 'text-danger' }}">{{ $app->status}}</td>
 										<td>

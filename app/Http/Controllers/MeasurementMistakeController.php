@@ -2,22 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\InsideQueueJob;
 use App\Models\AktAmount;
 use App\Models\Application;
 use App\Models\ClampData;
 use App\Models\Dalolatnoma;
 use App\Models\FinalResult;
-use App\Models\GinBalles;
-use App\Models\Humidity;
 use App\Models\InXaus;
 use App\Models\LaboratoryResult;
 use App\Models\MeasurementMistake;
 use App\Rules\ExsistInXaus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\DefaultModels\MyTableReader;
-use App\Jobs\ProcessFile;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 
@@ -105,20 +101,23 @@ class MeasurementMistakeController extends Controller
     {
         $userA = Auth::user();
         $this->authorize('create', Application::class);
+        $id = $request->input('dalolatnoma_id');
+        $dalolatnoma = Dalolatnoma::find($id);
+        $state_id = $dalolatnoma->test_program->application->organization->city->state_id;
+
         $request->validate([
             'number' => ['required'],
-            'date' => ['required', 'date', new ExsistInXaus()],
+            'date' => ['required', 'date', new ExsistInXaus($state_id)],
         ]);
-        $id = $request->input('dalolatnoma_id');
+
         $number = $request->input('number');
         $date =  join('-', array_reverse(explode('-', $request->input('date'))));
         $in_xaus = InXaus::whereDate('date','<=',$date)
-            ->where('state_id',$userA->state_id)
+            ->where('state_id',$state_id)
             ->orderBy('date', 'desc')
             ->first();
         $in_xaus_value = $in_xaus->calculateMetrics();
-
-        $dalolatnoma = Dalolatnoma::find($id);
+        $ball_values = $dalolatnoma->calculateDeviations();
 
         $count = ClampData::select(
             DB::raw('AVG(clamp_data.mic) as mic'),
@@ -128,16 +127,8 @@ class MeasurementMistakeController extends Controller
             DB::raw('AVG(clamp_data.fiblength) as fiblength')
             )
             ->where('clamp_data.dalolatnoma_id',$id)
-            ->get();
-        $count = ClampData::select(
-            DB::raw('AVG(clamp_data.mic) as mic'),
-            DB::raw('AVG(clamp_data.staple) as staple'),
-            DB::raw('AVG(clamp_data.strength) as strength'),
-            DB::raw('AVG(clamp_data.uniform) as uniform'),
-            DB::raw('AVG(clamp_data.fiblength) as fiblength')
-        )
-            ->where('clamp_data.dalolatnoma_id',$id)
-            ->get();
+            ->first();
+
         $result = new LaboratoryResult();
         $result->dalolatnoma_id = $id;
         $result->mic = $count->mic;
@@ -147,17 +138,26 @@ class MeasurementMistakeController extends Controller
         $result->fiblength = $count->fiblength;
         $result->save();
 
-        $mistake = new MeasurementMistake();
-        $mistake->dalolatnoma_id = $id;
-        $mistake->number = $number;
-        $mistake->date = join('-', array_reverse(explode('-', $request->input('date'))));
-        $mistake->mic = $count->mic;
-        $mistake->staple = $count->staple;
-        $mistake->strength = $count->strength;
-        $mistake->uniform = $count->uniform;
-        $mistake->fiblength = $count->fiblength;
-        $mistake->save();
-        dd($counts);die();
+        $data_count = FinalResult::where('dalolatnoma_id',$id)->count();
+
+        if($data_count == 0){
+            $counts = ClampData::select('sort', 'class',
+                \DB::raw('count(*) as count'),
+                DB::raw('SUM(akt_amount.amount) as total_amount'),
+                DB::raw('AVG(clamp_data.mic) as mic'),
+                DB::raw('AVG(clamp_data.staple) as staple'),
+                DB::raw('AVG(clamp_data.strength) as strength'),
+                DB::raw('AVG(clamp_data.uniform) as uniform'),
+                DB::raw('AVG(clamp_data.humidity) as humidity')
+            )
+                ->join('akt_amount', function($join) {
+                    $join->on('akt_amount.shtrix_kod', '=', 'clamp_data.gin_bale')
+                        ->on('akt_amount.dalolatnoma_id', '=', 'clamp_data.dalolatnoma_id');
+                })
+                ->where('clamp_data.dalolatnoma_id',$id)
+                ->where('akt_amount.dalolatnoma_id', $id)
+                ->groupBy('sort', 'class')
+                ->get();
             foreach($counts as $count){
                 $result = new FinalResult();
                 $result->dalolatnoma_id = $id;
@@ -173,19 +173,18 @@ class MeasurementMistakeController extends Controller
                 $result->humidity = $count->humidity;
                 $result->save();
             }
+        }
+        $mistake = new MeasurementMistake();
+        $mistake->dalolatnoma_id = $id;
+        $mistake->number = $number;
+        $mistake->date = join('-', array_reverse(explode('-', $request->input('date'))));
+        $mistake->mic = 2 * ($in_xaus_value[InXaus::TYPE_MIC] + $ball_values['mic']);
+        $mistake->fiblength = 2 * ($in_xaus_value[InXaus::TYPE_LENGTH] + $ball_values['fiblength']);
+        $mistake->uniform = 2 * ($in_xaus_value[InXaus::TYPE_INIFORMITY] + $ball_values['uniform']);
+        $mistake->strength = 2 * ($in_xaus_value[InXaus::TYPE_STRENGTH] + $ball_values['strength']);
+        $mistake->save();
 
-        $test = new Humidity();
-        $test->dalolatnoma_id = $test_id;
-        $test->number = $number;
-        $test->date = join('-', array_reverse(explode('-', $request->input('date'))));
-        $test->selection_code = $selection_code;
-        $test->toy_count = $toy_count;
-        $test->party = $party_number;
-        $test->nav = $nav;
-        $test->sinf = $sinf;
-        $test->save();
-
-        return redirect('/humidity/search');
+        return redirect('/measurement_mistake/search');
     }
     public function edit($id)
     {
@@ -215,10 +214,30 @@ class MeasurementMistakeController extends Controller
     }
     public function view($id)
     {
-        $tests = ClampData::where('dalolatnoma_id',$id)->get();
+        $test = MeasurementMistake::with('dalolatnoma.result')->find($id);
+
+        $date = Carbon::parse('2024-04-04');
+
+        $uzbekMonthNames = [
+            '01' => 'yanvar',
+            '02' => 'fevral',
+            '03' => 'mart',
+            '04' => 'aprel',
+            'May' => 'may',
+            'June' => 'iyun',
+            'July' => 'iyul',
+            'August' => 'avgust',
+            'September' => 'sentabr',
+            'October' => 'oktabr',
+            'November' => 'noyabr',
+            'December' => 'dekabr'
+        ];
+
+        $my_date = $date->isoFormat("D") . ' ' . $uzbekMonthNames[$date->isoFormat("MM")] . ' '. $date->isoFormat("Y") ;
+
         return view('measurement_mistake.show', [
-            'results' => $tests,
-            'id' => $id
+            'result' => $test,
+            'date' => $my_date
         ]);
     }
 

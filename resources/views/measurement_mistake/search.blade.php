@@ -8,7 +8,7 @@
             <div class="page-header">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
-                        <i class="fe fe-life-buoy mr-1"></i>&nbsp {{trans('message.Namlikni massaviy nisbatini aniqlash dalolatnomasi')}}
+                        <i class="fe fe-life-buoy mr-1"></i>&nbsp {{trans('message.O\'lchash xatoligini aniqlash dalolatnomasi')}}
                     </li>
                 </ol>
             </div>
@@ -42,9 +42,11 @@
                                         <th class="border-bottom-0 border-top-0">#</th>
                                         <th class="border-bottom-0 border-top-0">To'da (partya) raqami</th>
                                         <th>{{trans('app.Sinov dasturi raqami')}}</th>
-                                        <th>{{trans('app.Sinov bayonnomasi sanasi')}}</th>
                                         <th>{{trans('app.Buyurtmachi tashkilot nomi')}}</th>
-                                        <th>{{trans('app.Sertifikatlanuvchi mahsulot')}}</th>
+                                        <th>{{trans('app.Xatolik(Mic)')}}</th>
+                                        <th>{{trans('app.Xatolik(Strength)')}}</th>
+                                        <th>{{trans('app.Xatolik(Uniformity)')}}</th>
+                                        <th>{{trans('app.Xatolik(Length)')}}</th>
                                         <th>{{trans('app.Action')}}</th>
                                     </tr>
 
@@ -58,9 +60,11 @@
                                             <td>{{$offset + $loop->iteration}}</td>
                                             <td> {{ optional($test->test_program->application->crops)->party_number }}</td>
                                             <td>{{ optional(optional($test->test_program->application)->decision)->number }}</td>
-                                            <td><a href="{!! url('/tests/view/'.$test->test_program->id) !!}">{{ optional(optional($test->test_program)->application)->decision->date }}</td>
                                             <td><a href="{!! url('/organization/view/'.$test->test_program->application->organization_id) !!}">{{ $test->test_program->application->organization->name }}</a></td>
-                                            <td>{{ $test->test_program->application->crops->name->name }}</td>
+                                            <td>{{$test->measurement_mistake ? round(optional($test->measurement_mistake)->mic,2) : ''}}</td>
+                                            <td>{{$test->measurement_mistake ? round(optional($test->measurement_mistake)->strength,1) : '' }}</td>
+                                            <td>{{$test->measurement_mistake ? round(optional($test->measurement_mistake)->uniform,1) : '' }}</td>
+                                            <td>{{$test->measurement_mistake ? round(optional($test->measurement_mistake)->fiblength,3) : ''}}</td>
                                             <td>
                                                 <?php $testid=Auth::User()->id; ?>
                                                 @if($result = $test->measurement_mistake)

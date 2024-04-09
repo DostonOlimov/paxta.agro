@@ -7,6 +7,7 @@ use App\Models\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class Area
@@ -48,41 +49,62 @@ class Dalolatnoma  extends Model
     }
     public function result()
     {
-        return $this->hasMany(FinalResult::class, 'id', 'dalolatnoma_id');
+        return $this->hasMany(FinalResult::class, 'dalolatnoma_id', 'id');
     }
-    public function calculateMetrics(){
-        $results = [];
+    public function measurement_mistake()
+    {
+        return $this->belongsTo(MeasurementMistake::class, 'id', 'dalolatnoma_id');
+    }
+    public function laboratory_result()
+    {
+        return $this->belongsTo(LaboratoryResult::class, 'id', 'dalolatnoma_id');
+    }
+    /**
+     * Calculate standard deviation for specified columns.
+     *
+     * @return array
+     */
+    public function calculateDeviations()
+    {
+        $selected_array = ['mic', 'strength', 'uniform', 'fiblength'];
+        // Retrieve data for mic, strength, uniform, and fiblength columns from the database
+        $valuesByType = self::clamp_data()->select('mic', 'strength', 'uniform',DB::raw('fiblength/100 as fiblength'))->get();
 
-        // Fetch all data grouped by type
-        $valuesByType = self::select('mic','strength','uniform','fiblength')->whereIn('type', [
-            InXaus::TYPE_MIC,
-            InXaus::TYPE_STRENGTH,
-            InXaus::TYPE_LENGTH,
-            InXaus::TYPE_INIFORMITY
-        ])->get()->groupBy('type');
-
-        foreach ($valuesByType as $type => $values) {
-            $n = $values->count();
-
-            if ($n <= 1) {
-                $results[$type] = null; // If there's only one record or none, return null to avoid division by zero
-            } else {
-                // Calculate the average
-                $average = $values->avg('value');
-
-                // Calculate the sum of squares of differences from the average
-                $sumOfSquares = $values->sum(function ($record) use ($average) {
-                    return pow($record->value - $average, 2);
-                });
-
-                // Calculate the result
-                $result = sqrt(1 / ($n * ($n - 1)) * $sumOfSquares);
-
-                $results[$type] = $result;
-            }
+        // Calculate standard deviation for each column
+        $standardDeviations = [];
+        foreach ($selected_array as $select_item){
+            $columnData = $valuesByType->pluck($select_item)->toArray();
+            $standardDeviations[$select_item] = self::calculateStandardDeviation($columnData);
         }
 
-        return $results;
+        return $standardDeviations;
+    }
+
+    /**
+     * Calculate standard deviation for a given column data.
+     *
+     * @param  array  $columnData
+     * @return float|null
+     */
+    protected static function calculateStandardDeviation(array $columnData)
+    {
+        $n = count($columnData);
+
+        if ($n <= 1) {
+            return null; // If there's only one record or none, return null to avoid division by zero
+        }
+
+        // Calculate the average
+        $average = round(array_sum($columnData) / $n,3);
+
+        // Calculate the sum of squares of differences from the average
+        $sumOfSquares = 0;
+        foreach ($columnData as $value) {
+            $sumOfSquares += pow($value - $average, 2);
+        }
+
+        // Calculate the result
+        return sqrt(1 / ($n * ($n - 1)) * $sumOfSquares);
     }
 
 }

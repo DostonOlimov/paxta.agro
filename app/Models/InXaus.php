@@ -42,7 +42,7 @@ class InXaus extends Model
     }
     public function getStatusAttribute()
     {
-        $latestDate = self::latest('date')->value('date');
+        $latestDate = self::where('state_id',$this->state_id)->latest('date')->value('date');
         return $this->date == $latestDate ? 'active' : 'passive';
     }
 
@@ -54,6 +54,10 @@ class InXaus extends Model
     {
         return $this->belongsTo(User::class,'created_by','id');
     }
+    public function state()
+    {
+        return $this->belongsTo(Region::class,'state_id','id');
+    }
 
     public function calculateMetrics(){
         $results = [];
@@ -62,8 +66,8 @@ class InXaus extends Model
         $valuesByType = self::in_xaus_value()->whereIn('type', [
             InXaus::TYPE_MIC,
             InXaus::TYPE_STRENGTH,
+            InXaus::TYPE_INIFORMITY,
             InXaus::TYPE_LENGTH,
-            InXaus::TYPE_INIFORMITY
         ])->get()->groupBy('type');
 
         foreach ($valuesByType as $type => $values) {

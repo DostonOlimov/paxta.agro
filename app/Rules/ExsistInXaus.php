@@ -8,11 +8,18 @@ use Illuminate\Support\Facades\Auth;
 
 class ExsistInXaus implements Rule
 {
+    public $state_id;
+
+    public function __construct($state_id)
+    {
+        $this->state_id = $state_id;
+    }
+
     public function passes($attribute, $value)
     {
         $date =  join('-', array_reverse(explode('-', request()->input('date'))));
         $in_xaus = InXaus::whereDate('date','<=',$date)
-            ->where('state_id',Auth::user()->state_id)
+            ->where('state_id',$this->state_id)
             ->orderBy('date', 'desc')
             ->first();
 
