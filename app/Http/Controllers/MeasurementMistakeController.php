@@ -216,21 +216,21 @@ class MeasurementMistakeController extends Controller
     {
         $test = MeasurementMistake::with('dalolatnoma.result')->find($id);
 
-        $date = Carbon::parse('2024-04-04');
+        $date = Carbon::parse($test->date);
 
         $uzbekMonthNames = [
             '01' => 'yanvar',
             '02' => 'fevral',
             '03' => 'mart',
             '04' => 'aprel',
-            'May' => 'may',
-            'June' => 'iyun',
-            'July' => 'iyul',
-            'August' => 'avgust',
-            'September' => 'sentabr',
-            'October' => 'oktabr',
-            'November' => 'noyabr',
-            'December' => 'dekabr'
+            '05' => 'may',
+            '06' => 'iyun',
+            '07' => 'iyul',
+            '08' => 'avgust',
+            '09' => 'sentabr',
+            '10' => 'oktabr',
+            '11' => 'noyabr',
+            '12' => 'dekabr'
         ];
 
         $my_date = $date->isoFormat("D") . ' ' . $uzbekMonthNames[$date->isoFormat("MM")] . ' '. $date->isoFormat("Y") ;

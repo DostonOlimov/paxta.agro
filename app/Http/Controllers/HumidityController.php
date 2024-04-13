@@ -15,6 +15,7 @@ use App\Models\DefaultModels\tbl_activities;
 use App\Models\Humidity;
 use App\Rules\DifferentsShtrixKod;
 use App\Rules\EqualToyCount;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -112,26 +113,26 @@ class HumidityController extends Controller
     //  store
     public function store(Request $request)
     {
-        $userA = Auth::user();
+        $user = Auth::user();
         $this->authorize('create', Application::class);
-        $test_id = $request->input('dalolatnoma_id');
-        $number = $request->input('number');
-        $selection_code = $request->input('selection_code');
-        $toy_count = $request->input('toy_count');
-        $party_number = $request->input('party_number');
-        $nav = $request->input('nav');
-        $sinf = $request->input('sinf');
 
-        $test = new Humidity();
-        $test->dalolatnoma_id = $test_id;
-        $test->number = $number;
-        $test->date = join('-', array_reverse(explode('-', $request->input('date'))));
-        $test->selection_code = $selection_code;
-        $test->toy_count = $toy_count;
-        $test->party = $party_number;
-        $test->nav = $nav;
-        $test->sinf = $sinf;
-        $test->save();
+        $data = $request->only([
+            'dalolatnoma_id',
+            'number',
+            'selection_code',
+            'party',
+            'toy_count',
+            'toy_amount',
+            'party_number',
+            'nav',
+            'sinf',
+        ]);
+
+        $data['date'] = join('-', array_reverse(explode('-', $request->input('date'))));
+
+        $humidity = new Humidity();
+        $humidity->fill($data);
+        $humidity->save();
 
         return redirect('/humidity/search');
     }
@@ -139,87 +140,38 @@ class HumidityController extends Controller
     public function edit($id)
     {
         $userA = Auth::user();
-        $result = Dalolatnoma::find($id);
-        $test = TestPrograms::find($result->test_program_id);
-        $certificate =  Sertificate::where('final_result_id', '=', $result->id)->first();
-        $gin_balles = GinBalles::where('humidity_id', $id)->get();
+        $result = Humidity::find($id);
         $selection = CropsSelection::get();
 
-        return view('humidity.edit', compact('test', 'result', 'certificate', 'gin_balles','selection'));
+        return view('humidity.edit', compact('result','selection'));
     }
 
 
     // application update
-
     public function update($id, Request $request)
     {
-        $kod_toy = $request->input('kod_toy');
+        $user = Auth::user();
+        $result = Humidity::findOrFail($id);
 
-        $request->validate([
-            'kod_toy.*.1' => 'required|numeric',
-            'kod_toy.*.2' => ['required', 'numeric', new DifferentsShtrixKod(), new EqualToyCount()],
-            'toy_count' => ['required', 'numeric', new EqualToyCount()],
-            'kod_toy.*.4' => ['required', 'numeric', new EqualToyCount()],
-        ]);
+        $result->fill($request->only([
+            'number',
+            'date',
+            'selection_code',
+            'toy_count',
+            'toy_amount',
+            'amount',
+            'party',
+            'nav',
+            'sinf',
+        ]));
 
-        $userA = Auth::user();
-        $result = Dalolatnoma::find($id);
-        $result->number = $request->input('number');
-        if ($result->date != $request->input('date')) {
-            $result->date = join('-', array_reverse(explode('-', $request->input('date'))));
+        if ($result->isDirty('date')) {
+            $result->date = join('-', array_reverse(explode('-', $result->date)));
         }
-        $result->selection_code = $request->input('selection_code');
-        $result->toy_count = $request->input('toy_count');
-        $result->amount = $request->input('amount');
-        $result->party = $request->input('party_number');
-        $result->nav = $request->input('nav');
-        $result->sinf = $request->input('sinf');
+
         $result->save();
-        $akt_amount = AktAmount::where('humidity_id', $id)->sum('amount');
-        if ($akt_amount = 0) {
-            foreach ($kod_toy as $item) {
-                $conditions = ['id' => $item[0]];
-                $data = [
-                    'humidity_id' => $id,
-                    'from_number' => $item[1],
-                    'to_number' => $item[2],
-                    'from_toy' => $item[3],
-                    'to_toy' => $item[4],
-                ];
 
-                GinBalles::updateOrCreate($conditions, $data);
-            }
-
-            AktAmount::where('humidity_id', $id)->delete();
-            $amount = new AktAmount();
-
-            $amounts = [];
-            for ($i = 0; $i < count($kod_toy); $i++) {
-                $from_kod = $kod_toy[$i][0];
-                $to_kod = $kod_toy[$i][1];
-                for ($j = $from_kod; $j <= $to_kod; $j++) {
-                    $amounts[] = [
-                        'humidity_id' => $id,
-                        'shtrix_kod' => $j,
-                    ];
-                }
-            }
-
-            DB::transaction(function () use ($amounts) {
-                AktAmount::insert($amounts);
-            });
-        }
-
-        $active = new tbl_activities;
-        $active->ip_adress = $_SERVER['REMOTE_ADDR'];
-        $active->user_id = $userA->id;
-        $active->action_id = $result->id;
-        $active->action_type = 'edit_humidity';
-        $active->action = "Dalolatnoma o'zgartirildi";
-        $active->time = date('Y-m-d H:i:s');
-        $active->save();
         return redirect('/humidity/search')->with('message', 'Successfully Updated');
-
     }
 
 
@@ -230,9 +182,29 @@ class HumidityController extends Controller
     }
     public function view($id)
     {
-        $tests = Dalolatnoma::find($id);
+        $tests = Humidity::find($id);
+        $date = Carbon::parse($tests->date);
+
+        $uzbekMonthNames = [
+            '01' => 'yanvar',
+            '02' => 'fevral',
+            '03' => 'mart',
+            '04' => 'aprel',
+            '05' => 'may',
+            '06' => 'iyun',
+            '07' => 'iyul',
+            '08' => 'avgust',
+            '09' => 'sentabr',
+            '10' => 'oktabr',
+            '11' => 'noyabr',
+            '12' => 'dekabr'
+        ];
+
+        $my_date = $date->isoFormat("D") . ' - ' . $uzbekMonthNames[$date->isoFormat("MM")] . ' '. $date->isoFormat("Y") ;
+
         return view('humidity.show', [
             'result' => $tests,
+            'date' => $my_date
         ]);
     }
     public function myadd()

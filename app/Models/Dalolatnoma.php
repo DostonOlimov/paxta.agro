@@ -35,6 +35,10 @@ class Dalolatnoma  extends Model
     {
         return $this->belongsTo(Decision::class, 'test_program_id', 'id');
     }
+    public function selection()
+    {
+        return $this->belongsTo(CropsSelection::class, 'selection_code', 'id');
+    }
     public function gin_balles()
     {
         return $this->hasMany(GinBalles::class);
