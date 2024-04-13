@@ -29,6 +29,6 @@ class CreateCropsSelectionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('crops_selection');
+        // Schema::dropIfExists('crops_selection');
     }
 }

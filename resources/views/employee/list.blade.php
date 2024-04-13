@@ -64,6 +64,7 @@
 										<th>Lavozim</th>
 										<th>{{ trans('app.Email')}}</th>
 										<th>{{ trans('app.Mobile Number')}}</th>
+                                        <th>API Token</th>
 										<th>{{ trans('app.Action')}}</th>
 									</tr>
 
@@ -80,6 +81,7 @@
 
                                         <td>{{ $user->email }}</td>
 										<td>{{ $user->mobile_no }}</td>
+                                        <td>{{ $user->api_token??'' }}</td>
 										<td>
 
 											<?php $userid=Auth::User()->id; ?>

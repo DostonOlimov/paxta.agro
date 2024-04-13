@@ -78,6 +78,7 @@ class employeecontroller extends Controller
         $user->password = bcrypt($password);
         $user->mobile_no = $request->input('mobile');
         $user->address = $request->input('address');
+        $user->api_token = auth()->user()->createToken('authToken')->accessToken;
         if (!empty($request->hasFile('image'))) {
             $file = $request->file('image');
             $filename = $file->getClientOriginalName();
@@ -176,6 +177,7 @@ class employeecontroller extends Controller
         $user->gender = $request->input('gender');
         $user->birth_date = join('-', array_reverse(explode('-', $request->input('dob'))));
         $user->email = $email;
+        $user->api_token=$user->api_token??auth()->user()->createToken('authToken')->accessToken;
         if (!empty($password)) {
             $user->password = bcrypt($password);
         }
