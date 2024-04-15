@@ -43,22 +43,22 @@ class ProcessFile implements ShouldQueue
     {
 
         $file = storage_path('app/' . $this->path);
+        $table = new TableReader($file);
 
         $clampedData = ClampData::whereIn('gin_bale', range($this->balles->from_number, $this->balles->to_number))
             ->where('gin_id', $this->gin_id)
             ->where('dalolatnoma_id', $this->balles->dalolatnoma_id)
-            ->get();
+            ->pluck('gin_bale')
+            ->toArray();
 
-        $clampedDataMap = $clampedData->keyBy('gin_bale');
-        $table = new TableReader($file);
-        $my_data = [];
+        $myData = [];
 
         while($record = $table->nextRecord()){
 
             if ($record->gin_id == $this->gin_id and $record->gin_bale >= $this->balles->from_number and $record->gin_bale <= $this->balles->to_number) {
 
-                if (!$clampedDataMap->has($record->gin_bale)) {
-                            $my_data[] = [
+                if (!in_array($record->gin_bale, $clampedData)) {
+                            $myData[] = [
                                 'dalolatnoma_id' => $this->balles->dalolatnoma_id,
                                 'gin_id' => $record->gin_id,
                                 'gin_bale' => $record->gin_bale,
@@ -105,8 +105,9 @@ class ProcessFile implements ShouldQueue
                         }
                     }
                 }
-        if (!empty($my_data)) {
-            ClampData::insert($my_data);
+        if (!empty( $myData )) {
+            // Perform bulk insertion
+            ClampData::insert($myData );
         }
     }
 }

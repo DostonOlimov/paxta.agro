@@ -118,12 +118,12 @@
                                         </div>
 
                                         {{-- select end --}}
-                                        <div class="col-md-4 form-group has-feedback {{ $errors->has('toy_count') ? ' has-error' : '' }}">
+                                        <div class="col-md-4 form-group has-feedback {{ $errors->has('toy_amount') ? ' has-error' : '' }}">
                                             <label for="number" class="form-label ">Olingan na'munalar soni<label class="text-danger">*</label> </label>
-                                            <input type="number" class="form-control" value="{{ old('toy_count')}}"  name="toy_count" required>
-                                            @if ($errors->has('toy_count'))
+                                            <input type="number" class="form-control" value="{{ old('toy_amount')}}"  name="toy_amount" required>
+                                            @if ($errors->has('toy_amount'))
                                                 <span class="help-block">
-                                                    <strong class="text-danger">{{$errors->first('toy_count')}}</strong>
+                                                    <strong class="text-danger">{{$errors->first('toy_amount')}}</strong>
                                                 </span>
                                             @endif
                                         </div>
@@ -139,10 +139,10 @@
                                         </div>
                                     </div>
                                     <div class="certificate row">
-                                        <div class="col-md-4 form-group has-feedback {{ $errors->has('party_number') ? ' has-error' : '' }}">
+                                        <div class="col-md-4 form-group has-feedback {{ $errors->has('party') ? ' has-error' : '' }}">
                                             <label for="number" class="form-label ">To'da p/x №</label>
-                                            <input type="text" class="form-control" maxlength="10" value="{{ $test->party }}"  name="party_number">
-                                            @if ($errors->has('party_number'))
+                                            <input type="text" class="form-control" maxlength="10" value="{{ $test->party }}"  name="party">
+                                            @if ($errors->has('party'))
                                                 <span class="help-block">
                                                     <strong>
                                                         To'da raqami noto'g'ri shaklda kiritilgan</strong>

@@ -15,7 +15,7 @@
                     <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-list"></use>
                 </svg>{{trans('message.Umumiy ro\'yxat')}}</a></li>
 
-        <li class="nav-title">{{trans('message.Bo\'limlar')}}</li>
+        <li class="nav-title">{{trans('message.Sertifikatsiya')}}</li>
 
 
         <li class="nav-item"><a class="nav-link" href="{!! url('/application/list') !!}"> <svg class="nav-icon">
@@ -31,10 +31,22 @@
         <li class="nav-item"><a class="nav-link" href="{!! url('/akt_amount/search') !!}"> <svg class="nav-icon">
                     <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-balance-scale"></use>
                 </svg><?php echo nl2br(trans('message.Og\'irlik bo\'yicha dalolatnomalar')); ?></a></li>
+        <li class="nav-item"><a class="nav-link" href="{!! url('/humidity/search') !!}"> <svg class="nav-icon">
+                    <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-eyedropper"></use>
+                </svg>{{trans('message.Namlik dalolatnomasi')}}</a></li>
+
+        <li class="nav-title">{{trans('message.Laboratoriya')}}</li>
 
         <li class="nav-item"><a class="nav-link" href="{!! url('/hvi/list') !!}"> <svg class="nav-icon">
                     <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-devices"></use>
                 </svg>{{trans('message.HVI ma\'lumotlari')}}</a></li>
+
+        <li class="nav-item"><a class="nav-link" href="{!! url('/humidity_result/search') !!}"> <svg class="nav-icon">
+                    <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-chart"></use>
+                </svg>{{trans('message.Namlik natijalari')}}</a></li>
+        <li class="nav-item"><a class="nav-link" href="{!! url('/measurement_mistake/search') !!}"> <svg class="nav-icon">
+                    <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-clear-all"></use>
+                </svg>{{trans('message.O\'lchash xatoligi')}}</a></li>
         <li class="nav-item"><a class="nav-link" href="{!! url('/akt_laboratory/search') !!}"> <svg class="nav-icon">
                     <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-search"></use>
                 </svg>{{trans('message.Laboratoriya ma\'lumotlari')}}</a></li>
@@ -87,6 +99,9 @@
             <li class="nav-item"><a class="nav-link" href="{!! url('/laboratories/list') !!}"> <svg class="nav-icon">
                         <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-beaker"></use>
                     </svg> {{trans('message.Laboratoriyalar')}}</a></li>
+            <li class="nav-item"><a class="nav-link" href="{!! url('/in_xaus/list') !!}"> <svg class="nav-icon">
+                        <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-filter-x"></use>
+                    </svg> {{trans('message.In Xaus ma\'lumotlari')}}</a></li>
         @if(auth()->user()->role != \App\Models\User::STATE_EMPLOYEE)
         <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
                 <svg class="nav-icon">

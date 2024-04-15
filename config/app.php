@@ -232,6 +232,7 @@ return [
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'Carbon' => Illuminate\Support\Carbon::class,
 
     ],
 

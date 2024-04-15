@@ -18,6 +18,7 @@ use App\Models\DefaultModels\tbl_activities;
 use App\Models\User;
 use App\Rules\DifferentsShtrixKod;
 use App\Rules\EqualToyCount;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -283,8 +284,28 @@ class DalolatnomaController extends Controller
     public function view($id)
     {
         $tests = Dalolatnoma::find($id);
+
+        $date = Carbon::parse($tests->date);
+
+        $uzbekMonthNames = [
+            '01' => 'yanvar',
+            '02' => 'fevral',
+            '03' => 'mart',
+            '04' => 'aprel',
+            '05' => 'may',
+            '06' => 'iyun',
+            '07' => 'iyul',
+            '08' => 'avgust',
+            '09' => 'sentabr',
+            '10' => 'oktabr',
+            '11' => 'noyabr',
+            '12' => 'dekabr'
+        ];
+
+        $my_date = $date->isoFormat("D") . ' - ' . $uzbekMonthNames[$date->isoFormat("MM")] . ' '. $date->isoFormat("Y") ;
         return view('dalolatnoma.show', [
             'result' => $tests,
+            'date' => $my_date
         ]);
     }
     public function myadd()

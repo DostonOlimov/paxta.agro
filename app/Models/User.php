@@ -53,9 +53,9 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function level(): BelongsTo
+    public function state(): BelongsTo
     {
-        return $this->belongsTo(Level::class, 'role');
+        return $this->belongsTo(Region::class, 'state_id');
     }
 
     public function getRegionIdsAttribute()

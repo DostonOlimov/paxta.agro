@@ -211,4 +211,5 @@ return[
     "Tasdiqlash" => "Tasdiqlash",
     "Tasdiqlangan" => "Tasdiqlangan",
 
+
 ];

@@ -1,6 +1,22 @@
 <?php
 
 return[
+
+    'months' => [
+        1 => 'Yanvar',
+        2 => 'Fevral',
+        3 => 'Mart',
+        4 => 'Aprel',
+        5 => 'May',
+        6 => 'Iyun',
+        7 => 'Iyul',
+        8 => 'Avgust',
+        9 => 'Sentabr',
+        10 => 'Oktabr',
+        11 => 'Noyabr',
+        12 => 'Dekabr',
+    ],
+
     //APP Menu page
     'Welcome'=>'Xush kelibsiz',
     'Inventory'=>'Inventarizatsiya',
@@ -83,10 +99,6 @@ return[
     'Supplier'=>'Yetkazib beruvchi',
     "Supplier List"=>"Yetkazib beruvchilar ro'yxati",
     "Add Supplier"=>"Yetkazib beruvchi qo'shish",
-    'Image'=>'Image',
-    'First Name'=>'Ismi',
-    'Last Name'=>'Familiya',
-    'Email'=>'Email',
     'Action'=>'Harakat',
     'View'=>"Ko'rish",
     'Edit'=>"O'zgartirish",
@@ -138,7 +150,6 @@ return[
         "Kodi" => "Kodi",
         "Seleksiya kodi" => "Seleksiya kodi",
         "Seleksiya nomi" => "Seleksiya nomi",
-        "Seleksiya turlari" => "Seleksiya turlari",
         "Nav kodi" => "Nav kodi",
         "Nav nomi" => "Nav nomi",
         "Nav ro'yxati" => "Nav ro'yxati",
