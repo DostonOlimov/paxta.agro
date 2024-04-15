@@ -15,4 +15,8 @@ class Files extends Model
         'app_id',
         'name'
     ];
+    public function application()
+    {
+        return $this->belongsTo(Application::class, 'app_id', 'id');
+    }
 }
