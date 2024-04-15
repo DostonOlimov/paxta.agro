@@ -74,7 +74,7 @@ class AppOnlineController extends Controller
         $application->status = Application::STATUS_FINISHED;
         $application->data = $request->input('data')??null;
         $application->type = $request->input('type')??1;
-        $application->created_by = $userA->id;
+        $application->created_by =$request->input('user_id');
         $application->save();
 
         if ($application) {
