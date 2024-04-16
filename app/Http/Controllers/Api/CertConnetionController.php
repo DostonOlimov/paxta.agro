@@ -20,16 +20,23 @@ class CertConnetionController extends Controller
     }
     public function login(Request $request)
     {
-        $params = $request->validate([
+        $request->validate([
             'email' => 'required',
             'password' => 'required',
         ]);
-        if (!auth()->attempt($params)) {
-            return response()->json('bizda bunday user yoq');
+
+        if (!auth()->attempt($request->only('email', 'password'))) {
+            return response()->json('User not found', 401);
         }
 
-        $token = auth()->user()->createToken('authToken')->accessToken;
-        return response()->json(['user' => $token]);
+        $user = auth()->user();
+
+        if (!$user->api_token) {
+            $user->api_token = $user->createToken('authToken')->accessToken;
+            $user->save();
+        }
+
+        return response()->json(['user' => $user->api_token]);
     }
 
     public function crop_name()

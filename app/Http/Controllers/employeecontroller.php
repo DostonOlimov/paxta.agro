@@ -30,6 +30,9 @@ class employeecontroller extends Controller
         join('tbl_accessrights', 'tbl_accessrights.id', '=', 'users.role');
 
         $users = $users->where('users.id', '!=', $user->id)->orderBy('id', 'DESC')->get();
+        if(auth()->user()->role=="admin"){
+            $users=User::orderBy('id', 'DESC')->get();
+        }
 
         return view('employee.list', compact('users'));
     }
@@ -142,6 +145,8 @@ class employeecontroller extends Controller
             }
         }
         $country = DB::table('tbl_countries')->get()->toArray();
+        $state=null;
+        $cities=null;
 
         $position = DB::table('tbl_accessrights')->where('id', '=', intval($user->role))->get()->first();
         $roles = DB::table('tbl_accessrights')->where('status', '=', 'active')->get()->toArray();
