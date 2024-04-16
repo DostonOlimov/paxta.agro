@@ -21,6 +21,17 @@ class Application extends Model
 
     protected $table = 'applications';
 
+    protected $fillable = [
+        'crop_data_id',
+        'organization_id',
+        'prepared_id',
+        'type',
+        'date',
+        'data',
+        'status',
+        'created_by',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class, 'created_by');
@@ -47,6 +58,10 @@ class Application extends Model
     public function decision()
     {
         return $this->belongsTo(Decision::class, 'id','app_id');
+    }
+    public function files()
+    {
+        return $this->belongsTo(Files::class, 'id','app_id');
     }
     public static function getType($type = null)
     {

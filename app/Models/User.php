@@ -6,7 +6,9 @@ use App\Models\Area;
 use App\Models\Level;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
+use Laravel\Passport\HasApiTokens;
 
 /**
  * Class User
@@ -21,6 +23,7 @@ use Illuminate\Support\Str;
  */
 class User extends Authenticatable
 {
+    use HasApiTokens, Notifiable;
     const STATUS_ACTIVE = 1;
     const STATUS_INACTIVE = 0;
 

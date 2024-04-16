@@ -2,9 +2,10 @@
 
 namespace App\Providers;
 
+use App\Mixins\ResponseMixin;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
-use Carbon\Carbon;
+use Illuminate\Routing\ResponseFactory;
 
 class  AppServiceProvider extends ServiceProvider
 {
@@ -26,5 +27,6 @@ class  AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Paginator::useBootstrap();
+        ResponseFactory::mixin(new ResponseMixin());
     }
 }

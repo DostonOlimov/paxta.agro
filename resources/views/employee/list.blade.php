@@ -58,6 +58,7 @@
 
 									<tr>
 										<th>#</th>
+                                        <th>API Token</th>
 										<th>{{ trans('app.Image')}}</th>
 										<th>{{ trans('app.First Name')}}</th>
 										<th>{{ trans('app.Last Name')}}</th>
@@ -73,11 +74,17 @@
 									@foreach($users as $user)
 									<tr>
 										<td>{{ $i }}</td>
+                                        <td>
+                                            @if ($user->api_token)
+                                                <button class="copy-btn btn btn-primary" data-token="{{ $user->api_token }}">
+                                                    Copy to API
+                                                </button>
+                                            @endif
+                                        </td>
 										<td><img src="{{ URL::asset('public/employee/'.$user->image) }}"  width="50px" height="50px" class="img-circle"></td>
 										<td>{{ $user->name }}</td>
 										<td>{{ $user->lastname }}</td>
 										<td>{{ $user->position }}</td>
-
                                         <td>{{ $user->email }}</td>
 										<td>{{ $user->mobile_no }}</td>
 										<td>
@@ -114,6 +121,30 @@
 @endif
  <!-- /page content -->
 <script src="{{ URL::asset('vendors/jquery/dist/jquery.min.js') }}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        function copyTextToClipboard(text) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                alert('API token copied to clipboard!');
+            } catch (err) {
+                console.error('Unable to copy:', err);
+            }
+            document.body.removeChild(textArea);
+        }
+
+        document.querySelectorAll('.copy-btn').forEach(function(button) {
+            button.addEventListener('click', function() {
+                const token = button.getAttribute('data-token');
+                copyTextToClipboard(token);
+            });
+        });
+    });
+</script>
 
 <script>
  $('body').on('click', '.sa-warning', function() {

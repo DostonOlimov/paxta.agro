@@ -30,6 +30,9 @@ class employeecontroller extends Controller
         join('tbl_accessrights', 'tbl_accessrights.id', '=', 'users.role');
 
         $users = $users->where('users.id', '!=', $user->id)->orderBy('id', 'DESC')->get();
+        if(auth()->user()->role=="admin"){
+            $users=User::orderBy('id', 'DESC')->get();
+        }
 
         return view('employee.list', compact('users'));
     }
@@ -78,6 +81,7 @@ class employeecontroller extends Controller
         $user->password = bcrypt($password);
         $user->mobile_no = $request->input('mobile');
         $user->address = $request->input('address');
+        $user->api_token = auth()->user()->createToken('authToken')->accessToken;
         if (!empty($request->hasFile('image'))) {
             $file = $request->file('image');
             $filename = $file->getClientOriginalName();
@@ -141,6 +145,8 @@ class employeecontroller extends Controller
             }
         }
         $country = DB::table('tbl_countries')->get()->toArray();
+        $state=null;
+        $cities=null;
 
         $position = DB::table('tbl_accessrights')->where('id', '=', intval($user->role))->get()->first();
         $roles = DB::table('tbl_accessrights')->where('status', '=', 'active')->get()->toArray();
@@ -176,6 +182,7 @@ class employeecontroller extends Controller
         $user->gender = $request->input('gender');
         $user->birth_date = join('-', array_reverse(explode('-', $request->input('dob'))));
         $user->email = $email;
+        $user->api_token=$user->api_token??auth()->user()->createToken('authToken')->accessToken;
         if (!empty($password)) {
             $user->password = bcrypt($password);
         }
