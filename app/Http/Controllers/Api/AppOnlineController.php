@@ -22,13 +22,13 @@ class AppOnlineController extends Controller
     {
         $rules = [
             'name_id' => 'required',
-            'country_id' => 'required|numeric',
+            'country_id' => 'nullable|numeric',
             'kodtnved' => 'nullable|numeric',
             'party_number' => 'required|numeric',
             'measure_type' => 'nullable|numeric',
-            'amount' => 'required|numeric',
+            'amount' => 'nullable|numeric',
             'year' => 'required|numeric',
-            'toy_count' => 'numeric',
+            'toy_count' => 'nullable|numeric',
             'data'=>'nullable',
             'user_id' => 'required|numeric',
             'organization_id' => 'required|numeric',
