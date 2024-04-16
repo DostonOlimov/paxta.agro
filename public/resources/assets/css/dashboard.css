@@ -291,6 +291,7 @@ body {
 .application__title {
     display: flex;
     align-items: center;
+    justify-content: center;
     column-gap: 18px;
     margin-bottom: 30px;
     font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
@@ -314,7 +315,6 @@ body {
 }
 
 .map_statistcs__regions {
-    cursor: pointer;
     width: 100% !important;
     background-color: #fff;
     min-height: 800px;
@@ -324,7 +324,6 @@ body {
 }
 .map_statistcs__container-child {
     align-items: center;
-    cursor: pointer;
     background-color: #fff;
     height: fit-content;
     padding: 20px 50px 35px 50px;
@@ -369,6 +368,65 @@ body {
     font-size: 24px;
     line-height: 4px;
     margin-top: 12px;
+}
+
+.state-dropdown {
+    font-size: 18px;
+    width: 100%;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: #fff;
+    border: 2px solid #90b8f8;
+    border-radius: 7px;
+    height: 55px;
+    padding: 12px 32px 12px 16px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    position: relative;
+}
+
+.state-dropdown:focus {
+    border-radius: 0;
+    border-color: #4b78bf !important;
+}
+.state-dropdown:hover {
+    border-color: #397eee;
+}
+.map_statistcs__regions__stats {
+    width: 100%;
+}
+.map_statistcs__regions__stats li {
+    margin: 0 -50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 18px 49px;
+    background-color: #fff;
+    border-left: 3px solid transparent;
+    transition: all 0.3s ease-in-out;
+    font-size: 17px;
+    text-transform: uppercase;
+    line-height: normal;
+    letter-spacing: -0.5px;
+    font-weight: 600;
+}
+
+.map_statistcs__regions__stats li:hover {
+    border-left: 3px solid #397eee;
+    background: #1971ff30;
+}
+.map_statistcs__regions__stats li svg {
+    width: 38px;
+    margin-right: 20px;
+}
+.map_statistcs__regions__stats li p {
+    margin: 0;
+}
+.map_statistcs__regions__stats li span {
+    margin-left: auto; 
 }
 
 /* .circle-persentages__circle svg {
