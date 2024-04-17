@@ -7,6 +7,7 @@ use App\Models\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use PhpOffice\PhpSpreadsheet\Calculation\LookupRef\Selection;
 
 /**
  * Class Area
@@ -20,11 +21,27 @@ class Humidity  extends Model
 
 {
     protected $table = 'humidity';
+    protected $fillable = [
+        'id',
+        'dalolatnoma_id',
+        'number',
+        'date',
+        'toy_amount',
+        'toy_count',
+        'party',
+        'selection_code',
+        'sinf',
+        'nav'
+    ];
 
 
     public function dalolatnoma(): BelongsTo
     {
         return $this->belongsTo(Dalolatnoma::class, 'dalolatnoma_id', 'id');
+    }
+    public function selection(): BelongsTo
+    {
+        return $this->belongsTo(CropsSelection::class, 'selection_code', 'id');
     }
 
 }

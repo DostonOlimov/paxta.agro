@@ -31,15 +31,16 @@
         <li class="nav-item"><a class="nav-link" href="{!! url('/akt_amount/search') !!}"> <svg class="nav-icon">
                     <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-balance-scale"></use>
                 </svg><?php echo nl2br(trans('message.Og\'irlik bo\'yicha dalolatnomalar')); ?></a></li>
+        <li class="nav-item"><a class="nav-link" href="{!! url('/humidity/search') !!}"> <svg class="nav-icon">
+                    <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-eyedropper"></use>
+                </svg>{{trans('message.Namlik dalolatnomasi')}}</a></li>
+
+        <li class="nav-title">{{trans('message.Laboratoriya')}}</li>
 
         <li class="nav-item"><a class="nav-link" href="{!! url('/hvi/list') !!}"> <svg class="nav-icon">
                     <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-devices"></use>
                 </svg>{{trans('message.HVI ma\'lumotlari')}}</a></li>
 
-        <li class="nav-title">{{trans('message.Laboratoriya')}}</li>
-        <li class="nav-item"><a class="nav-link" href="{!! url('/humidity/search') !!}"> <svg class="nav-icon">
-                    <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-eyedropper"></use>
-                </svg>{{trans('message.Namlik dalolatnomasi')}}</a></li>
         <li class="nav-item"><a class="nav-link" href="{!! url('/humidity_result/search') !!}"> <svg class="nav-icon">
                     <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-chart"></use>
                 </svg>{{trans('message.Namlik natijalari')}}</a></li>
