@@ -204,5 +204,42 @@ class ApplicationController extends Controller
         return view('application.show', compact('user','company'));
     }
 
+    public function accept($id)
+    {
+        $app = Application::find($id);
+        $this->authorize('update', $app);
+        $app->status = Application::STATUS_ACCEPTED;
+        $app->save();
+        return redirect('application/list')->with('message', 'Successfully Submitted');
+    }
+    public function reject(Request $request, $id)
+    {
+        // $app = Application::find($id);
+
+        // return view('application.reject', compact('app'));
+
+        $app = Application::find($id);
+        $app->status = Application::STATUS_REJECTED;
+        $app->save();
+        return redirect('application/list')->with('message', 'Successfully Submitted');
+    }
+    public function reject_store(Request $request)
+    {
+        $app_id = $request->input('app_id');
+        // $reason = $request->input('reason');
+        $app = Application::find($app_id);
+        $this->authorize('accept', $app);
+        $app->status = Application::STATUS_REJECTED;
+        $app->save();
+        // $changes = new AppStatusChanges();
+        // $changes->app_id = $app_id;
+        // $changes->status = Application::STATUS_REJECTED;
+        // $changes->comment = $reason;
+        // $changes->user_id = Auth::user()->id;
+        // $changes->save();
+
+        return redirect('application/list')->with('message', 'Successfully Submitted');
+    }
+
 }
 

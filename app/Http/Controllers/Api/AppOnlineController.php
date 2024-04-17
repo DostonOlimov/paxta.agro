@@ -71,7 +71,7 @@ class AppOnlineController extends Controller
         $application->prepared_id = $request->input('prepared_id');
         $application->type = Application::TYPE_1;
         $application->date = $now;
-        $application->status = Application::STATUS_FINISHED;
+        $application->status = Application::STATUS_NEW;
         $application->data = $request->input('data')??null;
         $application->type = $request->input('type')??1;
         $application->created_by =$request->input('user_id');
