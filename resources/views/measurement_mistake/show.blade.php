@@ -1,14 +1,17 @@
 @extends('layouts.app')
 @section('styles')
     <style>
-        #my_table th {
+        table th {
             padding: 5px 5px ;!important;
             font-weight: bold;
             font-size: 16px;
         }
-        #my_table td {
+        table td {
             padding: 5px 5px ;!important;
             font-size: 16px;
+        }
+        .my_text_center{
+            padding-top: 50px;!important;
         }
 
         .container-layout {
@@ -63,23 +66,11 @@
         .div3 {
             grid-area: 1 / 3 / 2 / 4;
         }
-        .div4 {
-            grid-area: 2 / 1 / 3 / 2;
-        }
-        .div5 {
-            grid-area: 2 / 3 / 3 / 4;
-        }
         .div6 {
             grid-area: 3 / 1 / 4 / 2;
         }
         .div7 {
             grid-area: 3 / 3 / 4 / 4;
-        }
-        .div8 {
-            grid-area: 4 / 1 / 5 / 2;
-        }
-        .div9 {
-            grid-area: 4 / 3 / 5 / 4;
         }
         .div10 {
             grid-area: 5 / 1 / 6 / 2;
@@ -114,13 +105,15 @@
         .my_svg {
             position: absolute;
             z-index: 2;
-            top: 1px;
             width: 8px;
             height: 15px;
             border-radius: 25px;
-            background-color: #3f51b5;
+            border: 4px solid #3f51b5;
         }
-
+        .centered-div{
+            padding-top: 70px;
+            text-align: center;
+        }
     </style>
 @endsection
 @section('content')
@@ -217,12 +210,13 @@
                                                         @php
                                                             $length = round($result->dalolatnoma->laboratory_result->fiblength / 100,2);
                                                             $m_length = round($result->fiblength,3);
+                                                            $dif_length = (1.17 - ($length+$m_length)) - (($length-$m_length) - 1.08)
                                                         @endphp
                                                         <td>Yuqori o'rtacha uzunlik,(dyuym)</td>
-                                                        <td>{{$length}}</td>
-                                                        <td>{{$m_length}}</td>
+                                                        <td>{{ $length }}</td>
+                                                        <td>{{ $m_length }}</td>
                                                         <td>O'zDSt 604, 2-jadval</td>
-                                                        <td>1,11 dan 1,17 gacha</td>
+                                                        <td>1,08 dan 1,17 gacha</td>
                                                         <td>
                                                             <div class="container-layout">
                                                                 <div class="layout-left">
@@ -257,32 +251,38 @@
                                                                                     <path d="M20 15h8v200h-8z" />
                                                                                 </g>
                                                                             </svg>
-{{--                                                                            <div class="my_svg"></div>--}}
+                                                                            <div class="my_svg" style="@if($dif_length >= 0) top:10px;@else bottom:2px; @endif"></div>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="div2">{{round($length + $m_length,3)}}</div>
-                                                                    <div class="div3">{{round($length + $m_length,3)}}</div>
+                                                                    <div class="div2">{{ $length + $m_length }}</div>
+                                                                    <div class="div3">{{ $length + $m_length }}</div>
 
-                                                                    <div class="div6">{{$length}}</div>
-                                                                    <div class="div7">{{$length}}</div>
+                                                                    <div class="div6">{{ $length }}</div>
+                                                                    <div class="div7">{{ $length }}</div>
 
-                                                                    <div class="div10">{{round($length - $m_length,3)}}</div>
-                                                                    <div class="div11">{{round($length - $m_length,3)}}</div>
+                                                                    <div class="div10">{{ $length - $m_length }}</div>
+                                                                    <div class="div11">{{ $length - $m_length }}</div>
                                                                 </div>
-                                                                <div class="layout-right-bottom">1.13</div>
+                                                                <div class="layout-right-bottom">1.08</div>
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        <td>muvofiq</td>
+                                                        <td>
+                                                            <div class="centered-div">
+                                                                @if($length + $m_length <= 1.17 and $length - $m_length >= 1.08)
+                                                                    {{"muvofiq"}} @else <span class="text-danger"> {{"nomuvofiq"}} </span>@endif
+                                                            </div>
+                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         @php
-                                                            $mic = round($result->dalolatnoma->laboratory_result->mic,1);
-                                                            $m_mic= round($result->mic,2);
+                                                            $mic = round($result->dalolatnoma->laboratory_result->mic, 2);
+                                                            $m_mic= round($result->mic, 2);
+                                                            $dif_mic = (4.9 - ($mic+$m_mic)) - (($mic-$m_mic) - 3.5)
                                                         @endphp
                                                         <td>Mikroneer</td>
-                                                        <td>{{$mic}}</td>
-                                                        <td>{{$m_mic}}</td>
+                                                        <td>{{ round($mic, 1) }}</td>
+                                                        <td>{{ $m_mic }}</td>
                                                         <td>O'zDSt б04 п.5.2.2</td>
                                                         <td>3,5 ± 4,9</td>
                                                         <td>
@@ -319,33 +319,38 @@
                                                                                         <path d="M20 15h8v200h-8z" />
                                                                                     </g>
                                                                                 </svg>
-
-{{--                                                                                <div class="my_svg"></div>--}}
+                                                                                <div class="my_svg" style="@if($dif_mic >= 0) top:10px;@else bottom:2px; @endif"></div>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="div2">{{round($mic + $m_mic,2)}}</div>
-                                                                        <div class="div3">{{round($mic + $m_mic,2)}}</div>
+                                                                        <div class="div2">{{ $mic + $m_mic }}</div>
+                                                                        <div class="div3">{{ $mic + $m_mic }}</div>
 
-                                                                        <div class="div6">{{round($mic, 1)}}</div>
-                                                                        <div class="div7">{{round($mic, 1)}}</div>
+                                                                        <div class="div6">{{ $mic }}</div>
+                                                                        <div class="div7">{{ $mic }}</div>
 
-                                                                        <div class="div10">{{round($mic - $m_mic,2)}}</div>
-                                                                        <div class="div11">{{round($mic - $m_mic,2)}}</div>
+                                                                        <div class="div10">{{ $mic - $m_mic }}</div>
+                                                                        <div class="div11">{{ $mic - $m_mic }}</div>
                                                                     </div>
                                                                     <div class="layout-right-bottom">3.5</div>
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        <td>muvofiq</td>
+                                                        <td>
+                                                            <div class="centered-div">
+                                                                @if($mic + $m_mic <= 4.9 and $mic - $m_mic >= 3.5)
+                                                                    {{"muvofiq"}} @else <span class="text-danger"> {{"nomuvofiq"}} </span> @endif
+                                                            </div>
+                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         @php
                                                             $uniform = round($result->dalolatnoma->laboratory_result->uniform,1);
                                                             $m_uniform= round($result->uniform,1);
+                                                            $dif_uniform = (86 - ($uniform+$m_uniform)) - (($uniform-$m_uniform) - 77)
                                                         @endphp
                                                         <td>Uzunlik bo'ylab bir xillik indeksi,%</td>
-                                                        <td>{{$uniform}}</td>
-                                                        <td>{{$m_uniform}}</td>
+                                                        <td>{{ $uniform }}</td>
+                                                        <td>{{ $m_uniform }}</td>
                                                         <td>O‘zDSt 604 Tahrir 1, 5-jadval</td>
                                                         <td>77 ± 86,0 va undan yuqori</td>
                                                         <td>
@@ -382,33 +387,38 @@
                                                                                         <path d="M20 15h8v200h-8z" />
                                                                                     </g>
                                                                                 </svg>
-
-{{--                                                                                <div class="my_svg"></div>--}}
+                                                                                <div class="my_svg" style="@if($dif_uniform >= 0) top:10px;@else bottom:2px; @endif"></div>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="div2">{{round($uniform + $m_uniform,2)}}</div>
-                                                                        <div class="div3">{{round($uniform + $m_uniform,2)}}</div>
+                                                                        <div class="div2">{{ $uniform + $m_uniform }}</div>
+                                                                        <div class="div3">{{ $uniform + $m_uniform }}</div>
 
-                                                                        <div class="div6">{{$uniform}}</div>
-                                                                        <div class="div7">{{$uniform}}</div>
+                                                                        <div class="div6">{{ $uniform }}</div>
+                                                                        <div class="div7">{{ $uniform }}</div>
 
-                                                                        <div class="div10">{{round($uniform - $m_uniform,2)}}</div>
-                                                                        <div class="div11">{{round($uniform - $m_uniform,2)}}</div>
+                                                                        <div class="div10">{{ $uniform - $m_uniform }}</div>
+                                                                        <div class="div11">{{ $uniform - $m_uniform }}</div>
                                                                     </div>
                                                                     <div class="layout-right-bottom">77</div>
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        <td>muvofiq</td>
+                                                        <td>
+                                                            <div class="centered-div">
+                                                                @if($uniform + $m_uniform <= 86 and $uniform - $m_uniform >= 77)
+                                                                    {{"muvofiq"}} @else <span class="text-danger"> {{"nomuvofiq"}} </span> @endif
+                                                            </div>
+                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         @php
                                                             $strength = round($result->dalolatnoma->laboratory_result->strength,1);
                                                             $m_strength = round($result->strength,1);
+                                                            $dif_strength = (33 - ($strength+$m_strength)) - (($strength-$m_strength) - 23)
                                                         @endphp
                                                         <td>Kuch gf/tex</td>
-                                                        <td>{{$strength}}</td>
-                                                        <td>{{$m_strength}}</td>
+                                                        <td>{{ $strength }}</td>
+                                                        <td>{{ $m_strength }}</td>
                                                         <td>O‘zDSt 604 Tahrir 1, 4-jadval</td>
                                                         <td>23 ± 33 va undan yuqori</td>
                                                         <td>
@@ -445,28 +455,38 @@
                                                                                         <path d="M20 15h8v200h-8z" />
                                                                                     </g>
                                                                                 </svg>
-{{--                                                                                <div class="my_svg"></div>--}}
+                                                                                <div class="my_svg" style="@if($dif_strength >= 0) top:10px;@else bottom:2px; @endif"></div>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="div2">{{round($strength + $m_strength,2)}}</div>
-                                                                        <div class="div3">{{round($strength + $m_strength,2)}}</div>
+                                                                        <div class="div2">{{ $strength + $m_strength }}</div>
+                                                                        <div class="div3">{{ $strength + $m_strength }}</div>
 
-                                                                        <div class="div6">{{$strength}}</div>
-                                                                        <div class="div7">{{$strength}}</div>
+                                                                        <div class="div6">{{ $strength }}</div>
+                                                                        <div class="div7">{{ $strength }}</div>
 
-                                                                        <div class="div10">{{round($strength - $m_strength,2)}}</div>
-                                                                        <div class="div11">{{round($strength - $m_strength,2)}}</div>
+                                                                        <div class="div10">{{ $strength - $m_strength }}</div>
+                                                                        <div class="div11">{{ $strength - $m_strength }}</div>
                                                                     </div>
                                                                     <div class="layout-right-bottom">23</div>
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        <td>muvofiq</td>
+                                                        <td>
+                                                            <div class="centered-div">
+                                                                @if($strength + $m_strength <= 33 and $strength - $m_strength >= 23)
+                                                                    {{"muvofiq"}} @else <span class="text-danger"> {{"nomuvofiq"}} </span> @endif
+                                                            </div>
+                                                        </td>
                                                     </tr>
                                                     <tr>
+                                                        @php
+                                                            $humidity = round($result->dalolatnoma->laboratory_result->humidity , 2);
+                                                            $m_humidity = round($result->humidity , 2);
+                                                            $dif_humidity = (8.5 - ($humidity+$m_humidity)) - (($humidity-$m_humidity) - 5)
+                                                        @endphp
                                                         <td>Namlikning massa nisbati, %</td>
-                                                        <td>2</td>
-                                                        <td>-</td>
+                                                        <td >{{ $humidity }}%</td>
+                                                        <td>{{ $m_humidity }}</td>
                                                         <td>O'zDSt 604 п.5.7</td>
                                                         <td>5,0 ± 8,5 %</td>
                                                         <td>
@@ -476,7 +496,7 @@
                                                                     <div class="layout__child-element-left">O'rtacha</div>
                                                                 </div>
                                                                 <div class="layout-right-main">
-                                                                    <div class="layout-right-top">4.9</div>
+                                                                    <div class="layout-right-top">8.5</div>
                                                                     <div class="layout-right">
 
                                                                         <div class="div1">
@@ -503,27 +523,33 @@
                                                                                         <path d="M20 15h8v200h-8z" />
                                                                                     </g>
                                                                                 </svg>
-{{--                                                                                <div class="my_svg"></div>--}}
+                                                                                <div class="my_svg" style="@if($dif_humidity >= 0) top:10px;@else bottom:2px; @endif"></div>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="div2">{{round(($result->dalolatnoma->laboratory_result->mic + $result->mic),2)}}</div>
-                                                                        <div class="div3">{{round(($result->dalolatnoma->laboratory_result->mic + $result->mic),2)}}</div>
+                                                                        <div class="div2">{{ $humidity + $m_humidity }}</div>
+                                                                        <div class="div3">{{ $humidity + $m_humidity }}</div>
 
-                                                                        <div class="div6">{{round($result->dalolatnoma->laboratory_result->mic ,2)}}</div>
-                                                                        <div class="div7">{{round($result->dalolatnoma->laboratory_result->mic ,2)}}</div>
+                                                                        <div class="div6">{{ $m_humidity }}</div>
+                                                                        <div class="div7">{{ $m_humidity }}</div>
 
-                                                                        <div class="div10">{{round(($result->dalolatnoma->laboratory_result->mic - $result->mic),2)}}</div>
-                                                                        <div class="div11">{{round(($result->dalolatnoma->laboratory_result->mic - $result->mic),2)}}</div>
+                                                                        <div class="div10">{{ $humidity - $m_humidity }}</div>
+                                                                        <div class="div11">{{ $humidity - $m_humidity }}</div>
                                                                     </div>
-                                                                    <div class="layout-right-bottom">3.5</div>
+                                                                    <div class="layout-right-bottom">5.0</div>
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        <td>muvofiq</td>
+                                                        <td class="text-center">
+                                                            <div class="centered-div">
+                                                                @if($humidity + $m_humidity <= 8.5 and $humidity - $m_humidity >= 5.0)
+                                                                   {{"muvofiq"}} @else <span class="text-danger"> {{"nomuvofiq"}} </span> @endif
+                                                            </div>
+                                                        </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
                                             </div>
+                                                <div>Klassiyor: {{$result->created_by}}</div>
                                         </div>
                                     </div>
                                         <div class="py-3">

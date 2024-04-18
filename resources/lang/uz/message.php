@@ -56,6 +56,17 @@ return[
     'Hududlar'=>'Hududlar',
     'Viloyatlar'=>'Viloyatlar',
     'Shaxar va tumanlar'=>'Shaxar va tumanlar',
+    //tarjima qilish kerak boshi
+    'Namlik dalolatnomasi'=> 'Namlik dalolatnomasi',
+    'Namlik natijalari'=> 'Namlik natijalari',
+    'In Xaus ma\'lumotlari'=> 'In Xaus ma\'lumotlari',
+    'O\'lchash xatoligi' => 'O\'lchash xatoligi',
+    'Sertifikatsiya' => 'Sertifikatsiya',
+    'Laboratoriya' => 'Laboratoriya',
+    'Klassiyorlar' => 'Klassiyorlar',
+    'Laboratoriya sozlamalari' => 'Laboratoriya sozlamalari',
+    'O\'lchash xatoligini aniqlash dalolatnomasi' => 'O\'lchash xatoligini aniqlash dalolatnomasi',
+    //tarjima qilish kerak oxiri
 
     'Profile'=>'Profil',
     'Shaxsiy ma\'lumotlar'=>'Shaxsiy ma\'lumotlar',

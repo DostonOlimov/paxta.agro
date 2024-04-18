@@ -8,7 +8,7 @@
             <div class="page-header">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
-                        <i class="fe fe-life-buoy mr-1"></i>&nbsp {{trans('message.O\'lchash xatoligini aniqlash dalolatnomasi')}}
+                        <i class="fe fe-life-buoy mr-1"></i>&nbsp {{trans('message.Namlikni massaviy nisbatini aniqlash natijalari')}}
                     </li>
                 </ol>
             </div>
@@ -26,7 +26,7 @@
                         </div>
                     </div>
                 </div>
-        @endif
+            @endif
         <!-- filter component -->
             <x-filter :crop="$crop" :city="$city" :from="$from" :till="$till"  />
             <!--filter component -->
@@ -40,13 +40,11 @@
                                     <thead>
                                     <tr>
                                         <th class="border-bottom-0 border-top-0">#</th>
-                                        <th class="border-bottom-0 border-top-0">{{trans('app.To\'da (partya) raqami')}}</th>
+                                        <th class="border-bottom-0 border-top-0">To'da (partya) raqami</th>
                                         <th>{{trans('app.Sinov dasturi raqami')}}</th>
+                                        <th>{{trans('app.Sinov bayonnomasi sanasi')}}</th>
                                         <th>{{trans('app.Buyurtmachi tashkilot nomi')}}</th>
-                                        <th>{{trans('app.Xatolik(Mic)')}}</th>
-                                        <th>{{trans('app.Xatolik(Strength)')}}</th>
-                                        <th>{{trans('app.Xatolik(Uniformity)')}}</th>
-                                        <th>{{trans('app.Xatolik(Length)')}}</th>
+                                        <th>{{trans('app.Sertifikatlanuvchi mahsulot')}}</th>
                                         <th>{{trans('app.Action')}}</th>
                                     </tr>
 
@@ -60,18 +58,16 @@
                                             <td>{{$offset + $loop->iteration}}</td>
                                             <td> {{ optional($test->test_program->application->crops)->party_number }}</td>
                                             <td>{{ optional(optional($test->test_program->application)->decision)->number }}</td>
+                                            <td><a href="{!! url('/tests/view/'.$test->test_program->id) !!}">{{ optional(optional($test->test_program)->application)->decision->date }}</td>
                                             <td><a href="{!! url('/organization/view/'.$test->test_program->application->organization_id) !!}">{{ $test->test_program->application->organization->name }}</a></td>
-                                            <td>{{$test->measurement_mistake ? round(optional($test->measurement_mistake)->mic,2) : ''}}</td>
-                                            <td>{{$test->measurement_mistake ? round(optional($test->measurement_mistake)->strength,1) : '' }}</td>
-                                            <td>{{$test->measurement_mistake ? round(optional($test->measurement_mistake)->uniform,1) : '' }}</td>
-                                            <td>{{$test->measurement_mistake ? round(optional($test->measurement_mistake)->fiblength,3) : ''}}</td>
+                                            <td>{{ $test->test_program->application->crops->name->name }}</td>
                                             <td>
-                                                <?php $testid=Auth::User()->id; ?>
-                                                @if($result = $test->measurement_mistake)
-                                                    <a href="{!! url('/measurement_mistake/view/'. $result->id) !!}"><button type="button" class="btn btn-round btn-info">{{ trans('app.View')}}</button></a>
-                                                    <a href="{!! url('/measurement_mistake/edit/'. $result->id) !!}"><button type="button" class="btn btn-round btn-warning">{{ trans('app.Edit')}}</button></a>
+                                            <?php $testid=Auth::User()->id; ?>
+                                                @if($result = $test->humidity_result)
+                                                    <a href="{!! url('/humidity_result/view/'. $result->id) !!}"><button type="button" class="btn btn-round btn-info">{{ trans('app.View')}}</button></a>
+                                                    <a href="{!! url('/humidity_result/edit/'. $result->id) !!}"><button type="button" class="btn btn-round btn-warning">{{ trans('app.Edit')}}</button></a>
                                                 @else
-                                                    <a href="{!! url('/measurement_mistake/add/'. $test->id) !!}"><button type="button" class="btn btn-round btn-success">&nbsp;Dalolatnomani kiritish &nbsp;</button></a>
+                                                    <a href="{!! url('/humidity_result/add/'. $test->id) !!}"><button type="button" class="btn btn-round btn-success">&nbsp;Dalolatnomani kiritish &nbsp;</button></a>
                                                 @endif
                                             </td>
                                         </tr>

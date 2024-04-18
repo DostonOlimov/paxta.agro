@@ -7,6 +7,7 @@ use App\Models\Application;
 use App\Models\ClampData;
 use App\Models\Dalolatnoma;
 use App\Models\FinalResult;
+use App\Models\HumidityResult;
 use App\Models\InXaus;
 use App\Models\LaboratoryResult;
 use App\Models\MeasurementMistake;
@@ -103,6 +104,7 @@ class MeasurementMistakeController extends Controller
         $this->authorize('create', Application::class);
         $id = $request->input('dalolatnoma_id');
         $dalolatnoma = Dalolatnoma::find($id);
+        $humidity_result = HumidityResult::where('dalolatnoma_id',$id)->first();
         $state_id = $dalolatnoma->test_program->application->organization->city->state_id;
 
         $request->validate([
@@ -136,6 +138,7 @@ class MeasurementMistakeController extends Controller
         $result->strength = $count->strength;
         $result->uniform = $count->uniform;
         $result->fiblength = $count->fiblength;
+        $result->humidity = optional($humidity_result)->humidity;
         $result->save();
 
         $data_count = FinalResult::where('dalolatnoma_id',$id)->count();
@@ -170,7 +173,7 @@ class MeasurementMistakeController extends Controller
                 $result->staple = $count->staple;
                 $result->strength = $count->strength;
                 $result->uniform = $count->uniform;
-                $result->humidity = $count->humidity;
+                $result->humidity = optional($humidity_result)->humidity;
                 $result->save();
             }
         }
@@ -182,35 +185,113 @@ class MeasurementMistakeController extends Controller
         $mistake->fiblength = 2 * ($in_xaus_value[InXaus::TYPE_LENGTH] + $ball_values['fiblength']);
         $mistake->uniform = 2 * ($in_xaus_value[InXaus::TYPE_INIFORMITY] + $ball_values['uniform']);
         $mistake->strength = 2 * ($in_xaus_value[InXaus::TYPE_STRENGTH] + $ball_values['strength']);
+        $mistake->humidity = $humidity_result->calculateMistake();
         $mistake->save();
 
         return redirect('/measurement_mistake/search');
     }
     public function edit($id)
     {
-        $tests = AktAmount::where('dalolatnoma_id',$id)->get()->toArray();
-
-        $data1 =  array_chunk($tests, ceil(count($tests)/4));
+        $result = MeasurementMistake::find($id);
 
         return view('measurement_mistake.edit', [
-            'results' => $data1,
+            'result' => $result,
         ]);
     }
 
 
-    public function save_amount(Request $request)
+    public function update($id, Request $request)
     {
 
-        $id = $request->input('id');
-        $amount = $request->input('amount');
-        $result = AktAmount::find($id);
-        if($amount > 0 and $amount < 1000){
-            $result->amount = $amount;
-        }
+        $userA = Auth::user();
+        $this->authorize('create', Application::class);
+        $mistake = MeasurementMistake::with('dalolatnoma.laboratory_result')
+            ->with('dalolatnoma.humidity_result')
+            ->with('dalolatnoma.result')
+            ->find($id);
+        $humidity_result = optional($mistake)->dalolatnoma->humidity_result;
+        $state_id = optional($mistake)->dalolatnoma->test_program->application->organization->city->state_id;
+
+        $request->validate([
+            'number' => ['required'],
+            'date' => ['required', 'date', new ExsistInXaus($state_id)],
+        ]);
+
+        $number = $request->input('number');
+        $date =  join('-', array_reverse(explode('-', $request->input('date'))));
+        $in_xaus = InXaus::whereDate('date','<=',$date)
+            ->where('state_id',$state_id)
+            ->orderBy('date', 'desc')
+            ->first();
+        $in_xaus_value = $in_xaus->calculateMetrics();
+        $ball_values = $mistake->dalolatnoma->calculateDeviations();
+
+        $count = ClampData::select(
+            DB::raw('AVG(clamp_data.mic) as mic'),
+            DB::raw('AVG(clamp_data.staple) as staple'),
+            DB::raw('AVG(clamp_data.strength) as strength'),
+            DB::raw('AVG(clamp_data.uniform) as uniform'),
+            DB::raw('AVG(clamp_data.fiblength) as fiblength')
+        )
+            ->where('clamp_data.dalolatnoma_id',$mistake->dalolatnoma_id)
+            ->first();
+
+        $result = $mistake->dalolatnoma->laboratory_result;
+        $result->mic = $count->mic;
+        $result->staple = $count->staple;
+        $result->strength = $count->strength;
+        $result->uniform = $count->uniform;
+        $result->fiblength = $count->fiblength;
+        $result->humidity = optional($humidity_result)->humidity;
         $result->save();
 
+        $data_count = $mistake->dalolatnoma->result->count();
 
-        return response()->json(['message' => 'Answer saved successfully']);
+        if($data_count == 0){
+            $counts = ClampData::select('sort', 'class',
+                \DB::raw('count(*) as count'),
+                DB::raw('SUM(akt_amount.amount) as total_amount'),
+                DB::raw('AVG(clamp_data.mic) as mic'),
+                DB::raw('AVG(clamp_data.staple) as staple'),
+                DB::raw('AVG(clamp_data.strength) as strength'),
+                DB::raw('AVG(clamp_data.uniform) as uniform'),
+                DB::raw('AVG(clamp_data.humidity) as humidity')
+            )
+                ->join('akt_amount', function($join) {
+                    $join->on('akt_amount.shtrix_kod', '=', 'clamp_data.gin_bale')
+                        ->on('akt_amount.dalolatnoma_id', '=', 'clamp_data.dalolatnoma_id');
+                })
+                ->where('clamp_data.dalolatnoma_id',$mistake->dalolatnoma_id)
+                ->where('akt_amount.dalolatnoma_id',$mistake->dalolatnoma_id)
+                ->groupBy('sort', 'class')
+                ->get();
+            foreach($counts as $count){
+                $result = new FinalResult();
+                $result->dalolatnoma_id = $id;
+                $result->test_program_id = $id;
+                $result->sort = $count->sort;
+                $result->class = $count->class;
+                $result->count = $count->count;
+                $result->amount = $count->total_amount;
+                $result->mic = $count->mic;
+                $result->staple = $count->staple;
+                $result->strength = $count->strength;
+                $result->uniform = $count->uniform;
+                $result->humidity = optional($humidity_result)->humidity;
+                $result->save();
+            }
+        }
+
+        $mistake->number = $number;
+        $mistake->date = join('-', array_reverse(explode('-', $request->input('date'))));
+        $mistake->mic = 2 * ($in_xaus_value[InXaus::TYPE_MIC] + $ball_values['mic']);
+        $mistake->fiblength = 2 * ($in_xaus_value[InXaus::TYPE_LENGTH] + $ball_values['fiblength']);
+        $mistake->uniform = 2 * ($in_xaus_value[InXaus::TYPE_INIFORMITY] + $ball_values['uniform']);
+        $mistake->strength = 2 * ($in_xaus_value[InXaus::TYPE_STRENGTH] + $ball_values['strength']);
+        $mistake->humidity = $humidity_result->calculateMistake();
+        $mistake->save();
+
+        return redirect('/measurement_mistake/search');
     }
     public function view($id)
     {

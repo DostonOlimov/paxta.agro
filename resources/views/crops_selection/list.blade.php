@@ -17,13 +17,15 @@
                 @if(session('message'))
                     <div class="row massage">
                         <div class="col-md-12 col-sm-12 col-xs-12">
-                            <div class="alert @php echo (session('message')=='Cannot Deleted') ? 'alert-danger' : 'alert-success' @endphp text-center">
+                            <div class="alert @php echo (session('message')=='Cannot Deleted' or session('message')=='Duplicate Data') ? 'alert-danger' : 'alert-success' @endphp text-center">
                                 @if(session('message') == 'Successfully Submitted')
                                     <label for="checkbox-10 colo_success"> {{trans('app.Successfully Submitted')}}  </label>
                                 @elseif(session('message')=='Successfully Updated')
                                     <label for="checkbox-10 colo_success"> {{ trans('app.Successfully Updated')}}  </label>
                                 @elseif(session('message')=='Successfully Deleted')
                                     <label for="checkbox-10 colo_success"> {{ trans('app.Successfully Deleted')}}  </label>
+                                @elseif(session('message')=='Duplicate Data')
+                                    <label for="checkbox-10"> {{ trans('app.Duplicate Data')}}  </label>
                                 @elseif(session('message')=='Cannot Deleted')
                                     <label for="checkbox-10 "> {{ trans('app.Cannot Deleted')}}  </label>
                                 @endif

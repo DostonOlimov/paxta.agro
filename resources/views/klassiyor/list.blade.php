@@ -9,7 +9,7 @@
 		<div class="page-header">
 			<ol class="breadcrumb">
 				<li class="breadcrumb-item">
-					<i class="fe fe-life-buoy mr-1"></i>&nbsp {{ trans('message.Buyurtmachilar korxonalar')}}
+					<i class="fe fe-life-buoy mr-1"></i>&nbsp {{trans('message.Klassiyorlar')}}
 				</li>
 			</ol>
 		</div>
@@ -40,14 +40,14 @@
 								<div class="tab_wrapper page-tab">
 									<ul class="tab_list">
 											<li class="active">
-												<a href="{!! url('/organization/list')!!}">
+												<a href="{!! url('/klassiyor/list')!!}">
 													<span class="visible-xs"></span>
 													<i class="fa fa-list fa-lg">&nbsp;</i>
 													 {{ trans('app.Ro\'yxat')}}
 												</a>
 											</li>
 											<li>
-												<a href="{!! url('/organization/add/1')!!}">
+												<a href="{!! url('/klassiyor/add')!!}">
 													<span class="visible-xs"></span>
 													<i class="fa fa-plus-circle fa-lg">&nbsp;</i> <b>
 													{{ trans('app.Qo\'shish')}}</b>
@@ -61,42 +61,38 @@
 								<thead>
 									<tr>
 										<th>#</th>
-										<th>{{trans('app.Korxona nomi')}}</th>
-                                        <th>{{trans('app.Raxbarning ismi-sharifi')}}</th>
-                                        <th>{{trans('app.STIR')}}</th>
-										<th>{{ trans('app.Viloyat')}}</th>
-                                        <th>{{trans('app.Tuman nomi')}}</th>
+										<th>{{trans('app.Klassiyor nomi')}}</th>
+										<th>{{trans('app.Klassiyor kodi')}}</th>
+										<th>{{ trans('app.Viloyat nomi')}}</th>
 										<th>{{ trans('app.Action')}}</th>
 									</tr>
 								</thead>
 								<tbody>
 								<?php $i=1;?>
-								 @foreach($companies as $company)
+								 @foreach($klassiyors as $klassiyor)
 									<tr>
 										<td>{{ $i }}</td>
-                                        <td><a href="{!! url('/organization/view/'.$company->id) !!}"> {{ $company->name }}</a></td>
-                                        <td>{{ $company->owner_name }}</td>
-                                        <td>{{ $company->inn }}</td>
-                                        <td>{{ optional($company->city->region)->name }}</td>
-										<td>{{ optional($company->city)->name }}</td>
+										<td>{{ $klassiyor->name }}</td>
+										<td>{{ $klassiyor->kode }}</td>
+										<td>{{ optional($klassiyor->laboratory)->city->region->name }}</td>
 										<td>
-											<a href="{!! url ('/organization/list/edit/'.$company->id) !!}"> <button type="button" class="btn btn-round btn-success">{{ trans('app.Edit')}}</button></a>
+											<a href="{!! url ('/klassiyor/list/edit/'.$klassiyor->id) !!}"> <button type="button" class="btn btn-round btn-success">{{ trans('app.Edit')}}</button></a>
 
-											<a url="{!! url('/organization/list/delete/'.$company->id)!!}" class="sa-warning"> <button type="button" class="btn btn-round btn-danger dgr">{{ trans('app.Delete')}}</button></a>
+											<a url="{!! url('/klassiyor/list/delete/'.$klassiyor->id)!!}" class="sa-warning"> <button type="button" class="btn btn-round btn-danger dgr">{{ trans('app.Delete')}}</button></a>
 										</td>
 									</tr>
 								<?php $i++; ?>
 								@endforeach
 								</tbody>
 							</table>
-                                {{$companies->links()}}
+                                {{$klassiyors->links()}}
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
     </div>
-@else
+	@else
 	<div class="section" role="main">
 		<div class="card">
 			<div class="card-body text-center">
@@ -104,9 +100,7 @@
 			</div>
 		</div>
 	</div>
-
-@endcan
-
+	@endcan
 <script src="{{ URL::asset('vendors/jquery/dist/jquery.min.js') }}"></script>
 <!-- delete vehicalbrand -->
 <script>
