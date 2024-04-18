@@ -895,12 +895,12 @@
                             path.style.fill = "#11009E";
                             infoBox.querySelector("span").style.backgroundColor = "#11009E";
                             infoBox.querySelector("span").style.color = "#fff";
-                            dottedLine.style.borderColor = "#d4d4d4"; // Change background color of dotted-line
+                            dottedLine.style.borderColor = "#d4d4d4"; 
                         } else if (percentage >= 10) {
                             path.style.fill = "#0D63A5";
                             infoBox.querySelector("span").style.backgroundColor = "#0D63A5";
                             infoBox.querySelector("span").style.color = "#fff";
-                            // dottedLine.style.backgroundColor = "#0D63A5"; // Change background color of dotted-line
+                            // dottedLine.style.backgroundColor = "#0D63A5"; 
                         }
                     }
                 }
