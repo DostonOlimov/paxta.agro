@@ -19,6 +19,7 @@ return [
     'HVI ma\'lumotlari' => 'HVI Data',
     'Og\'irlik bo\'yicha dalolatnomalar' => 'Weight records',
     'Laboratoriya ma\'lumotlari' => 'Laboratory data',
+    'Laboratoriya' => 'Laboratory',
     'Yakuniy natijalar' => 'Final results',
     'Tizim sozlamalari' => 'System settings',
     'Paxta' => 'Cotton',
@@ -39,6 +40,9 @@ return [
     'Hududlar' => 'Areas',
     'Viloyatlar' => 'Provinces',
     'Shaxar va tumanlar' => 'Cities and districts',
+    'Namlik dalolatnomasi'=>'Moisture certificate',
+    'Namlik natijalari'=>'Moisture results',
+
 
     //home page
     'Xush kelibsiz' => 'Welcome',
@@ -53,6 +57,7 @@ return [
     'Barcha arizalar' => 'All applications',
     'Jarayon to\'liq yakunlanmagan arizalar' => 'Incomplete applications',
     'Sertifikat berilgan arizalar' => 'Certificate applications',
+    'Sertifikatsiya'=>'Certification',
     'Nomuvofiqligi uchun sertifikat berilmagan arizalar' => 'Applications not certified for non-compliance',
     'Boshqa sabablarga ko\'ra sertifikat berilmagan arizalar' => 'Applications that are not certified for other reasons',
     'Vaqt bo\'yicha filtrlash' => 'Filter by time',

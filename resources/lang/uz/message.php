@@ -36,6 +36,7 @@ return[
     'Og\'irlik bo\'yicha dalolatnomalar'=>"Og'irlik bo'yicha \n dalolatnomalar",
     'HVI ma\'lumotlari' => 'HVI ma\'lumotlari',
     'Laboratoriya ma\'lumotlari'=>'Laboratoriya ma\'lumotlari',
+    'Laboratoriya'=>'Laboratoriya',
     'Yakuniy natijalar'=>'Yakuniy natijalar',
     'Tizim sozlamalari'=>'Tizim sozlamalari',
     'Paxta'=>'Paxta',
@@ -56,17 +57,17 @@ return[
     'Hududlar'=>'Hududlar',
     'Viloyatlar'=>'Viloyatlar',
     'Shaxar va tumanlar'=>'Shaxar va tumanlar',
+
     //tarjima qilish kerak boshi
     'Namlik dalolatnomasi'=> 'Namlik dalolatnomasi',
     'Namlik natijalari'=> 'Namlik natijalari',
     'In Xaus ma\'lumotlari'=> 'In Xaus ma\'lumotlari',
     'O\'lchash xatoligi' => 'O\'lchash xatoligi',
-    'Sertifikatsiya' => 'Sertifikatsiya',
-    'Laboratoriya' => 'Laboratoriya',
     'Klassiyorlar' => 'Klassiyorlar',
     'Laboratoriya sozlamalari' => 'Laboratoriya sozlamalari',
     'O\'lchash xatoligini aniqlash dalolatnomasi' => 'O\'lchash xatoligini aniqlash dalolatnomasi',
     //tarjima qilish kerak oxiri
+
 
     'Profile'=>'Profil',
     'Shaxsiy ma\'lumotlar'=>'Shaxsiy ma\'lumotlar',
@@ -89,6 +90,7 @@ return[
     'Barcha arizalar'=>'Barcha arizalar',
     'Jarayon to\'liq yakunlanmagan arizalar'=>'Jarayon to\'liq yakunlanmagan arizalar',
     'Sertifikat berilgan arizalar'=>'Sertifikat berilgan arizalar',
+    'Sertifikatsiya'=>'Sertifikatsiya',
     'Nomuvofiqligi uchun sertifikat berilmagan arizalar'=>'Nomuvofiqligi uchun sertifikat berilmagan arizalar',
     'Boshqa sabablarga ko\'ra sertifikat berilmagan arizalar'=>'Boshqa sabablarga ko\'ra sertifikat berilmagan arizalar',
     'Vaqt bo\'yicha filtrlash'=>'Vaqt bo\'yicha filtrlash',

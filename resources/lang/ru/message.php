@@ -19,6 +19,7 @@ return[
     'Og\'irlik bo\'yicha dalolatnomalar'=>'Рекорды веса',
     'HVI ma\'lumotlari' => 'Данные HVI',
     'Laboratoriya ma\'lumotlari'=>'Лабораторные данные',
+    'Laboratoriya'=>'Лаборатория',
     'Yakuniy natijalar'=>'Окончательные результаты',
     'Tizim sozlamalari'=>'Настройки системы',
     'Paxta'=>'Хлопок',
@@ -39,6 +40,9 @@ return[
     'Hududlar'=>'Области',
     'Viloyatlar'=>'Провинции',
     'Shaxar va tumanlar'=>'Города и районы',
+    'Namlik dalolatnomasi'=>'Сертификат влажности',
+    'Namlik natijalari'=>'Результаты по влажности',
+
 
     //home page
     'Xush kelibsiz'=>'Добро пожаловать',
@@ -53,6 +57,7 @@ return[
     'Barcha arizalar'=>'Все заявки',
     'Jarayon to\'liq yakunlanmagan arizalar'=>'Неполные заявки',
     'Sertifikat berilgan arizalar'=>'Заявки на получение сертификата',
+    'Sertifikatsiya'=>'Сертификация',
     'Nomuvofiqligi uchun sertifikat berilmagan arizalar'=>'Приложения, не сертифицированные на несоответствие',
     'Boshqa sabablarga ko\'ra sertifikat berilmagan arizalar'=>'Приложения, не сертифицированные по другим причинам',
     'Vaqt bo\'yicha filtrlash'=>'Фильтровать по времени',

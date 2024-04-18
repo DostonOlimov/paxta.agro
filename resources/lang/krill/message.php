@@ -33,6 +33,7 @@ return[
     'Og\'irlik bo\'yicha dalolatnomalar'=>"Оғирлик бўйича \n далолатномалар",
     'HVI ma\'lumotlari' => 'ҲВИ малумотлари',
     'Laboratoriya ma\'lumotlari'=>'Лаборатория маълумотлари',
+    'Laboratoriya'=>'Лаборатория',
     'Yakuniy natijalar'=>'Якуний натижалар',
     'Tizim sozlamalari'=>'Тизим созламалари',
     'Paxta'=>'Пахта',
@@ -53,6 +54,9 @@ return[
     'Hududlar'=>'Ҳудудлар',
     'Viloyatlar'=>'Вилоятлар',
     'Shaxar va tumanlar'=>'Шахар ва туманлар',
+    'Namlik dalolatnomasi'=>'Намлик далолатномаси',
+    'Namlik natijalari'=>'Намлик натижалари',
+
 
      //home page
     'Xush kelibsiz'=>'Хуш келибсиз',
@@ -67,6 +71,7 @@ return[
     'Barcha arizalar'=>'Барча аризалар',
     'Jarayon to\'liq yakunlanmagan arizalar'=>'Жараён тўлиқ якунланмаган аризалар',
     'Sertifikat berilgan arizalar'=>'Сертификат берилган аризалар',
+    'Sertifikatsiya'=>'Сертификация',
     'Nomuvofiqligi uchun sertifikat berilmagan arizalar'=>'Номувофиқлиги учун сертификат берилмаган аризалар',
     'Boshqa sabablarga ko\'ra sertifikat berilmagan arizalar'=>'Бошқа сабабларга кўра сертификат берилмаган аризалар',
     'Vaqt bo\'yicha filtrlash'=>'Вақт бўйича фильтрлаш',
