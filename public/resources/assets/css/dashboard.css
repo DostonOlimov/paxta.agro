@@ -3,19 +3,19 @@ body {
     background: #f1f4f9;
     font-family: "Montserrat";
 }
-.sm_state_UZB4000,
-.sm_state_UZB4004,
-.sm_state_UZB4006,
-.sm_state_UZB4008,
-.sm_state_UZB4009,
-.sm_state_UZB4005,
-.sm_state_UZB4011,
-.sm_state_UZB3999,
-.sm_state_UZB4003,
-.sm_state_UZB4007,
-.sm_state_UZB4002,
-.sm_state_UZB4010,
-.sm_state_UZB4012 {
+.sm_state_4000,
+.sm_state_4004,
+.sm_state_4006,
+.sm_state_4008,
+.sm_state_4009,
+.sm_state_4005,
+.sm_state_4011,
+.sm_state_3999,
+.sm_state_4003,
+.sm_state_4007,
+.sm_state_4002,
+.sm_state_4010,
+.sm_state_4012 {
     transition: all 0.3s ease-in-out; 
 }
 
@@ -41,7 +41,7 @@ body {
     border-radius: 3px;
     padding: 2px 12px 3px 13px;
     background-color: #90b8f8;
-    color: #000000;
+    color: #fff;
     box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
     font-size: 14px;
     font-weight: 900;
@@ -75,14 +75,14 @@ body {
     right: 134px;
     top: 273px;
     min-width: 10px;
-    min-height: 180px;
+    min-height: 173px;
     border-top: 3px dotted #353941;
     border-right: 3px dotted #353941;
     transform: skewY(30deg);
 }
 #info-4012 {
-    right: 102px;
-    top: 451px;
+    right: 88px;
+    top: 438px;
 }
 
 .dotted-line-4000 {
@@ -99,7 +99,7 @@ body {
 }
 #info-4000 {
     top: 436px;
-    right: 424px;
+    right: 411px;
 }
 
 .dotted-line-4004 {
@@ -114,7 +114,7 @@ body {
     border-left: 3px dotted #353941;
 }
 #info-4004 {
-    right: 522.7px;
+    right: 512.7px;
     top: 333px;
 }
 
@@ -147,7 +147,9 @@ body {
     border-left: 3px dotted #353941;
 }
 #info-4008 {
-    right: 373px;
+    display: flex;
+    flex-direction: column-reverse;
+    right: 364px;
     top: 14px;
 }
 
@@ -163,8 +165,10 @@ body {
     border-left: 3px dotted #353941;
 }
 #info-4005 {
-    right: 240.2px;
-    top: 48px;
+    display: flex;
+    flex-direction: column-reverse;
+    right: 237.2px;
+    top: 53px;
 }
 
 .dotted-line-4010 {
@@ -179,8 +183,10 @@ body {
     border-left: 3px dotted #353941;
 }
 #info-4010 {
-    right: 202.2px;
-    top: 140px;
+    display: flex;
+    flex-direction: column-reverse;
+    right: 196.2px;
+    top: 148px;
 }
 
 .dotted-line-4009 {
@@ -204,7 +210,7 @@ body {
     user-select: none;
     position: absolute;
     z-index: 1;
-    right: 257.9px;
+    right: 256.9px;
     top: 451px;
     min-width: 0;
     min-height: 50px;
@@ -212,7 +218,7 @@ body {
     border-left: 3px dotted #353941;
 }
 #info-4011 {
-    right: 219px;
+    right: 187px;
     top: 497px;
 }
 
@@ -229,8 +235,8 @@ body {
     transform: skewY(30deg);
 }
 #info-4002 {
-    right: 147.9px;
-    top: 362px;
+    right: 139.9px;
+    top: 360px;
 }
 
 .dotted-line-3999 {
@@ -240,14 +246,14 @@ body {
     right: 11.9px;
     top: 292px;
     min-width: 25px;
-    min-height: 65px;
+    min-height: 44px;
     border-top: 3px dotted #353941;
     border-right: 3px dotted #353941;
     transform: skewY(30deg);
 }
 #info-3999 {
-    right: -35.1px;
-    top: 359px;
+    right: -32.1px;
+    top: 330px;
 }
 
 .dotted-line-4007 {
@@ -261,7 +267,9 @@ body {
     border-left: 3px dotted #353941;
 }
 #info-4007 {
-    right: 55.9px;
+    display: flex;
+    flex-direction: column-reverse;
+    right: 32.9px;
     top: 123px;
 }
 
@@ -271,15 +279,15 @@ body {
     z-index: 1;
     right: 88.9px;
     top: 303px;
-    min-width: 5px;
+    min-width: 9px;
     min-height: 84px;
     border-top: 3px dotted #353941;
     border-right: 3px dotted #353941;
     transform: skewY(30deg);
 }
 #info-4003 {
-    right: 58.9px;
-    top: 390px;
+    right: 27.9px;
+    top: 379px;
 }
 
 #map circle {
@@ -317,17 +325,13 @@ body {
 
 .map_statistcs__regions {
     width: 100% !important;
-    background-color: #fff;
     min-height: 800px;
-    padding: 20px 50px 35px 50px;
-    border-radius: 6px;
-    box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
 }
-.map_statistcs__container-child {
+.map_statistcs__container-child, .map_statistcs__regions {
     align-items: center;
     background-color: #fff;
     height: fit-content;
-    padding: 20px 50px 35px 50px;
+    padding: 20px 50px 30px 50px;
     border-radius: 6px;
     box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
 }
@@ -434,5 +438,9 @@ hr {
     margin: 0 !important;
     opacity: 1 !important;
 }
+/* #actualCircle {
+    transition: stroke-dasharray 3s ease-out;
+} */
+
 
 /* @media (max-width: 718px) {} */
