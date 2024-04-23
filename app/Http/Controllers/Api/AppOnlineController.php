@@ -9,6 +9,7 @@ use App\Models\CropData;
 use App\Models\CropsName;
 use App\Models\DefaultModels\tbl_activities;
 use App\Models\Files;
+use App\Models\PreparedCompanies;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -133,22 +134,10 @@ class AppOnlineController extends Controller
 
     public function app_edit(Request $request)
     {
-        try {
             $rules = [
-                'id' => 'required|numeric',
-                'name_id' => 'required',
-                'country_id' => 'required|numeric',
-                'kodtnved' => 'nullable|numeric',
-                'party_number' => 'required|numeric',
-                'measure_type' => 'nullable|numeric',
-                'amount' => 'required|numeric',
-                'year' => 'numeric',
-                'toy_count' => 'numeric',
-                // 'date'=>'nullable',
-                // 'data'=>'nullable',
-                'user_id' => 'required|numeric',
-                'organization_id' => 'required|numeric',
-                'prepared_id' => 'required|numeric'
+                'app_id' => 'required|numeric',
+                'crop_id' => 'required|numeric',
+                'prepared_id' => 'required|numeric',
             ];
 
             $validator = Validator::make($request->all(), $rules);
@@ -157,26 +146,36 @@ class AppOnlineController extends Controller
                 return response()->errorJson($validator->errors(), 422, 'Validation error');
             }
 
-            $application = Application::findOrFail($request->input('id'));
+            $application = Application::findOrFail($request->input('app_id'));
             $application->update([
-                'organization_id' => $request->input('crop_data_id'),
-                'prepared_id' => $request->input('organization_id'),
-                'date' => $request->input('date'),
-                'data'  => $request->input('data')??null
+                'type'  => $request->input('app_type'),
+            ]);
+            $crop = CropData::findOrFail($request->input('crop_id'));
+            $crop->update([
+                'name_id' => $request->input('crop_name_id'),
+                'kodtnved' => $request->input('crop_kodtnved'),
+                'party_number' => $request->input('crop_party_number'),
+                'measure_type' => $request->input('crop_measure_type'),
+                'amount' => $request->input('crop_amount'),
+                'year' => $request->input('crop_year'),
+                'sxeme_number' => $request->input('crop_sxeme_number'),
+                'toy_count' => $request->input('crop_toy_count'),
+                'country_id' => $request->input('crop_country_id'),
+            ]);
+            $prepared = PreparedCompanies::findOrFail($request->input('prepared_id'));
+            $prepared->update([
+                'name'  => $request->input('prepared_name'),
+                'kod'  => $request->input('prepared_kod')??0,
+                'tara'  => $request->input('prepared_tara'),
+                'state_id'  => $request->has('prepared_state_id') ? $request->input('prepared_state_id') : null,
             ]);
 
-            if (!$application) {
-                return response()->errorJson(null, 404, 'Application ID Not found');
+            if (!$crop) {
+                return response()->errorJson(null, 404, 'Crop Data ID Not found');
             }
 
-            return response()->successJson($application, 200);
-        } catch (QueryException $e) {
-            if ($e->errorInfo[1] == 1452) {
-                return response()->errorJson(null, 422, 'Foreign key constraint violation: The organization ID provided does not exist.');
-            }
+            return response()->successJson(['app' => $application, 'crop' => $crop, 'prepared' => $prepared], 200);
 
-            return response()->errorJson(null, 500, 'Database error: ' . $e->getMessage());
-        }
     }
     public function app_delete(Request $request)
     {
@@ -219,5 +218,37 @@ class AppOnlineController extends Controller
         ]);
 
         return response()->successJson($result->app_id, 200, 'File add application successfully');
+    }
+
+    public function app_file_find($id)
+    {
+        $result = Files::where('app_id', $id)->first();
+
+        return response()->successJson($result, 200, 'File find application successfully');
+    }
+
+    public function app_file_update(Request $request)
+    {
+        $rules = [
+            'app_id' => 'required|numeric',
+            'file_path' => 'required|string',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return response()->errorJson($validator->errors(), 422, 'Validation error');
+        }
+        $app_id = $request->input('app_id');
+        $file_path = $request->input('file_path');
+
+
+        $application = Files::where('app_id', $app_id)->firstOrFail();
+
+        $result = $application->update([
+            'name' => $file_path,
+        ]);
+
+        return response()->successJson($result, 200, 'File add application successfully');
     }
 }

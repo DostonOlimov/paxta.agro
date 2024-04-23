@@ -8,6 +8,7 @@ use App\Models\CropsName;
 use App\Models\CropsType;
 use App\Models\OrganizationCompanies;
 use App\Models\PreparedCompanies;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 
@@ -75,6 +76,43 @@ class CertConnetionController extends Controller
             return response()->json(null);
         }
     }
+
+    public function org_compy_edit(Request $request)
+    {
+        try {
+            $rules = [
+                'id' => 'required|numeric',
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+                return response()->errorJson($validator->errors(), 422, 'Validation error');
+            }
+
+            $org_compy = OrganizationCompanies::findOrFail($request->input('id'));
+            $org_compy->update([
+                'name'  => $request->input('name'),
+                'city_id'  => $request->input('city'),
+                'address'  => $request->input('address'),
+                'owner_name'  => $request->input('owner_name'),
+                'phone_number'  => $request->input('mobile'),
+                'inn'  => $request->input('inn'),
+            ]);
+            if (!$org_compy) {
+                return response()->errorJson(null, 404, 'Organization Companies ID Not found');
+            }
+
+            return response()->successJson($org_compy, 200);
+        } catch (QueryException $e) {
+            if ($e->errorInfo[1] == 1452) {
+                return response()->errorJson(null, 422, 'Foreign key constraint violation: The organization ID provided does not exist.');
+            }
+
+            return response()->errorJson(null, 500, 'Database error: ' . $e->getMessage());
+        }
+    }
+
     public function org_compy_view(Request $request)
     {
         // unset($data['id']);
