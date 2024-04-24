@@ -8,7 +8,7 @@
 		<div class="page-header">
 			<ol class="breadcrumb">
 				<li class="breadcrumb-item">
-					<i class="fe fe-life-buoy mr-1"></i>&nbsp {{trans('app.In Xaus')}}
+					<i class="fe fe-life-buoy mr-1"></i>&nbsp {{trans('message.In Xaus ma\'lumotlari')}}
 				</li>
 			</ol>
 		</div>

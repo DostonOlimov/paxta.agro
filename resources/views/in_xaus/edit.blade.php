@@ -48,7 +48,7 @@
                                     <input type="hidden" name="_token" value="{{csrf_token()}}">
 
                                     <div class="col-md-6 form-group {{ $errors->has('dob') ? ' has-error' : '' }}">
-                                        <label class="form-label">{{trans('app.Ariza sanasi')}} <label class="text-danger">*</label></label>
+                                        <label class="form-label">{{trans('app.In xaus aniqlangan sana')}} <label class="text-danger">*</label></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">
@@ -66,16 +66,16 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-3 has-feedback pb-1" >
-                                        <input  type="text" class="form-control" value="Mikroner"  name="name" readonly>
+                                        <span class="btn btn-danger" style="width: 100%" >{{ "Mikroner"}}</span>
                                     </div>
                                     <div class="col-md-3 has-feedback">
-                                        <input  type="text" class="form-control" value="Strength"  name="name" readonly>
+                                        <span class="btn btn-success" style="width: 100%" >{{ "Strength"}}</span>
                                     </div>
                                     <div class="col-md-3 has-feedback">
-                                        <input  type="text" class="form-control" value="Iniformity"  name="name" readonly>
+                                        <span class="btn btn-info" style="width: 100%" >{{ "Iniformity"}}</span>
                                     </div>
                                     <div class="col-md-3 has-feedback">
-                                        <input  type="text" class="form-control" value="Length"  name="name" readonly>
+                                        <span class="btn btn-warning" style="width: 100%" >{{ "Length"}}</span>
                                     </div>
                                     @for($i = 0; $i < 10; $i++)
                                         <div class="col-md-3 form-group has-feedback ">

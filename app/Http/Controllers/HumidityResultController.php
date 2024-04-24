@@ -8,6 +8,7 @@ use App\Models\CropsSelection;
 use App\Models\Decision;
 use App\Models\Dalolatnoma;
 use App\Models\GinBalles;
+use App\Models\HumidityResult;
 use App\Models\Nds;
 use App\Models\Sertificate;
 use App\Models\TestPrograms;
@@ -20,7 +21,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class HumidityController extends Controller
+class HumidityResultController extends Controller
 {
     //search
     public function search(Request $request)
@@ -91,15 +92,13 @@ class HumidityController extends Controller
             ->appends(['from' => $request->input('from')])
             ->appends(['city' => $request->input('city')])
             ->appends(['crop' => $request->input('crop')]);
-        return view('humidity.search', compact('tests','from','till','city','crop'));
+        return view('humidity_result.search', compact('tests','from','till','city','crop'));
     }
     //index
     public function add($id)
     {
         $test = Dalolatnoma::find($id);
-        $selection = CropsSelection::get();
-
-        return view('humidity.add', compact('test', 'selection'));
+        return view('humidity_result.add', compact('test'));
     }
 
     //list
@@ -107,7 +106,7 @@ class HumidityController extends Controller
     {
         $title = 'Normativ hujjatlar';
         $testss = Nds::with('crops')->orderBy('id')->get();
-        return view('humidity.list', compact('decisions','title'));
+        return view('humidity_result.list', compact('decisions','title'));
     }
 
     //  store
@@ -119,31 +118,28 @@ class HumidityController extends Controller
         $data = $request->only([
             'dalolatnoma_id',
             'number',
-            'selection_code',
-            'party',
-            'toy_count',
-            'toy_amount',
-            'party_number',
-            'nav',
-            'sinf',
+            'm0',
+            'm1',
+            'mk0',
+            'mk1',
+            'kalibrovka',
         ]);
 
         $data['date'] = join('-', array_reverse(explode('-', $request->input('date'))));
 
-        $humidity = new Humidity();
-        $humidity->fill($data);
-        $humidity->save();
+        $humidity_result = new HumidityResult();
+        $humidity_result->fill($data);
+        $humidity_result->save();
 
-        return redirect('/humidity/search');
+        return redirect('/humidity_result/search');
     }
 
     public function edit($id)
     {
         $userA = Auth::user();
-        $result = Humidity::find($id);
-        $selection = CropsSelection::get();
+        $result = HumidityResult::find($id);
 
-        return view('humidity.edit', compact('result','selection'));
+        return view('humidity_result.edit', compact('result'));
     }
 
 
@@ -151,18 +147,16 @@ class HumidityController extends Controller
     public function update($id, Request $request)
     {
         $user = Auth::user();
-        $result = Humidity::findOrFail($id);
+        $result = HumidityResult::findOrFail($id);
 
         $result->fill($request->only([
             'number',
             'date',
-            'selection_code',
-            'toy_count',
-            'toy_amount',
-            'amount',
-            'party',
-            'nav',
-            'sinf',
+            'm0',
+            'mk0',
+            'm1',
+            'mk1',
+            'kalibrovka',
         ]));
 
         if ($result->isDirty('date')) {
@@ -171,18 +165,18 @@ class HumidityController extends Controller
 
         $result->save();
 
-        return redirect('/humidity/search')->with('message', 'Successfully Updated');
+        return redirect('/humidity_result/search')->with('message', 'Successfully Updated');
     }
 
 
     public function destory($id)
     {
         Decision::destroy($id);
-        return redirect('humidity/search')->with('message', 'Successfully Deleted');
+        return redirect('humidity_result/search')->with('message', 'Successfully Deleted');
     }
     public function view($id)
     {
-        $tests = Humidity::find($id);
+        $tests = HumidityResult::find($id);
         $date = Carbon::parse($tests->date);
 
         $uzbekMonthNames = [
@@ -202,7 +196,7 @@ class HumidityController extends Controller
 
         $my_date = $date->isoFormat("D") . ' - ' . $uzbekMonthNames[$date->isoFormat("MM")] . ' '. $date->isoFormat("Y") ;
 
-        return view('humidity.show', [
+        return view('humidity_result.show', [
             'result' => $tests,
             'date' => $my_date
         ]);

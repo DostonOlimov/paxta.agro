@@ -64,16 +64,20 @@
             <ul class="nav-group-items">
                 <li class="nav-item"><a class="nav-link"  href="{{ url('/crops_name/list') }}"><span class="nav-icon"></span>
                         <svg class="nav-icon">
+                            <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-list"></use>
                         </svg>{{trans('message.Nomlar ro\'yxati')}}</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ url('/crops_type/list') }}"><span class="nav-icon"></span>
                         <svg class="nav-icon">
+                            <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-list"></use>
                         </svg>{{trans('message.Navlar ro\'yxati')}}</a>
                 </li>
                 <li class="nav-item"><a class="nav-link" href="{{ url('/crops_generation/list') }}"><span class="nav-icon"></span>
                         <svg class="nav-icon">
+                            <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-list"></use>
                         </svg>{{trans('message.Sinflar ro\'yxatii')}}</a>
                 <li class="nav-item"><a class="nav-link" href="{{ url('/crops_selection/list') }}"><span class="nav-icon"></span>
                         <svg class="nav-icon">
+                            <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-list"></use>
                         </svg>{{trans('message.Seleksiya turlari')}}</a>
                 </li>
             </ul>
@@ -86,22 +90,32 @@
             <ul class="nav-group-items">
                 <li class="nav-item"><a class="nav-link"  href="{{ url('/organization/list') }}"><span class="nav-icon"></span>
                         <svg class="nav-icon">
-                            <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cis-map"></use>
+                            <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-building"></use>
                         </svg> {{trans('message.Buyurtmachilar korxonalar')}}</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ url('/prepared/list') }}"><span class="nav-icon"></span>
                         <svg class="nav-icon">
-                            <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-city"></use>
+                            <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-institution"></use>
                         </svg>{{trans('message.Ishlab chiqaruvchi zavodlar')}}</a>
                 </li>
             </ul>
         </li>
             @if(auth()->user()->role != \App\Models\User::ROLE_DIROCTOR )
-            <li class="nav-item"><a class="nav-link" href="{!! url('/laboratories/list') !!}"> <svg class="nav-icon">
-                        <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-beaker"></use>
-                    </svg> {{trans('message.Laboratoriyalar')}}</a></li>
-            <li class="nav-item"><a class="nav-link" href="{!! url('/in_xaus/list') !!}"> <svg class="nav-icon">
-                        <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-filter-x"></use>
-                    </svg> {{trans('message.In Xaus ma\'lumotlari')}}</a></li>
+            <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
+                    <svg class="nav-icon">
+                        <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-settings"></use>
+                    </svg> {{trans('message.Laboratoriya sozlamalari')}}</a>
+                <ul class="nav-group-items">
+                    <li class="nav-item"><a class="nav-link" href="{!! url('/laboratories/list') !!}"> <svg class="nav-icon">
+                                <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-beaker"></use>
+                            </svg> {{trans('message.Laboratoriyalar')}}</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{!! url('/in_xaus/list') !!}"> <svg class="nav-icon">
+                                <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-filter-x"></use>
+                            </svg> {{trans('message.In Xaus ma\'lumotlari')}}</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{!! url('/klassiyor/list') !!}"> <svg class="nav-icon">
+                                <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-group"></use>
+                            </svg> {{trans('message.Klassiyorlar')}}</a></li>
+                </ul>
+            </li>
         @if(auth()->user()->role != \App\Models\User::STATE_EMPLOYEE)
         <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
                 <svg class="nav-icon">
@@ -110,11 +124,11 @@
             <ul class="nav-group-items">
                 <li class="nav-item"><a class="nav-link"  href="{!! url('/nds/list') !!}"><span class="nav-icon"></span>
                         <svg class="nav-icon">
-                            <use></use>
+                            <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-file"></use>
                         </svg> {{trans('message.Normativ hujjatlar')}}</a></li>
                 <li class="nav-item"><a class="nav-link"  href="{!! url('/indicator/list') !!}"><span class="nav-icon"></span>
                         <svg class="nav-icon">
-                            <use></use>
+                            <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-paperclip"></use>
                         </svg>{{trans('message.Sifat ko\'rsatkichlari')}}</a></li>
             </ul>
         </li>

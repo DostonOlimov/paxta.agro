@@ -48,7 +48,7 @@
                                     <li class="btn-primary">
                                         <a class="text-light" href="{!! url('/in_xaus/list')!!}">
                                             <span class="visible-xs"></span>
-                                            <i class="fa fa-edit fa-lg">&nbsp;</i> {{ trans('app.List')}}
+                                            <i class="fa fa-list fa-lg">&nbsp;</i> {{ trans('app.Ro\'yxat')}}
                                         </a>
                                     </li>
                                 </ul>

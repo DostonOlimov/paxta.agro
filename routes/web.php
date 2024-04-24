@@ -110,16 +110,36 @@ Route::group(['prefix' => 'employee'], function () {
 
     });
     //Laboratories
-Route::group(['prefix' => 'laboratories', 'middleware' => 'auth'], function () {
-    Route::get('/add', '\App\Http\Controllers\LaboratoriesController@add');
-    Route::get('/view', '\App\Http\Controllers\LaboratoriesController@show');
-    Route::get('/list', '\App\Http\Controllers\LaboratoriesController@list');
-    Route::post('/store', '\App\Http\Controllers\LaboratoriesController@store');
-    Route::get('/list/delete/{id}', '\App\Http\Controllers\LaboratoriesController@destory');
-    Route::get('/list/edit/{id}', '\App\Http\Controllers\LaboratoriesController@edit');
-    Route::post('/list/edit/update/{id}', '\App\Http\Controllers\LaboratoriesController@update');
-    Route::get('/search_by_name', '\App\Http\Controllers\LaboratoriesController@search');
-});
+    Route::group(['prefix' => 'laboratories', 'middleware' => 'auth'], function () {
+        Route::get('/add', '\App\Http\Controllers\LaboratoriesController@add');
+        Route::get('/view', '\App\Http\Controllers\LaboratoriesController@show');
+        Route::get('/list', '\App\Http\Controllers\LaboratoriesController@list');
+        Route::post('/store', '\App\Http\Controllers\LaboratoriesController@store');
+        Route::get('/list/delete/{id}', '\App\Http\Controllers\LaboratoriesController@destory');
+        Route::get('/list/edit/{id}', '\App\Http\Controllers\LaboratoriesController@edit');
+        Route::post('/list/edit/update/{id}', '\App\Http\Controllers\LaboratoriesController@update');
+        Route::get('/search_by_name', '\App\Http\Controllers\LaboratoriesController@search');
+    });
+    //In xaus
+    Route::group(['prefix' => 'in_xaus', 'middleware' => 'auth'], function () {
+        Route::get('/list', '\App\Http\Controllers\InXausController@in_xaus_list');
+        Route::get('/add', '\App\Http\Controllers\InXausController@add');
+        Route::get('/list/delete/{id}', '\App\Http\Controllers\InXausController@destory');
+        Route::get('/edit/{id}', '\App\Http\Controllers\InXausController@edit');
+        Route::post('/edit/update/{id}', '\App\Http\Controllers\InXausController@update');
+        Route::get('/view/{id}', '\App\Http\Controllers\InXausController@view');
+        Route::get('/view2/{id}/{i}', '\App\Http\Controllers\InXausController@view2');
+        Route::post('/store', '\App\Http\Controllers\InXausController@store');
+    });
+    //Klassiyor
+    Route::group(['prefix' => 'klassiyor', 'middleware' => 'auth'], function () {
+        Route::get('/add', '\App\Http\Controllers\KlassiyorController@index');
+        Route::get('/list', '\App\Http\Controllers\KlassiyorController@list');
+        Route::post('/store', '\App\Http\Controllers\KlassiyorController@store');
+        Route::get('/list/delete/{id}', '\App\Http\Controllers\KlassiyorController@destory');
+        Route::get('/list/edit/{id}', '\App\Http\Controllers\KlassiyorController@edit');
+        Route::post('/list/edit/update/{id}', '\App\Http\Controllers\KlassiyorController@update');
+    });
     //Crops name
     Route::group(['prefix' => 'crops_name', 'middleware' => 'auth'], function () {
     Route::get('/add', '\App\Http\Controllers\CropsNameController@index');
@@ -318,6 +338,17 @@ Route::group(['prefix' => 'humidity', 'middleware' => 'auth'], function () {
     Route::get('/view/{id}', '\App\Http\Controllers\HumidityController@view')->name('humidity.view');
     Route::post('/store', '\App\Http\Controllers\HumidityController@store')->name('humidity.store');
 });
+//Namlik natijasi
+Route::group(['prefix' => 'humidity_result', 'middleware' => 'auth'], function () {
+    Route::get('/search', '\App\Http\Controllers\HumidityResultController@search');
+    Route::get('/add/{id}', '\App\Http\Controllers\HumidityResultController@add');
+    Route::get('/list', '\App\Http\Controllers\HumidityResultController@list');
+    Route::get('/list/delete/{id}', '\App\Http\Controllers\HumidityResultController@destory');
+    Route::get('/edit/{id}', '\App\Http\Controllers\HumidityResultController@edit');
+    Route::post('/edit/update/{id}', '\App\Http\Controllers\HumidityResultController@update');
+    Route::get('/view/{id}', '\App\Http\Controllers\HumidityResultController@view')->name('humidity_result.view');
+    Route::post('/store', '\App\Http\Controllers\HumidityResultController@store')->name('humidity_result.store');
+});
 //measurement mistake
 Route::group(['prefix' => 'measurement_mistake', 'middleware' => 'auth'], function () {
     Route::get('/search', '\App\Http\Controllers\MeasurementMistakeController@search');
@@ -329,14 +360,14 @@ Route::group(['prefix' => 'measurement_mistake', 'middleware' => 'auth'], functi
     Route::get('/view/{id}', '\App\Http\Controllers\MeasurementMistakeController@view');
     Route::post('/store', '\App\Http\Controllers\MeasurementMistakeController@store');
 });
-//In xaus
-Route::group(['prefix' => 'in_xaus', 'middleware' => 'auth'], function () {
-    Route::get('/list', '\App\Http\Controllers\InXausController@in_xaus_list');
-    Route::get('/add', '\App\Http\Controllers\InXausController@add');
-    Route::get('/list/delete/{id}', '\App\Http\Controllers\InXausController@destory');
-    Route::get('/edit/{id}', '\App\Http\Controllers\InXausController@edit');
-    Route::post('/edit/update/{id}', '\App\Http\Controllers\InXausController@update');
-    Route::get('/view/{id}', '\App\Http\Controllers\InXausController@view');
-    Route::get('/view2/{id}/{i}', '\App\Http\Controllers\InXausController@view2');
-    Route::post('/store', '\App\Http\Controllers\InXausController@store');
+//measurement mistake
+Route::group(['prefix' => 'laboratory_protocol', 'middleware' => 'auth'], function () {
+    Route::get('/search', '\App\Http\Controllers\LaboratoryProtocolController@search');
+    Route::get('/add/{id}', '\App\Http\Controllers\LaboratoryProtocolController@add');
+    Route::get('/list', '\App\Http\Controllers\LaboratoryProtocolController@list');
+    Route::get('/list/delete/{id}', '\App\Http\Controllers\LaboratoryProtocolController@destory');
+    Route::get('/edit/{id}', '\App\Http\Controllers\LaboratoryProtocolController@edit');
+    Route::post('/edit/update/{id}', '\App\Http\Controllers\LaboratoryProtocolController@update');
+    Route::get('/view/{id}', '\App\Http\Controllers\LaboratoryProtocolController@view');
+    Route::post('/store', '\App\Http\Controllers\LaboratoryProtocolController@store');
 });

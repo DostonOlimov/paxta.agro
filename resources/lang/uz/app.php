@@ -211,5 +211,18 @@ return[
     "Tasdiqlash" => "Tasdiqlash",
     "Tasdiqlangan" => "Tasdiqlangan",
 
+    //Tarjima qilish kerak
+    'Buyurtmachi tashkilot nomi'=>"Buyurtmachi tashkilot nomi",
+    'To\'da (partya) raqami'=>'To\'da (partya) raqami',
+    'Xatolik(Mic)'=>'Xatolik(Mic)',
+    'Xatolik(Strength)'=>'Xatolik(Strength)',
+    'Xatolik(Uniformity)'=>'Xatolik(Uniformity)',
+    'Xatolik(Length)'=>'Xatolik(Length)',
+    'In xaus aniqlangan sana'=>'In xaus aniqlangan sana',
+    'Tara og\'irligi(kg)'=>'Tara og\'irligi(kg)',
+    'Klassiyor qo\'shish'=>'Klassiyor qo\'shish',
+    'Klassiyor nomi'=>'Klassiyor nomi',
+    'Klassiyor kodi'=>'Klassiyor kodi',
+    'Laboratoriya nomi'=>'Laboratoriya nomi',
 
 ];

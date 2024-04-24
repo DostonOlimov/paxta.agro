@@ -31,6 +31,10 @@ class Dalolatnoma  extends Model
     {
         return $this->belongsTo(Humidity::class, 'id', 'dalolatnoma_id');
     }
+    public function humidity_result(): BelongsTo
+    {
+        return $this->belongsTo(HumidityResult::class, 'id', 'dalolatnoma_id');
+    }
     public function decision()
     {
         return $this->belongsTo(Decision::class, 'test_program_id', 'id');
@@ -63,6 +67,7 @@ class Dalolatnoma  extends Model
     {
         return $this->belongsTo(LaboratoryResult::class, 'id', 'dalolatnoma_id');
     }
+
     /**
      * Calculate standard deviation for specified columns.
      *
