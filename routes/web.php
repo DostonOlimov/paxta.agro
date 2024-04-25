@@ -216,6 +216,10 @@ Route::group(['prefix' => 'employee'], function () {
 
     Route::get('/list/delete/{id}', ['as' => '/application/list/delete/{id}', 'uses' => '\App\Http\Controllers\ApplicationController@destory']);
 
+    Route::get('/my-application-delete/{id}', ['as' => '/application/myapplicationdelete', 'uses' => '\App\Http\Controllers\ApplicationController@myapplications_delete']);
+    Route::get('/accept/{id}', ['as' => '/application/accept', 'uses' => '\App\Http\Controllers\ApplicationController@accept']);
+    Route::get('/reject/{id}', ['as' => '/application/reject', 'uses' => '\App\Http\Controllers\ApplicationController@reject']);
+    Route::post('/reject/store', ['as' => '/application/rejectstore', 'uses' => '\App\Http\Controllers\ApplicationController@reject_store']);
     });
 //Decision
     Route::group(['prefix' => 'decision', 'middleware' => 'auth'], function () {

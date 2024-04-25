@@ -35,6 +35,17 @@
                     </div>
                 </div>
             @endif
+            @if ($user->status == \App\Models\Application::STATUS_REJECTED)
+                <div class="row massage">
+                    <div class="col-md-12 col-sm-12">
+                        <div class="alert alert-danger text-center">
+                            <label for="checkbox-10 colo_danger">Ariza rad etilgan.
+                                {{-- {{ optional($user->comment)->comment }} --}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            @endif
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
@@ -87,7 +98,7 @@
                                             </span>
                                                 </div>
                                             </div>
-
+                                            @if(isset($user->user->name))
                                             <div class="table_row row">
                                                 <div class="col-md-5 col-sm-12 table_td">
                                                     <b>Xodim</b>
@@ -98,7 +109,7 @@
                                             </span>
                                                 </div>
                                             </div>
-
+                                            @endif
                                             <div class="table_row row">
                                                 <div class="col-md-5 col-sm-12 table_td">
                                                     <b>{{trans('app.Tayorlangan shaxobcha yoki sexning nomi')}}</b>

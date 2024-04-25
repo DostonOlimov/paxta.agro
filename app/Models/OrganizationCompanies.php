@@ -8,6 +8,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class OrganizationCompanies extends Model
 {
+    protected $fillable = [
+        'name',
+        'city_id',
+        'address',
+        'owner_name',
+        'phone_number',
+        'inn',
+    ];
     public function city()
     {
         return $this->belongsTo(Area::class, 'city_id');

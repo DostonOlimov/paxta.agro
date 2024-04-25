@@ -61,6 +61,7 @@
 								<thead>
 									<tr>
                                         <th class="border-bottom-0 border-top-0">#</th>
+                                        <th class="border-bottom-0 border-top-0">{{ trans('app.Ariza statusi') }}</th>
 										<th class="border-bottom-0 border-top-0">{{trans('app.Ariza raqami')}}</th>
                                         <th class="border-bottom-0 border-top-0">{{trans('app.Ariza sanasi')}}</th>
 										<th class="border-bottom-0 border-top-0">{{trans('app.Buyurtmachi korxona yoki tashkilot nomi')}}</th>
@@ -78,6 +79,9 @@
 									@foreach($apps as $app)
 									<tr>
                                         <td>{{$offset + $loop->iteration}}</td>
+                                        <td><a href="{!! url('/application/view/' . $app->id) !!}"><button type="button"
+                                            class="btn btn-round btn-{{ $app->status_color }}">{{ $app->status_name }}</button></a>
+                                        </td>
                                         <td> <a href="{!! url('/application/view/'.$app->id) !!}">{{ $app->id }}</a></td>
                                         <td> <a href="{!! url('/application/view/'.$app->id) !!}">{{ $app->date }}</a></td>
                                         <td><a href="{!! url('/organization/view/'.$app->organization_id) !!}">{{ optional($app->organization)->name }}</a></td>
