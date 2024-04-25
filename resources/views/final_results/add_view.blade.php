@@ -126,7 +126,7 @@
                             <div class="section" role="main">
                                 <div class="card">
                                     <div class="card-body text-center">
-                                        <span class="titleup text-danger"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp Laboratoriya ma'lumotlari hali yuklanmagan</span>
+                                        <span class="titleup text-danger"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp {{trans('app.Laboratoriya ma\'lumotlari hali yuklanmagan')}}</span>
                                     </div>
                                 </div>
                             </div>

@@ -224,5 +224,8 @@ return[
     'Klassiyor nomi'=>'Klassiyor nomi',
     'Klassiyor kodi'=>'Klassiyor kodi',
     'Laboratoriya nomi'=>'Laboratoriya nomi',
+    'In Xaus qo\'shish'=>'In Xaus qo\'shish',
+    'Laboratoriya ma\'lumotlari hali yuklanmagan'=>'Laboratoriya ma\'lumotlari hali yuklanmagan',
+    
 
 ];

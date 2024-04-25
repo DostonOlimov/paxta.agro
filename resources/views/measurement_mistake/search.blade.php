@@ -67,11 +67,13 @@
                                             <td>{{$test->measurement_mistake ? round(optional($test->measurement_mistake)->fiblength,3) : ''}}</td>
                                             <td>
                                                 <?php $testid=Auth::User()->id; ?>
-                                                @if($result = $test->measurement_mistake)
-                                                    <a href="{!! url('/measurement_mistake/view/'. $result->id) !!}"><button type="button" class="btn btn-round btn-info">{{ trans('app.View')}}</button></a>
-                                                    <a href="{!! url('/measurement_mistake/edit/'. $result->id) !!}"><button type="button" class="btn btn-round btn-warning">{{ trans('app.Edit')}}</button></a>
-                                                @else
-                                                    <a href="{!! url('/measurement_mistake/add/'. $test->id) !!}"><button type="button" class="btn btn-round btn-success">&nbsp;Dalolatnomani kiritish &nbsp;</button></a>
+                                                @if($test->humidity_result)
+                                                    @if($result = $test->measurement_mistake)
+                                                        <a href="{!! url('/measurement_mistake/view/'. $result->id) !!}"><button type="button" class="btn btn-round btn-info">{{ trans('app.View')}}</button></a>
+                                                        <a href="{!! url('/measurement_mistake/edit/'. $result->id) !!}"><button type="button" class="btn btn-round btn-warning">{{ trans('app.Edit')}}</button></a>
+                                                    @else
+                                                        <a href="{!! url('/measurement_mistake/add/'. $test->id) !!}"><button type="button" class="btn btn-round btn-success">&nbsp;Dalolatnomani kiritish &nbsp;</button></a>
+                                                    @endif
                                                 @endif
                                             </td>
                                         </tr>

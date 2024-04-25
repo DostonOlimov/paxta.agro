@@ -49,7 +49,7 @@ class Dalolatnoma  extends Model
     }
     public function clamp_data()
     {
-        return $this->hasMany(ClampData::class);
+        return $this->hasMany(ClampData::class,'dalolatnoma_id','id');
     }
     public function akt_amount()
     {

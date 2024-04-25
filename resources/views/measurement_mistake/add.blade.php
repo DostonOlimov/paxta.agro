@@ -12,6 +12,7 @@
                     </li>
                 </ol>
             </div>
+            @if($test->clamp_data()->exists())
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
@@ -69,6 +70,8 @@
                                         <div class="col-md-6 col-sm-6">
                                             <a class="btn btn-primary"
                                                href="{{ URL::previous() }}">{{ trans('app.Cancel') }}</a>
+                                            <a class="btn btn-warning"
+                                               href="{{ '/in_xaus/add' }}">{{ trans('app.In Xaus qo\'shish') }}</a>
                                             <button type="submit" onclick="disableButton()" id="submitter"
                                                     class="btn btn-success">{{ trans('app.Submit') }}</button>
                                         </div>
@@ -79,6 +82,15 @@
                     </div>
                 </div>
             </div>
+            @else
+                <div class="section" role="main">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <span class="titleup text-danger"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp {{ trans('app.Laboratoriya ma\'lumotlari hali yuklanmagan')}}</span>
+                        </div>
+                    </div>
+                </div>
+            @endif
         </div>
     @else
         <div class="section" role="main">

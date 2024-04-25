@@ -94,7 +94,10 @@ class MeasurementMistakeController extends Controller
     //index
     public function add($id)
     {
-        $test = Dalolatnoma::with('gin_balles')->find($id);
+        $test = Dalolatnoma::with('gin_balles')
+            ->with('clamp_data')
+            ->find($id);
+//        var_dump(!empty($test->clamp_data));die();
         return view('measurement_mistake.add', compact('test'));
     }
 

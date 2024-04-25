@@ -62,13 +62,14 @@
                                             <td><a href="{!! url('/organization/view/'.$test->test_program->application->organization_id) !!}">{{ $test->test_program->application->organization->name }}</a></td>
                                             <td>{{ $test->test_program->application->crops->name->name }}</td>
                                             <td>
-                                            <?php $testid=Auth::User()->id; ?>
+                                            @if($test->humidity)
                                                 @if($result = $test->humidity_result)
                                                     <a href="{!! url('/humidity_result/view/'. $result->id) !!}"><button type="button" class="btn btn-round btn-info">{{ trans('app.View')}}</button></a>
                                                     <a href="{!! url('/humidity_result/edit/'. $result->id) !!}"><button type="button" class="btn btn-round btn-warning">{{ trans('app.Edit')}}</button></a>
                                                 @else
                                                     <a href="{!! url('/humidity_result/add/'. $test->id) !!}"><button type="button" class="btn btn-round btn-success">&nbsp;Dalolatnomani kiritish &nbsp;</button></a>
                                                 @endif
+                                            @endif
                                             </td>
                                         </tr>
                                     @endforeach

@@ -66,6 +66,7 @@ return[
     'Klassiyorlar' => 'Klassiyorlar',
     'Laboratoriya sozlamalari' => 'Laboratoriya sozlamalari',
     'O\'lchash xatoligini aniqlash dalolatnomasi' => 'O\'lchash xatoligini aniqlash dalolatnomasi',
+    'Namlikni massaviy nisbatini aniqlash dalolatnomasi'=>'Namlikni massaviy nisbatini aniqlash dalolatnomasi',
     //tarjima qilish kerak oxiri
 
 
