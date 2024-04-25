@@ -1,6 +1,9 @@
+html {
+    width: fit-content;
+    background: #f1f4f9;
+}
 body {
     padding-bottom: 485px;
-    background: #f1f4f9;
     font-family: "Montserrat";
 }
 .sm_state_4000,
@@ -16,7 +19,7 @@ body {
 .sm_state_4002,
 .sm_state_4010,
 .sm_state_4012 {
-    transition: all 0.3s ease-in-out; 
+    transition: all 0.3s ease-in-out;
 }
 
 #map path:hover {
@@ -300,8 +303,7 @@ body {
 .application__title {
     display: flex;
     align-items: center;
-    justify-content: center;
-    column-gap: 18px;
+    column-gap: 13px;
     margin-bottom: 30px;
     font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
         "Lucida Sans", Arial, sans-serif;
@@ -309,12 +311,25 @@ body {
 }
 .application__title svg {
     width: 30px !important;
-    height: 30px !important;
+    height: 27px !important;
 }
-.application__title p {
+.application__title p, .application__title2 p {
     margin: 0;
 }
-
+.application__title2 {
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 12px;
+    margin-bottom: 5px;
+    font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+        "Lucida Sans", Arial, sans-serif;
+    font-size: 23px;
+}
+.application__title2 svg {
+    width: 40px;
+}
 .map_statistcs-container {
     display: flex;
     height: fit-content;
@@ -327,7 +342,8 @@ body {
     width: 100% !important;
     min-height: 800px;
 }
-.map_statistcs__container-child, .map_statistcs__regions {
+.map_statistcs__container-child,
+.map_statistcs__regions {
     align-items: center;
     background-color: #fff;
     height: fit-content;
@@ -338,7 +354,7 @@ body {
 .map_statistcs__left,
 .map_statistcs__middle {
     display: flex;
-    column-gap: 65px;
+    column-gap: 40px;
 }
 .map_statistcs__right svg {
     min-width: auto;
@@ -353,7 +369,21 @@ body {
     overflow: visible;
     width: 150px;
     height: 135px;
+    animation: dash 3.3s ease-out;
+    animation-iteration-count: 1;
 }
+#actualCircle {
+    transition: stroke-dasharray 3.3s ease-out;
+}
+@keyframes dash {
+    from {
+        stroke-dashoffset: 12;
+    }
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
 .inside-circle {
     max-width: 111px;
     position: absolute;
@@ -432,15 +462,36 @@ body {
     margin: 0;
 }
 .map_statistcs__regions__stats li span {
-    margin-left: auto; 
+    margin-left: auto;
 }
 hr {
     margin: 0 !important;
     opacity: 1 !important;
 }
-/* #actualCircle {
-    transition: stroke-dasharray 3s ease-out;
-} */
 
+.odometer-container {
+    min-width: 356px;
+    height: 56px;
+    display: flex;
+    justify-content: center;
+    text-transform: uppercase;
+    border-radius: 6px;
+    color: #00307d;
+    font-size: 29px;
+    font-weight: 900;
+    /* box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px; */
+    padding: 5px 0;
+}
+.odometer-container p {
+    font-size: 28px;
+    font-weight: 900;
+    margin-top: -2.5px;
+}
+.odometer .odometer-digit:not(:last-child) {
+    margin-right: 5px;
+}
+.odometer .odometer-formatting-mark {
+    margin-right: 5px;
+}
 
 /* @media (max-width: 718px) {} */
