@@ -57,7 +57,7 @@
                     </div>
                 </div>
                 <div class="circle-persentages__circle">
-                    <svg style="overflow: visible" viewBox="0 0 4.5 4.5" xmlns="http://www.w3.org/2000/svg">
+                    <svg style="overflow: visible;" viewBox="0 0 4.5 4.5" xmlns="http://www.w3.org/2000/svg">
                         <!-- Lower circle -->
                         <circle cx="2.20" cy="2.20" r="2" fill="transparent" stroke="#f4f4f4"
                             stroke-width="0.6" />
@@ -339,7 +339,8 @@
                         </g>
                     </svg>
                     <p>Hudud nomi:</p>
-                    <span>Toshkent</span>
+                    <span>{{ isset($city) ? collect($states)->where('id', $city)->first()->name : '' }}</span>
+
                 </li>
                 <hr />
                 <li>
@@ -425,7 +426,7 @@
                     </svg>
 
                     <p>Kelgan arizalar soni:</p>
-                    <span>165</span>
+                    <span>{{ $applications_count->$city }}</span>
                 </li>
                 <hr />
                 <li>
@@ -504,7 +505,7 @@
                         </g>
                     </svg>
                     <p>Jami toylar soni:</p>
-                    <span>10 G</span>
+                    <span>-</span>
                 </li>
                 <hr />
                 <li>
@@ -662,7 +663,7 @@
                     </svg>
 
                     <p>Sertifikalangan paxta tolasi miqdori:</p>
-                    <span>2525</span>
+                    <span>-</span>
                 </li>
                 <hr />
             </ul>

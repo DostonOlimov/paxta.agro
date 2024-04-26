@@ -314,6 +314,7 @@ body {
     height: 27px !important;
 }
 .application__title p, .application__title2 p {
+    text-align: center;
     margin: 0;
 }
 .application__title2 {
@@ -486,6 +487,7 @@ hr {
     font-size: 28px;
     font-weight: 900;
     margin-top: -2.5px;
+    margin-left: 3px;
 }
 .odometer .odometer-digit:not(:last-child) {
     margin-right: 5px;
