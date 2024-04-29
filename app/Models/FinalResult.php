@@ -47,7 +47,10 @@ class FinalResult  extends Model
     {
         return $this->belongsTo(DecisionMaker::class, 'maker', 'id');
     }
-
+    public function dalolatnoma(): BelongsTo
+    {
+        return $this->belongsTo(Dalolatnoma::class, 'dalolatnoma_id', 'id');
+    }
 
     public static function getType($type = null)
     {
