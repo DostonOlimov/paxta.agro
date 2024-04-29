@@ -941,8 +941,8 @@
                     let dottedLine = document.querySelector(".dotted-line-" + stateId);
                     if (path && dottedLine) {
                         if(city == stateId){
-                            path.style.fill = "red";
-                            infoBox.querySelector("span").style.backgroundColor = "red";
+                            path.style.fill = "#D80032";
+                            infoBox.querySelector("span").style.backgroundColor = "#D80032";
                             infoBox.querySelector("span").style.color = "#fff";
                             dottedLine.style.borderColor = "#d4d4d4";
                         }else{
