@@ -82,7 +82,7 @@
                 </div>
             </div>
         </div>
-        <div class="map_statistcs__container-child">
+        <div class="map_statistcs__container-child map_statistcs__container-child-middle">
             <div class="application__title2">
                 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 512 512"
                     style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
@@ -971,6 +971,9 @@
             od.render();
             od.update(amountOfCotton);
         });
+
+        console.log("Width of the screen: " + window.innerWidth);
+
     </script>
     <script>
         function changeColor(element) {
