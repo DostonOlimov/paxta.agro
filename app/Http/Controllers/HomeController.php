@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AktAmount;
 use App\Models\Application;
 use App\Models\CropsName;
+use App\Models\FinalResult;
 use App\Models\Region;
 use App\Models\Sertificate;
 use Carbon\Carbon;
@@ -68,17 +69,6 @@ class HomeController extends Controller
                 $query->whereDate('applications.date', '>=', $fromTime)
                     ->whereDate('applications.date', '<=', $tillTime);
             }
-//            if (!is_null($app_type_selector)) {
-//                if($app_type_selector == 3){
-//                    $query->join("test_programs","test_programs.app_id","=","applications.id")
-//                        ->join("final_results","final_results.test_program_id","=","test_programs.id")
-//                        ->whereNull('final_results.type');
-//                }else{
-//                    $query->join("test_programs","test_programs.app_id","=","applications.id")
-//                        ->join("final_results","final_results.test_program_id","=","test_programs.id")
-//                        ->where('final_results.type','=',$app_type_selector);
-//                }
-//            }
         }]);
 
 
@@ -96,17 +86,24 @@ class HomeController extends Controller
             $app_states->whereDate('applications.date', '>=', $fromTime)
                 ->whereDate('applications.date', '<=', $tillTime);
         }
-//        if (!is_null($app_type_selector)) {
-//            if($app_type_selector == 3){
-//                $app_states = $app_states->leftjoin("test_programs","test_programs.app_id","=","applications.id")
-//                    ->leftjoin("final_results","final_results.test_program_id","=","test_programs.id")
-//                    ->whereNull('final_results.type');
-//            }else{
-//                $app_states = $app_states->join("test_programs","test_programs.app_id","=","applications.id")
-//                    ->join("final_results","final_results.test_program_id","=","test_programs.id")
-//                    ->where('final_results.type','=',$app_type_selector);
-//            }
-//        }
+        //        sum of final result
+        $sum_final_result = FinalResult::with('dalolatnoma');
+        if($city){
+            $sum_final_result = $sum_final_result->whereHas('dalolatnoma.test_program.application.organization', function ($query) use ($city) {
+                $query->whereHas('city', function ($query) use ($city) {
+                    $query->where('state_id', '=', $city);
+                });
+            });
+        }
+        if ($from && $till) {
+            $fromTime = join('-', array_reverse(explode('-', $from)));
+            $tillTime = join('-', array_reverse(explode('-', $till)));
+            $sum_final_result = $sum_final_result->whereHas('dalolatnoma.test_program.application', function ($query) use ($fromTime,$tillTime) {
+                $query->whereDate('applications.date', '>=', $fromTime)
+                    ->whereDate('applications.date', '<=', $tillTime);
+            });
+        }
+        $sum_final_result = $sum_final_result->sum('amount');
 
         $app_states = $app_states->groupBy('tbl_states.id', 'tbl_states.name')
             ->orderBy('application_count', 'desc')
@@ -132,7 +129,8 @@ class HomeController extends Controller
             'crop',
             'app_type_selector',
             'sum_amount',
-            'count_amount'
+            'count_amount',
+            'sum_final_result'
         ));
     }
 

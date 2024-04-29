@@ -663,7 +663,7 @@
                     </svg>
 
                     <p>Sertifikalangan paxta tolasi miqdori:</p>
-                    <span>-</span>
+                    <span class="text-success">{{round( $sum_final_result / 1000 , 2)}} {{trans('message.tonna')}}</span>
                 </li>
                 <hr />
             </ul>
