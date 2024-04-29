@@ -306,8 +306,9 @@ body {
     column-gap: 13px;
     margin-bottom: 30px;
     font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
-        "Lucida Sans", Arial, sans-serif;
-    font-size: 18px;
+        "Lucida Sans", Arial;
+    font-size: 20px;
+    font-weight: 700;
 }
 .application__title svg {
     width: 30px !important;
@@ -327,7 +328,8 @@ body {
     margin-bottom: 5px;
     font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
         "Lucida Sans", Arial, sans-serif;
-    font-size: 23px;
+    font-weight: 700;
+    font-size: 19px;
 }
 .application__title2 svg {
     width: 40px;
@@ -534,6 +536,9 @@ hr {
     }
     .map_statistcs__regions__stats li{
         font-size: 15px;
+    }
+    .application__title {
+        font-size: 18px;
     }
 }
 

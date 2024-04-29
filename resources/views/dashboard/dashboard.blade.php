@@ -339,7 +339,7 @@
                         </g>
                     </svg>
                     <p>Hudud nomi:</p>
-                    <span  class="text-success">{{ isset($city) ? collect($states)->where('id', $city)->first()->name : ' Resupublika bo\'yicha' }}</span>
+                    <span class="text-success">{{ isset($city) ? collect($states)->where('id', $city)->first()->name : __('message.Respublika bo\'yicha') }}</span>
 
                 </li>
                 <hr />
