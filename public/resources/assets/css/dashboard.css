@@ -29,7 +29,7 @@ body {
 #map {
     position: absolute;
     top: 350px;
-    left: 20%;
+    left: 19%;
     /* transform: translate(-50%, -50%); */
     /* transform: scale(1.1); */
 }

@@ -8108,7 +8108,7 @@ html:not([dir=rtl]) .header-nav {
   --cui-sidebar-nav-link-border: 0 solid var(--cui-sidebar-nav-link-border-color);
   --cui-sidebar-nav-link-border-radius: 0;
   --cui-sidebar-nav-link-active-color: rgba(255, 255, 255);
-  --cui-sidebar-nav-link-active-bg: #59B4C3;
+  --cui-sidebar-nav-link-active-bg: #4CB9E7;
   --cui-sidebar-nav-link-active-icon-color: rgba(255, 255, 255);
   --cui-sidebar-nav-link-disabled-color: rgba(255, 255, 255, 0.38);
   --cui-sidebar-nav-link-disabled-icon-color: rgba(255, 255, 255, 0.6);
@@ -8499,7 +8499,7 @@ html:not([dir=rtl]) .sidebar-close {
 }
 .sidebar-nav .nav-link.active {
   color: var(--cui-sidebar-nav-link-active-color);
-  background: var(--cui-sidebar-nav-link-active-bg);
+  background: var(--cui-sidebar-nav-link-active-bg) !important;
 }
 .sidebar-nav .nav-link.active .nav-icon {
   color: var(--cui-sidebar-nav-link-active-icon-color);
