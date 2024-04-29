@@ -112,7 +112,8 @@ class HomeController extends Controller
             ->orderBy('application_count', 'desc')
             ->get();
             $crops = $crops->orderBy('applications_count','desc')
-                ->get();
+                ->first();
+        $count_amount = $sum_amount->count('id');
         $sum_amount = $sum_amount->sum('amount');
 
         $states = DB::table('tbl_states')->where('country_id', '=', 234)->get()->toArray();
@@ -130,7 +131,8 @@ class HomeController extends Controller
             'city',
             'crop',
             'app_type_selector',
-            'sum_amount'
+            'sum_amount',
+            'count_amount'
         ));
     }
 
