@@ -190,10 +190,10 @@
                     </g>
                 </svg>
             </div>
-                <div class="odometer-container">
-                    <span class="odometer" id="odometer">000,000,000.000</span>
-                    <p>{{ trans('message.kg') }}</p>
-                </div>
+            <div class="odometer-container">
+                <span class="odometer" id="odometer">000,000,000.000</span>
+                <p>{{ trans('message.kg') }}</p>
+            </div>
         </div>
         <div class="map_statistcs__regions">
             <div class="application__title">
@@ -900,69 +900,68 @@
 @section('scripts')
     <script>
         $(document).ready(function() {
-    const spanElements = document.querySelectorAll(".inside-circle span");
-    const circleElements = document.querySelectorAll("#actualCircle");
+            const spanElements = document.querySelectorAll(".inside-circle span");
+            const circleElements = document.querySelectorAll("#actualCircle");
 
-    function updateStrokeDashArray() {
-        spanElements.forEach((spanElement, index) => {
-            const number = parseInt(spanElement.innerText);
-            const circumference =
-                Math.PI * (circleElements[index].getAttribute("r") * 2);
-            const dashArray =
-                (number / 1400) * circumference + " " + circumference;
-            circleElements[index].setAttribute("stroke-dasharray", dashArray);
-        });
-    }
-    updateStrokeDashArray();
-    setInterval(updateStrokeDashArray, 500);
-
-    const states = [
-        "4000",
-        "4004",
-        "4006",
-        "4008",
-        "4009",
-        "4005",
-        "4011",
-        "3999",
-        "4003",
-        "4007",
-        "4002",
-        "4010",
-        "4012",
-    ];
-    states.forEach(function(stateId) {
-        let infoBox = document.querySelector("#info-" + stateId);
-        if (infoBox) {
-            let percentage = parseFloat(infoBox.querySelector("span").innerText);
-            let path = document.querySelector(".sm_state_" + stateId);
-            let dottedLine = document.querySelector(".dotted-line-" + stateId);
-            if (path && dottedLine) {
-                if (percentage > 24) {
-                    path.style.fill = "#11009E";
-                    infoBox.querySelector("span").style.backgroundColor = "#11009E";
-                    infoBox.querySelector("span").style.color = "#fff";
-                    dottedLine.style.borderColor = "#d4d4d4";
-                } else if (percentage >= 10) {
-                    path.style.fill = "#387ADF";
-                    infoBox.querySelector("span").style.backgroundColor = "#387ADF";
-                    infoBox.querySelector("span").style.color = "#fff";
-                }
+            function updateStrokeDashArray() {
+                spanElements.forEach((spanElement, index) => {
+                    const number = parseInt(spanElement.innerText);
+                    const circumference =
+                        Math.PI * (circleElements[index].getAttribute("r") * 2);
+                    const dashArray =
+                        (number / 1400) * circumference + " " + circumference;
+                    circleElements[index].setAttribute("stroke-dasharray", dashArray);
+                });
             }
-        }
-    });
+            updateStrokeDashArray();
+            setInterval(updateStrokeDashArray, 500);
 
-    const amountOfCotton = {{ $sum_amount }};
-    const od = new Odometer({
-        el: document.getElementById("odometer"),
-        format: "(,ddd).dd",
-        duration: 1000,
-        theme: "default"
-    });
-    od.render();
-    od.update(amountOfCotton);
-});
+            const states = [
+                "4000",
+                "4004",
+                "4006",
+                "4008",
+                "4009",
+                "4005",
+                "4011",
+                "3999",
+                "4003",
+                "4007",
+                "4002",
+                "4010",
+                "4012",
+            ];
+            states.forEach(function(stateId) {
+                let infoBox = document.querySelector("#info-" + stateId);
+                if (infoBox) {
+                    let percentage = parseFloat(infoBox.querySelector("span").innerText);
+                    let path = document.querySelector(".sm_state_" + stateId);
+                    let dottedLine = document.querySelector(".dotted-line-" + stateId);
+                    if (path && dottedLine) {
+                        if (percentage > 24) {
+                            path.style.fill = "#11009E";
+                            infoBox.querySelector("span").style.backgroundColor = "#11009E";
+                            infoBox.querySelector("span").style.color = "#fff";
+                            dottedLine.style.borderColor = "#d4d4d4";
+                        } else if (percentage >= 10) {
+                            path.style.fill = "#387ADF";
+                            infoBox.querySelector("span").style.backgroundColor = "#387ADF";
+                            infoBox.querySelector("span").style.color = "#fff";
+                        }
+                    }
+                }
+            });
 
+            const amountOfCotton = {{ $sum_amount }};
+            const od = new Odometer({
+                el: document.getElementById("odometer"),
+                format: "(,ddd).dd",
+                duration: 1000,
+                theme: "default"
+            });
+            od.render();
+            od.update(amountOfCotton);
+        });
     </script>
 
 
