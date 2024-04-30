@@ -944,7 +944,7 @@
                             path.style.fill = "#D80032";
                             infoBox.querySelector("span").style.backgroundColor = "#D80032";
                             infoBox.querySelector("span").style.color = "#fff";
-                            dottedLine.style.borderColor = "#d4d4d4";
+                            dottedLine.style.borderColor = "#11009E";
                         }else{
                             if (percentage > 24) {
                                 path.style.fill = "#11009E";
