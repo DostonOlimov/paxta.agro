@@ -35,7 +35,7 @@ class MeasurementMistakeController extends Controller
             ->with('test_program.application.crops.name')
             ->with('test_program.application.crops.type')
             ->with('test_program.application.organization');
-        if ($user->role == \App\Models\User::STATE_EMPLOYEE) {
+        if ($user->branch_id == \App\Models\User::BRANCH_STATE ) {
             $user_city = $user->state_id;
             $apps = $apps->whereHas('test_program.application.organization', function ($query) use ($user_city) {
                 $query->whereHas('city', function ($query) use ($user_city) {

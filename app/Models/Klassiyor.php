@@ -33,5 +33,9 @@ class Klassiyor  extends Model
     {
         return $this->belongsTo(Laboratories::class, 'laboratory_id', 'id');
     }
+    public function laboratory_final_results()
+    {
+        return $this->hasMany(LaboratoryFinalResults::class);
+    }
 
 }

@@ -13,6 +13,7 @@ use App\Models\Sertificate;
 use App\Models\TestPrograms;
 use App\Models\DefaultModels\tbl_activities;
 use App\Models\Humidity;
+use App\Models\User;
 use App\Rules\DifferentsShtrixKod;
 use App\Rules\EqualToyCount;
 use Carbon\Carbon;
@@ -37,7 +38,7 @@ class HumidityController extends Controller
             ->with('test_program.application.crops.name')
             ->with('test_program.application.crops.type')
             ->with('test_program.application.organization');
-        if ($user->role == \App\Models\User::STATE_EMPLOYEE) {
+        if ($user->branch_id == User::BRANCH_STATE ) {
             $user_city = $user->state_id;
             $apps = $apps->whereHas('test_program.application.organization', function ($query) use ($user_city) {
                 $query->whereHas('city', function ($query) use ($user_city) {

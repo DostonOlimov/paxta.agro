@@ -27,11 +27,15 @@ class User extends Authenticatable
     const STATUS_ACTIVE = 1;
     const STATUS_INACTIVE = 0;
 
+    const BRANCH_MAIN = 1;
+    const BRANCH_STATE = 2;
+
     const ROLE_CUSTOMER = 30;
     const STATE_EMPLOYEE = 45;
     const ROLE_CITY_EMPLOYEE = 54;
     const ROLE_DIROCTOR = 60;
-
+    const LABORATORY_DIRECTOR = 90;
+    const LABORATORY_EMPLOYEE = 91;
     /**
      * The attributes that are mass assignable.
      *

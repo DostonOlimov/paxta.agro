@@ -38,7 +38,7 @@ class DecisionController extends Controller
             ->with('decision')
             ->whereIn('status',[Application::STATUS_ACCEPTED,Application::STATUS_FINISHED]);
 
-        if($user->role == \App\Models\User::STATE_EMPLOYEE){
+        if($user->branch_id == User::BRANCH_STATE ){
             $user_city = $user->state_id;
             $apps = $apps->whereHas('organization', function ($query) use ($user_city) {
                 $query->whereHas('city', function ($query) use ($user_city) {
@@ -94,9 +94,17 @@ class DecisionController extends Controller
     public function add($id)
     {
         $app = Application::find($id);
+        $user=Auth::user();
 
         if($nd = Nds::where('crop_id','=',$app->crops->name->id)->first()){
-            $laboratories = Laboratories::get();
+            if($user->branch_id==2){
+                $laboratories = Laboratories::whereHas('city', function($query) use ($user) {
+                    $query->where('state_id', $user->state_id);
+                })->get();
+            }
+            else{
+                $laboratories = Laboratories::with('city')->get();
+            }
             $directors = User::where('role','=',55)->get();
             return view('decision.add', compact('app','nd','directors','laboratories'));
         }else{

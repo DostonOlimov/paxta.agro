@@ -38,7 +38,7 @@ class DalolatnomaController extends Controller
             ->with('application.crops.name')
             ->with('application.crops.type')
             ->with('application.organization');
-        if ($user->role == \App\Models\User::STATE_EMPLOYEE) {
+        if ($user->branch_id == User::BRANCH_STATE ) {
             $user_city = $user->state_id;
             $apps = $apps->whereHas('application.organization', function ($query) use ($user_city) {
                 $query->whereHas('city', function ($query) use ($user_city) {

@@ -8,6 +8,7 @@ use App\Models\CropData;
 use App\Models\InXaus;
 use App\Models\InXausValue;
 use App\Models\OrganizationCompanies;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -28,7 +29,7 @@ class InXausController extends Controller
         $apps = InXaus::with('in_xaus_value')
             ->with('user');
 
-        if($user->role == \App\Models\User::STATE_EMPLOYEE){
+        if($user->branch_id == User::BRANCH_STATE ){
 
             $apps = $apps->where('state_id', '=', $user->state_id);
 

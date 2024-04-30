@@ -37,7 +37,7 @@ class TestProgramsController extends Controller
             ->with('decision')
             ->with('tests')
             ->whereIn('status',[Application::STATUS_ACCEPTED,Application::STATUS_FINISHED]);
-        if($user->role == \App\Models\User::STATE_EMPLOYEE){
+        if($user->branch_id == \App\Models\User::BRANCH_STATE ){
             $user_city = $user->state_id;
             $apps = $apps->whereHas('organization', function ($query) use ($user_city) {
                 $query->whereHas('city', function ($query) use ($user_city) {

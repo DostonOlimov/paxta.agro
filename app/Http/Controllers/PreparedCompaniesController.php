@@ -18,7 +18,7 @@ class PreparedCompaniesController extends Controller
         $regions = DB::table('tbl_states')->where('country_id', '=', 234)
             ->get()
             ->toArray();
-        if($user->role == \App\Models\User::STATE_EMPLOYEE){
+        if($user->branch_id == \App\Models\User::BRANCH_STATE ){
             $regions = DB::table('tbl_states')->where('id','=',$user->state_id)
                 ->where('country_id', '=', 234)
                 ->get()
@@ -33,7 +33,7 @@ class PreparedCompaniesController extends Controller
         $user = Auth::User();
         $title = 'Urug‘lik tayorlangan shaxobcha yoki sex nomi';
         $companies = PreparedCompanies::with('region');
-        if($user->role == \App\Models\User::STATE_EMPLOYEE){
+        if($user->branch_id == \App\Models\User::BRANCH_STATE ){
             $user_city = $user->state_id;
             $companies = $companies->whereHas('region', function ($query) use ($user_city) {
                 $query->where('state_id', '=', $user_city);
@@ -86,7 +86,7 @@ class PreparedCompaniesController extends Controller
     {
         $user = Auth::User();
         $regions = DB::table('tbl_states')->where('country_id', '=', 234)->get()->toArray();
-        if($user->role == \App\Models\User::STATE_EMPLOYEE){
+        if($user->branch_id == \App\Models\User::BRANCH_STATE ){
             $regions = DB::table('tbl_states')->where('id','=',$user->state_id)
                 ->where('country_id', '=', 234)
                 ->get()
@@ -124,7 +124,7 @@ class PreparedCompaniesController extends Controller
                     $query->where('name', 'like', '%' . $ownername . '%');
                 });
 
-            if ($user->role == \App\Models\User::STATE_EMPLOYEE) {
+            if ($user->branch_id == \App\Models\User::BRANCH_STATE ) {
                 $owners->where('state_id', $user->state_id);
             }
 

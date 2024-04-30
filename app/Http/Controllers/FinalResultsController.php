@@ -16,9 +16,9 @@ use App\Models\ProductionType;
 use App\Models\Sertificate;
 use App\Models\TestProgramIndicators;
 use App\Models\TestPrograms;
+use App\Models\User;
 use App\Services\AttachmentService;
 use App\tbl_activities;
-use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -47,7 +47,7 @@ class FinalResultsController extends Controller
             ->with('test_program.application.crops.type')
             ->with('test_program.application.organization')
            ;
-        if ($user->role == \App\Models\User::STATE_EMPLOYEE) {
+        if ($user->branch_id == User::BRANCH_STATE ) {
             $user_city = $user->state_id;
             $apps = $apps->whereHas('test_program.application.organization', function ($query) use ($user_city) {
                 $query->whereHas('city', function ($query) use ($user_city) {

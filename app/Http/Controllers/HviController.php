@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\DefaultModels\MyTableReader;
 use App\Jobs\ProcessFile;
-
+use App\Models\User;
 
 class HviController extends Controller
 {
@@ -30,7 +30,7 @@ class HviController extends Controller
         $apps= Region::with('organization')
             ->with('hvi_file.user');
 
-        if ($user->role == \App\Models\User::STATE_EMPLOYEE) {
+        if ($user->branch_id == User::BRANCH_STATE ) {
             $user_city = $user->state_id;
             $apps = $apps->where('id', '=', $user_city);
         }

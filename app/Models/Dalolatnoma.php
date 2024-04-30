@@ -27,6 +27,10 @@ class Dalolatnoma  extends Model
     {
         return $this->belongsTo(TestPrograms::class, 'test_program_id', 'id');
     }
+    public function laboratory_final_results()
+    {
+        return $this->hasOne(LaboratoryFinalResults::class);
+    }
     public function humidity(): BelongsTo
     {
         return $this->belongsTo(Humidity::class, 'id', 'dalolatnoma_id');

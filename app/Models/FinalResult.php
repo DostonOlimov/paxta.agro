@@ -27,6 +27,7 @@ class FinalResult  extends Model
     protected $table = 'final_results';
 
     protected $fillable = [
+        'dalolatnoma_id',
         'test_program_id',
         'number',
         'date',
@@ -42,6 +43,10 @@ class FinalResult  extends Model
     public function certificate(): BelongsTo
     {
         return $this->belongsTo(Sertificate::class, 'id', 'final_result_id');
+    }
+    public function dalolatnoma(): BelongsTo
+    {
+        return $this->belongsTo(Dalolatnoma::class, 'dalolatnoma_id', 'id');
     }
     public function decision_maker(): BelongsTo
     {
