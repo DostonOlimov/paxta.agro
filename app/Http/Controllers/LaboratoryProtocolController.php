@@ -3,36 +3,39 @@
 namespace App\Http\Controllers;
 
 use App\Models\Application;
-use App\Models\CropData;
-
-use App\Models\Decision;
+use App\Models\Dalolatnoma;
 use App\Models\FinalResult;
-use App\Models\Indicator;
-use App\Models\Nds;
-use App\Models\TestProgramIndicators;
-use App\Models\TestPrograms;
+use App\Models\LaboratoryFinalResults;
+use App\Models\MeasurementMistake;
 use App\Models\User;
-use App\tbl_activities;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
-class FinalDecisionController extends Controller
+class LaboratoryProtocolController extends Controller
 {
-    //search
-    public function search(Request $request)
+
+    public function list(Request $request)
     {
         $user = Auth::user();
         $city = $request->input('city');
         $crop = $request->input('crop');
         $from = $request->input('from');
         $till = $request->input('till');
-        $apps= FinalResult::with('test_program')
-            ->with('test_program.application')
+
+        $apps= Dalolatnoma::with('test_program')
+            ->with('measurement_mistake')
+            ->with('laboratory_result')
+            ->with('result')
+            ->with('laboratory_final_results')
+            ->with('test_program.application.decision')
             ->with('test_program.application.crops.name')
-            ->with('test_program.application.crops.type')
-            ->with('test_program.application.organization');
-        if($user->branch_id == User::BRANCH_STATE ){
+            ->with('test_program.application.organization')
+            ->whereHas('laboratory_result')
+            ->whereHas('result')
+            ->whereHas('measurement_mistake');
+        if ($user->branch_id == \App\Models\User::BRANCH_STATE ) {
             $user_city = $user->state_id;
             $apps = $apps->whereHas('test_program.application.organization', function ($query) use ($user_city) {
                 $query->whereHas('city', function ($query) use ($user_city) {
@@ -69,60 +72,71 @@ class FinalDecisionController extends Controller
                 } else {
                     $query->whereHas('test_program.application.crops.name', function ($query) use ($searchQuery) {
                         $query->where('name', 'like', '%' . addslashes($searchQuery) . '%');
-                    })->orWhereHas('test_program.application.crops.type', function ($query) use ($searchQuery) {
-                        $query->where('name', 'like', '%' . addslashes($searchQuery) . '%');
-                    })->orWhereHas('test_program.application.crops.generation', function ($query) use ($searchQuery) {
-                        $query->where('name', 'like', '%' . addslashes($searchQuery) . '%');
                     });
 
                 }
             });
         });
 
-        $apps = $apps->latest('id')
+        $tests = $apps->latest('id')
             ->paginate(50)
             ->appends(['s' => $request->input('s')])
             ->appends(['till' => $request->input('till')])
             ->appends(['from' => $request->input('from')])
             ->appends(['city' => $request->input('city')])
             ->appends(['crop' => $request->input('crop')]);
-
-        return view('final_decision.search', compact('apps','from','till','city','crop'));
+        return view('laboratory_protocol.list', compact('tests','from','till','city','crop'));
     }
-
-
-    public function edit($id)
+    public function add($id)
     {
-        $editid = $id;
-        $userA = Auth::user();
-        $test = TestPrograms::find($editid);
-        $app = Application::find($test->app_id);
-
-        $measure_types = CropData::getMeasureType();
-        $directors = User::where('role','=',55)->get();
-        $indicators = Indicator::where('crop_id','=',$app->crops->name->id)->get();
-
-        return view('final_decision.edit', compact('app', 'test','directors', 'indicators', 'measure_types'));
+        $apps= Dalolatnoma::with(['decision.laboratory.klassiyor','decision.laboratory.operator','decision.laboratory.city'])
+            ->find($id);
+        $director=User::where('state_id', $apps->decision->laboratory->city->state_id)->get();
+        return view('laboratory_protocol.add', compact('apps','director'));
     }
+    public function store(Request $request)
+    {
+        $userA = Auth::user();
+         $this->authorize('create', Application::class);
+         $date = Carbon::createFromFormat('Y-m-d', $request->input('date'))->format('d.m.Y');
 
+         $newRecord = LaboratoryFinalResults::create($request->all());
+
+        return redirect('/laboratory-protocol/list')->with('message', 'Successfully Submitted');
+    }
     public function view($id)
     {
-        $final_decision = FinalResult::with('test_program')
-            ->with('test_program.application.crops')
+        $test = Dalolatnoma::with('measurement_mistake')
+            ->with('laboratory_result')
+            ->with('result')
+            ->with('selection')
+            ->with('laboratory_final_results.operator')
+            ->with('laboratory_final_results.klassiyor')
+            ->with('laboratory_final_results.director')
+            ->with('test_program.application.decision.laboratory.city.region')
             ->with('test_program.application.crops.name')
-            ->with('test_program.application.crops.name.nds')
-            ->with('test_program.application.crops.type')
-            ->with('test_program.application.crops.generation')
-            ->with('test_program.application')
-            ->with('decision_maker')
+            ->with('test_program.application.organization.city')
+            ->with('test_program.application.prepared.region')
             ->find($id);
-//        $measure_type = CropData::getMeasureType(Application::find($final_decision->app_id)->crops->measure_type);
-//        $nds_type = Nds::getType(Application::find($final_decision->app_id)->crops->name->nds->type_id);
-        return view('final_decision.show', [
-            'decision' => $final_decision,
-//            'measure_type'=>$measure_type,
-//            'nds_type'=>$nds_type,
-        ]);
+
+        $final_result=FinalResult::with('dalolatnoma.laboratory_result')->where('dalolatnoma_id', $id)->get();
+        $measurement_mistake=MeasurementMistake::where('dalolatnoma_id', $id)->first();
+
+        $qrCode = null;
+        if ($test->laboratory_final_results->status == 1) {
+            $url = route('lab.view', $id);
+            $qrCode = QrCode::size(100)->generate($url);
+        }
+
+        return view('laboratory_protocol.view', compact('test', 'qrCode','final_result','measurement_mistake'));
     }
 
+    function change_status($id)
+    {
+        $test = LaboratoryFinalResults::where('dalolatnoma_id',$id)->first();
+        $test->status = 1;
+        $test->save();
+
+        return redirect('/laboratory-protocol/list');
+    }
 }

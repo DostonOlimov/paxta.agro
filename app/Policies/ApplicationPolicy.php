@@ -54,7 +54,7 @@ class ApplicationPolicy
      */
     public function create(User $user)
     {
-        return ($user->role == 54 or $user->role == 45)
+        return ($user->role != 30 or $user->role != 60)
             ? Response::allow()
             : Response::deny('Sizga ushbu sahifadan foydalanishga ruxsat berilmagan.');
     }

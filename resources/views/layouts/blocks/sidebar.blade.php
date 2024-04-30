@@ -53,6 +53,9 @@
         <li class="nav-item"><a class="nav-link" href="{!! url('/final_results/search') !!}"> <svg class="nav-icon">
                     <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-bar-chart"></use>
                 </svg>{{trans('message.Yakuniy natijalar')}}</a></li>
+        <li class="nav-item"><a class="nav-link" href="{!! url('/laboratory-protocol/list') !!}"> <svg class="nav-icon">
+                    <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-list"></use>
+                </svg>{{trans('message.Sinov bayonnomalari')}}</a></li>
 
 
         <li class="nav-title">{{trans('message.Tizim sozlamalari')}}</li>
@@ -114,6 +117,9 @@
                     <li class="nav-item"><a class="nav-link" href="{!! url('/klassiyor/list') !!}"> <svg class="nav-icon">
                                 <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-group"></use>
                             </svg> {{trans('message.Klassiyorlar')}}</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{!! route('laboratory_operators.index') !!}"> <svg class="nav-icon">
+                                <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-list"></use>
+                            </svg>{{trans('message.Operatorlar ')}}</a></li>
                 </ul>
             </li>
         @if(auth()->user()->role != \App\Models\User::STATE_EMPLOYEE)

@@ -24,7 +24,7 @@ class OrganizationCompaniesController extends Controller
             ->get()
             ->toArray();
         $cities = '';
-        if($user->role == \App\Models\User::STATE_EMPLOYEE){
+        if($user->branch_id == \App\Models\User::BRANCH_STATE ){
             $states = DB::table('tbl_states')->where('id','=',$user->state_id)
                 ->where('country_id', '=', 234)
                 ->get()
@@ -45,7 +45,7 @@ class OrganizationCompaniesController extends Controller
         $companies = OrganizationCompanies::latest('id')
         ->with('city')
         ->with('city.region');
-        if($user->role == \App\Models\User::STATE_EMPLOYEE){
+        if($user->branch_id == \App\Models\User::BRANCH_STATE ){
             $user_city = $user->state_id;
             $companies = $companies->whereHas('city', function ($query) use ($user_city) {
                     $query->where('state_id', '=', $user_city);
@@ -104,7 +104,7 @@ class OrganizationCompaniesController extends Controller
     {
         $user = Auth::User();
         $states = DB::table('tbl_states')->where('country_id', '=', 234)->get()->toArray();
-        if($user->role == \App\Models\User::STATE_EMPLOYEE){
+        if($user->branch_id == \App\Models\User::BRANCH_STATE ){
             $states = DB::table('tbl_states')->where('id','=',$user->state_id)
                 ->where('country_id', '=', 234)
                 ->get()
@@ -154,7 +154,7 @@ class OrganizationCompaniesController extends Controller
                         ->orWhere('inn', 'like', '%' . $ownername . '%');
                 });
 
-            if ($user->role == \App\Models\User::STATE_EMPLOYEE) {
+            if ($user->branch_id == \App\Models\User::BRANCH_STATE ) {
                 $user_city = $user->state_id;
                 $owners->whereHas('city', function ($query) use ($user_city) {
                     $query->where('state_id', $user_city);

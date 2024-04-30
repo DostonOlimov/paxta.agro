@@ -7,6 +7,7 @@ use App\Models\ClampData;
 use App\Models\Klassiyor;
 use App\Models\Laboratories;
 use App\Models\LaboratoryProtocol;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,7 +22,7 @@ class KlassiyorController extends Controller
         $laboratories = Laboratories::with('city.region');
 
         // Check if user is a state employee and filter laboratories accordingly
-        if ($user->role == \App\Models\User::STATE_EMPLOYEE) {
+        if ($user->branch_id == User::BRANCH_STATE ) {
             $userStateId = $user->state_id;
 
             // Utilizing whereHas for nested relationship querying
@@ -44,7 +45,7 @@ class KlassiyorController extends Controller
         $klassiyor = Klassiyor::with('laboratory');
 
         // Check if user is a state employee and filter klassiyor accordingly
-        if ($user->role == \App\Models\User::STATE_EMPLOYEE) {
+        if ($user->branch_id == User::BRANCH_STATE ) {
             $userStateId = $user->state_id;
 
             // Utilizing whereHas for nested relationship querying
@@ -108,7 +109,7 @@ class KlassiyorController extends Controller
         $laboratories = Laboratories::with('city.region');
 
         // Check if user is a state employee and filter laboratories accordingly
-        if ($user->role == \App\Models\User::STATE_EMPLOYEE) {
+        if ($user->branch_id == User::BRANCH_STATE ) {
             $userStateId = $user->state_id;
 
             // Utilizing whereHas for nested relationship querying

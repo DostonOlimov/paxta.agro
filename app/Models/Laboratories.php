@@ -12,6 +12,14 @@ class Laboratories extends Model
     {
         return $this->belongsTo(Area::class, 'city_id');
     }
+    public function operator()
+    {
+        return $this->hasMany(LaboratoryOperator::class, 'laboratory_id');
+    }
+    public function klassiyor()
+    {
+        return $this->hasMany(Klassiyor::class, 'laboratory_id');
+    }
     public function getFullAddressAttribute(){
         $city = str_word_count(optional($this->city)->name) == 1 ? optional($this->city)->name.' tuman' : optional($this->city)->name;
         return optional($this->city->region)->name.','.$city.','.$this->address;

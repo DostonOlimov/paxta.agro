@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\App;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Customercontroller;
+use App\Http\Controllers\LaboratoryOperatorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -370,4 +371,27 @@ Route::group(['prefix' => 'laboratory_protocol', 'middleware' => 'auth'], functi
     Route::post('/edit/update/{id}', '\App\Http\Controllers\LaboratoryProtocolController@update');
     Route::get('/view/{id}', '\App\Http\Controllers\LaboratoryProtocolController@view');
     Route::post('/store', '\App\Http\Controllers\LaboratoryProtocolController@store');
+});
+//Laboratory results
+Route::group(['prefix' => 'laboratory-protocol', 'middleware' => 'auth'], function () {
+    Route::get('/list', '\App\Http\Controllers\LaboratoryProtocolController@list');
+    Route::get('/add/{id}', '\App\Http\Controllers\LaboratoryProtocolController@add');
+    Route::get('/view/{id}', '\App\Http\Controllers\LaboratoryProtocolController@view')->name('lab.view');
+    Route::post('/store', '\App\Http\Controllers\LaboratoryProtocolController@store');
+    Route::get('/change/{id}', '\App\Http\Controllers\LaboratoryProtocolController@change_status');
+});
+
+//Operators
+Route::middleware(['auth'])->group(function() {
+    Route::get('/laboratory_operators', [LaboratoryOperatorController::class, 'index'])->name('laboratory_operators.index');
+
+    Route::get('/laboratory_operators/create', [LaboratoryOperatorController::class, 'create'])->name('laboratory_operators.create');
+
+    Route::post('/laboratory_operators', [LaboratoryOperatorController::class, 'store'])->name('laboratory_operators.store');
+
+    Route::get('/laboratory_operators/{laboratoryOperator}/edit', [LaboratoryOperatorController::class, 'edit'])->name('laboratory_operators.edit');
+
+    Route::put('/laboratory_operators/{laboratoryOperator}', [LaboratoryOperatorController::class, 'update'])->name('laboratory_operators.update');
+
+    Route::delete('/laboratory_operators/{laboratoryOperator}', [LaboratoryOperatorController::class, 'destroy'])->name('laboratory_operators.destroy');
 });

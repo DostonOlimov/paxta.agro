@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\DefaultModels\tbl_activities;
+use App\Models\User;
 
 class ApplicationController extends Controller
 {
@@ -31,7 +32,7 @@ class ApplicationController extends Controller
             ->with('crops')
             ->with('crops.name')
             ->with('crops.type');
-        if($user->role == \App\Models\User::STATE_EMPLOYEE){
+        if($user->branch_id == User::BRANCH_STATE ){
             $user_city = $user->state_id;
             $apps = $apps->whereHas('organization', function ($query) use ($user_city) {
                 $query->whereHas('city', function ($query) use ($user_city) {
