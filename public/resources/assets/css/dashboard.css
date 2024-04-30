@@ -42,7 +42,7 @@ body {
 }
 .map__info-box span {
     border-radius: 3px;
-    padding: 2px 12px 3px 13px;
+    padding: 4px 12px 3px 13px;
     background-color: #90b8f8;
     color: #fff;
     box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
@@ -238,8 +238,9 @@ body {
     transform: skewY(30deg);
 }
 #info-4010 {
-    right: 139.9px;
-    top: 360px;
+    right: 152.9px;
+    top: 359px;
+    max-width: 70px;
 }
 
 .dotted-line-3999 {
@@ -255,8 +256,8 @@ body {
     transform: skewY(30deg);
 }
 #info-3999 {
-    right: -32.1px;
-    top: 330px;
+    right: -29.1px;
+    top: 326px;
 }
 
 .dotted-line-4007 {
