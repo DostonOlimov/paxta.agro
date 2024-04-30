@@ -1,7 +1,7 @@
 <div class="sidebar sidebar-dark sidebar-fixed " id="sidebar" >
     <div class="sidebar-brand d-none d-md-flex justify-content-around">
         <img style="width:55px; margin-top: 9px;" src="/resources/assets/images/paxta_logo.png">
-                <h2 style="font-size: 20px; color: white; margin: 6px 6px 5px 0; !important;">{{ trans('message.AGROINSPEKSIYA') }}</h2>
+                <h2 style="font-size: 20px; color: white; margin: 6px 6px 5px -11; !important;">{{ trans('message.AGROINSPEKSIYA') }}</h2>
 
     </div>
     <ul class="sidebar-nav" data-coreui="navigation" data-simplebar="">

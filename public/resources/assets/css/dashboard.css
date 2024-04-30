@@ -1,5 +1,5 @@
 html {
-    width: fit-content;
+    width: 100%;
     background: #f1f4f9;
 }
 body {
@@ -23,13 +23,13 @@ body {
 }
 
 #map path:hover {
-    fill: #3282b8 !important;
+    fill: #070A52 !important;
 }
 
 #map {
     position: absolute;
     top: 350px;
-    left: 20%;
+    left: 17%;
     /* transform: translate(-50%, -50%); */
     /* transform: scale(1.1); */
 }
@@ -156,7 +156,7 @@ body {
     top: 14px;
 }
 
-.dotted-line-4005 {
+.dotted-line-4009 {
     user-select: none;
     position: absolute;
     z-index: 1;
@@ -167,14 +167,14 @@ body {
     border-top: 3px dotted #353941;
     border-left: 3px dotted #353941;
 }
-#info-4005 {
+#info-4009 {
     display: flex;
     flex-direction: column-reverse;
-    right: 237.2px;
+    right: 247.2px;
     top: 53px;
 }
 
-.dotted-line-4010 {
+.dotted-line-4002 {
     user-select: none;
     position: absolute;
     z-index: 1;
@@ -185,28 +185,28 @@ body {
     border-top: 3px dotted #353941;
     border-left: 3px dotted #353941;
 }
-#info-4010 {
+#info-4002 {
     display: flex;
     flex-direction: column-reverse;
-    right: 196.2px;
-    top: 148px;
+    right: 213.2px;
+    top: 158px;
 }
 
-.dotted-line-4009 {
+.dotted-line-4005 {
     user-select: none;
     position: absolute;
     z-index: 1;
     right: 319.2px;
     top: 405px;
     min-width: 33px;
-    min-height: 110px;
+    min-height: 100px;
     border-top: 3px dotted #353941;
     border-left: 3px dotted #353941;
     transform: skewY(-30deg);
 }
-#info-4009 {
-    right: 320.2px;
-    top: 516px;
+#info-4005 {
+    right: 312.2px;
+    top: 497px;
 }
 
 .dotted-line-4011 {
@@ -225,7 +225,7 @@ body {
     top: 497px;
 }
 
-.dotted-line-4002 {
+.dotted-line-4010 {
     user-select: none;
     position: absolute;
     z-index: 1;
@@ -237,7 +237,7 @@ body {
     border-right: 3px dotted #353941;
     transform: skewY(30deg);
 }
-#info-4002 {
+#info-4010 {
     right: 139.9px;
     top: 360px;
 }
@@ -306,14 +306,17 @@ body {
     column-gap: 13px;
     margin-bottom: 30px;
     font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
-        "Lucida Sans", Arial, sans-serif;
-    font-size: 18px;
+        "Lucida Sans", Arial;
+    font-size: 20px;
+    font-weight: 700;
 }
 .application__title svg {
     width: 30px !important;
     height: 27px !important;
 }
-.application__title p, .application__title2 p {
+.application__title p,
+.application__title2 p {
+    text-align: center;
     margin: 0;
 }
 .application__title2 {
@@ -325,31 +328,40 @@ body {
     margin-bottom: 5px;
     font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
         "Lucida Sans", Arial, sans-serif;
-    font-size: 23px;
+    font-weight: 700;
+    font-size: 19px;
 }
 .application__title2 svg {
     width: 40px;
 }
+.map_statistcs__container-child {
+    display: grid;
+    place-content: center;
+    height: 241px !important;
+    background-color: #fff;
+    padding: 10px 30px 20px 30px;
+    border-radius: 6px;
+    box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
+}
 .map_statistcs-container {
     display: flex;
     height: fit-content;
-    column-gap: 15px;
+    column-gap: 23px;
     row-gap: 15px;
-    padding: 15px 10px;
+    padding: 15px 0 15px 10px;
 }
 
 .map_statistcs__regions {
-    width: 100% !important;
-    min-height: 800px;
-}
-.map_statistcs__container-child,
-.map_statistcs__regions {
     align-items: center;
     background-color: #fff;
-    height: fit-content;
-    padding: 20px 50px 30px 50px;
+    padding: 20px 30px 20px 30px;
     border-radius: 6px;
     box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
+    width: 100% !important;
+    min-height: 780px;
+}
+.map_statistcs__regions .application__title {
+  justify-content: center;
 }
 .map_statistcs__left,
 .map_statistcs__middle {
@@ -433,7 +445,7 @@ body {
     width: 100%;
 }
 .map_statistcs__regions__stats li {
-    margin: 0 -50px;
+    margin: 0 -30px;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -460,9 +472,14 @@ body {
 }
 .map_statistcs__regions__stats li p {
     margin: 0;
+    max-width: 325px;
+    text-wrap: pretty;
 }
 .map_statistcs__regions__stats li span {
     margin-left: auto;
+    padding-left: 45px;
+    text-align: right;
+    min-width: fit-content;
 }
 hr {
     margin: 0 !important;
@@ -479,13 +496,10 @@ hr {
     color: #00307d;
     font-size: 29px;
     font-weight: 900;
-    /* box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px; */
     padding: 5px 0;
 }
 .odometer-container p {
-    font-size: 28px;
-    font-weight: 900;
-    margin-top: -2.5px;
+    margin-left: 4px;
 }
 .odometer .odometer-digit:not(:last-child) {
     margin-right: 5px;
@@ -494,4 +508,60 @@ hr {
     margin-right: 5px;
 }
 
-/* @media (max-width: 718px) {} */
+@media (max-width: 1918px) {
+    #map {
+        position: absolute;
+        top: 290px;
+        left: 15%;
+        /* transform: translate(-50%, -50%); */
+        transform: scale(0.9);
+    }
+    .circle-persentages__circle svg {
+        width: 106px;
+        height: auto;
+    }
+    .map_statistcs__container-child {
+        height: 203px !important;
+    }
+    .map_statistcs__container-child,
+    .map_statistcs__regions {
+        padding: 20px 25px 20px 25px;
+    }
+    .map_statistcs__regions__stats li {
+        margin: 0 -25px;
+    }
+    .map_statistcs__regions__stats li svg {
+        width: 36px;
+        margin-right: 13px;
+    }
+    .map_statistcs__regions__stats li{
+        font-size: 15px;
+    }
+    .application__title {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 1622px) {
+    #map {
+        position: absolute;
+        top: 300px;
+        left: 17%;
+        transform: translate(-50%, -50%);
+        transform: scale(0.85);
+    }
+    .circle-persentages__circle svg {
+        width: 106px;
+        height: auto;
+    }
+    .map_statistcs__container-child {
+        height: 203px !important;
+    }
+    .map_statistcs__container-child,
+    .map_statistcs__regions {
+        padding: 20px 25px 20px 25px;
+    }
+    .map_statistcs__regions__stats li {
+        margin: 0 -25px;
+    }
+}
