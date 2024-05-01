@@ -99,10 +99,14 @@ class LaboratoryProtocolController extends Controller
     public function store(Request $request)
     {
         $userA = Auth::user();
-         $this->authorize('create', Application::class);
-         $date = Carbon::createFromFormat('Y-m-d', $request->input('date'))->format('d.m.Y');
+        $this->authorize('create', Application::class);
+        $data=$request->all();
 
-         $newRecord = LaboratoryFinalResults::create($request->all());
+        $parsedDate = Carbon::createFromFormat('d-m-Y', $request->input('date'));
+        $reformattedDate = $parsedDate->format('Y-m-d');
+        $data['date']=$reformattedDate;
+
+        LaboratoryFinalResults::create($data);
 
         return redirect('/laboratory-protocol/list')->with('message', 'Successfully Submitted');
     }

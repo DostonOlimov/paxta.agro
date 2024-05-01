@@ -155,12 +155,12 @@
                         <td></td> {{-- - Tip - --}}
                         <td>{{ $item->sort }}</td>
                         <td>{{ $item->class }}</td>
-                        <td>{{ $item->staple }}</td>
-                        <td>{{ $item->mic }}</td>
-                        <td>{{ $item->strength }}</td>
-                        <td>{{ $item->uniform }}</td>
-                        <td>{{ $item->humidity }}</td>
-                        <td>{{ $item->dalolatnoma->laboratory_result->fiblength }}</td>
+                        <td>{{ round($item->staple,1) }}</td>
+                        <td>{{ round($item->mic,1) }}</td>
+                        <td>{{ round($item->strength,1) }}</td>
+                        <td>{{ round($item->uniform,1) }}</td>
+                        <td>{{ round($item->humidity/10,1) }}</td>
+                        <td>{{ round($item->dalolatnoma->laboratory_result->fiblength/100,1) }}</td>
                     </tr>
                 @endforeach
             @endif
@@ -170,11 +170,11 @@
                 <td>-</td>
                 <td>-</td>
 
-                <td>{{ $measurement_mistake->mic }}</td>
-                <td>{{ $measurement_mistake->strength }}</td>
-                <td>{{ $measurement_mistake->uniform }}</td>
-                <td>{{ $measurement_mistake->humidity }}</td>
-                <td>{{ $measurement_mistake->fiblength }}</td>
+                <td>{{ round($measurement_mistake->mic,2) }}</td>
+                <td>{{ round($measurement_mistake->strength,1) }}</td>
+                <td>{{ round($measurement_mistake->uniform,1) }}</td>
+                <td>{{ round($measurement_mistake->humidity,2) }}</td>
+                <td>{{ round($measurement_mistake->fiblength,3) }}</td>
             </tr>
             <tr>
                 <td colspan="5" style="text-align: start;">O'lchov natijalarining MH talablariga muvofiqligi</td>
@@ -221,15 +221,15 @@
                     @endif
                 </td>
                 <td>
-                    @if (5.0 < $final_result[0]->humidity && $final_result[0]->humidity < 8.5)
+                    @if (5.0 < ($final_result[0]->humidity/10) && ($final_result[0]->humidity/10) < 8.5)
                         muvofiq
                     @else
                         nomuvofiq
                     @endif
                 </td>
                 <td>
-                    @if (1.08 < $final_result[0]->dalolatnoma->laboratory_result->fiblength &&
-                            $final_result[0]->dalolatnoma->laboratory_result->fiblength < 1.17)
+                    @if (1.08 < ($final_result[0]->dalolatnoma->laboratory_result->fiblength/100) &&
+                            ($final_result[0]->dalolatnoma->laboratory_result->fiblength/100) < 1.17)
                         muvofiq
                     @else
                         nomuvofiq
