@@ -66,7 +66,7 @@
                                                     <i class="fa fa-calendar tx-16 lh-0 op-6"></i>
                                                 </div>
                                             </div>
-                                            <input type="date" id="date_of_birth" class="form-control date" name="date" value="{{ old('date') }}" onkeypress="return false;" required />
+                                            <input type="text" id="date_of_birth" class="form-control date" placeholder="<?php echo getDatepicker();?>" name="date" value="{{ old('date') }}" onkeypress="return false;" required />
                                         </div>
                                         @if ($errors->has('start_date'))
                                             <span class="help-block">
@@ -205,6 +205,14 @@
     <script src="{{ URL::asset('vendors/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
     <script src="{{ URL::asset('vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') }}"></script>
     <script>
+        $("input.date").datetimepicker({
+                format: "dd-mm-yyyy",
+                autoclose: 1,
+                minView: 2,
+                startView:'decade',
+                endDate: new Date(),
+            });
+
         function disableButton() {
             var button = document.getElementById('submitter');
             button.disabled = true;
