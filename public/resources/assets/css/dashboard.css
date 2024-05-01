@@ -75,17 +75,17 @@ body {
     user-select: none;
     position: absolute;
     z-index: 1;
-    right: 134px;
-    top: 273px;
-    min-width: 10px;
+    right: 140px;
+    top: 272px;
+    width: 6px;
     min-height: 173px;
     border-top: 3px dotted #353941;
     border-right: 3px dotted #353941;
     transform: skewY(30deg);
 }
 #info-4012 {
-    right: 88px;
-    top: 438px;
+    right: 95px;
+    top: 435px;
 }
 
 .dotted-line-4000 {
@@ -101,8 +101,8 @@ body {
     transform: skewY(-30deg);
 }
 #info-4000 {
-    top: 436px;
-    right: 411px;
+    top: 433px;
+    right: 415px;
 }
 
 .dotted-line-4004 {
@@ -117,7 +117,7 @@ body {
     border-left: 3px dotted #353941;
 }
 #info-4004 {
-    right: 512.7px;
+    right: 514.7px;
     top: 333px;
 }
 
@@ -213,12 +213,13 @@ body {
     user-select: none;
     position: absolute;
     z-index: 1;
-    right: 256.9px;
+    right: 240.9px;
     top: 451px;
-    min-width: 0;
+    min-width: 13px;
     min-height: 50px;
     border-top: 3px dotted #353941;
-    border-left: 3px dotted #353941;
+    border-right: 3px dotted #353941;
+    transform: skewY(30deg);
 }
 #info-4011 {
     right: 187px;
@@ -290,8 +291,8 @@ body {
     transform: skewY(30deg);
 }
 #info-4003 {
-    right: 27.9px;
-    top: 379px;
+    right: 47.9px;
+    top: 377px;
 }
 
 #map circle {

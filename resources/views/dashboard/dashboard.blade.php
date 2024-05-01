@@ -74,7 +74,7 @@
                             <div class="fill"></div>
                         </div>
                         <div class="inside-circle" id="insideCircle">
-                            Shundan <span style="color: #fba729">{{ $crops->applications_count }}
+                            {{ trans('message.Shundan') }} <span style="color: #fba729">{{ $crops->applications_count }}
                             </span>
                         </div>
                     </div>
