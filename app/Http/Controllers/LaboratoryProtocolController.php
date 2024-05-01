@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Application;
+use App\Models\ClampData;
 use App\Models\Dalolatnoma;
 use App\Models\FinalResult;
 use App\Models\LaboratoryFinalResults;
@@ -91,8 +92,9 @@ class LaboratoryProtocolController extends Controller
     {
         $apps= Dalolatnoma::with(['decision.laboratory.klassiyor','decision.laboratory.operator','decision.laboratory.city'])
             ->find($id);
-        $director=User::where('state_id', $apps->decision->laboratory->city->state_id)->get();
-        return view('laboratory_protocol.add', compact('apps','director'));
+        $klassiyor=ClampData::with('klassiyor')->where('dalolatnoma_id',$id)->first();
+        $director=User::where('state_id', $apps->decision->laboratory->city->state_id)->first();
+        return view('laboratory_protocol.add', compact('apps','director','klassiyor'));
     }
     public function store(Request $request)
     {

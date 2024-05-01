@@ -52,6 +52,7 @@ class FinalResult  extends Model
     {
         return $this->belongsTo(DecisionMaker::class, 'maker', 'id');
     }
+
     public static function getType($type = null)
     {
         $arr = [

@@ -33,6 +33,10 @@ class Klassiyor  extends Model
     {
         return $this->belongsTo(Laboratories::class, 'laboratory_id', 'id');
     }
+    public function clamp_data()
+    {
+        return $this->hasMany(ClampData::class, 'kode' ,'classer_id');
+    }
     public function laboratory_final_results()
     {
         return $this->hasMany(LaboratoryFinalResults::class);

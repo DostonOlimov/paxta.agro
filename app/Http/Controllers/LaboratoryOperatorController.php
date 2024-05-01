@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Laboratories;
 use App\Models\LaboratoryOperator;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,9 +13,14 @@ class LaboratoryOperatorController extends Controller
     public function index()
     {
         $user=Auth::user();
-        $operators = LaboratoryOperator::with('laboratory')->whereHas('laboratory.city.region', function($query) use ($user) {
-            $query->where('state_id', $user->state_id);
-        })->where('status', 1)->get();
+        $operators = LaboratoryOperator::with('laboratory');
+        if($user->branch_id == User::BRANCH_STATE){
+            $operators=$operators->whereHas('laboratory.city.region', function($query) use ($user) {
+                $query->where('state_id', $user->state_id);
+            });
+        }
+
+        $operators=$operators->where('status', 1)->get();
         return view('laboratory_operators.index', compact('operators'));
     }
 
