@@ -13,5 +13,8 @@ class ClampData  extends Model
 {
     protected $table = 'clamp_data';
 
-
+    public function klassiyor(): BelongsTo
+    {
+        return $this->belongsTo(Klassiyor::class, 'classer_id', 'kode');
+    }
 }

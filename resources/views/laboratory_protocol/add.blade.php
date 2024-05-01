@@ -132,7 +132,7 @@
                                     </div>
 
                                     @if(!empty($apps->decision->laboratory))
-                                    <div class="col-12 col-md-4">
+                                    {{-- <div class="col-12 col-md-4">
                                         <div class="form-group">
                                             <label class="form-label"
                                                    for="first-name">{{ trans('app.Klassiyor nomi')}} <label
@@ -146,7 +146,7 @@
                                                     @endforeach
                                             </select>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                     <div class="col-12 col-md-4">
                                         <div class="form-group">
                                             <label class="form-label"
@@ -162,7 +162,9 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-12 col-md-4">
+                                    <input type="hidden" name="director_id" value="{{$director->id}}">
+                                    <input type="hidden" name="klassiyor_id" value="{{$klassiyor->klassiyor->id}}">
+                                    {{-- <div class="col-12 col-md-4">
                                         <div class="form-group">
                                             <label class="form-label"
                                                    for="first-name">{{ trans('app.Laboratoriya director nomi')}} <label
@@ -176,7 +178,7 @@
                                                     @endforeach
                                             </select>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                     @endif
                                 </div>
                                     <div class="col-md-6 col-sm-6">
