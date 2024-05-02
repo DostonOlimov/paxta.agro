@@ -16,7 +16,7 @@
                 </svg>{{trans('message.Umumiy ro\'yxat')}}</a></li> --}}
 {{-- start --}}
         @if(auth()->user()->role != \App\Models\User::STATE_EMPLOYEE)
-            <li class="nav-group" onclick="event.preventDefault(e); console.log('bosildi')"><a class="nav-link nav-group-toggle" >
+            <li class="nav-group"><a class="nav-link nav-group-toggle" >
                     <svg class="nav-icon">
                         <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-folder"></use>
                     </svg>{{trans('message.Hisobotlar')}}</a>
