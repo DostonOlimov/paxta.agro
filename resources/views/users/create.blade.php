@@ -8,7 +8,7 @@
                     <h2>Foydalanuvchi qo'shish</h2>
                 </div>
                 <div class="pull-right">
-                    <a class="btn btn-primary" href="{{ route('users.list') }}"> Ortga</a>
+                    <a class="btn btn-primary" href="{{ route('users.list') }}"> {{trans("app.Ortga")}}</a>
                 </div>
             </div>
         </div>

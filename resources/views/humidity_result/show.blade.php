@@ -105,7 +105,7 @@
                                     </div>
                                         <div class="py-3">
                                             <a href="{{url()->previous()}}" class="btn btn-warning"><i class="fa fa-arrow-left"></i>{{trans('app.Orqaga')}}</a>
-                                            <button class="btn btn-primary" id="print-invoice-btn"><i class="fa fa-print"></i> Chop etish</button>
+                                            <button class="btn btn-primary" id="print-invoice-btn"><i class="fa fa-print"></i> {{trans("app.Chop etish")}}</button>
                                         </div>
                                 </div>
                             </div>

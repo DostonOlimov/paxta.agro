@@ -72,7 +72,7 @@
     <div class="col-8">
         <div class="float-right-buttons">
 {{--            <div class="print-table-button btn btn-primary float-right-button"--}}
-{{--                 table='example-1'><i class='fa fa-print'></i> Chop etish--}}
+{{--                 table='example-1'><i class='fa fa-print'></i> {{trans("app.Chop etish")}}--}}
 {{--            </div>--}}
         </div>
     </div>

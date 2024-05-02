@@ -41,7 +41,7 @@
                                     <thead>
                                         <tr>
                                             <th class="border-bottom-0 border-top-0">#</th>
-                                            <th class="border-bottom-0 border-top-0">{{ trans('app.To\'da (partya) raqami') }}
+                                            <th class="border-bottom-0 border-top-0">{{ trans("app.To'da (partya) raqami") }}
                                             </th>
                                             <th>{{ trans('app.Sinov dasturi raqami') }}</th>
                                             <th>{{ trans('app.Buyurtmachi tashkilot nomi') }}</th>
@@ -70,19 +70,19 @@
                                                 <td>
                                                     @if (isset($test->measurement_mistake) && isset($test->laboratory_result) && isset($test->result) && !isset($test->laboratory_final_results))
                                                         <a href="{!! url('laboratory-protocol/add/' . $test->id) !!}"> <button type="button"
-                                                            class="btn btn-round btn-success "><i
+                                                            class="btn btn-round btn-warning "><i
                                                                 class="fa fa-plus-circle"></i>
                                                             {{ trans('app.Qo\'shish') }}</button></a>
                                                     @elseif (isset($test->measurement_mistake) && isset($test->laboratory_result) && isset($test->result) && isset($test->laboratory_final_results))
                                                                 <a href="{!! url('laboratory-protocol/view/' . $test->id) !!}"><button type="button"
-                                                                    class="btn btn-round btn-warning">
+                                                                    class="btn btn-round btn-info">
                                                                     {{ trans('app.View') }}</button></a>
                                                             @if ($test->laboratory_final_results->status == 0)
                                                                 <a href="{!! url('laboratory-protocol/change/' . $test->id) !!}"><button type="button"
-                                                                        class="btn btn-round btn-success">{{ trans('app.Sertifikatsiyaga yuborish') }}</button></a>
+                                                                        class="btn btn-round btn-success">{{ trans('app.Tasdiqlash') }}</button></a>
                                                             @elseif ($test->laboratory_final_results->status == 1)
                                                                 <button type="button"
-                                                                    class="btn btn-round btn-danger">{{ trans('app.Sertifikatsiyaga yuboriligan') }}</button>
+                                                                    class="btn btn-round btn-danger">{{ trans('app.Tasdiqlangan') }}</button>
                                                             @endif
                                                     @endif
                                                 </td>

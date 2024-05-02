@@ -9,7 +9,7 @@
                     <h2>Role qo'shish</h2>
                 </div>
                 <div class="pull-right">
-                    <a class="btn btn-primary" href="{{ route('roles.index') }}"> Ortga</a>
+                    <a class="btn btn-primary" href="{{ route('roles.index') }}"> {{trans("app.Ortga")}}</a>
                 </div>
             </div>
         </div>

@@ -14,7 +14,7 @@
 
                         </div>
                         <div class="py-3">
-                            <button class="btn btn-primary" id="print-invoice-btn">Chop etish</button>
+                            <button class="btn btn-primary" id="print-invoice-btn">{{trans("app.Chop etish")}}</button>
                         </div>
                     </div>
                 </div>

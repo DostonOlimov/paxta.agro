@@ -187,4 +187,7 @@ return[
     "O'chirilgan ma'lumotlar qayta tiklanmaydi" => "O'chirilgan ma'lumotlar qayta tiklanmaydi",
     "Ha, o'chirish" => "Ha, o'chirish",
     "O'chirishni bekor qilish" => "O'chirishni bekor qilish",
+
+
+    "Sinov bayonnomalari"=>"Sinov bayonnomalari",
 ];
