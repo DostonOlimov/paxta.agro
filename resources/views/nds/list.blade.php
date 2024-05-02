@@ -10,7 +10,7 @@
 		<div class="page-header">
 			<ol class="breadcrumb">
 				<li class="breadcrumb-item">
-					<i class="fe fe-life-buoy mr-1"></i>&nbsp Normativ hujjat nomlari
+					<i class="fe fe-life-buoy mr-1"></i>&nbsp {{trans("app.Normativ hujjat nomlari")}}
 				</li>
 			</ol>
 		</div>
@@ -25,7 +25,7 @@
 				   @elseif(session('message')=='Successfully Deleted')
 				   <label for="checkbox-10 colo_success"> {{ trans('app.Successfully Deleted')}}  </label>
                     @elseif(session('message')=='nds not found')
-                        <label for="checkbox-10 colo_success"> Qaror shakllantirishdan oldin normativ hujjatni qo'shish kerak  </label>
+                        <label for="checkbox-10 colo_success"> {{trans("app.Qaror shakllantirishdan oldin normativ hujjatni qo'shish kerak ")}} </label>
 			    @endif
                 </div>
 			</div>
@@ -60,9 +60,9 @@
 								<thead>
 									<tr>
 										<th>#</th>
-										<th>Hujjat</th>
-										<th>Hujjat nomi</th>
-                                        <th>Uruglik turi</th>
+										<th>{{trans("app.Hujjat")}}</th>
+										<th>{{trans("app.Hujjat nomi")}}</th>
+                                        <th>{{trans("app.Uruglik turi")}}</th>
 										<th>{{ trans('app.Action')}}</th>
 									</tr>
 								</thead>

@@ -7,6 +7,7 @@ use App\Models\ClampData;
 use App\Models\Dalolatnoma;
 use App\Models\FinalResult;
 use App\Models\LaboratoryFinalResults;
+use App\Models\LaboratoryOperator;
 use App\Models\MeasurementMistake;
 use App\Models\User;
 use Carbon\Carbon;
@@ -90,11 +91,17 @@ class LaboratoryProtocolController extends Controller
     }
     public function add($id)
     {
-        $apps= Dalolatnoma::with(['decision.laboratory.klassiyor','decision.laboratory.operator','decision.laboratory.city'])
-            ->find($id);
+        $user=Auth::user();
+        $apps= Dalolatnoma::with('test_program.application.decision.laboratory.city')->find($id);
+        $operators=LaboratoryOperator::query();
+        if($user->branch_id==2){
+            $operators=$operators->where('laboratory_id', $apps->test_program->application->decision->laboratory_id);
+        }
+        $operators=$operators->get();
         $klassiyor=ClampData::with('klassiyor')->where('dalolatnoma_id',$id)->first();
-        $director=User::where('state_id', $apps->decision->laboratory->city->state_id)->first();
-        return view('laboratory_protocol.add', compact('apps','director','klassiyor'));
+        $director=User::where('state_id', $apps->test_program->application->decision->laboratory->city->state_id)->first();
+
+        return view('laboratory_protocol.add', compact('apps','director','klassiyor','operators'));
     }
     public function store(Request $request)
     {

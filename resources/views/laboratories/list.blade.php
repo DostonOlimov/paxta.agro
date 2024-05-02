@@ -9,7 +9,7 @@
 		<div class="page-header">
 			<ol class="breadcrumb">
 				<li class="breadcrumb-item">
-					<i class="fe fe-life-buoy mr-1"></i>&nbsp {{ $title}}
+					<i class="fe fe-life-buoy mr-1"></i>&nbsp {{trans("app.Laboratoriya nomlari")}} {{--- {{ $title}} ---}}
 				</li>
 			</ol>
 		</div>
@@ -57,9 +57,9 @@
 								<thead>
 									<tr>
 										<th>#</th>
-										<th>Laboratoriya kodi</th>
-										<th>Sinov laboratoriyasi nomi</th>
-                                        <th>Akkredatsiya guvohnomadi</th>
+										<th>{{trans("app.Laboratoriya kodi")}}</th>
+										<th>{{trans("app.Sinov laboratoriyasi nomi")}}</th>
+                                        <th>{{trans("app.Akkredatsiya guvohnomadi")}}</th>
 										<th>{{ trans('app.Region')}}</th>
 										<th>{{ trans('app.Action')}}</th>
 									</tr>

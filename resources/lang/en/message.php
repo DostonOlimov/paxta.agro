@@ -118,4 +118,8 @@ return [
 
     "Sinov bayonnomalari"=>"Test reports",
     "Laboratoriya sozlamalari"=>"Laboratory settings",
+
+    'In Xaus ma\'lumotlari'=>"In House information",
+    "Klassiyorlar"=>"Classics",
+    "Operatorlar"=>"Operators",
 ];

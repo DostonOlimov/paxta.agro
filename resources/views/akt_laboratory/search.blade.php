@@ -40,8 +40,8 @@
                                     <thead>
                                     <tr>
                                         <th class="border-bottom-0 border-top-0">#</th>
-                                        <th>Dalolatnoma raqami</th>
-                                        <th class="border-bottom-0 border-top-0">To'da (partya) raqami</th>
+                                        <th>{{trans("app.Dalolatnoma raqami")}}</th>
+                                        <th class="border-bottom-0 border-top-0">{{trans("app.To'da (partya) raqami")}}</th>
                                         <th>{{trans('app.Buyurtmachi korxona yoki tashkilot nomi')}}</th>
                                         <th>{{trans('app.Sertifikatlanuvchi mahsulot')}}</th>
                                         <th>{{trans('app.amount')}}</th>

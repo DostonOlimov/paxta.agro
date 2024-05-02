@@ -40,10 +40,10 @@
                                     <thead>
                                     <tr>
                                         <th class="border-bottom-0 border-top-0">#</th>
-                                        <th>Hudud nomi</th>
-                                        <th>Faylni yuklagan xodim</th>
-                                        <th>Oxirgi yangilangan sanasi</th>
-                                        <th>Ma'lumot miqdori</th>
+                                        <th>{{trans("app.Hudud nomi")}}</th>
+                                        <th>{{trans("app.Faylni yuklagan xodim")}}</th>
+                                        <th>{{trans("app.Oxirgi yangilangan sanasi")}}</th>
+                                        <th>{{trans("app.Ma'lumot miqdori")}}</th>
                                         <th>{{trans('app.Action')}}</th>
                                     </tr>
 

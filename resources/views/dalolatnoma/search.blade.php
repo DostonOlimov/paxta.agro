@@ -40,7 +40,7 @@
                                     <thead>
                                     <tr>
                                         <th class="border-bottom-0 border-top-0">#</th>
-                                        <th class="border-bottom-0 border-top-0">To'da (partya) raqami</th>
+                                        <th class="border-bottom-0 border-top-0">{{trans("app.To'da (partya) raqami")}}</th>
                                         <th>{{trans('app.Sinov dasturi raqami')}}</th>
                                         <th>{{trans('app.Sinov bayonnomasi sanasi')}}</th>
                                         <th>{{trans('app.Buyurtmachi tashkilot nomi')}}</th>

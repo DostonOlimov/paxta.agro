@@ -130,4 +130,8 @@ return[
 
     "Sinov bayonnomalari"=>"Синов баённомалари",
     "Laboratoriya sozlamalari"=>"Лаборатория созламалари",
+
+    'In Xaus ma\'lumotlari'=>"Ин Хаус маълумотлари",
+    "Klassiyorlar"=>"Классиёрлар",
+    "Operatorlar"=>"Операторлар",
 ];

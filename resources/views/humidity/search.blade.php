@@ -40,7 +40,7 @@
                                     <thead>
                                     <tr>
                                         <th class="border-bottom-0 border-top-0">#</th>
-                                        <th class="border-bottom-0 border-top-0">To'da (partya) raqami</th>
+                                        <th class="border-bottom-0 border-top-0">{{trans("app.To'da (partya) raqami")}}</th>
                                         <th>{{trans('app.Sinov dasturi raqami')}}</th>
                                         <th>{{trans('app.Sinov bayonnomasi sanasi')}}</th>
                                         <th>{{trans('app.Buyurtmachi tashkilot nomi')}}</th>
@@ -67,7 +67,7 @@
                                                     <a href="{!! url('/humidity/view/'. $result->id) !!}"><button type="button" class="btn btn-round btn-info">{{ trans('app.View')}}</button></a>
                                                     <a href="{!! url('/humidity/edit/'. $result->id) !!}"><button type="button" class="btn btn-round btn-warning">{{ trans('app.Edit')}}</button></a>
                                                 @else
-                                                    <a href="{!! url('/humidity/add/'. $test->id) !!}"><button type="button" class="btn btn-round btn-success">&nbsp;Dalolatnomani kiritish &nbsp;</button></a>
+                                                    <a href="{!! url('/humidity/add/'. $test->id) !!}"><button type="button" class="btn btn-round btn-success">&nbsp;{{trans("app.Dalolatnomani kiritish")}} &nbsp;</button></a>
                                                 @endif
                                             </td>
                                         </tr>

@@ -130,8 +130,6 @@
 										   </span>
                                         @endif
                                     </div>
-
-                                    @if(!empty($apps->decision->laboratory))
                                     {{-- <div class="col-12 col-md-4">
                                         <div class="form-group">
                                             <label class="form-label"
@@ -155,7 +153,7 @@
                                             </label>
                                             <select name="operator_id" class="form-control">
                                                     <option value="">{{ trans('app.Operatorni tanlang')}}</option>
-                                                    @foreach($apps->decision->laboratory->operator as $operator)
+                                                    @foreach($operators as $operator)
                                                         <option
                                                             value="{{ $operator->id }}">{{ $operator->name }}</option>
                                                     @endforeach
@@ -179,7 +177,6 @@
                                             </select>
                                         </div>
                                     </div> --}}
-                                    @endif
                                 </div>
                                     <div class="col-md-6 col-sm-6">
                                         <a class="btn btn-primary" href="{{ URL::previous() }}">{{ trans('app.Cancel')}}</a>

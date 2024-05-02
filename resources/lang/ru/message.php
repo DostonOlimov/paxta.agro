@@ -116,4 +116,8 @@ return[
 
     "Sinov bayonnomalari"=>"Протоколы испытаний",
     "Laboratoriya sozlamalari"=>"Лабораторные настройки",
+
+    'In Xaus ma\'lumotlari'=>"Информация о доме",
+    "Klassiyorlar"=>"Классика",
+    "Operatorlar"=>"Операторы",
 ];

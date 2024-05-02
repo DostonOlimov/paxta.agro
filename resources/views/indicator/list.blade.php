@@ -10,7 +10,7 @@
 		<div class="page-header">
 			<ol class="breadcrumb">
 				<li class="breadcrumb-item">
-					<i class="fe fe-life-buoy mr-1"></i>&nbsp Sifat ko'rsatkichlari
+					<i class="fe fe-life-buoy mr-1"></i>&nbsp {{trans("app.Sifat ko'rsatkichlari")}}
 				</li>
 			</ol>
 		</div>
@@ -58,9 +58,9 @@
 								<thead>
 									<tr>
 										<th>#</th>
-										<th>Sifat ko'rsatkich nomi</th>
-										<th>Sifat ko'rsatkich bo'yicha me'yoriy hujjat</th>
-                                        <th>Ekin turi</th>
+										<th>{{trans("app.Sifat ko'rsatkich nomi")}}</th>
+										<th>{{trans("app.Sifat ko'rsatkich bo'yicha me'yoriy hujjat")}}</th>
+                                        <th>{{trans("app.Ekin turi")}}</th>
 										<th>{{ trans('app.Action')}}</th>
 									</tr>
 								</thead>
