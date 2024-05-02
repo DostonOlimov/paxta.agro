@@ -95,7 +95,7 @@
                                 </div>
 								<div class="form-group col-md-12 col-sm-12">
 									<div class="col-md-12 col-sm-12 text-center">
-										<a class="btn btn-primary" href="{{ URL::previous() }}">Ortga</a>
+										<a class="btn btn-primary" href="{{ URL::previous() }}">{{trans("app.Ortga")}}</a>
 										<button type="submit" id="invoice-form-submitter" class="btn btn-success">{{ trans('app.Submit')}}</button>
                                         <a class="btn btn-success disabled d-none" id="test_program" href="{!! url('/tests/add/'.$app->id) !!}">Sinov dasturi qo'shish</a>
                                     </div>

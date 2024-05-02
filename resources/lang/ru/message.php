@@ -113,4 +113,7 @@ return[
     "O'chirilgan ma'lumotlar qayta tiklanmaydi" => "Удаленные данные невозможно восстановить",
     "Ha, o'chirish" => "Да, удалить",
     "O'chirishni bekor qilish" => "Отменить удаление",
+
+    "Sinov bayonnomalari"=>"Протоколы испытаний",
+    "Laboratoriya sozlamalari"=>"Лабораторные настройки",
 ];

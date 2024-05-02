@@ -127,4 +127,7 @@ return[
     "O'chirilgan ma'lumotlar qayta tiklanmaydi" => "Ўчирилган маълумотлар қайта тикланмайди",
     "Ha, o'chirish" => "Ҳа, ўчириш",
     "O'chirishni bekor qilish" => "Ўчиришни бекор қилиш",
+
+    "Sinov bayonnomalari"=>"Синов баённомалари",
+    "Laboratoriya sozlamalari"=>"Лаборатория созламалари",
 ];

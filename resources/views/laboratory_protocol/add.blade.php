@@ -7,7 +7,7 @@
             <div class="page-header">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
-                        <i class="fe fe-life-buoy mr-1"></i>&nbsp Sinov bayonnomasi qo'shish
+                        <i class="fe fe-life-buoy mr-1"></i>&nbsp {{trans("app.Sinov bayonnomasi qo'shish")}}
                     </li>
                 </ol>
             </div>
@@ -40,7 +40,7 @@
                                     <input type="hidden"  name="dalolatnoma_id" value="{{ $apps->id}}" >
 
                                     <div class="col-md-4 form-group has-feedback {{ $errors->has('number') ? ' has-error' : '' }}">
-                                        <label for="number" class="form-label certificate">Sinov bayonnoma raqami <label class="text-danger">*</label></label>
+                                        <label for="number" class="form-label certificate">{{trans('app.Sinov bayonnoma raqami')}}<label class="text-danger">*</label></label>
                                         {{-- @if($test->laboratory_results->quality == 1)
                                             <label for="number" class="form-label certificate">Sinov bayonnoma raqami <label class="text-danger">*</label></label>
                                         @else
@@ -49,12 +49,12 @@
                                         <input type="number" class="form-control" maxlength="10" value="{{ old('number')}}"  name="number" required>
                                         @if ($errors->has('number'))
                                             <span class="help-block">
-											 <strong>Natija raqami noto'g'ri shaklda kiritilgan</strong>
+											 <strong>{{trans("app.Natija raqami noto'g'ri shaklda kiritilgan")}}</strong>
 										   </span>
                                         @endif
                                     </div>
                                     <div class="col-md-4 form-group {{ $errors->has('date') ? ' has-error' : '' }}">
-                                        <label class="form-label certificate">Bayonnoma sanasi <label class="text-danger">*</label></label>
+                                        <label class="form-label certificate">{{trans("app.Bayonnoma sanasi")}} <label class="text-danger">*</label></label>
                                         {{-- @if($test->laboratory_results->quality == 1)
                                             <label class="form-label certificate">Bayonnoma sanasi <label class="text-danger">*</label></label>
                                         @else
@@ -70,63 +70,63 @@
                                         </div>
                                         @if ($errors->has('start_date'))
                                             <span class="help-block">
-											<strong style="color:red;">Sana noto'g'ti shaklda kiritilgan</strong>
+											<strong style="color:red;">{{trans("app.Sana noto'g'ti shaklda kiritilgan")}}</strong>
 										</span>
                                         @endif
                                     </div>
                                     <div class="col-md-4 form-group has-feedback {{ $errors->has('from') ? ' has-error' : '' }}">
-                                        <label for="from" class="form-label certificate">Namuna tanlab olish joyi<label class="text-danger">*</label></label>
+                                        <label for="from" class="form-label certificate">{{trans("app.Namuna tanlab olish joyi")}}<label class="text-danger">*</label></label>
                                         <select name="from" class="form-control" required>
-                                            <option value="">Namuna tanlab olish joyini tanlang</option>
-                                            <option value="presslash sexidan">Presslash sexidan</option>
-                                            <option value="zavodomboridan">Zavodomboridan</option>
+                                            <option value="">{{trans("app.Namuna tanlab olish joyini tanlang")}}</option>
+                                            <option value="presslash sexidan">{{trans("app.Presslash sexidan")}}</option>
+                                            <option value="zavodomboridan">{{trans("app.Zavod omboridan")}}</option>
                                         </select>
 
                                     </div>
                                     <div class="col-md-4 form-group has-feedback {{ $errors->has('vakili') ? ' has-error' : '' }}">
-                                        <label for="vakili" class="form-label certificate">Namuna tanlab olish vakili<label class="text-danger">*</label></label>
+                                        <label for="vakili" class="form-label certificate">{{trans("app.Namuna tanlab olish vakili")}}<label class="text-danger">*</label></label>
                                         <select name="vakili" class="form-control" required>
-                                            <option value="">Namuna tanlab olish vakili tanlang</option>
-                                            <option value="sertifikatlash idorasi vakili">sertifikatlash idorasi vakili</option>
-                                            <option value="guruh rahbari">guruh rahbari</option>
+                                            <option value="">{{trans("app.Namuna tanlab olish vakili tanlang")}}</option>
+                                            <option value="sertifikatlash idorasi vakili">{{trans("app.sertifikatlash idorasi vakili")}}</option>
+                                            <option value="guruh rahbari">{{trans("app.guruh rahbari")}}</option>
                                         </select>
                                     </div>
                                     <div class="col-md-4 form-group has-feedback {{ $errors->has('vakil_name') ? ' has-error' : '' }}">
-                                        <label for="vakil_name" class="form-label certificate">Namuna tanlab olish vakil nomi<label class="text-danger">*</label></label>
+                                        <label for="vakil_name" class="form-label certificate">{{trans("app.Namuna tanlab olish vakil nomi")}}<label class="text-danger">*</label></label>
                                         <input type="text" step="any" class="form-control" value="{{ old('vakil_name')}}"  name="vakil_name" required>
                                         @if ($errors->has('vakil_name'))
                                             <span class="help-block">
-											 <strong>Natija noto'g'ri shaklda kiritilgan</strong>
+											 <strong>{{trans("app.Natija noto'g'ri shaklda kiritilgan")}}</strong>
 										   </span>
                                         @endif
                                     </div>
                                     <div class="col-md-4 form-group has-feedback {{ $errors->has('harorat') ? ' has-error' : '' }}">
-                                        <label for="number" class="form-label ">Xona harorati °C<label class="text-danger">*</label></label>
+                                        <label for="number" class="form-label ">{{trans("app.Xona harorati")}} °C<label class="text-danger">*</label></label>
                                         <input type="number" step="any" class="form-control" id="harorat" value="{{ old('harorat')}}"  name="harorat" required >
                                         @if ($errors->has('harorat'))
                                             <span class="help-block">
 											 <strong>
-                                                 Harorat no'to'gri shaklda kiritilgan</strong>
+                                                {{trans("app.Harorat no'to'gri shaklda kiritilgan")}} </strong>
 										   </span>
                                         @endif
                                     </div>
                                     <div class="col-md-4 form-group has-feedback {{ $errors->has('namlik') ? ' has-error' : '' }}">
-                                        <label for="number" class="form-label ">Nisbiy namlik % <label class="text-danger">*</label></label>
+                                        <label for="number" class="form-label ">{{trans("app.Nisbiy namlik")}} % <label class="text-danger">*</label></label>
                                         <input type="number" step="any" class="form-control" id="namlik" value="{{ old('namlik')}}"  name="namlik" required>
                                         @if ($errors->has('namlik'))
                                             <span class="help-block">
 											 <strong>
-                                                 Namlik no'to'gri shaklda kiritilgan</strong>
+                                                {{trans("app.Namlik no'to'gri shaklda kiritilgan")}}</strong>
 										   </span>
                                         @endif
                                     </div>
                                     <div class="col-md-4 form-group has-feedback {{ $errors->has('yoruglik') ? ' has-error' : '' }}">
-                                        <label for="number" class="form-label ">Yorug'lik sharoiti % <label class="text-danger">*</label></label>
+                                        <label for="number" class="form-label ">{{trans("app.Yorug'lik sharoiti")}} % <label class="text-danger">*</label></label>
                                         <input type="number" step="any" class="form-control" id="yoruglik" value="{{ old('yoruglik')}}"  name="yoruglik" required>
                                         @if ($errors->has('yoruglik'))
                                             <span class="help-block">
 											 <strong>
-                                                 Yorug'lik no'to'gri shaklda kiritilgan</strong>
+                                                 {{trans("app.Yorug'lik no'to'gri shaklda kiritilgan")}}</strong>
 										   </span>
                                         @endif
                                     </div>

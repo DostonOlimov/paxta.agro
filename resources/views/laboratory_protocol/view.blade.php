@@ -32,8 +32,8 @@
                                 @include('laboratory_protocol._cheque2')
                             @endif --}}
                         <div class="py-3">
-                            <a href="{{ url()->previous() }}" class="btn btn-primary">ortga</a>
-                            <button class="btn btn-primary" id="print-invoice-btn">Chop etish</button>
+                            <a href="{{ url()->previous() }}" class="btn btn-primary">{{trans("app.Ortga")}}</a>
+                            <button class="btn btn-primary" id="print-invoice-btn">{{trans("app.Chop etish")}}</button>
                         </div>
                     </div>
                 </div>

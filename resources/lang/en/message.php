@@ -114,4 +114,8 @@ return [
     "O'chirilgan ma'lumotlar qayta tiklanmaydi" => "Deleted data cannot be recovered",
     "Ha, o'chirish" => "Yes, delete",
     "O'chirishni bekor qilish" => "Undo deletion",
+
+
+    "Sinov bayonnomalari"=>"Test reports",
+    "Laboratoriya sozlamalari"=>"Laboratory settings",
 ];
