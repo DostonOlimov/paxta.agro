@@ -960,34 +960,15 @@
             od.render();
             od.update(amountOfCotton);
         });
-
-        console.log("Width of the screen: " + window.innerWidth);
     </script>
     <script>
         function changeColor(element) {
-
-            var currentUrl = window.location.href;
-            var url = new URL(currentUrl);
-
-            // Set the new query parameter
-            url.searchParams.set('city', element);
-
-            // Modify the URL and trigger an AJAX request
-            var newUrl = url.toString();
-            window.history.pushState({
-                path: newUrl
-            }, '', newUrl);
-
-            $.ajax({
-                url: newUrl,
-                method: "GET",
-                success: function(response) {
-                    $('body').html(response);
-                }
-            });
-            // Change the fill color of the clicked figure
-            // element.setAttribute('fill', 'red');
-        }
+        var currentUrl = window.location.href;
+        var url = new URL(currentUrl);
+        url.searchParams.set('city', element);
+        var newUrl = url.toString();
+        window.location.href = newUrl;
+    }
     </script>
 
 
