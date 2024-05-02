@@ -71,6 +71,7 @@ class CropsGenerationController extends Controller
     // vehiclebrand update
     public function update(Request $request, $id)
     {
+        $this->authorize('setting_delete', User::class);
         $type = CropsGeneration::findOrFail($id);
         $type->name = $request->input('name');
         $type->crop_id = $request->input('crop');

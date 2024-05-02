@@ -76,6 +76,7 @@ class CropsNameController extends Controller
     // vehiclebrand update
     public function update(Request $request, $id)
     {
+        $this->authorize('setting_delete', User::class);
         $crop = CropsName::findOrFail($id);
         $crop->name = $request->input('name');
         $crop->kodtnved = $request->input('tnved');

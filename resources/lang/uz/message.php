@@ -116,7 +116,7 @@ return[
     'Viloyatlar kesimida ma\'lumot'=>'Viloyatlar kesimida ma\'lumot',
     'Barchasi'=>'Barchasi',
     'Qidirish'=>'Qidirish',
-
+    'Hisobotlar'=>'Hisobotlar',
 
 
     // Supplier List Page
