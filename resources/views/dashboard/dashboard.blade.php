@@ -919,7 +919,8 @@
             setInterval(updateStrokeDashArray, 500);
 
             const states = [
-                "3999", "4000", "4002", "4003", "4004", "4005", "4006", "4007", "4008", "4009", "4010", "4011", "4012"
+                "3999", "4000", "4002", "4003", "4004", "4005", "4006", "4007", "4008", "4009", "4010", "4011",
+                "4012"
             ];
             states.forEach(function(stateId) {
                 var city = <?php echo json_encode($city); ?>;
@@ -950,14 +951,6 @@
                 }
             });
 
-            function changeColor(element) {
-        var currentUrl = window.location.href;
-        var url = new URL(currentUrl);
-        url.searchParams.set('city', element);
-        var newUrl = url.toString();
-        window.location.href = newUrl;
-    }
-
             const amountOfCotton = {{ $sum_amount }};
             const od = new Odometer({
                 el: document.getElementById("odometer"),
@@ -970,8 +963,18 @@
         });
     </script>
 
+    <script>
+        function changeColor(element) {
+            var currentUrl = window.location.href;
+            var url = new URL(currentUrl);
+            url.searchParams.set('city', element);
+            var newUrl = url.toString();
+            window.location.href = newUrl;
+        }
+    </script>
 
-//     {{-- <div class="scores welcome">
+
+    // {{-- <div class="scores welcome">
 //         <div class="my-title">
 //             <h2>@php  echo date('d-m-Y ') @endphp</h2>
 //         </div>
@@ -1250,4 +1253,5 @@
 //             @endforeach
 //         </div>
 //     </div> --}}
-// @endsection
+    //
+@endsection
