@@ -71,6 +71,7 @@ class CropsTypeController extends Controller
     // vehiclebrand update
     public function update(Request $request, $id)
     {
+        $this->authorize('setting_delete', User::class);
         $type = CropsType::findOrFail($id);
         $type->name = $request->input('name');
         $type->crop_id = $request->input('crop');
