@@ -266,7 +266,7 @@
         <div style="display: flex; font-weight: 500;font-size: 18px;">
             <p></p>
 
-            <p style="margin-left: 67.3%;">(F.I.SH)</p>
+            {{-- <p style="margin-left: 67.3%;">(F.I.SH)</p> --}}
         </div>
         <div style="display: flex; font-weight: 500;font-size: 20px;height: 40px;">
             <p>
@@ -280,7 +280,7 @@
         <div style="display: flex; font-weight: 500;font-size: 18px;">
             <p></p>
 
-            <p style="margin-left: 67.3%;">(F.I.SH)</p>
+            {{-- <p style="margin-left: 67.3%;">(F.I.SH)</p> --}}
         </div>
 
 
