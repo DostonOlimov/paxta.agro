@@ -269,9 +269,9 @@ return[
     "Akkredatsiya guvohnomadi"=>"Akkredatsiya guvohnomadi",
     "Klassiyor nomi"=>"Klassiyor nomi",
     "Klassiyor kodi"=>"Klassiyor kodi",
-    "Laboratory Operators"=>"Laboratory Operators",
-    "Operator Name"=>"Operator Name",
-    "Laboratory Name"=>"Laboratory Name",
+    "Laboratory Operators"=>"Laboratoriya operatorlari",
+    "Operator Name"=>"Operator nomi",
+    "Laboratory Name"=>"Laboratoriya nomi",
     "Normativ hujjat nomlari"=>"Normativ hujjat nomlari",
     "Qaror shakllantirishdan oldin normativ hujjatni qo'shish kerak "=>"Qaror shakllantirishdan oldin normativ hujjatni qo'shish kerak",
     "Hujjat"=>"Hujjat",
@@ -281,4 +281,10 @@ return[
     "Sifat ko'rsatkich nomi"=>"Sifat ko'rsatkich nomi",
     "Sifat ko'rsatkich bo'yicha me'yoriy hujjat"=>"Sifat ko'rsatkich bo'yicha me'yoriy hujjat",
     "Ekin turi"=>"Ekin turi",
+
+    "Laboratoriya nomi"=>"Laboratoriya nomi",
+
+    "Edit Laboratory Operator"=>"Tahrirlash laboratoriya operatori",
+
+    "Add Laboratory Operator"=>"Laboratoriya operatorini qo'shish",
 ];

@@ -234,4 +234,10 @@ return[
     "Sifat ko'rsatkich nomi"=>"Quality indicator name",
     "Sifat ko'rsatkich bo'yicha me'yoriy hujjat"=>"Normative document on quality indicator",
     "Ekin turi"=>"Crop type",
+
+    "Laboratoriya nomi"=>"Name of the laboratory",
+
+    "Edit Laboratory Operator"=>"Edit Laboratory Operator",
+
+    "Add Laboratory Operator"=>"Add Laboratory Operator",
 ];

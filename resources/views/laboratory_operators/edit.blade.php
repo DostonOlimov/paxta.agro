@@ -21,7 +21,7 @@
                                         <li>
                                             <a href="{{ route('laboratory_operators.index') }}">
                                                 <i class="fa fa-list fa-lg">&nbsp;</i>
-                                                {{ trans("app.List") }}
+                                                {{ trans('app.Ro\'yxat') }}
                                             </a>
                                         </li>
                                         <li class="active">
@@ -37,7 +37,7 @@
                                 <div class="col-md-12">
                                     <form action="{{ route('laboratory_operators.update', $laboratoryOperator->id) }}" method="post" enctype="multipart/form-data" data-parsley-validate>
                                         @csrf
-                                        @method('PUT') 
+                                        @method('PUT')
 
                                         <div class="row">
                                             <div class="col-md-4">
@@ -49,6 +49,7 @@
 
                                             <div class="col-md-4">
                                                 <div class="form-group">
+                                                    <label>{{ trans("app.Laboratory Name") }} <span class="text-danger">*</span></label>
                                                     <select name="laboratory_id" class="region form-control" required>
                                                         @foreach ($laboratories as $laboratory)
                                                             <option value="{{ $laboratory->id }}" {{ $laboratory->id == $laboratoryOperator->laboratory_id ? 'selected' : '' }}>

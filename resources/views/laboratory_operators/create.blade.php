@@ -21,12 +21,12 @@
                                         <li>
                                             <a href="{{ route('laboratory_operators.index') }}">
                                                 <i class="fa fa-list fa-lg">&nbsp;</i>
-                                                {{ trans("app.List") }}
+                                                {{ trans('app.Ro\'yxat') }}
                                             </a>
                                         </li>
                                         <li class="active">
                                             <a href="{{ route('laboratory_operators.create') }}">
-                                                <i class="fa fa-plus-circle fa-lg">&nbsp;</i> <b>{{ trans("app.Add") }}</b>
+                                                <i class="fa fa-plus-circle fa-lg">&nbsp;</i> <b>{{ trans('app.Qo\'shish') }}</b>
                                             </a>
                                         </li>
                                     </ul>
