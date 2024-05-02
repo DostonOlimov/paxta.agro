@@ -120,4 +120,6 @@ return[
     'In Xaus ma\'lumotlari'=>"Информация о доме",
     "Klassiyorlar"=>"Классика",
     "Operatorlar"=>"Операторы",
+
+    "Hisobotlar"=>"Отчеты",
 ];

@@ -134,4 +134,6 @@ return[
     'In Xaus ma\'lumotlari'=>"Ин Хаус маълумотлари",
     "Klassiyorlar"=>"Классиёрлар",
     "Operatorlar"=>"Операторлар",
+
+    "Hisobotlar"=>"Ҳисоботлар",
 ];

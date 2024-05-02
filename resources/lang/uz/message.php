@@ -191,4 +191,6 @@ return[
 
     "Sinov bayonnomalari"=>"Sinov bayonnomalari",
     "Operatorlar"=>"Operatorlar",
+
+    "Hisobotlar"=>"Hisobotlar",
 ];

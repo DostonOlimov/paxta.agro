@@ -122,4 +122,6 @@ return [
     'In Xaus ma\'lumotlari'=>"In House information",
     "Klassiyorlar"=>"Classics",
     "Operatorlar"=>"Operators",
+
+    "Hisobotlar"=>"Reports",
 ];
