@@ -39,10 +39,6 @@ class Dalolatnoma  extends Model
     {
         return $this->belongsTo(HumidityResult::class, 'id', 'dalolatnoma_id');
     }
-    public function decision()
-    {
-        return $this->belongsTo(Decision::class, 'test_program_id', 'id');
-    }
     public function selection()
     {
         return $this->belongsTo(CropsSelection::class, 'selection_code', 'id');

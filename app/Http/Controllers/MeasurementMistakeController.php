@@ -124,7 +124,7 @@ class MeasurementMistakeController extends Controller
         $in_xaus_value = $in_xaus->calculateMetrics();
         $ball_values = $dalolatnoma->calculateDeviations();
 
-        $count = ClampData::select(
+        $data = ClampData::select(
             DB::raw('AVG(clamp_data.mic) as mic'),
             DB::raw('AVG(clamp_data.staple) as staple'),
             DB::raw('AVG(clamp_data.strength) as strength'),
@@ -136,11 +136,11 @@ class MeasurementMistakeController extends Controller
 
         $result = new LaboratoryResult();
         $result->dalolatnoma_id = $id;
-        $result->mic = $count->mic;
-        $result->staple = $count->staple;
-        $result->strength = $count->strength;
-        $result->uniform = $count->uniform;
-        $result->fiblength = $count->fiblength;
+        $result->mic = $data->mic;
+        $result->staple = $data->staple;
+        $result->strength = $data->strength;
+        $result->uniform = $data->uniform;
+        $result->fiblength = $data->fiblength;
         $result->humidity = optional($humidity_result)->humidity;
         $result->save();
 
@@ -172,10 +172,10 @@ class MeasurementMistakeController extends Controller
                 $result->class = $count->class;
                 $result->count = $count->count;
                 $result->amount = $count->total_amount;
-                $result->mic = $count->mic;
-                $result->staple = $count->staple;
-                $result->strength = $count->strength;
-                $result->uniform = $count->uniform;
+                $result->mic = $data->mic;
+                $result->staple = $data->staple;
+                $result->strength = $data->strength;
+                $result->uniform = $data->uniform;
                 $result->humidity = optional($humidity_result)->humidity;
                 $result->save();
             }
@@ -229,7 +229,7 @@ class MeasurementMistakeController extends Controller
         $in_xaus_value = $in_xaus->calculateMetrics();
         $ball_values = $mistake->dalolatnoma->calculateDeviations();
 
-        $count = ClampData::select(
+        $data = ClampData::select(
             DB::raw('AVG(clamp_data.mic) as mic'),
             DB::raw('AVG(clamp_data.staple) as staple'),
             DB::raw('AVG(clamp_data.strength) as strength'),
@@ -240,11 +240,11 @@ class MeasurementMistakeController extends Controller
             ->first();
 
         $result = $mistake->dalolatnoma->laboratory_result;
-        $result->mic = $count->mic;
-        $result->staple = $count->staple;
-        $result->strength = $count->strength;
-        $result->uniform = $count->uniform;
-        $result->fiblength = $count->fiblength;
+        $result->mic = $data->mic;
+        $result->staple = $data->staple;
+        $result->strength = $data->strength;
+        $result->uniform = $data->uniform;
+        $result->fiblength = $data->fiblength;
         $result->humidity = optional($humidity_result)->humidity;
         $result->save();
 
@@ -276,10 +276,10 @@ class MeasurementMistakeController extends Controller
                 $result->class = $count->class;
                 $result->count = $count->count;
                 $result->amount = $count->total_amount;
-                $result->mic = $count->mic;
-                $result->staple = $count->staple;
-                $result->strength = $count->strength;
-                $result->uniform = $count->uniform;
+                $result->mic = $data->mic;
+                $result->staple = $data->staple;
+                $result->strength = $data->strength;
+                $result->uniform = $data->uniform;
                 $result->humidity = optional($humidity_result)->humidity;
                 $result->save();
             }

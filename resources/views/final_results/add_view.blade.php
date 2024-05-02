@@ -59,7 +59,7 @@
                                 </ul>
                             </div>
                         </div>
-                        <h4>Laboratoriya : {{optional($dalolatnoma->decision->laboratory)->name}}</h4>
+                        <h4>Laboratoriya : {{optional($dalolatnoma->test_program->application->decision->laboratory)->name}}</h4>
                         <h4>Buyurtmachi : {{optional($dalolatnoma->test_program->application)->prepared->name}}</h4>
                         <h4>Sertifikatlanuvchi mahsulot : {{optional($dalolatnoma->test_program->application)->crops->name->name}}</h4>
                         @if($results != 0)
@@ -105,7 +105,7 @@
                                                             <td> {{ round($count->mic,1)}}</td>
                                                             <td> {{ round($count->strength,1)}}</td>
                                                             <td> {{ round($count->uniform,1)}}</td>
-                                                            <td> {{ round(($count->humidity/10),1)}}</td>
+                                                            <td> {{ round(($count->humidity),2)}}</td>
                                                         </tr>
                                                         @php $amount +=  $count->amount @endphp
                                                     @endforeach
