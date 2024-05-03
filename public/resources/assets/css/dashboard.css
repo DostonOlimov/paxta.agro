@@ -69,6 +69,7 @@ body {
 #info-4121 {
     right: 142px;
     top: 72px;
+    max-width: 120px;
 } */
 
 .dotted-line-4012 {
@@ -86,6 +87,7 @@ body {
 #info-4012 {
     right: 95px;
     top: 435px;
+    max-width: 120px;
 }
 
 .dotted-line-4000 {
@@ -103,6 +105,7 @@ body {
 #info-4000 {
     top: 433px;
     right: 415px;
+    max-width: 120px;
 }
 
 .dotted-line-4004 {
@@ -119,6 +122,7 @@ body {
 #info-4004 {
     right: 514.7px;
     top: 333px;
+    max-width: 120px;
 }
 
 .dotted-line-4006 {
@@ -136,6 +140,7 @@ body {
 #info-4006 {
     right: 676px;
     top: 291px;
+    max-width: 120px;
 }
 
 .dotted-line-4008 {
@@ -152,6 +157,7 @@ body {
 #info-4008 {
     display: flex;
     flex-direction: column-reverse;
+    max-width: 120px;
     right: 364px;
     top: 14px;
 }
@@ -170,6 +176,7 @@ body {
 #info-4009 {
     display: flex;
     flex-direction: column-reverse;
+    max-width: 120px;
     right: 247.2px;
     top: 53px;
 }
@@ -188,6 +195,7 @@ body {
 #info-4002 {
     display: flex;
     flex-direction: column-reverse;
+    max-width: 120px;
     right: 213.2px;
     top: 158px;
 }
@@ -207,6 +215,7 @@ body {
 #info-4005 {
     right: 312.2px;
     top: 497px;
+    max-width: 120px;
 }
 
 .dotted-line-4011 {
@@ -224,6 +233,7 @@ body {
 #info-4011 {
     right: 187px;
     top: 497px;
+    max-width: 120px;
 }
 
 .dotted-line-4010 {
@@ -241,7 +251,7 @@ body {
 #info-4010 {
     right: 152.9px;
     top: 359px;
-    max-width: 70px;
+    max-width: 80px;
 }
 
 .dotted-line-3999 {
@@ -259,6 +269,7 @@ body {
 #info-3999 {
     right: -29.1px;
     top: 326px;
+    max-width: 120px;
 }
 
 .dotted-line-4007 {
@@ -274,6 +285,7 @@ body {
 #info-4007 {
     display: flex;
     flex-direction: column-reverse;
+    max-width: 120px;
     right: 32.9px;
     top: 123px;
 }
@@ -293,6 +305,7 @@ body {
 #info-4003 {
     right: 47.9px;
     top: 377px;
+    max-width: 120px;
 }
 
 #map circle {

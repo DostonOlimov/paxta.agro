@@ -291,7 +291,7 @@
                 @if (!empty($states))
                     @foreach ($states as $state)
                         <option value="{{ $state->id }}" @if ($city && $city == $state->id) selected="selected" @endif>
-                            {{ $state->name }}
+                            {{ trans('message.' . $state->name) }}
                         </option>
                     @endforeach
                 @endif
@@ -338,10 +338,10 @@
                         </g>
                     </svg>
                     <p>{{ trans('message.Hudud nomi') }}:</p>
-                    <span
-                        class="text-success">{{ isset($city) ? collect($states)->where('id', $city)->first()->name : __('message.Respublika bo\'yicha') }}</span>
-
-                </li>
+                    <span class="text-success">
+                        {{ isset($city) ? trans('message.' . collect($states)->where('id', $city)->first()->name) : __('message.Respublika bo\'yicha') }}
+                    </span>
+               </li>
                 <hr />
                 <li>
                     <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 512 512"
@@ -671,7 +671,7 @@
         </div>
     </div>
     <div id="map">
-        <svg height="488.48214285714283" version="1.1" width="750" xmlns="http://www.w3.org/2000/svg"
+        <svg version="1.1" width="750" xmlns="http://www.w3.org/2000/svg"
             style="overflow: hidden; position: relative; top: -0.078125px"
             viewBox="0.7366071428571429 0.7366071428570861 750.0000000000001 488.48214285714295"
             preserveAspectRatio="xMinYMin">
@@ -891,10 +891,11 @@
         @foreach ($app_states as $state)
             <div id="info-{{ $state->id }}" class="map__info-box" data-state="{{ $state->id }}">
                 <span>{{ round((100 * $state->application_count) / $app_states->sum('application_count')) }}%</span>
-                <p>{{ $state->name }}</p>
+                <p>{{ trans('message.' . $state->name) }}</p>
             </div>
             <div class="dotted-line-{{ $state->id }}"></div>
         @endforeach
+
     </div>
 @endsection
 <script src="https://github.hubspot.com/odometer/odometer.js"></script>
