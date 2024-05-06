@@ -81,8 +81,15 @@
     </div>
 </div>
 
-<script>
+{{-- <script>
+    function changeColor(element) {
+        var currentUrl = window.location.href;
+        var url = new URL(currentUrl);
+        url.searchParams.set('city', element);
+        var newUrl = url.toString();
+        window.location.href = newUrl;
+    }
     document.getElementById('city').addEventListener('change', function() {
     window.location.reload();
 });
-</script>
+</script> --}}
