@@ -972,6 +972,9 @@
             var newUrl = url.toString();
             window.location.href = newUrl;
         }
+        document.getElementById('city').addEventListener('change', function() {
+        window.location.reload();
+    });
     </script>
 
 
