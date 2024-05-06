@@ -966,24 +966,13 @@
 
     <script>
         function changeColor(element) {
-            var currentUrl = window.location.href;
-            var url = new URL(currentUrl);
-            url.searchParams.set('city', element);
-            var newUrl = url.toString();
-            window.location.href = newUrl;
-        }
-
-
-    var selectedCity = localStorage.getItem('selectedCity');
-    if (selectedCity) {
-        document.getElementById('city').value = selectedCity;
+        var currentUrl = window.location.href;
+        var url = new URL(currentUrl);
+        url.searchParams.set('city', element);
+        var newUrl = url.toString();
+        window.location.href = newUrl;
     }
 
-    document.getElementById('city').addEventListener('change', function() {
-        var selectedValue = this.value;
-        localStorage.setItem('selectedCity', selectedValue);
-        window.location.reload();
-    });
     </script>
 
 
