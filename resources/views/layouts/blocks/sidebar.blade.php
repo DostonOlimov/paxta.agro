@@ -28,7 +28,6 @@
                     <li class="nav-item"><a class="nav-link" href="{!! url('/akt_laboratory/search') !!}"> <svg class="nav-icon">
                             <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-search"></use>
                         </svg>{{trans('message.Laboratoriya ma\'lumotlari')}}</a></li>
-
                 </ul>
             </li>
         @endif

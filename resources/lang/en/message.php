@@ -40,8 +40,8 @@ return [
     'Hududlar' => 'Areas',
     'Viloyatlar' => 'Provinces',
     'Shaxar va tumanlar' => 'Cities and districts',
-    'Namlik dalolatnomasi'=>'Moisture certificate',
-    'Namlik natijalari'=>'Moisture results',
+    'Namlik dalolatnomasi' => 'Moisture certificate',
+    'Namlik natijalari' => 'Moisture results',
 
 
     //home page
@@ -52,7 +52,7 @@ return [
     'Jami' => 'Total',
     'ta' => 'piece',
     'tonna' => 'tons',
-    'kg'=>'kg',
+    'kg' => 'kg',
     'Mahaliy arizalar' => 'Local applications',
     'Mahalliy' => 'Local',
     'Xorijiy arizalar:' => 'Foreign applications',
@@ -60,7 +60,7 @@ return [
     'Barcha arizalar' => 'All applications',
     'Jarayon to\'liq yakunlanmagan arizalar' => 'Incomplete applications',
     'Sertifikat berilgan arizalar' => 'Certificate applications',
-    'Sertifikatsiya'=>'Certification',
+    'Sertifikatsiya' => 'Certification',
     'Nomuvofiqligi uchun sertifikat berilmagan arizalar' => 'Applications not certified for non-compliance',
     'Boshqa sabablarga ko\'ra sertifikat berilmagan arizalar' => 'Applications that are not certified for other reasons',
     'Vaqt bo\'yicha filtrlash' => 'Filter by time',
@@ -68,17 +68,16 @@ return [
     'dan' => 'from',
     'gacha' => 'until',
     'Paxta tolasi kesimida ma\'lumot' => 'Information on cotton fiber section',
-    'Paxta tolasi miqdori'=>'Amount of cotton fiber',
-    'Hudud nomi'=>'Area name',
-    'Kelgan arizalar soni'=>'Number of applications received',
-    'Jami toylar soni'=>'Total number of bales',
-    'Sertifikalangan paxta tolasi miqdori'=>'Certified cotton fiber quantity',
-    'Shundan'=>'of them',
-    'Respublika bo\'yicha' => 'by republic',
+    'Paxta tolasi miqdori' => 'Amount of cotton fiber',
+    'Hudud nomi' => 'Area name',
+    'Kelgan arizalar soni' => 'Number of applications received',
+    'Jami toylar soni' => 'Total number of bales',
+    'Sertifikalangan paxta tolasi miqdori' => 'Certified cotton fiber quantity',
+    'Shundan' => 'of them',
     'Arizalar soni' => 'Number of applications',
     'Miqdori' => 'Amount',
     'O\'lchov birligi' => 'Measure type',
-    'O\'lchash xatoligi'=>'Measurement error',
+    'O\'lchash xatoligi' => 'Measurement error',
     'Viloyatlar kesimida ma\'lumot' => 'Information by region',
     'Barchasi' => 'All',
     'Qidirish' => 'Search',
@@ -109,19 +108,32 @@ return [
 
 
     //warning
-
     "O'chirishni istaysizmi" => "Do you want to delete",
     "O'chirilgan ma'lumotlar qayta tiklanmaydi" => "Deleted data cannot be recovered",
     "Ha, o'chirish" => "Yes, delete",
     "O'chirishni bekor qilish" => "Undo deletion",
+    "Sinov bayonnomalari" => "Test reports",
+    "Laboratoriya sozlamalari" => "Laboratory settings",
+    'In Xaus ma\'lumotlari' => "In House information",
+    "Klassiyorlar" => "Classics",
+    "Operatorlar" => "Operators",
+    "Hisobotlar" => "Reports",
 
 
-    "Sinov bayonnomalari"=>"Test reports",
-    "Laboratoriya sozlamalari"=>"Laboratory settings",
-
-    'In Xaus ma\'lumotlari'=>"In House information",
-    "Klassiyorlar"=>"Classics",
-    "Operatorlar"=>"Operators",
-
-    "Hisobotlar"=>"Reports",
+    //Regions
+    'Respublika bo\'yicha' => 'By Republic',
+    "Andijon viloyati" => "Andijan Region",
+    "Buxoro viloyati" => "Bukhara Region",
+    "Jizzax viloyati" => "Jizzakh Region",
+    "Farg'ona viloyati" => "Fergana Region",
+    "Xorazm viloyati" => "Khorezm Region",
+    "Qashqadaryo viloyati" => "Kashkadarya Region",
+    "Qoraqalpog'iston Respublikasi" => "Republic of Karakalpakstan",
+    "Namangan viloyati" => "Namangan Region",
+    "Navoiy viloyati" => "Navoi Region",
+    "Samarqand viloyati" => "Samarkand Region",
+    "Sirdaryo viloyati" => "Sirdarya Region",
+    "Surxondaryo viloyati" => "Surkhandarya Region",
+    "Toshkent viloyati" => "Tashkent Region",
+    "Toshkent shahri" => "Tashkent City"
 ];
