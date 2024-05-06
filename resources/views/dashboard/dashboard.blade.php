@@ -966,14 +966,20 @@
 
     <script>
         function changeColor(element) {
-            var currentUrl = window.location.href;
-            var url = new URL(currentUrl);
+            let currentUrl = window.location.href;
+            let url = new URL(currentUrl);
             url.searchParams.set('city', element);
-            var newUrl = url.toString();
+            let newUrl = url.toString();
             window.location.href = newUrl;
+            window.reload();
         }
 
-        
+        document.getElementById('city').addEventListener('change', function() {
+    setTimeout(function() {
+        window.location.reload();
+    }, 100);
+});
+
     </script>
 
 

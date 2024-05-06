@@ -81,15 +81,10 @@
     </div>
 </div>
 
-{{-- <script>
-    function changeColor(element) {
-        var currentUrl = window.location.href;
-        var url = new URL(currentUrl);
-        url.searchParams.set('city', element);
-        var newUrl = url.toString();
-        window.location.href = newUrl;
-    }
-    document.getElementById('city').addEventListener('change', function() {
-    window.location.reload();
+<script>
+ document.getElementById('city').addEventListener('change', function() {
+    setTimeout(function() {
+        window.location.reload();
+    }, 100);
 });
-</script> --}}
+</script>

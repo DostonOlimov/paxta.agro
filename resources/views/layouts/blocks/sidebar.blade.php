@@ -16,10 +16,12 @@
                 </svg>{{trans('message.Umumiy ro\'yxat')}}</a></li> --}}
 {{-- start --}}
         @if(auth()->user()->role != \App\Models\User::STATE_EMPLOYEE)
-            <li class="nav-group"><a class="nav-link nav-group-toggle" >
+            <li class="nav-group">
+                <a class="nav-link nav-group-toggle">
                     <svg class="nav-icon">
                         <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-folder"></use>
-                    </svg>{{trans('message.Hisobotlar')}}</a>
+                    </svg>{{trans('message.Hisobotlar')}}
+                </a>
                 <ul class="nav-group-items">
                     <li class="nav-item"><a class="nav-link" href="{!! url('full-report') !!}">
                             <svg class="nav-icon">
