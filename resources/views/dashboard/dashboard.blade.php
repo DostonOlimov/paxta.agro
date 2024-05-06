@@ -972,7 +972,16 @@
             var newUrl = url.toString();
             window.location.href = newUrl;
         }
-        document.getElementById('city').addEventListener('change', function() {
+
+
+    var selectedCity = localStorage.getItem('selectedCity');
+    if (selectedCity) {
+        document.getElementById('city').value = selectedCity;
+    }
+
+    document.getElementById('city').addEventListener('change', function() {
+        var selectedValue = this.value;
+        localStorage.setItem('selectedCity', selectedValue);
         window.location.reload();
     });
     </script>
