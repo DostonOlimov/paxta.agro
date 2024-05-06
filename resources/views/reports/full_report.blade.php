@@ -39,53 +39,86 @@
                                 <table id="examples1" class="table table-striped table-bordered " style="margin-top:20px;" >
                                     <thead>
                                     <tr>
-                                        <th>#</th>
-                                        <th>{{trans('app.Ariza sanasi')}}</th>
-                                        <th>{{trans('app.Na\'muna olingan viloyat')}}</th>
-                                        <th>{{trans('app.Na\'muna olingan shahar yoki tuman')}}</th>
-                                        <th>{{trans('app.Buyurtmachi korxona yoki tashkilot nomi')}}</th>
-                                        <th>{{trans('app.Tayorlangan shaxobcha yoki sexning nomi')}}</th>
-                                        <th>{{trans('app.Ishlab chiqargan davlat')}}</th>
-                                        <th>{{trans('app.Name')}}</th>
-                                        <th>{{trans('app.Toʼda (partiya) raqami')}}</th>
-                                        <th>{{trans('app.amount')}}</th>
-                                        <th>{{trans('app.Hosil yili')}}</th>
-                                        <th>{{trans('app.Qaror fayllari')}}</th>
-                                        <th>{{trans('app.Sinov bayonnoma fayllari')}}</th>
+                                        <th rowspan="2">#</th>
+                                        <th rowspan="2">{{trans('app.Ariza sanasi')}}</th>
+                                        <th rowspan="2">{{trans('app.Dalolatnoma raqami')}}</th>
+                                        <th rowspan="2">{{trans('app.Na\'muna olingan viloyat')}}</th>
+                                        <th rowspan="2">{{trans('app.Na\'muna olingan shahar yoki tuman')}}</th>
+                                        <th rowspan="2">{{trans('app.Buyurtmachi korxona yoki tashkilot nomi')}}</th>
+                                        <th rowspan="2">{{trans('app.Tayorlangan shaxobcha yoki sexning nomi')}}</th>
+                                        <th rowspan="2">{{trans('app.Ishlab chiqargan davlat')}}</th>
+                                        <th rowspan="2">{{trans('app.Name')}}</th>
+                                        <th rowspan="2">{{trans('app.Toʼda (partiya) raqami')}}</th>
+                                        <th rowspan="2">{{trans('app.amount')}}</th>
+                                        <th rowspan="2">{{trans('app.Hosil yili')}}</th>
+                                        <th rowspan="2">To'dadagi toylar soni (dona)</th>
+                                        <th rowspan="2">Jami og'irlik(kg)</th>
+                                        <th rowspan="2">Sof Og'irlik(kg)</th>
+                                        <th colspan="8>" style="text-align: center">Sifat nazorati natijalari</th>
+                                        <th rowspan="2">{{trans('app.Qaror fayllari')}}</th>
+                                        <th rowspan="2">{{trans('app.Sinov bayonnoma fayllari')}}</th>
                                     </tr>
+                                    <tr>
+                                        <th>Tip</th>
+                                        <th>Sort</th>
+                                        <th>Sinf</th>
+                                        <th>Shtaple uzunligi</th>
+                                        <th>Mikroneyr</th>
+                                        <th>Solishtirma uzunlik kuchi</th>
+                                        <th>Uzunligi bo'yicha bir xillik ko'rsatkichi,%</th>
+                                        <th>Namlik ko'rsatkichi,%</th>
+                                    </tr>
+
                                     </thead>
                                     <tbody>
                                     @php
                                         $offset = (request()->get('page', 1) - 1) * 50;
                                     @endphp
-                                    @foreach($apps as $app)
-                                        <tr>
-                                            <td>{{$offset + $loop->iteration}}</td>
-                                            <td><a href="{!! url('/application/view/'.$app->id) !!}">{{ $app->date }}</a></td>
-                                            <td>{{ optional($app->organization)->city->region->name }}</td>
-                                            <td>{{ optional($app->organization)->city->name }}</td>
-                                            <td><a href="{!! url('/organization/view/'.$app->organization_id) !!}">{{ optional($app->organization)->name }}</a></td>
-                                            <td>{{ optional($app->prepared)->name }}</td>
-                                            <td>{{ optional($app->crops->country)->name }}</td>
-                                            <td>{{ optional($app->crops->name)->name }}</td>
-                                            <td>{{ optional($app->crops)->party_number }}</td>
-                                            <td>{{ optional($app->crops)->amount_name }}</td>
-                                            <td>{{ optional($app->crops)->year }}</td>
+                                    @if (isset($results))
+
+                                        @foreach($results as $result)
+                                            <tr>
+                                                <td>{{$offset + $loop->iteration}}</td>
+                                                <td><a href="{!! url('/application/view/'.$result->test_program->application->id) !!}">{{ $result->test_program->application->date }}</a></td>
+                                                <td>{{ optional($result->dalolatnoma)->number }}</td>
+                                                <td>{{ optional($result->test_program->application->organization)->city->region->name }}</td>
+                                                <td>{{ optional($result->test_program->application->organization)->city->name }}</td>
+                                                <td><a href="{!! url('/organization/view/'.$result->test_program->application->organization_id) !!}">{{ optional($result->test_program->application->organization)->name }}</a></td>
+                                                <td>{{ optional($result->test_program->application->prepared)->name }}</td>
+                                                <td>{{ optional($result->test_program->application->crops->country)->name }}</td>
+                                                <td>{{ optional($result->test_program->application->crops->name)->name }}</td>
+                                                <td>{{ optional($result->test_program->application->crops)->party_number }}</td>
+                                                <td>{{ (optional($result)->amount)? $result->amount." kg":'' }} </td>
+                                                <td>{{ optional($result->test_program->application->crops)->year }}</td>
+
+                                                <td> {{ $result->count}}</td>
+                                                <td> {{ $result->amount}}</td>
+                                                <td> {{ $result->amount - $result->count * optional(optional($result->dalolatnoma->test_program->application)->prepared)->tara}}</td>
+                                                <td> 4</td>
+                                                <td> {{ $result->sort}}</td>
+                                                <td> {{ optional(\App\Models\CropsGeneration::where('kod','=',$result->class)->first())->name}}</td>
+                                                <td> {{ round($result->staple)}}</td>
+                                                <td> {{ round($result->mic,1)}}</td>
+                                                <td> {{ round($result->strength,1)}}</td>
+                                                <td> {{ round($result->uniform,1)}}</td>
+                                                <td> {{ round(($result->humidity),2)}}</td>
 
 
-                                            <td>@if($app->decision)
-                                                <a href="{!! url('/decision/view/'.optional($app->decision)->id) !!}"><button type="button" class="btn btn-round btn-info">{{trans('app.Qaror fayli')}}</button></a>
-                                                @endif
-                                            </td> <td>@if($app->tests)
-                                                    <a href="{!! url('/tests/view/'.$app->tests->id) !!}"><button type="button" class="btn btn-round btn-info">{{trans('app.Sinov dasturi fayli')}}</button></a>
-                                                @endif
-                                            </td>
+                                                <td>@if($result->test_program->application->decision)
+                                                    <a href="{!! url('/decision/view/'.optional($result->test_program->application->decision)->id) !!}"><button type="button" class="btn btn-round btn-info">{{trans('app.Qaror fayli')}}</button></a>
+                                                    @endif
+                                                </td> <td>@if($result->test_program->application->tests)
+                                                        <a href="{!! url('/tests/view/'.$result->test_program->id) !!}"><button type="button" class="btn btn-round btn-info">{{trans('app.Sinov dasturi fayli')}}</button></a>
+                                                    @endif
+                                                </td>
 
-                                        </tr>
-                                    @endforeach
+                                            </tr>
+                                        @endforeach
+
+                                    @endif
                                     </tbody>
                                 </table>
-                                {{ $apps->links() }}
+                                {{ $results->links() }}
                             </div>
                         </div>
                     </div>
