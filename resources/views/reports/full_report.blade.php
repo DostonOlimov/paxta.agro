@@ -105,3 +105,4 @@
     <script src="{{ URL::asset('vendors/jquery/dist/jquery.min.js') }}"></script>
 
 @endsection
+
