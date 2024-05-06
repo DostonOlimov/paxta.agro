@@ -29,7 +29,7 @@ body {
 #map {
     position: absolute;
     top: 350px;
-    transition: left 0.2s ease; /* Add smooth transition effect */
+    transition: left 0.15s ease; /* Add smooth transition effect */
 }
 
 .map-position {
@@ -539,7 +539,7 @@ hr {
         position: absolute;
         top: 290px;
         transform: scale(0.9);
-        transition: left 0.2s ease; /* Add smooth transition effect */
+        transition: left 0.15s ease; /* Add smooth transition effect */
     }
 
     .map-position {
@@ -582,7 +582,7 @@ hr {
         top: 300px;
         transform: translate(-50%, -50%);
         transform: scale(0.85);
-        transition: left 0.2s ease; /* Add smooth transition effect */
+        transition: left 0.15s ease; /* Add smooth transition effect */
     }
 
     .map-position {
