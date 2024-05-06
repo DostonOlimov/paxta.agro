@@ -670,7 +670,7 @@
             </ul>
         </div>
     </div>
-    <div id="map">
+    <div id="map" class="map-position">
         <svg version="1.1" width="750" xmlns="http://www.w3.org/2000/svg"
             style="overflow: hidden; position: relative; top: -0.078125px"
             viewBox="0.7366071428571429 0.7366071428570861 750.0000000000001 488.48214285714295"
@@ -979,7 +979,14 @@
         window.location.reload();
     }, 100);
 });
+function toggleSidebarAndMap() {
+        let map = document.querySelector("#map");
+        // Toggle the 'moved' class on the map
+        map.classList.toggle("moved");
 
+        // Toggle the sidebar using CoreUI's toggle method
+        coreui.Sidebar.getInstance(document.querySelector('#sidebar')).toggle();
+    }
     </script>
 
 
