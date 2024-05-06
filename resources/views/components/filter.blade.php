@@ -82,7 +82,9 @@
 </div>
 
 <script>
-    document.getElementById('city').addEventListener('change', function() {
-    window.location.reload();
+ document.getElementById('city').addEventListener('change', function() {
+    setTimeout(function() {
+        window.location.reload();
+    }, 100);
 });
 </script>
