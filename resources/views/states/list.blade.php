@@ -50,9 +50,8 @@
 								<table id="datatable" class="table table-striped table-bordered nowrap" style="margin-top:20px; width:100%;">
 								<thead>
 									<tr>
-										<th>#</th>
-										<th>{{ trans('app.Region')}}</th>
-
+										<th>№</th>
+										<th>{{ trans('app.Viloyat')}}</th>
 										<th>{{ trans('app.Action')}}</th>
 									</tr>
 								</thead>
@@ -61,7 +60,7 @@
 								 @foreach($states as $city)
 									<tr>
 										<td>{{ $i }}</td>
-										<td>{{ $city->name }}</td>
+										<td>{{ trans('message.' . $city->name) }}</td>
 										<td>
 											<a href="{!! url ('/states/list/edit/'.$city->id) !!}"> <button type="button" class="btn btn-round btn-success">{{ trans('app.Edit')}}</button></a>
 										</td>
