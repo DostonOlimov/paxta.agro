@@ -13,7 +13,7 @@
 		<div class="page-header">
 			<ol class="breadcrumb">
 				<li class="breadcrumb-item">
-					<a href="/"><i class="fe fe-life-buoy mr-1"></i>&nbsp Viloyatlar
+					<a style="color: #fff" href="/"><i class="fe fe-life-buoy mr-1"></i>&nbsp
 					</a>
 				</li>
 			</ol>
@@ -58,9 +58,9 @@
 										<form action="update/{{ $state->id }}" method="post"  enctype="multipart/form-data" data-parsley-validate class="form-horizontal form-label-left">
 											<div class="row">
 												<div class="col-12 col-md-3">
-													<label class="form-label" for="first-name">Viloyat nomi <label class="text-danger">*</label>
+													<label class="form-label" for="first-name">{{ trans('app.Viloyat') }} nomi <label class="text-danger">*</label>
 													</label>
-													<input type="text"  required="required" name="state" value="{{ $state->name }}"  class="form-control">
+													<input type="text"  required="required" name="state" value="{{ trans('message.' . $state->name) }}"  class="form-control">
 												</div>
 
 										  		<div class="col-12 col-md-4">

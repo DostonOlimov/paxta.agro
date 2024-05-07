@@ -61,7 +61,7 @@
                                                 <div class="col-12 col-md-4">
                                                     <div class="form-group">
                                                         <label class="form-label"
-                                                               for="first-name">{{ trans('app.City Name')}} <label
+                                                               for="first-name">{{ trans('app.Cities')}} <label
                                                                 class="text-danger">*</label>
                                                         </label>
                                                         <input type="text" required="required" name="city"
@@ -72,14 +72,14 @@
                                                 <div class="col-12 col-md-4">
                                                     <div class="form-group">
                                                         <label class="form-label"
-                                                               for="first-name">{{ trans('app.Region Name')}} <label
+                                                               for="first-name">{{ trans('app.Viloyat')}} <label
                                                                 class="text-danger">*</label>
                                                         </label>
                                                         <select name="region" class="region" required>
                                                             @if(!empty($regions))
                                                                 @foreach($regions as $region)
                                                                     <option
-                                                                        value="{{ $region->id }}">{{ $region->name }}</option>
+                                                                        value="{{ $region->id }}">{{ __("message." . $region->name) }}</option>
                                                                 @endforeach
                                                             @endif
                                                         </select>

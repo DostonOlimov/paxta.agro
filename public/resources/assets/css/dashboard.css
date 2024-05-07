@@ -29,10 +29,17 @@ body {
 #map {
     position: absolute;
     top: 350px;
-    left: 17%;
-    /* transform: translate(-50%, -50%); */
-    /* transform: scale(1.1); */
+    transition: left 0.15s ease; /* Add smooth transition effect */
 }
+
+.map-position {
+    left: 17%; /* Initial position */
+}
+
+.map-position.moved {
+    left: 2.5%; /* Moved position */
+}
+
 .map__info-box {
     position: absolute;
     z-index: 4;
@@ -523,14 +530,26 @@ hr {
     margin-right: 5px;
 }
 
+
+/* --------------------------------------------------------------------------------------------------------------------------------------- */
+
+
 @media (max-width: 1918px) {
     #map {
         position: absolute;
         top: 290px;
-        left: 15%;
-        /* transform: translate(-50%, -50%); */
         transform: scale(0.9);
+        transition: left 0.15s ease; /* Add smooth transition effect */
     }
+
+    .map-position {
+        left: 15%; /* Initial position */
+    }
+
+    .map-position.moved {
+        left: 1%; /* Moved position */
+    }
+
     .circle-persentages__circle svg {
         width: 106px;
         height: auto;
@@ -561,9 +580,17 @@ hr {
     #map {
         position: absolute;
         top: 300px;
-        left: 17%;
         transform: translate(-50%, -50%);
         transform: scale(0.85);
+        transition: left 0.15s ease; /* Add smooth transition effect */
+    }
+
+    .map-position {
+        left: 19%; /* Initial position */
+    }
+
+    .map-position.moved {
+        left: 1%; /* Moved position */
     }
     .circle-persentages__circle svg {
         width: 106px;

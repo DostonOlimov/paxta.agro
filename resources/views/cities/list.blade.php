@@ -57,9 +57,9 @@
 								<table id="datatable" class="table table-striped table-bordered nowrap" style="margin-top:20px; width:100%;">
 								<thead>
 									<tr>
-										<th>#</th>
-										<th>{{ trans('app.District') }}</th>
-										<th>{{ trans('app.Region')}}</th>
+										<th>№</th>
+										<th>{{ trans('app.Tuman nomi') }}</th>
+										<th>{{ trans('app.Viloyat')}}</th>
 										<th>{{ trans('app.Action')}}</th>
 									</tr>
 								</thead>
@@ -69,7 +69,7 @@
 									<tr>
 										<td>{{ $i }}</td>
 										<td>{{ $city->district }}</td>
-										<td>{{ $city->region }}</td>
+										<td>{{ trans('message.' . $city->region) }}</td>
 										<td>
 											<a href="{!! url ('/cities/list/edit/'.$city->id) !!}"> <button type="button" class="btn btn-round btn-success">{{ trans('app.Edit')}}</button></a>
 

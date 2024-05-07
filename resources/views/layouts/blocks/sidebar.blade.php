@@ -1,7 +1,7 @@
 <div class="sidebar sidebar-dark sidebar-fixed " id="sidebar" >
     <div class="sidebar-brand d-none d-md-flex justify-content-around">
         <img style="width:55px; margin-top: 9px;" src="/resources/assets/images/paxta_logo.png">
-                <h2 style="font-size: 20px; color: white; margin: 6px 6px 5px -11; !important;">{{ trans('message.AGROINSPEKSIYA') }}</h2>
+                <h2 style="font-size: 20px; color: white; margin: 6px 6px 5px -11px; !important;">{{ trans('message.AGROINSPEKSIYA') }}</h2>
 
     </div>
     <ul class="sidebar-nav" data-coreui="navigation" data-simplebar="">
@@ -16,10 +16,12 @@
                 </svg>{{trans('message.Umumiy ro\'yxat')}}</a></li> --}}
 {{-- start --}}
         @if(auth()->user()->role != \App\Models\User::STATE_EMPLOYEE)
-            <li class="nav-group"><a class="nav-link nav-group-toggle" >
+            <li class="nav-group">
+                <a class="nav-link nav-group-toggle">
                     <svg class="nav-icon">
                         <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-folder"></use>
-                    </svg>{{trans('message.Hisobotlar')}}</a>
+                    </svg>{{trans('message.Hisobotlar')}}
+                </a>
                 <ul class="nav-group-items">
                     <li class="nav-item"><a class="nav-link" href="{!! url('full-report') !!}">
                             <svg class="nav-icon">

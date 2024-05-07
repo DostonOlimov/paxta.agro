@@ -4,19 +4,13 @@
                 @if(count($states))
                     <option value="">{{trans('message.Respublika bo\'yicha')}}</option>
                 @endif
-
                 @if(!empty($states))
-
                     @foreach($states as $state)
-
-                        <option value="{{ $state->id }}" @if( ($city && $city == $state->id))  selected="selected" @endif
-
-                        > {{$state->name}} </option>
-
+                    <option value="{{ $state->id }}" @if ($city && $city == $state->id) selected="selected" @endif>
+                        {{ trans('message.' . $state->name) }}
+                    </option>
                     @endforeach
-
                 @endif
-
             </select>
     </div>
 
@@ -25,17 +19,11 @@
             @if(count($crop_names))
                 <option value="">{{trans('message.Barchasi')}}</option>
             @endif
-
             @if(!empty($crop_names))
-
                 @foreach($crop_names as $state)
-
                     <option value="{{ $state->id }}" @if( ($crop && $crop == $state->id))  selected="selected" @endif> {{$state->name}} </option>
-
                 @endforeach
-
             @endif
-
         </select>
     </div>
 </div>
@@ -87,3 +75,10 @@
     </div>
 </div>
 
+<script>
+ document.getElementById('city').addEventListener('change', function() {
+    setTimeout(function() {
+        window.location.reload();
+    }, 100);
+});
+</script>

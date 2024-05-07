@@ -1,6 +1,6 @@
 <header class="header header-sticky">
     <div class="container-fluid">
-        <button class="header-toggler px-md-0 me-md-3" type="button" onclick="coreui.Sidebar.getInstance(document.querySelector('#sidebar')).toggle()">
+        <button class="header-toggler px-md-0 me-md-3" type="button" onclick="toggleSidebarAndMap()">
             <svg class="icon icon-lg">
                 <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-menu"></use>
             </svg>
@@ -66,5 +66,9 @@
             </li>
         </ul>
     </div>
-
 </header>
+<script>
+    function toggleSidebarAndMap() {
+    coreui.Sidebar.getInstance(document.querySelector('#sidebar')).toggle();
+}
+</script>
