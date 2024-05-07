@@ -19,17 +19,11 @@
             @if(count($crop_names))
                 <option value="">{{trans('message.Barchasi')}}</option>
             @endif
-
             @if(!empty($crop_names))
-
                 @foreach($crop_names as $state)
-
                     <option value="{{ $state->id }}" @if( ($crop && $crop == $state->id))  selected="selected" @endif> {{$state->name}} </option>
-
                 @endforeach
-
             @endif
-
         </select>
     </div>
 </div>

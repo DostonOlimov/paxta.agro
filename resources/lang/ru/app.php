@@ -152,9 +152,9 @@ return[
 
     "Passport seriyasi" => "Pasport seriyasi",
     "Mobile num" => "Telefon raqami",
-    "Viloyat" => "Viloyat",
+    "Viloyat" => "Область",
     "SHIR" => "SHIR",
-    "Cities" => "Shaharlar",
+    "Cities" => "Города",
     "Cities list" => "Shaharlar ro'yxati",
     "District" => "Tuman",
     "Region" => "Viloyat",

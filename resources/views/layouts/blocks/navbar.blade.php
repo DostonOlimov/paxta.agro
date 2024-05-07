@@ -67,3 +67,8 @@
         </ul>
     </div>
 </header>
+<script>
+    function toggleSidebarAndMap() {
+    coreui.Sidebar.getInstance(document.querySelector('#sidebar')).toggle();
+}
+</script>
