@@ -237,4 +237,6 @@ return[
     "Edit Laboratory Operator"=>"Таҳрирлаш лаборатория оператори",
 
     "Add Laboratory Operator"=>"Лаборатория операторини қўшиш",
+
+    "Excel fayl"=>"Эхcел файл",
 ];

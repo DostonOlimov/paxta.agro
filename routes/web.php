@@ -28,7 +28,7 @@ Route::post('/change-language', [\App\Http\Controllers\LanguageController::class
 //profile
 Route::get('/full-report', '\App\Http\Controllers\ReportController@report')->name('report.full_report');
 Route::get('/report', '\App\Http\Controllers\ReportController@myreport')->name('report.report');
-
+Route::get('/export','\App\Http\Controllers\ReportController@excel_export')->name('excel.export');
 
     Route::group(['prefix' => 'user', 'middleware' => 'auth'], function () {
         Route::get('/list', 'Usercontroller@userslist');

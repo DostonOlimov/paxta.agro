@@ -287,4 +287,6 @@ return[
     "Edit Laboratory Operator"=>"Tahrirlash laboratoriya operatori",
 
     "Add Laboratory Operator"=>"Laboratoriya operatorini qo'shish",
+
+    "Excel fayl"=>"Excel fayl",
 ];

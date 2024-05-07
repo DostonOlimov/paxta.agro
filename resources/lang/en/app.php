@@ -240,4 +240,6 @@ return[
     "Edit Laboratory Operator"=>"Edit Laboratory Operator",
 
     "Add Laboratory Operator"=>"Add Laboratory Operator",
+
+    "Excel fayl"=>"Excel file",
 ];

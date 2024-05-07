@@ -32,6 +32,17 @@
             <!--filter component -->
 
             <div class="row">
+                <div class="col-sm-3 pt-2">
+                    <a class="btn btn-success" style="color: white"
+                        href="{{ route('excel.export', [
+                            'from' => $from,
+                            'till' => $till,
+                            'city' => $city,
+                            'crop' => $crop,
+                        ]) }}"
+                        >
+                        <i class="fa fa-file-excel-o" style="margin-right: 6px; color: white"></i>{{ trans('app.Excel fayl') }}</a>
+                </div>
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
@@ -54,7 +65,7 @@
                                         <th rowspan="2">To'dadagi toylar soni (dona)</th>
                                         <th rowspan="2">Jami og'irlik(kg)</th>
                                         <th rowspan="2">Sof Og'irlik(kg)</th>
-                                        <th colspan="8>" style="text-align: center">Sifat nazorati natijalari</th>
+                                        <th colspan="8" style="text-align: center">Sifat nazorati natijalari</th>
                                         <th rowspan="2">{{trans('app.Qaror fayllari')}}</th>
                                         <th rowspan="2">{{trans('app.Sinov bayonnoma fayllari')}}</th>
                                     </tr>
@@ -93,7 +104,7 @@
 
                                                 <td> {{ $result->count}}</td>
                                                 <td> {{ $result->amount}}</td>
-                                                <td> {{ $result->amount - $result->count * optional(optional($result->dalolatnoma->test_program->application)->prepared)->tara}}</td>
+                                                <td> {{ ($result->amount!=null)?$result->amount - $result->count * optional(optional($result->dalolatnoma->test_program->application)->prepared)->tara:""}}</td>
                                                 <td> 4</td>
                                                 <td> {{ $result->sort}}</td>
                                                 <td> {{ optional(\App\Models\CropsGeneration::where('kod','=',$result->class)->first())->name}}</td>

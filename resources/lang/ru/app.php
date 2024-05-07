@@ -247,4 +247,6 @@ return[
     "Edit Laboratory Operator"=>"Редактировать оператора лаборатории",
 
     "Add Laboratory Operator"=>"Добавить оператора лаборатории",
+
+    "Excel fayl"=>"файл Excel",
 ];
