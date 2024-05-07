@@ -31,6 +31,24 @@
             font-size: 14px;
             pointer-events: none;
         }
+
+        .twoButtonsContainer {
+            display: flex !important;
+            align-items: center;
+            height: 110px;
+        }
+        .twoButtonsContainer #addButton, .twoButtonsContainer .col-md-4 {
+            display: flex;
+            align-items: center;
+        }
+        .file-input-container {
+            cursor: pointer !important;
+            margin-top: 0px !important;
+        }
+
+        .form-control, .form-group {
+            width: 100%;
+        }
     </style>
 @endsection
 @section('content')
@@ -172,7 +190,7 @@
                                     </div>
                                     {{-- start --}}
                                     <div class="certificate row" id="forms">
-                                        <div class="col-md-5 row">
+                                        <div class="col-md-4 row">
                                             <label for="number" class="form-label">Shtrix kod raqami:<label class="text-danger">*</label></label>
                                             <div class="col-md-6 form-group has-feedback">
                                                 <input type="number" class="form-control" maxlength="10"
@@ -186,7 +204,7 @@
                                                 <label for="number" class="form-label">gacha </label>
                                             </div>
                                         </div>
-                                        <div class="col-md-5 row">
+                                        <div class="col-md-4 row">
                                             <label for="number" class="form-label">Toylar ketma-ketligi:<label class="text-danger">*</label></label>
                                             <div
                                                 class="col-md-6 form-group has-feedback {{ $errors->has('kod_toy[0][2]') ? ' has-error' : '' }}">
@@ -200,36 +218,33 @@
                                                 <label for="number" class="form-label">gacha </label>
                                             </div>
                                         </div>
-                                        <div class="col-md-2 row ">
-                                            <label></label>
-                                            <div class="col-md-6">
+                                        <div class="col-md-4 row twoButtonsContainer">
+                                            <div class="col-md-3">
                                                 <div id="addButton" onclick="addField();" class="btn btn-success"> <i
                                                         class="fa fa-plus-circle fa-lg">&nbsp;</i>
                                                     <b>{{ trans('app.Qo\'shish') }}</b>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="file-input-container">
+                                                <div class="col-md-3 file-input-container">
                                                     <span class="file-label"><i class="fa fa-file-excel-o"></i> Fayl yuklash</span>
                                                     <input type="file" class="file-input" id="excelFile" name="excelFile" accept=".xlsx, .xls">
                                                 </div>
-                                            </div>
                                         </div>
                                         @if(old('kod_toy'))
                                             @for($i=1; $i < count(old('kod_toy')); $i++)
-                                            <div class="col-md-5 row">
-                                                <div class="col-md-6 form-group has-feedback">
+                                            <div class="col-md-4 row">
+                                                <div class="col-md-4 form-group has-feedback">
                                                     <input type="number" class="form-control" maxlength="10" value="{{old('kod_toy')[$i][0] }}" name="kod_toy[{{$i}}][0]" required min="1">
                                                 </div>
-                                                <div class="col-md-6 form-group has-feedback">
+                                                <div class="col-md-4 form-group has-feedback">
                                                     <input type="number" class="form-control" value="{{ old('kod_toy')[$i][1] }}" name="kod_toy[{{$i}}][1]" required>
                                                 </div>
                                             </div>
-                                            <div class="col-md-5 row">
-                                                <div class="col-md-6 form-group has-feedback">
+                                            <div class="col-md-4 row">
+                                                <div class="col-md-4 form-group has-feedback">
                                                     <input type="number" class="form-control" maxlength="10" value="{{ old('kod_toy')[$i][2] }}" name="kod_toy[{{$i}}][2]" required min="1">
                                                 </div>
-                                                <div class="col-md-6 form-group has-feedback ">
+                                                <div class="col-md-4 form-group has-feedback ">
                                                     <input type="number" class="form-control" value="{{ old('kod_toy')[$i][3] }}" name="kod_toy[{{$i}}][3]" required>
                                                 </div>
                                             </div>
@@ -238,7 +253,7 @@
                                     </div>
                                     <div id="numbersContainer" class="row"></div>
                                     <div class="form-group col-md-12 col-sm-12 mt-2">
-                                        <div class="col-md-6 col-sm-6">
+                                        <div class="col-md-4 col-sm-6">
                                             <a class="btn btn-primary"
                                                 href="{{ URL::previous() }}">{{ trans('app.Cancel') }}</a>
                                             <button type="submit" onclick="disableButton()" id="submitter"
@@ -393,22 +408,22 @@
                         }
                     }else{
                         inputFieldsContainer.innerHTML += `
-            <div class="col-md-5 row">
-                <div class="col-md-6 form-group has-feedback">
+            <div class="col-md-4 row">
+                <div class="col-md-4 form-group has-feedback">
                     <input type="number" class="form-control" maxlength="10"
                         value="${row[0]}" name="kod_toy[${index}][0]" required min="1">
                 </div>
-                <div class="col-md-6 form-group has-feedback">
+                <div class="col-md-4 form-group has-feedback">
                     <input type="number" class="form-control" maxlength="10"
                         value="${row[1]}" name="kod_toy[${index}][1]" required min="1">
                 </div>
             </div>
-            <div class="col-md-5 row">
-                <div class="col-md-6 form-group has-feedback">
+            <div class="col-md-4 row">
+                <div class="col-md-4 form-group has-feedback">
                     <input type="number" class="form-control" maxlength="10"
                         value="${row[2]}" name="kod_toy[${index}][2]" required min="1">
                 </div>
-                <div class="col-md-6 form-group has-feedback">
+                <div class="col-md-4 form-group has-feedback">
                     <input type="number" class="form-control" maxlength="10"
                         value="${row[3]}" name="kod_toy[${index}][3]" required min="1">
                 </div>
@@ -440,9 +455,9 @@
         function addField() {
             fieldId++;
             var html =
-                `<br>  <div class="row">  <div class="col-md-5 row">
+                `<br>  <div class="row">  <div class="col-md-4 row">
                                             <div
-                                                class="col-md-6 form-group has-feedback {{ $errors->has('kod_toy[`+ fieldId + `][0]') ? ' has-error' : '' }}">
+                                                class="col-md-4 form-group has-feedback {{ $errors->has('kod_toy[`+ fieldId + `][0]') ? ' has-error' : '' }}">
                                                 <input type="number" class="form-control" maxlength="10"
                                                     value="{{ old('kod_toy[`+ fieldId + `][0]') }}" name="kod_toy[` +
                 fieldId + `][]" required>
@@ -454,7 +469,7 @@
                                                 @endif
                 </div>
                 <div
-                    class="col-md-6 form-group has-feedback {{ $errors->has('kod_toy[`+ fieldId + `][1]') ? ' has-error' : '' }}">
+                    class="col-md-4 form-group has-feedback {{ $errors->has('kod_toy[`+ fieldId + `][1]') ? ' has-error' : '' }}">
                                                 <input type="number" class="form-control" value="{{ old('kod_toy[`+ fieldId + `][1]') }}"
                                                     name="kod_toy[` + fieldId + `][]" required>
                                                 @if ($errors->has('kod_toy[`+ fieldId + `][1]'))
@@ -465,15 +480,15 @@
                                                 @endif
                 </div>
             </div>
-            <div class="col-md-5 row">
+            <div class="col-md-4 row">
                 <div
-                    class="col-md-6 form-group has-feedback {{ $errors->has('kod_toy[`+ fieldId + `][2]') ? ' has-error' : '' }}">
+                    class="col-md-4 form-group has-feedback {{ $errors->has('kod_toy[`+ fieldId + `][2]') ? ' has-error' : '' }}">
                                                 <input type="number" class="form-control" maxlength="10"
                                                     value="{{ old('kod_toy[`+ fieldId + `][2]') }}" name="kod_toy[` +
                 fieldId + `][]" required>
                                             </div>
                                             <div
-                                                class="col-md-6 form-group has-feedback {{ $errors->has('kod_toy[`+ fieldId + `][3]') ? ' has-error' : '' }}">
+                                                class="col-md-4 form-group has-feedback {{ $errors->has('kod_toy[`+ fieldId + `][3]') ? ' has-error' : '' }}">
                                                 <input type="number" class="form-control" value="{{ old('kod_toy[`+ fieldId + `][3]') }}"
                                                     name="kod_toy[` + fieldId + `][]" required>
                                                 @if ($errors->has('kod_toy[`+ fieldId + `][3]'))
@@ -486,7 +501,7 @@
             </div>` +
                 `
                                                 <div class="col-md-2 row "> <label></label>
-                                                     <div class="col-md-6 col-sm-6"> <div onclick="removeField(` +
+                                                     <div class="col-md-4 col-sm-6"> <div onclick="removeField(` +
                 fieldId + `);" class="btn btn-danger">
                                                          <i class="fa fa-minus-circle fa-lg">&nbsp;</i>
                                                     <b>{{ trans('app.Olib tashlash') }}</b></div>
