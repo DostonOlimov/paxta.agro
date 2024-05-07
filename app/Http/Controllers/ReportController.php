@@ -58,7 +58,7 @@ $regions = Region::get();
         $from = $request->input('from');
         $till = $request->input('till');
 
-        $results=FinalResult::with([
+        $query=FinalResult::with([
             'dalolatnoma.clamp_data',
             'test_program.application',
             'test_program.application.organization.city.region', // Including nested relationships
@@ -80,7 +80,7 @@ $regions = Region::get();
 
         if ($user->branch_id == \App\Models\User::BRANCH_STATE) {
             $user_city = $user->state_id;
-            $query = $results->whereHas('test_program.application.organization.city', function ($query) use ($user_city) {
+            $query = $query->whereHas('test_program.application.organization.city', function ($query) use ($user_city) {
                 $query->where('state_id', $user_city);
             });
         }
@@ -102,15 +102,15 @@ $regions = Region::get();
             });
         }
 
-        if (!is_null($app_type_selector)) {
-            if ($app_type_selector == 3) {
-                $query = $query->doesntHave('test_program.application.tests.result');
-            } else {
-                $query = $query->whereHas('test_program.application.tests.result', function ($query) use ($app_type_selector) {
-                    $query->where('type', '=', $app_type_selector);
-                });
-            }
-        }
+//        if (!is_null($app_type_selector)) {
+//            if ($app_type_selector == 3) {
+//                $query = $query->doesntHave('test_program.application.tests.result');
+//            } else {
+//                $query = $query->whereHas('test_program.application.tests.result', function ($query) use ($app_type_selector) {
+//                    $query->where('type', '=', $app_type_selector);
+//                });
+//            }
+//        }
 
         // Apply additional filters if needed
         $results = $query->latest('id')
