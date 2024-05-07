@@ -219,9 +219,9 @@ return[
     "Akkredatsiya guvohnomadi"=>"Аккредация гувоҳномади",
     "Klassiyor nomi"=>"Классиёр номи",
     "Klassiyor kodi"=>"Классиёр коди",
-    "Laboratory Operators"=>"Лабораторй Операторс",
-    "Operator Name"=>"Оператор Наме",
-    "Laboratory Name"=>"Лабораторй Наме",
+    "Laboratory Operators"=>"Лаборатория операторлари",
+    "Operator Name"=>"Оператор номи",
+    "Laboratory Name"=>"Лаборатория номи",
     "Normativ hujjat nomlari"=>"Норматив ҳужжат номлари",
     "Qaror shakllantirishdan oldin normativ hujjatni qo'shish kerak "=>"Қарор шакллантиришдан олдин норматив ҳужжатни қўшиш керак",
     "Hujjat"=>"Ҳужжат",
@@ -231,4 +231,12 @@ return[
     "Sifat ko'rsatkich nomi"=>"Сифат кўрсаткич номи",
     "Sifat ko'rsatkich bo'yicha me'yoriy hujjat"=>"Сифат кўрсаткич бўйича меъёрий ҳужжат",
     "Ekin turi"=>"Екин тури",
+
+    "Laboratoriya nomi"=>"Лаборатория номи",
+
+    "Edit Laboratory Operator"=>"Таҳрирлаш лаборатория оператори",
+
+    "Add Laboratory Operator"=>"Лаборатория операторини қўшиш",
+
+    "Excel fayl"=>"Эхcел файл",
 ];

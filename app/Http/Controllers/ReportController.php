@@ -6,6 +6,8 @@ use App\Exports\FullReportExport;
 use App\Http\Requests;
 use App\Models\Application;
 use App\Models\Area;
+use App\Models\ClampData;
+use App\Models\CropsName;
 use App\Models\FinalResult;
 use App\Models\Invoice;
 use App\Models\ListRegion;
@@ -24,6 +26,13 @@ class ReportController extends Controller{
 
     public function __construct(){
         $this->middleware('auth');
+    }
+    public function excel_export(Request $request)
+    {
+        $data = $this->getReport($request);
+        // $data = $data->latest('id')
+        //     ->get();
+        return \Maatwebsite\Excel\Facades\Excel::download(new \App\Exports\ReportExport($data), 'hisobot.xlsx');
     }
 
     private function reportData(Request $request)
@@ -49,82 +58,70 @@ $regions = Region::get();
         $from = $request->input('from');
         $till = $request->input('till');
 
-        $apps = Application::with('organization')
-            ->with('organization.city')
-            ->with('organization.city.region')
-            ->with('prepared')
-            ->with('crops')
-            ->with('crops.country')
-            ->with('crops.name')
-            ->with('crops.type')
-            ->with('crops.generation')
-            ->with('decision')
-            ->with('tests')
-            ->with('tests.result')
-            ->with('tests.result.certificate')
-            ->whereIn('status',[Application::STATUS_ACCEPTED,Application::STATUS_FINISHED]);
+        $results=FinalResult::with([
+            'dalolatnoma.clamp_data',
+            'test_program.application',
+            'test_program.application.organization.city.region', // Including nested relationships
+            'test_program.application.prepared',
+            'test_program.application.crops.country',
+            'test_program.application.crops.name',
+            'test_program.application.crops.type',
+            'test_program.application.crops.generation',
+            'test_program.application.decision',
+            'test_program.application.tests.result.certificate'
+        ]);
 
-        if($user->branch_id == \App\Models\User::BRANCH_STATE ){
+        $user = Auth::user();
+        $from = request()->input('from');
+        $till = request()->input('till');
+        $city = request()->input('city');
+        $crop = request()->input('crop');
+        $app_type_selector = request()->input('app_type_selector');
+
+        if ($user->branch_id == \App\Models\User::BRANCH_STATE) {
             $user_city = $user->state_id;
-            $apps = $apps->whereHas('organization', function ($query) use ($user_city) {
-                $query->whereHas('city', function ($query) use ($user_city) {
-                    $query->where('state_id', '=', $user_city);
-                });
+            $query = $results->whereHas('test_program.application.organization.city', function ($query) use ($user_city) {
+                $query->where('state_id', $user_city);
             });
         }
-        if ($from && $till) {
-            $fromTime = join('-', array_reverse(explode('-', $from)));
-            $tillTime = join('-', array_reverse(explode('-', $till)));
-            $apps = $apps->whereDate('date', '>=', $fromTime)
-                ->whereDate('date', '<=', $tillTime);
-        }
-        if ($city) {
-            $apps = $apps->whereHas('organization', function ($query) use ($city) {
-                $query->whereHas('city', function ($query) use ($city) {
-                    $query->where('state_id', '=', $city);
-                });
-            });
-        }
-        if ($crop) {
-            $apps = $apps->whereHas('crops', function ($query) use ($crop) {
-                $query->where('name_id', '=', $crop);
-            });
-        }
-        if (!is_null($app_type_selector)) {
 
-            if($app_type_selector == 3){
-                $apps = $apps->doesntHave('tests.result');
-            }else{
-                $apps = $apps->whereHas('tests.result', function ($query) use ($app_type_selector) {
+        if ($from && $till) {
+            $query = $query->whereDate('created_at', '>=', $from)
+                           ->whereDate('created_at', '<=', $till);
+        }
+
+        if ($city) {
+            $query = $query->whereHas('test_program.application.organization.city', function ($query) use ($city) {
+                $query->where('state_id', $city);
+            });
+        }
+
+        if ($crop) {
+            $query = $query->whereHas('test_program.application.crops', function ($query) use ($crop) {
+                $query->where('name_id', $crop);
+            });
+        }
+
+        if (!is_null($app_type_selector)) {
+            if ($app_type_selector == 3) {
+                $query = $query->doesntHave('test_program.application.tests.result');
+            } else {
+                $query = $query->whereHas('test_program.application.tests.result', function ($query) use ($app_type_selector) {
                     $query->where('type', '=', $app_type_selector);
                 });
             }
         }
-        $apps->when($request->input('s'), function ($query, $searchQuery) {
-            $query->where(function ($query) use ($searchQuery) {
-                if (is_numeric($searchQuery)) {
-                    $query->orWhere('app_number', $searchQuery);
-                } else {
-                    $query->whereHas('crops.name', function ($query) use ($searchQuery) {
-                        $query->where('name', 'like', '%' . addslashes($searchQuery) . '%');
-                    })->orWhereHas('crops.type', function ($query) use ($searchQuery) {
-                        $query->where('name', 'like', '%' . addslashes($searchQuery) . '%');
-                    })->orWhereHas('crops.generation', function ($query) use ($searchQuery) {
-                        $query->where('name', 'like', '%' . addslashes($searchQuery) . '%');
-                    });
 
-                }
-            });
-        });
+        // Apply additional filters if needed
+        $results = $query->latest('id')
+                       ->paginate(50)
+                       ->appends(['s' => request()->input('s')])
+                       ->appends(['till' => request()->input('till')])
+                       ->appends(['from' => request()->input('from')])
+                       ->appends(['city' => request()->input('city')])
+                       ->appends(['crop' => request()->input('crop')]);
 
-        $apps = $apps->latest('id')
-            ->paginate(50)
-            ->appends(['s' => $request->input('s')])
-            ->appends(['till' => $request->input('till')])
-            ->appends(['from' => $request->input('from')])
-            ->appends(['city' => $request->input('city')])
-            ->appends(['crop' => $request->input('crop')]);
-        return view('reports.full_report', compact('apps','from','till','city','crop'));
+        return view('reports.full_report', compact('results', 'from', 'till', 'city', 'crop'));
     }
 
     public function myreport(Request $request)
@@ -213,6 +210,80 @@ $regions = Region::get();
             ->appends(['city' => $request->input('city')])
             ->appends(['crop' => $request->input('crop')]);
         return view('reports.report', compact('apps','from','till','city','crop'));
+    }
+    private function getReport( $request)
+    {
+        // $year =  session('year') ?  session('year') : date('Y');
+
+        $user = Auth::User();
+        $app_type_selector = $request->input('app_type_selector');
+        $city = $request->input('city');
+        $crop = $request->input('crop');
+        $from = $request->input('from');
+        $till = $request->input('till');
+
+        $results=FinalResult::with([
+            'dalolatnoma.clamp_data',
+            'test_program.application',
+            'test_program.application.organization.city.region', // Including nested relationships
+            'test_program.application.prepared',
+            'test_program.application.crops.country',
+            'test_program.application.crops.name',
+            'test_program.application.crops.type',
+            'test_program.application.crops.generation',
+            'test_program.application.decision',
+            'test_program.application.tests.result.certificate'
+        ]);
+
+        $user = Auth::user();
+        $from = request()->input('from');
+        $till = request()->input('till');
+        $city = request()->input('city');
+        $crop = request()->input('crop');
+        $app_type_selector = request()->input('app_type_selector');
+
+        if ($user->branch_id == \App\Models\User::BRANCH_STATE) {
+            $user_city = $user->state_id;
+            $query = $results->whereHas('test_program.application.organization.city', function ($query) use ($user_city) {
+                $query->where('state_id', $user_city);
+            });
+        }
+
+        if ($from && $till) {
+            $query = $query->whereDate('created_at', '>=', $from)
+                           ->whereDate('created_at', '<=', $till);
+        }
+
+        if ($city) {
+            $query = $query->whereHas('test_program.application.organization.city', function ($query) use ($city) {
+                $query->where('state_id', $city);
+            });
+        }
+
+        if ($crop) {
+            $query = $query->whereHas('test_program.application.crops', function ($query) use ($crop) {
+                $query->where('name_id', $crop);
+            });
+        }
+
+        if (!is_null($app_type_selector)) {
+            if ($app_type_selector == 3) {
+                $query = $query->doesntHave('test_program.application.tests.result');
+            } else {
+                $query = $query->whereHas('test_program.application.tests.result', function ($query) use ($app_type_selector) {
+                    $query->where('type', '=', $app_type_selector);
+                });
+            }
+        }
+
+        $results = $query
+        // ->whereHas('test_program.application', function ($q) use ($year) {
+        //     $q->whereYear('date', $year);
+        // })
+        ->orderBy('id', 'desc')
+        ->get();
+
+        return $results;
     }
 
 }

@@ -241,4 +241,12 @@ return[
     "Sifat ko'rsatkich nomi"=>"Название показателя качества",
     "Sifat ko'rsatkich bo'yicha me'yoriy hujjat"=>"Нормативный документ по показателю качества",
     "Ekin turi"=>"Тип культуры",
+
+    "Laboratoriya nomi"=>"Название лаборатории",
+
+    "Edit Laboratory Operator"=>"Редактировать оператора лаборатории",
+
+    "Add Laboratory Operator"=>"Добавить оператора лаборатории",
+
+    "Excel fayl"=>"файл Excel",
 ];
