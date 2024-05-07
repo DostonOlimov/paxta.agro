@@ -80,40 +80,29 @@ $regions = Region::get();
 
         if ($user->branch_id == \App\Models\User::BRANCH_STATE) {
             $user_city = $user->state_id;
-            $query = $results->whereHas('test_program.application.organization.city', function ($query) use ($user_city) {
+            $results = $results->whereHas('test_program.application.organization.city', function ($query) use ($user_city) {
                 $query->where('state_id', $user_city);
             });
         }
 
         if ($from && $till) {
-            $query = $query->whereDate('created_at', '>=', $from)
+            $results = $results->whereDate('created_at', '>=', $from)
                            ->whereDate('created_at', '<=', $till);
         }
 
         if ($city) {
-            $query = $query->whereHas('test_program.application.organization.city', function ($query) use ($city) {
+            $results = $results->whereHas('test_program.application.organization.city', function ($query) use ($city) {
                 $query->where('state_id', $city);
             });
         }
 
         if ($crop) {
-            $query = $query->whereHas('test_program.application.crops', function ($query) use ($crop) {
+            $results = $results->whereHas('test_program.application.crops', function ($query) use ($crop) {
                 $query->where('name_id', $crop);
             });
         }
 
-        if (!is_null($app_type_selector)) {
-            if ($app_type_selector == 3) {
-                $query = $query->doesntHave('test_program.application.tests.result');
-            } else {
-                $query = $query->whereHas('test_program.application.tests.result', function ($query) use ($app_type_selector) {
-                    $query->where('type', '=', $app_type_selector);
-                });
-            }
-        }
-
-        // Apply additional filters if needed
-        $results = $query->latest('id')
+        $results = $results->latest('id')
                        ->paginate(50)
                        ->appends(['s' => request()->input('s')])
                        ->appends(['till' => request()->input('till')])
@@ -240,43 +229,32 @@ $regions = Region::get();
         $till = request()->input('till');
         $city = request()->input('city');
         $crop = request()->input('crop');
-        $app_type_selector = request()->input('app_type_selector');
 
         if ($user->branch_id == \App\Models\User::BRANCH_STATE) {
             $user_city = $user->state_id;
-            $query = $results->whereHas('test_program.application.organization.city', function ($query) use ($user_city) {
+            $results = $results->whereHas('test_program.application.organization.city', function ($query) use ($user_city) {
                 $query->where('state_id', $user_city);
             });
         }
 
         if ($from && $till) {
-            $query = $query->whereDate('created_at', '>=', $from)
+            $results = $results->whereDate('created_at', '>=', $from)
                            ->whereDate('created_at', '<=', $till);
         }
 
         if ($city) {
-            $query = $query->whereHas('test_program.application.organization.city', function ($query) use ($city) {
+            $results = $results->whereHas('test_program.application.organization.city', function ($query) use ($city) {
                 $query->where('state_id', $city);
             });
         }
 
         if ($crop) {
-            $query = $query->whereHas('test_program.application.crops', function ($query) use ($crop) {
+            $results = $results->whereHas('test_program.application.crops', function ($query) use ($crop) {
                 $query->where('name_id', $crop);
             });
         }
 
-        if (!is_null($app_type_selector)) {
-            if ($app_type_selector == 3) {
-                $query = $query->doesntHave('test_program.application.tests.result');
-            } else {
-                $query = $query->whereHas('test_program.application.tests.result', function ($query) use ($app_type_selector) {
-                    $query->where('type', '=', $app_type_selector);
-                });
-            }
-        }
-
-        $results = $query
+        $results = $results
         // ->whereHas('test_program.application', function ($q) use ($year) {
         //     $q->whereYear('date', $year);
         // })

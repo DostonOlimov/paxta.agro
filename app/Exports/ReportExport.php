@@ -60,15 +60,15 @@ class ReportExport implements FromCollection, WithHeadings, WithStyles
             return [
                 $result->test_program->application->date ?? 'N/A',
                 optional($result->dalolatnoma)->number ?? 'N/A',
-                optional($result->test_program->application->organization)->city->region->name ?? 'N/A',
-                optional($result->test_program->application->organization)->city->name ?? 'N/A',
-                optional($result->test_program->application->organization)->name ?? 'N/A',
-                optional($result->test_program->application->prepared)->name ?? 'N/A',
-                optional($result->test_program->application->crops->country)->name ?? 'N/A',
-                optional($result->test_program->application->crops->name)->name ?? 'N/A',
-                optional($result->test_program->application->crops)->party_number ?? 'N/A',
+               (isset($result->test_program->application))?  optional($result->test_program->application->organization)->city->region->name ?? 'N/A':'',
+               (isset($result->test_program->application))?  optional($result->test_program->application->organization)->city->name ?? 'N/A':'',
+               (isset($result->test_program->application))?  optional($result->test_program->application->organization)->name ?? 'N/A':'',
+               (isset($result->test_program->application))?  optional($result->test_program->application->prepared)->name ?? 'N/A':'',
+               (isset($result->test_program->application))?  optional($result->test_program->application->crops->country)->name ?? 'N/A':'',
+               (isset($result->test_program->application))?  optional($result->test_program->application->crops->name)->name ?? 'N/A':'',
+               (isset($result->test_program->application))?  optional($result->test_program->application->crops)->party_number ?? 'N/A':'',
                 optional($result)->amount ?? 'N/A',
-                optional($result->test_program->application->crops)->year ?? 'N/A',
+                (isset($result->test_program->application))? optional($result->test_program->application->crops)->year ?? 'N/A':'',
                 optional($result)->count ?? 'N/A',
                 optional($result)->amount ?? '',
                 (optional($result)->amount)?optional($result)->amount - optional($result)->count * optional(optional($result->dalolatnoma->test_program->application)->prepared)->tara ?? 'N/A':'',
@@ -93,7 +93,7 @@ class ReportExport implements FromCollection, WithHeadings, WithStyles
             'borders' => [
                 'allBorders' => [
                     'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
-                    'color' => ['argb' => 'FF000000'], 
+                    'color' => ['argb' => 'FF000000'],
                 ],
             ],
         ];
