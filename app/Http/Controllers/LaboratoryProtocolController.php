@@ -100,7 +100,7 @@ class LaboratoryProtocolController extends Controller
         $operators=$operators->get();
         $klassiyor=ClampData::with('klassiyor')->where('dalolatnoma_id',$id)->first();
 
-        $director=User::where('role',User::LABORATORY_DIRECTOR)
+        $director=User::where('role','=',User::LABORATORY_DIRECTOR)
             ->where('state_id', $apps->test_program->application->decision->laboratory->city->state_id)
             ->first();
 
