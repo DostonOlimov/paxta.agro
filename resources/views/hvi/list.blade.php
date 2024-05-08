@@ -56,7 +56,7 @@
                                         @php if($loop->iteration == 14) break; @endphp
                                         <tr>
                                             <td>{{$offset + $loop->iteration}}</td>
-                                            <td>{{ $state->name }}</td>
+                                            <td>{{ __('message.' . $state->name) }}</td>
                                             <td>{{ optional(optional($state->hvi_file)->user)->name }} {{ optional(optional($state->hvi_file)->user)->lastname }}</td>
                                             <td>{{ optional($state->hvi_file)->date }}</td>
                                             <td>{{ optional($state->hvi_file)->count }}</td>
