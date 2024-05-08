@@ -52,19 +52,17 @@
                                     <tr>
                                         <th rowspan="2">#</th>
                                         <th rowspan="2">{{trans('app.Ariza sanasi')}}</th>
-                                        <th rowspan="2">{{trans('app.Sertifikat reestr raqami')}}</th>
                                         <th rowspan="2">{{trans('app.Dalolatnoma raqami')}}</th>
+                                        <th rowspan="2">{{trans('app.Sertifikat reestr raqami')}}</th>
                                         <th rowspan="2">{{trans('app.Na\'muna olingan viloyat')}}</th>
                                         <th rowspan="2">{{trans('app.Na\'muna olingan shahar yoki tuman')}}</th>
                                         <th rowspan="2">{{trans('app.Buyurtmachi korxona yoki tashkilot nomi')}}</th>
                                         <th rowspan="2">{{trans('app.Tayorlangan shaxobcha yoki sexning nomi')}}</th>
-                                        <th rowspan="2">{{trans('app.Ishlab chiqargan davlat')}}</th>
                                         <th rowspan="2">{{trans('app.Name')}}</th>
                                         <th rowspan="2">{{trans('app.Toʼda (partiya) raqami')}}</th>
-                                        <th rowspan="2">{{trans('app.amount')}}</th>
                                         <th rowspan="2">{{trans('app.Hosil yili')}}</th>
-                                        <th rowspan="2">{{trans("app.To'dadagi toylar soni (dona)")}}</th> 
-                                        <th rowspan="2">{{trans("app.Jami og'irlik(kg)")}}</th> 
+                                        <th rowspan="2">{{trans("app.To'dadagi toylar soni (dona)")}}</th>
+                                        <th rowspan="2">{{trans("app.Jami og'irlik(kg)")}}</th>
                                         <th rowspan="2">{{trans("app.Sof Og'irlik(kg)")}}</th>
                                         <th colspan="8" style="text-align: center">{{trans("app.Sifat nazorati natijalari")}}</th>
                                         <th rowspan="2">{{trans('app.Qaror fayllari')}}</th>
@@ -72,14 +70,14 @@
                                         <th rowspan="2">{{trans('app.Sertifikat fayllari')}}</th>
                                     </tr>
                                     <tr>
-                                        <th>{{trans("app.Tip")}}</th> 
-                                        <th>{{trans("app.Sort")}}</th> 
-                                        <th>{{trans("app.Sinf")}}</th> 
-                                        <th>{{trans("app.Shtaple uzunligi")}}</th> 
-                                        <th>{{trans("app.Mikroneyr")}}</th> 
-                                        <th>{{trans("app.Solishtirma uzunlik kuchi")}}</th> 
-                                        <th>{{trans("app.Uzunligi bo'yicha bir xillik ko'rsatkichi,%")}}</th> 
-                                        <th>{{trans("app.Namlik ko'rsatkichi,%")}}</th> 
+                                        <th>{{trans("app.Tip")}}</th>
+                                        <th>{{trans("app.Sort")}}</th>
+                                        <th>{{trans("app.Sinf")}}</th>
+                                        <th>{{trans("app.Shtaple uzunligi")}}</th>
+                                        <th>{{trans("app.Mikroneyr")}}</th>
+                                        <th>{{trans("app.Solishtirma uzunlik kuchi")}}</th>
+                                        <th>{{trans("app.Uzunligi bo'yicha bir xillik ko'rsatkichi,%")}}</th>
+                                        <th>{{trans("app.Namlik ko'rsatkichi,%")}}</th>
                                     </tr>
 
                                     </thead>
@@ -95,20 +93,18 @@
 
                                                 <td>{{$offset + $loop->iteration}}</td>
                                                 <td><a href="{!! url('/application/view/'.optional($result->test_program->application)->id) !!}">{{ optional($result->test_program->application)->date }}</a></td>
-                                                <td>{{ optional($result->certificate)->reestr_number }}</td>
                                                 <td>{{ optional($result->dalolatnoma)->number }}</td>
+                                                <td>{{ optional($result->certificate)->reestr_number }}</td>
                                                 <td>{{ optional($result->test_program->application->organization)->city->region->name }}</td>
                                                 <td>{{ optional($result->test_program->application->organization)->city->name }}</td>
                                                 <td><a href="{!! url('/organization/view/'.$result->test_program->application->organization_id) !!}">{{ optional($result->test_program->application->organization)->name }}</a></td>
                                                 <td>{{ optional($result->test_program->application->prepared)->name }}</td>
-                                                <td>{{ optional($result->test_program->application->crops->country)->name }}</td>
                                                 <td>{{ optional($result->test_program->application->crops->name)->name }}</td>
                                                 <td>{{ optional($result->test_program->application->crops)->party_number }}</td>
-                                                <td>{{ (optional($result)->amount)? $result->amount." kg":'' }} </td>
                                                 <td>{{ optional($result->test_program->application->crops)->year }}</td>
 
                                                 <td> {{ $result->count}}</td>
-                                                <td> {{ $result->amount}}</td>
+                                                <td> {{ (optional($result)->amount)? $result->amount." kg":''}}</td>
                                                 <td> {{ ($result->amount!=null)?$result->amount - $result->count * optional(optional($result->dalolatnoma->test_program->application)->prepared)->tara:""}}</td>
                                                 <td> 4</td>
                                                 <td> {{ $result->sort}}</td>
@@ -141,6 +137,10 @@
                                 </table>
                                 {{ $results->links() }}
                             </div>
+                            <h4
+                            style="position: sticky; bottom: 0; padding: 1%; color: #0052cc; width: 100%; display: flex; justify-content: space-between; background-color: white">
+                                <span>{{($totalSum)? trans("app.Jami og'irlik(kg)").': '.number_format($totalSum, 2, ',', ' '):''}}</span>
+                            </h4>
                         </div>
                     </div>
                 </div>

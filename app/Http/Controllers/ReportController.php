@@ -57,6 +57,8 @@ class ReportController extends Controller{
         $till = $request->input('till');
 
         $results = $this->getReport($request);
+
+        $totalSum = $results->sum('amount');
         $results = $results->latest('id')
                        ->paginate(50)
                        ->appends(['s' => request()->input('s')])
@@ -65,7 +67,7 @@ class ReportController extends Controller{
                        ->appends(['city' => request()->input('city')])
                        ->appends(['crop' => request()->input('crop')]);
 
-        return view('reports.full_report', compact('results', 'from', 'till', 'city', 'crop'));
+        return view('reports.full_report', compact('results', 'from', 'till', 'city', 'crop', 'totalSum'));
     }
 
     public function myreport(Request $request)
