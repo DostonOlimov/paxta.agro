@@ -242,4 +242,20 @@ return[
     "Add Laboratory Operator"=>"Add Laboratory Operator",
 
     "Excel fayl"=>"Excel file",
+
+    "Sertifikat reestr raqami"=>"Certificate registration number",
+    "To'dadagi toylar soni (dona)"=>"Number of bales in the herd (units)",
+    "Jami og'irlik(kg)"=>"Total weight(kg)",
+    "Sof Og'irlik(kg)"=>"Net Weight(kg)",
+    "Sifat nazorati natijalari"=>"Quality control results",
+    "Sertifikat fayllari"=>"Certificate files",
+    "Tip"=>"Type",
+    "Sort"=>"Sort",
+    "Sinf"=>"Class",
+    "Shtaple uzunligi"=>"Staple length",
+    "Mikroneyr"=>"Microneur",
+    "Solishtirma uzunlik kuchi"=>"Relative strength of length",
+    "Uzunligi bo'yicha bir xillik ko'rsatkichi,%"=>"Length uniformity index, %",
+    "Namlik ko'rsatkichi,%"=>"Moisture index,%",
+    "Sertifikat fayli"=>"Certificate file",
 ];

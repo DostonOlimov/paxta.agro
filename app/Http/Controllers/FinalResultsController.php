@@ -112,7 +112,7 @@ class FinalResultsController extends Controller
 
         if($data_count == 0){
             $counts = ClampData::select('sort', 'class',
-                \DB::raw('count(*) as count'),
+                DB::raw('count(*) as count'),
                 DB::raw('SUM(akt_amount.amount) as total_amount'),
                 DB::raw('AVG(clamp_data.mic) as mic'),
                 DB::raw('AVG(clamp_data.staple) as staple'),
@@ -162,7 +162,7 @@ class FinalResultsController extends Controller
 
         if($data_count == 0){
             $counts = ClampData::select('sort', 'class',
-                \DB::raw('count(*) as count'),
+                DB::raw('count(*) as count'),
                 DB::raw('SUM(akt_amount.amount) as total_amount'),
                 DB::raw('AVG(clamp_data.mic) as mic'),
                 DB::raw('AVG(clamp_data.staple) as staple'),
@@ -256,7 +256,7 @@ class FinalResultsController extends Controller
             $data1 =  array_chunk($tests, ceil(count($tests)/4));
         }
 
-        $counts = ClampData::select('sort', 'class', \DB::raw('count(*) as count'))
+        $counts = ClampData::select('sort', 'class', DB::raw('count(*) as count'))
             ->groupBy('sort', 'class')
             ->where('dalolatnoma_id',$id)
             ->get();
@@ -281,7 +281,7 @@ class FinalResultsController extends Controller
 
         if ($result) {
             $counts = ClampData::select('sort', 'class',
-                \DB::raw('count(*) as count'),
+                DB::raw('count(*) as count'),
                 DB::raw('SUM(akt_amount.amount) as total_amount'),
                 DB::raw('AVG(clamp_data.mic) as mic'),
                 DB::raw('AVG(clamp_data.staple) as staple'),

@@ -239,4 +239,20 @@ return[
     "Add Laboratory Operator"=>"Лаборатория операторини қўшиш",
 
     "Excel fayl"=>"Эхcел файл",
+
+    "Sertifikat reestr raqami"=>"Сертификат реестр рақами",
+    "To'dadagi toylar soni (dona)"=>"Тўдадаги тойлар сони (дона)",
+    "Jami og'irlik(kg)"=>"Жами оғирлик(кг)",
+    "Sof Og'irlik(kg)"=>"Соф Оғирлик(кг)",
+    "Sifat nazorati natijalari"=>"Сифат назорати натижалари",
+    "Sertifikat fayllari"=>"Сертификат файллари",
+    "Tip"=>"Тип",
+    "Sort"=>"Сорт",
+    "Sinf"=>"Синф",
+    "Shtaple uzunligi"=>"Штапле узунлиги",
+    "Mikroneyr"=>"Микронейр",
+    "Solishtirma uzunlik kuchi"=>"Солиштирма узунлик кучи",
+    "Uzunligi bo'yicha bir xillik ko'rsatkichi,%"=>"Узунлиги бўйича бир хиллик кўрсаткичи,%",
+    "Namlik ko'rsatkichi,%"=>"Намлик кўрсаткичи,%",
+    "Sertifikat fayli"=>"Сертификат файли",
 ];

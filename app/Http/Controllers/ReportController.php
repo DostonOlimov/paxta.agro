@@ -30,8 +30,8 @@ class ReportController extends Controller{
     public function excel_export(Request $request)
     {
         $data = $this->getReport($request);
-        // $data = $data->latest('id')
-        //     ->get();
+        $data = $data->orderBy('id', 'desc')
+        ->get();
         return \Maatwebsite\Excel\Facades\Excel::download(new \App\Exports\ReportExport($data), 'hisobot.xlsx');
     }
 
@@ -42,7 +42,7 @@ class ReportController extends Controller{
             Carbon::createFromFormat(USER_DATE_FORMAT, $request->input('date_to', now()->format(USER_DATE_FORMAT)))->endOfDay(),
         ];
 
-$regions = Region::get();
+        $regions = Region::get();
         return compact(
              //   'paymentCategories',
                 'regions'
@@ -51,57 +51,12 @@ $regions = Region::get();
 
     public function report(Request $request)
     {
-        $user = Auth::User();
-        $app_type_selector = $request->input('app_type_selector');
         $city = $request->input('city');
         $crop = $request->input('crop');
         $from = $request->input('from');
         $till = $request->input('till');
 
-        $results=FinalResult::with([
-            'dalolatnoma.clamp_data',
-            'test_program.application',
-            'test_program.application.organization.city.region', // Including nested relationships
-            'test_program.application.prepared',
-            'test_program.application.crops.country',
-            'test_program.application.crops.name',
-            'test_program.application.crops.type',
-            'test_program.application.crops.generation',
-            'test_program.application.decision',
-            'test_program.application.tests.result.certificate'
-        ]);
-
-        $user = Auth::user();
-        $from = request()->input('from');
-        $till = request()->input('till');
-        $city = request()->input('city');
-        $crop = request()->input('crop');
-        $app_type_selector = request()->input('app_type_selector');
-
-        if ($user->branch_id == \App\Models\User::BRANCH_STATE) {
-            $user_city = $user->state_id;
-            $results = $results->whereHas('test_program.application.organization.city', function ($query) use ($user_city) {
-                $query->where('state_id', $user_city);
-            });
-        }
-
-        if ($from && $till) {
-            $results = $results->whereDate('created_at', '>=', $from)
-                           ->whereDate('created_at', '<=', $till);
-        }
-
-        if ($city) {
-            $results = $results->whereHas('test_program.application.organization.city', function ($query) use ($city) {
-                $query->where('state_id', $city);
-            });
-        }
-
-        if ($crop) {
-            $results = $results->whereHas('test_program.application.crops', function ($query) use ($crop) {
-                $query->where('name_id', $crop);
-            });
-        }
-
+        $results = $this->getReport($request);
         $results = $results->latest('id')
                        ->paginate(50)
                        ->appends(['s' => request()->input('s')])
@@ -204,17 +159,17 @@ $regions = Region::get();
     {
         // $year =  session('year') ?  session('year') : date('Y');
 
-        $user = Auth::User();
-        $app_type_selector = $request->input('app_type_selector');
+        $user = Auth::user();
         $city = $request->input('city');
         $crop = $request->input('crop');
         $from = $request->input('from');
         $till = $request->input('till');
 
         $results=FinalResult::with([
+            'certificate',
             'dalolatnoma.clamp_data',
             'test_program.application',
-            'test_program.application.organization.city.region', // Including nested relationships
+            'test_program.application.organization.city.region',
             'test_program.application.prepared',
             'test_program.application.crops.country',
             'test_program.application.crops.name',
@@ -224,11 +179,6 @@ $regions = Region::get();
             'test_program.application.tests.result.certificate'
         ]);
 
-        $user = Auth::user();
-        $from = request()->input('from');
-        $till = request()->input('till');
-        $city = request()->input('city');
-        $crop = request()->input('crop');
 
         if ($user->branch_id == \App\Models\User::BRANCH_STATE) {
             $user_city = $user->state_id;
@@ -254,12 +204,10 @@ $regions = Region::get();
             });
         }
 
-        $results = $results
+        $results = $results;
         // ->whereHas('test_program.application', function ($q) use ($year) {
         //     $q->whereYear('date', $year);
-        // })
-        ->orderBy('id', 'desc')
-        ->get();
+        // });
 
         return $results;
     }
