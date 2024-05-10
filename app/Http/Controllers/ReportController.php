@@ -219,7 +219,7 @@ class ReportController extends Controller{
 
         $results=FinalResult::with([
             'generation',
-            'certificate',
+            'certificate.attachment',
             'dalolatnoma.clamp_data',
             'dalolatnoma.test_program.application.organization.city.region',
             'dalolatnoma.test_program.application.prepared',
