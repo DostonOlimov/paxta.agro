@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Traits\HasAttachment;
 use App\Models\Traits\LogsActivity;
+use Generator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -28,22 +29,26 @@ class FinalResult  extends Model
 
     protected $fillable = [
         'dalolatnoma_id',
-        'test_program_id',
-        'number',
-        'date',
-        'type',
-        'folder_number',
-        'comment',
+        'class',
+       'sort',
+        'count',
+        'amount',
+        'mic',
+        'staple',
+        'strength',
+        'uniform',
+        'humidity',
     ];
 
-    public function test_program(): BelongsTo
-    {
-        return $this->belongsTo(TestPrograms::class, 'test_program_id', 'id');
-    }
     public function certificate(): BelongsTo
     {
         return $this->belongsTo(Sertificate::class, 'id', 'final_result_id');
     }
+    public function generation(): BelongsTo
+    {
+        return $this->belongsTo(CropsGeneration::class, 'class',  'kod');
+    }
+
     public function dalolatnoma(): BelongsTo
     {
         return $this->belongsTo(Dalolatnoma::class, 'dalolatnoma_id', 'id');

@@ -218,23 +218,22 @@ class ReportController extends Controller{
         }
 
         $results=FinalResult::with([
+            'generation',
             'certificate',
             'dalolatnoma.clamp_data',
-            'test_program.application',
-            'test_program.application.organization.city.region',
-            'test_program.application.prepared',
-            'test_program.application.crops.country',
-            'test_program.application.crops.name',
-            'test_program.application.crops.type',
-            'test_program.application.crops.generation',
-            'test_program.application.decision',
-            'test_program.application.tests.result.certificate'
+            'dalolatnoma.test_program.application.organization.city.region',
+            'dalolatnoma.test_program.application.prepared',
+            'dalolatnoma.test_program.application.crops.country',
+            'dalolatnoma.test_program.application.crops.name',
+            'dalolatnoma.test_program.application.crops.type',
+            'dalolatnoma.test_program.application.decision',
+            'dalolatnoma.test_program.application.tests.result.certificate'
         ]);
 
 
         if ($user->branch_id == \App\Models\User::BRANCH_STATE) {
             $user_city = $user->state_id;
-            $results = $results->whereHas('test_program.application.organization.city', function ($query) use ($user_city) {
+            $results = $results->whereHas('dalolatnoma.test_program.application.organization.city', function ($query) use ($user_city) {
                 $query->where('state_id', $user_city);
             });
         }
@@ -249,7 +248,7 @@ class ReportController extends Controller{
             });
         }
         if($party_number){
-            $results = $results->whereHas('test_program.application.crops', function ($query) use ($party_number) {
+            $results = $results->whereHas('dalolatnoma.test_program.application.crops', function ($query) use ($party_number) {
                 $query->where('party_number','like', '%'.$party_number.'%');
             });
         }
@@ -266,27 +265,27 @@ class ReportController extends Controller{
         }
 
         if ($city) {
-            $results = $results->whereHas('test_program.application.organization.city', function ($query) use ($city) {
+            $results = $results->whereHas('dalolatnoma.test_program.application.organization.city', function ($query) use ($city) {
                 $query->where('state_id', $city);
             });
         }
         if ($region) {
             $area = Area::find($region);
             if($city and $area->state_id == $city){
-                $results = $results->whereHas('test_program.application.organization', function ($query) use ($region) {
+                $results = $results->whereHas('dalolatnoma.test_program.application.organization', function ($query) use ($region) {
                     $query->where('city_id', '=', $region);
                 });
             }
         }
 
         if ($organization) {
-            $results = $results->whereHas('test_program.application.organization', function ($query) use ($organization) {
+            $results = $results->whereHas('dalolatnoma.test_program.application.organization', function ($query) use ($organization) {
                 $query->where('id', '=', $organization);
             });
         }
 
         if ($prepared) {
-            $results = $results->whereHas('test_program.application.prepared', function ($query) use ($prepared) {
+            $results = $results->whereHas('dalolatnoma.test_program.application.prepared', function ($query) use ($prepared) {
                 $query->where('id', '=', $prepared);
             });
         }

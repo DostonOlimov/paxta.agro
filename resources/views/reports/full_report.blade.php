@@ -241,37 +241,36 @@
 
                                         @foreach($results as $result)
                                             <tr>
-                                                @if (isset($result->test_program->application))
-
+                                                @if (isset($result->dalolatnoma->test_program->application))
                                                 <td>{{$offset + $loop->iteration}}</td>
-                                                <td><a href="{!! url('/application/view/'.optional($result->test_program->application)->id) !!}">{{ optional($result->test_program->application)->date }}</a></td>
+                                                <td><a href="{!! url('/application/view/'.optional($result->dalolatnoma->test_program->application)->id) !!}">{{ optional($result->dalolatnoma->test_program->application)->date }}</a></td>
                                                 <td>{{ optional($result->dalolatnoma)->number }}</td>
                                                 <td>{{ optional($result->certificate)->reestr_number }}</td>
-                                                <td>{{ __('message.' . optional($result->test_program->application->organization)->city->region->name) }}</td>
-                                                <td>{{ optional($result->test_program->application->organization)->city->name }}</td>
-                                                <td><a href="{!! url('/organization/view/'.$result->test_program->application->organization_id) !!}">{{ optional($result->test_program->application->organization)->name }}</a></td>
-                                                <td>{{ optional($result->test_program->application->prepared)->name }}</td>
-                                                <td>{{ optional($result->test_program->application->crops->name)->name }}</td>
-                                                <td>{{ optional($result->test_program->application->crops)->party_number }}</td>
-                                                <td>{{ optional($result->test_program->application->crops)->year }}</td>
+                                                <td>{{ __('message.' . optional($result->dalolatnoma->test_program->application->organization)->city->region->name) }}</td>
+                                                <td>{{ optional($result->dalolatnoma->test_program->application->organization)->city->name }}</td>
+                                                <td><a href="{!! url('/organization/view/'.$result->dalolatnoma->test_program->application->organization_id) !!}">{{ optional($result->dalolatnoma->test_program->application->organization)->name }}</a></td>
+                                                <td>{{ optional($result->dalolatnoma->test_program->application->prepared)->name }}</td>
+                                                <td>{{ optional($result->dalolatnoma->test_program->application->crops->name)->name }}</td>
+                                                <td>{{ optional($result->dalolatnoma->test_program->application->crops)->party_number }}</td>
+                                                <td>{{ optional($result->dalolatnoma->test_program->application->crops)->year }}</td>
 
                                                 <td> {{ $result->count}}</td>
                                                 <td> {{ (optional($result)->amount)? $result->amount." kg":''}}</td>
                                                 <td> {{ ($result->amount!=null)?$result->amount - $result->count * optional(optional($result->dalolatnoma->test_program->application)->prepared)->tara:""}}</td>
                                                 <td> 4</td>
                                                 <td> {{ $result->sort}}</td>
-                                                <td> {{ optional(\App\Models\CropsGeneration::where('kod','=',$result->class)->first())->name}}</td>
+                                                <td> {{ optional($result->generation)->name}}</td>
                                                 <td> {{ round($result->staple)}}</td>
                                                 <td> {{ round($result->mic,1)}}</td>
                                                 <td> {{ round($result->strength,1)}}</td>
                                                 <td> {{ round($result->uniform,1)}}</td>
                                                 <td> {{ round(($result->humidity),2)}}</td>
 
-                                                <td>@if($result->test_program->application->decision)
-                                                    <a href="{!! url('/decision/view/'.optional($result->test_program->application->decision)->id) !!}"><button type="button" class="btn btn-round btn-info">{{trans('app.Qaror fayli')}}</button></a>
+                                                <td>@if($result->dalolatnoma->test_program->application->decision)
+                                                    <a href="{!! url('/decision/view/'.optional($result->dalolatnoma->test_program->application->decision)->id) !!}"><button type="button" class="btn btn-round btn-info">{{trans('app.Qaror fayli')}}</button></a>
                                                     @endif
-                                                </td> <td>@if($result->test_program->application->tests)
-                                                        <a href="{!! url('/tests/view/'.$result->test_program->id) !!}"><button type="button" class="btn btn-round btn-info">{{trans('app.Sinov dasturi fayli')}}</button></a>
+                                                </td> <td>@if($result->dalolatnoma->test_program->application->tests)
+                                                        <a href="{!! url('/tests/view/'.$result->dalolatnoma->test_program->id) !!}"><button type="button" class="btn btn-round btn-info">{{trans('app.Sinov dasturi fayli')}}</button></a>
                                                     @endif
                                                 </td>
                                                 <td>
