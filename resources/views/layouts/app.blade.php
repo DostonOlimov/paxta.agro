@@ -127,6 +127,7 @@ $settings = settings();
 <script src="{{ URL::asset('resources/assets/plugins/print/dist/jQuery.print.min.js') }}"></script>
 <script src="{{ URL::asset('resources/assets/plugins/cropper/cropper.min.js') }}"></script>
 <script src="{{ URL::asset('build/js/control.js') }}"></script>
+
 <script src="{{ URL::asset('resources/assets/js/custom.js') }}"></script>
 <script src="{{ URL::asset('resources/assets/js/myjs.js') }}"></script>
 

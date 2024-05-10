@@ -289,4 +289,20 @@ return[
     "Add Laboratory Operator"=>"Laboratoriya operatorini qo'shish",
 
     "Excel fayl"=>"Excel fayl",
+
+    "Sertifikat reestr raqami"=>"Sertifikat reestr raqami",
+    "To'dadagi toylar soni (dona)"=>"To'dadagi toylar soni (dona)",
+    "Jami og'irlik(kg)"=>"Jami og'irlik(kg)",
+    "Sof Og'irlik(kg)"=>"Sof Og'irlik(kg)",
+    "Sifat nazorati natijalari"=>"Sifat nazorati natijalari",
+    "Sertifikat fayllari"=>"Sertifikat fayllari",
+    "Tip"=>"Tip",
+    "Sort"=>"Sort",
+    "Sinf"=>"Sinf",
+    "Shtaple uzunligi"=>"Shtaple uzunligi",
+    "Mikroneyr"=>"Mikroneyr",
+    "Solishtirma uzunlik kuchi"=>"Solishtirma uzunlik kuchi",
+    "Uzunligi bo'yicha bir xillik ko'rsatkichi,%"=>"Uzunligi bo'yicha bir xillik ko'rsatkichi,%",
+    "Namlik ko'rsatkichi,%"=>"Namlik ko'rsatkichi,%",
+    "Sertifikat fayli"=>"Sertifikat fayli",
 ];

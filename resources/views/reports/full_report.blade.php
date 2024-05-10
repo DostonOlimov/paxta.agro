@@ -79,94 +79,178 @@
                             <div class="table-responsive">
                                 <table id="examples1" class="table table-striped table-bordered " style="margin-top:20px;">
                                     <thead>
-                                        <tr>
-                                            <th rowspan="2">#</th>
-                                            <th rowspan="2">{{ trans('app.Ariza sanasi') }}</th>
-                                            <th rowspan="2">{{ trans('app.Dalolatnoma raqami') }}</th>
-                                            <th rowspan="2">{{ trans('app.Na\'muna olingan viloyat') }}</th>
-                                            <th rowspan="2">{{ trans('app.Na\'muna olingan shahar yoki tuman') }}</th>
-                                            <th rowspan="2">{{ trans('app.Buyurtmachi korxona yoki tashkilot nomi') }}</th>
-                                            <th rowspan="2">{{ trans('app.Tayorlangan shaxobcha yoki sexning nomi') }}</th>
-                                            <th rowspan="2">{{ trans('app.Ishlab chiqargan davlat') }}</th>
-                                            <th rowspan="2">{{ trans('app.Name') }}</th>
-                                            <th rowspan="2">{{ trans('app.Toʼda (partiya) raqami') }}</th>
-                                            <th rowspan="2">{{ trans('app.amount') }}</th>
-                                            <th rowspan="2">{{ trans('app.Hosil yili') }}</th>
-                                            <th rowspan="2">To'dadagi toylar soni (dona)</th>
-                                            <th rowspan="2">Jami og'irlik(kg)</th>
-                                            <th rowspan="2">Sof Og'irlik(kg)</th>
-                                            <th colspan="8" style="text-align: center">Sifat nazorati natijalari</th>
-                                            <th rowspan="2">{{ trans('app.Qaror fayllari') }}</th>
-                                            <th rowspan="2">{{ trans('app.Sinov bayonnoma fayllari') }}</th>
-                                        </tr>
-                                        <tr>
-                                            <th>Tip</th>
-                                            <th>Sort</th>
-                                            <th>Sinf</th>
-                                            <th>Shtaple uzunligi</th>
-                                            <th>Mikroneyr</th>
-                                            <th>Solishtirma uzunlik kuchi</th>
-                                            <th>Uzunligi bo'yicha bir xillik ko'rsatkichi,%</th>
-                                            <th>Namlik ko'rsatkichi,%</th>
-                                        </tr>
+
+                                    <tr>
+                                        <th rowspan="2">#</th>
+                                        <th rowspan="2">{{trans('app.Ariza sanasi')}}</th>
+                                        <th rowspan="2">{{trans('app.Dalolatnoma raqami')}}</th>
+                                        <th rowspan="2">{{trans('app.Sertifikat reestr raqami')}}</th>
+                                        <th rowspan="2">{{trans('app.Na\'muna olingan viloyat')}}</th>
+                                        <th rowspan="2">{{trans('app.Na\'muna olingan shahar yoki tuman')}}</th>
+                                        <th rowspan="2">{{trans('app.Buyurtmachi korxona yoki tashkilot nomi')}}</th>
+                                        <th rowspan="2">{{trans('app.Tayorlangan shaxobcha yoki sexning nomi')}}</th>
+                                        <th rowspan="2">{{trans('app.Name')}}</th>
+                                        <th rowspan="2">{{trans('app.Toʼda (partiya) raqami')}}</th>
+                                        <th rowspan="2">{{trans('app.Hosil yili')}}</th>
+                                        <th rowspan="2">{{trans("app.To'dadagi toylar soni (dona)")}}</th>
+                                        <th rowspan="2">{{trans("app.Jami og'irlik(kg)")}}</th>
+                                        <th rowspan="2">{{trans("app.Sof Og'irlik(kg)")}}</th>
+                                        <th colspan="8" style="text-align: center">{{trans("app.Sifat nazorati natijalari")}}</th>
+                                        <th rowspan="2">{{trans('app.Qaror fayllari')}}</th>
+                                        <th rowspan="2">{{trans('app.Sinov bayonnoma fayllari')}}</th>
+                                        <th rowspan="2">{{trans('app.Sertifikat fayllari')}}</th>
+                                    </tr>
+                                    <tr>
+                                        <th>{{trans("app.Tip")}}</th>
+                                        <th>{{trans("app.Sort")}}</th>
+                                        <th>{{trans("app.Sinf")}}</th>
+                                        <th>{{trans("app.Shtaple uzunligi")}}</th>
+                                        <th>{{trans("app.Mikroneyr")}}</th>
+                                        <th>{{trans("app.Solishtirma uzunlik kuchi")}}</th>
+                                        <th>{{trans("app.Uzunligi bo'yicha bir xillik ko'rsatkichi,%")}}</th>
+                                        <th>{{trans("app.Namlik ko'rsatkichi,%")}}</th>
+                                    </tr>
 
                                     </thead>
                                     <tbody>
-                                        @php
-                                            $offset = (request()->get('page', 1) - 1) * 50;
-                                        @endphp
-                                        @if (isset($results))
-                                            @foreach ($results as $result)
-                                                <tr>
-                                                    <td>{{ $offset + $loop->iteration }}</td>
-                                                    <td><a
-                                                            href="{!! url('/application/view/' . $result->test_program->application->id) !!}">{{ $result->test_program->application->date }}</a>
-                                                    </td>
-                                                    <td>{{ optional($result->dalolatnoma)->number }}</td>
-                                                    <td>{{ __('message.' . optional($result->test_program->application->organization)->city->region->name) }}
-                                                    </td>
-                                                    <td>{{ optional($result->test_program->application->organization)->city->name }}
-                                                    </td>
-                                                    <td><a
-                                                            href="{!! url('/organization/view/' . $result->test_program->application->organization_id) !!}">{{ optional($result->test_program->application->organization)->name }}</a>
-                                                    </td>
-                                                    <td>{{ optional($result->test_program->application->prepared)->name }}</td>
-                                                    <td>{{ optional($result->test_program->application->crops->country)->name }}
-                                                    </td>
-                                                    <td>{{ optional($result->test_program->application->crops->name)->name }}
-                                                    </td>
-                                                    <td>{{ optional($result->test_program->application->crops)->party_number }}
-                                                    </td>
-                                                    <td>{{ optional($result)->amount ? $result->amount . ' kg' : '' }} </td>
-                                                    <td>{{ optional($result->test_program->application->crops)->year }}</td>
 
-                                                    <td> {{ $result->count }}</td>
-                                                    <td> {{ $result->amount }}</td>
-                                                    <td> {{ $result->amount != null ? $result->amount - $result->count * optional(optional($result->dalolatnoma->test_program->application)->prepared)->tara : '' }}
-                                                    </td>
-                                                    <td> 4</td>
-                                                    <td> {{ $result->sort }}</td>
-                                                    <td> {{ optional(\App\Models\CropsGeneration::where('kod', '=', $result->class)->first())->name }}
-                                                    </td>
-                                                    <td> {{ round($result->staple) }}</td>
-                                                    <td> {{ round($result->mic, 1) }}</td>
-                                                    <td> {{ round($result->strength, 1) }}</td>
-                                                    <td> {{ round($result->uniform, 1) }}</td>
-                                                    <td> {{ round($result->humidity, 2) }}</td>
+                                        <tr style="background-color: #90aec6 !important;">
+                                            <td> </td>
+                                            <td> </td>
+                                            <td>
+                                                <form class="d-flex">
+                                                    <input type="text" name="app_number" class="search-input form-control"
+                                                           value="{{ isset($_GET['app_number']) ? $_GET['app_number'] : '' }}">
+                                                </form>
+                                            </td>
+                                            <td>
+                                                <form class="d-flex">
+                                                    <input type="text" name="app_number" class="search-input form-control"
+                                                           value="{{ isset($_GET['app_number']) ? $_GET['app_number'] : '' }}">
+                                                </form>
+                                            </td>
+                                            <td>
+                                                <select class="w-100 form-control state_of_country custom-select"
+                                                name="city" id="city1" url="{!! url('/getcityfromstate') !!}">
+                                                @if (count($states))
+                                                    <option value="">{{ trans('app.Viloyat tanlang') }}</option>
+                                                @endif
+                                                @if (!empty($states))
+                                                    @foreach ($states as $state)
+                                                        <option value="{{ $state->id }}"
+                                                            @if ($city && $city == $state->id) selected="selected" @endif>
+                                                            {{ $state->name }} </option>
+                                                    @endforeach
+                                                @endif
+                                            </select>
+                                            </td>
+                                            <td>
+                                                <select class="form-control w-100 city_of_state custom-select" name="region"
+                                                        id="region">
+                                                    <option value="">{{ trans('app.Tumanni tanlang') }}</option>
+                                                    @if (!empty($cities))
+                                                        @foreach ($cities as $city)
+                                                            <option value="{{ $city->id }}"
+                                                                    @if (($region && $region == $city->id) || count($cities) == 1) selected="selected" @endif>
+                                                                {{ $city->name }} </option>
+                                                        @endforeach
+                                                    @endif
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <select id="organization" class="form-control owner_search" name="organization">
+                                                    @if (!empty($organization))
+                                                        <option selected value="{{ $organization->id }}">
+                                                            {{ $organization->name }}</option>
+                                                    @endif
+                                                </select>
+                                                @if ($organization)
+                                                    <i class="fa fa-trash" style="color:red"
+                                                       onclick="changeDisplay('organization')"></i>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <select id="prepared" class="form-control owner_search2" name="prepared">
+                                                    @if (!empty($prepared))
+                                                        <option selected value="{{ $prepared->id }}">{{ $prepared->name }}
+                                                        </option>
+                                                    @endif
+                                                </select>
+                                                @if ($prepared)
+                                                    <i class="fa fa-trash" style="color:red"
+                                                       onclick="changeDisplay('prepared')"></i>
+                                                @endif
+                                            </td>
+                                            <td></td>
+                                            <td>
 
+                                            </td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>
 
-                                                    <td>
-                                                        @if ($result->test_program->application->decision)
-                                                            <a href="{!! url('/decision/view/' . optional($result->test_program->application->decision)->id) !!}"><button type="button"
-                                                                    class="btn btn-round btn-info">{{ trans('app.Qaror fayli') }}</button></a>
-                                                        @endif
-                                                    </td>
-                                                    <td>
-                                                        @if ($result->test_program->application->tests)
-                                                            <a href="{!! url('/tests/view/' . $result->test_program->id) !!}"><button type="button"
-                                                                    class="btn btn-round btn-info">{{ trans('app.Sinov dasturi fayli') }}</button></a>
-                                                        @endif
-                                                    </td>
+                                            </td>
+                                            <td>
+
+                                            </td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    @php
+                                        $offset = (request()->get('page', 1) - 1) * 50;
+                                    @endphp
+                                    @if (isset($results))
+
+                                        @foreach($results as $result)
+                                            <tr>
+                                                @if (isset($result->test_program->application))
+
+                                                <td>{{$offset + $loop->iteration}}</td>
+                                                <td><a href="{!! url('/application/view/'.optional($result->test_program->application)->id) !!}">{{ optional($result->test_program->application)->date }}</a></td>
+                                                <td>{{ optional($result->dalolatnoma)->number }}</td>
+                                                <td>{{ optional($result->certificate)->reestr_number }}</td>
+                                                <td>{{ optional($result->test_program->application->organization)->city->region->name }}</td>
+                                                <td>{{ optional($result->test_program->application->organization)->city->name }}</td>
+                                                <td><a href="{!! url('/organization/view/'.$result->test_program->application->organization_id) !!}">{{ optional($result->test_program->application->organization)->name }}</a></td>
+                                                <td>{{ optional($result->test_program->application->prepared)->name }}</td>
+                                                <td>{{ optional($result->test_program->application->crops->name)->name }}</td>
+                                                <td>{{ optional($result->test_program->application->crops)->party_number }}</td>
+                                                <td>{{ optional($result->test_program->application->crops)->year }}</td>
+
+                                                <td> {{ $result->count}}</td>
+                                                <td> {{ (optional($result)->amount)? $result->amount." kg":''}}</td>
+                                                <td> {{ ($result->amount!=null)?$result->amount - $result->count * optional(optional($result->dalolatnoma->test_program->application)->prepared)->tara:""}}</td>
+                                                <td> 4</td>
+                                                <td> {{ $result->sort}}</td>
+                                                <td> {{ optional(\App\Models\CropsGeneration::where('kod','=',$result->class)->first())->name}}</td>
+                                                <td> {{ round($result->staple)}}</td>
+                                                <td> {{ round($result->mic,1)}}</td>
+                                                <td> {{ round($result->strength,1)}}</td>
+                                                <td> {{ round($result->uniform,1)}}</td>
+                                                <td> {{ round(($result->humidity),2)}}</td>
+
+                                                <td>@if($result->test_program->application->decision)
+                                                    <a href="{!! url('/decision/view/'.optional($result->test_program->application->decision)->id) !!}"><button type="button" class="btn btn-round btn-info">{{trans('app.Qaror fayli')}}</button></a>
+                                                    @endif
+                                                </td> <td>@if($result->test_program->application->tests)
+                                                        <a href="{!! url('/tests/view/'.$result->test_program->id) !!}"><button type="button" class="btn btn-round btn-info">{{trans('app.Sinov dasturi fayli')}}</button></a>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if($result->certificate)
+                                                        <a href="{{route('attachment.download', ['id' => $result->certificate->attachment->id])}}"><button type="button" class="btn btn-round btn-info">{{trans('app.Sertifikat fayli')}}</button></a>
+                                                    @endif
+                                                </td>
+                                                @endif
 
                                                 </tr>
                                             @endforeach
@@ -175,6 +259,10 @@
                                 </table>
                                 {{ $results->links() }}
                             </div>
+                            <h4
+                            style="position: sticky; bottom: 0; padding: 1%; color: #0052cc; width: 100%; display: flex; justify-content: space-between; background-color: white">
+                                <span>{{($totalSum)? trans("app.Jami og'irlik(kg)").': '.number_format($totalSum, 2, ',', ' '):''}}</span>
+                            </h4>
                         </div>
                     </div>
                 </div>
@@ -191,6 +279,323 @@
         </div>
     @endcan
     <!-- /page content -->
-    <script src="{{ URL::asset('vendors/jquery/dist/jquery.min.js') }}"></script>
+     <!-- /page content -->
+     <script src="{{ URL::asset('vendors/jquery/dist/jquery.min.js') }}"></script>
+     <script>
+         function changeDisplay(name) {
+             //organization companies change
+             var currentUrl = window.location.href;
+             var url = new URL(currentUrl);
+
+             // Set the new query parameter
+             url.searchParams.set(name, '');
+
+             // Modify the URL and trigger an AJAX request
+             var newUrl = url.toString();
+             window.history.pushState({
+                 path: newUrl
+             }, '', newUrl);
+
+             $.ajax({
+                 url: newUrl,
+                 method: "GET",
+                 success: function(response) {
+                     window.location.reload(true);
+                 }
+             });
+         }
+     </script>
+     <script>
+         $(document).ready(function() {
+             $('#city1').change(function () {
+                 var selectedCity = $(this).val();
+
+                 var currentUrl = window.location.href;
+                 var url = new URL(currentUrl);
+
+                 // Set the new query parameter
+                 url.searchParams.set('city', selectedCity);
+
+                 // Modify the URL and trigger an AJAX request
+                 var newUrl = url.toString();
+                 window.history.pushState({ path: newUrl }, '', newUrl);
+
+                 $.ajax({
+                     url:  newUrl,
+                     method: "GET",
+                     success: function (response) {
+                         $('body').html(response);}
+                 });
+             });
+             $('#region').change(function() {
+                 var selectedRegion = $(this).val();
+
+                 var currentUrl = window.location.href;
+                 var url = new URL(currentUrl);
+
+                 // Set the new query parameter
+                 url.searchParams.set('region', selectedRegion);
+
+                 // Modify the URL and trigger an AJAX request
+                 var newUrl = url.toString();
+                 window.history.pushState({
+                     path: newUrl
+                 }, '', newUrl);
+
+                 $.ajax({
+                     url: newUrl,
+                     method: "GET",
+                     success: function(response) {
+                         window.location.reload(true);
+                     }
+                 });
+             });
+         });
+         // add url for filter
+         $(document).ready(function() {
+             //organization companies change
+             $('#organization').change(function() {
+                 var selectedRegion = $(this).val();
+
+                 var currentUrl = window.location.href;
+                 var url = new URL(currentUrl);
+
+                 // Set the new query parameter
+                 url.searchParams.set('organization', selectedRegion);
+
+                 // Modify the URL and trigger an AJAX request
+                 var newUrl = url.toString();
+                 window.history.pushState({
+                     path: newUrl
+                 }, '', newUrl);
+
+                 $.ajax({
+                     url: newUrl,
+                     method: "GET",
+                     success: function(response) {
+                         window.location.reload(true);
+                     }
+                 });
+             });
+             //prepared companies change
+             $('#prepared').change(function() {
+                 var selectedRegion = $(this).val();
+
+                 var currentUrl = window.location.href;
+                 var url = new URL(currentUrl);
+
+                 // Set the new query parameter
+                 url.searchParams.set('prepared', selectedRegion);
+
+                 // Modify the URL and trigger an AJAX request
+                 var newUrl = url.toString();
+                 window.history.pushState({
+                     path: newUrl
+                 }, '', newUrl);
+
+                 $.ajax({
+                     url: newUrl,
+                     method: "GET",
+                     success: function(response) {
+                         window.location.reload(true);
+                     }
+                 });
+             });
+             //country change
+             $('#country').change(function() {
+                 var selectedRegion = $(this).val();
+
+                 var currentUrl = window.location.href;
+                 var url = new URL(currentUrl);
+
+                 // Set the new query parameter
+                 url.searchParams.set('country', selectedRegion);
+
+                 // Modify the URL and trigger an AJAX request
+                 var newUrl = url.toString();
+                 window.history.pushState({
+                     path: newUrl
+                 }, '', newUrl);
+
+                 $.ajax({
+                     url: newUrl,
+                     method: "GET",
+                     success: function(response) {
+                         window.location.reload(true);
+                     }
+                 });
+             });
+             //crop names change
+             $('#crops_name').change(function() {
+                 var selectedRegion = $(this).val();
+
+                 var currentUrl = window.location.href;
+                 var url = new URL(currentUrl);
+
+                 // Set the new query parameter
+                 url.searchParams.set('crop', selectedRegion);
+
+                 // Modify the URL and trigger an AJAX request
+                 var newUrl = url.toString();
+                 window.history.pushState({
+                     path: newUrl
+                 }, '', newUrl);
+
+                 $.ajax({
+                     url: newUrl,
+                     method: "GET",
+                     success: function(response) {
+                         window.location.reload(true);
+                     }
+                 });
+             });
+             //crop types change
+             $('#type').change(function() {
+                 var selectedRegion = $(this).val();
+
+                 var currentUrl = window.location.href;
+                 var url = new URL(currentUrl);
+
+                 // Set the new query parameter
+                 url.searchParams.set('type', selectedRegion);
+
+                 // Modify the URL and trigger an AJAX request
+                 var newUrl = url.toString();
+                 window.history.pushState({
+                     path: newUrl
+                 }, '', newUrl);
+
+                 $.ajax({
+                     url: newUrl,
+                     method: "GET",
+                     success: function(response) {
+                         window.location.reload(true);
+                     }
+                 });
+             });
+             //crop generation change
+             $('#generation').change(function() {
+                 var selectedRegion = $(this).val();
+
+                 var currentUrl = window.location.href;
+                 var url = new URL(currentUrl);
+
+                 // Set the new query parameter
+                 url.searchParams.set('generation', selectedRegion);
+
+                 // Modify the URL and trigger an AJAX request
+                 var newUrl = url.toString();
+                 window.history.pushState({
+                     path: newUrl
+                 }, '', newUrl);
+
+                 $.ajax({
+                     url: newUrl,
+                     method: "GET",
+                     success: function(response) {
+                         window.location.reload(true);
+                     }
+                 });
+             });
+         });
+     </script>
+     {{--    appllication add --}}
+     <script>
+         $(document).ready(function() {
+             $('select.owner_search').select2({
+                 ajax: {
+                     url: '/organization/search_by_name',
+                     delay: 300,
+                     dataType: 'json',
+                     data: function(params) {
+                         return {
+                             search: params.term
+                         }
+                     },
+                     processResults: function(data) {
+                         data = data.map((name, index) => {
+                             return {
+                                 id: name.id,
+                                 text: capitalize(name.name + (name.name ? ' - STiR:' + name
+                                     .inn : ''))
+                             }
+                         });
+                         return {
+                             results: data
+                         }
+                     }
+                 },
+                 language: {
+                     inputTooShort: function() {
+                         return '{{ trans('app.Korxona (nomi), STIR ini kiritib izlang') }}';
+                     },
+                     searching: function() {
+                         return '{{ trans('app.Izlanmoqda...') }}';
+                     },
+                     noResults: function() {
+                         return '{{ trans('app.Natija topilmadi') }}'
+                     },
+                     errorLoading: function() {
+                         return '{{ trans('app.Natija topilmadi') }}'
+                     }
+                 },
+                 placeholder: '{{ trans('app.Korxona nomini kiriting') }}',
+                 minimumInputLength: 2
+             })
+             $('select.owner_search2').select2({
+                 ajax: {
+                     url: '/prepared/search_by_name',
+                     delay: 300,
+                     dataType: 'json',
+                     data: function(params) {
+                         return {
+                             search: params.term
+                         }
+                     },
+                     processResults: function(data) {
+                         data = data.map((name, index) => {
+                             return {
+                                 id: name.id,
+                                 text: capitalize(name.name)
+                             }
+                         });
+                         return {
+                             results: data
+                         }
+                     }
+                 },
+                 language: {
+                     inputTooShort: function() {
+                         return '{{ trans('app.Korxona nomini kiritib izlang') }}';
+                     },
+                     searching: function() {
+                         return '{{ trans('app.Izlanmoqda...') }}';
+                     },
+                     noResults: function() {
+                         return '{{ trans('app.Natija topilmadi') }}'
+                     },
+                     errorLoading: function() {
+                         return '{{ trans('app.Natija topilmadi') }}'
+                     }
+                 },
+                 placeholder: '{{ trans('app.Korxona nomini kiriting') }}',
+                 minimumInputLength: 2
+             })
+
+             function capitalize(text) {
+                 var words = text.split(' ');
+                 for (var i = 0; i < words.length; i++) {
+                     if (words[i][0] == null) {
+                         continue;
+                     } else {
+                         words[i] = words[i][0].toUpperCase() + words[i].substring(1).toLowerCase();
+                     }
+
+                 }
+                 return words.join(' ');
+             }
+         });
+     </script>
+
 
 @endsection

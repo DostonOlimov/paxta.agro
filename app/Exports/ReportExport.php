@@ -25,14 +25,13 @@ class ReportExport implements FromCollection, WithHeadings, WithStyles
             [
                 "Ariza sanasi",
                 "Dalolatnoma raqami",
+                "Sertifikat reestr raqami",
                 "Na'muna olingan viloyat",
                 "Na'muna olingan shahar yoki tuman",
                 "Buyurtmachi korxona yoki tashkilot nomi",
                 "Tayorlangan shaxobcha yoki sexning nomi",
-                "Ishlab chiqargan davlat",
                 "Nomi",
                 "Toʼda (partiya) raqami",
-                "Miqdori",
                 "Hosil yili",
                 "To'dadagi toylar soni (dona)",
                 "Jami og'irlik (kg)",
@@ -60,14 +59,13 @@ class ReportExport implements FromCollection, WithHeadings, WithStyles
             return [
                 $result->test_program->application->date ?? 'N/A',
                 optional($result->dalolatnoma)->number ?? 'N/A',
+                (optional($result->certificate)->reestr_number)??'',
                (isset($result->test_program->application))?  optional($result->test_program->application->organization)->city->region->name ?? 'N/A':'',
                (isset($result->test_program->application))?  optional($result->test_program->application->organization)->city->name ?? 'N/A':'',
                (isset($result->test_program->application))?  optional($result->test_program->application->organization)->name ?? 'N/A':'',
                (isset($result->test_program->application))?  optional($result->test_program->application->prepared)->name ?? 'N/A':'',
-               (isset($result->test_program->application))?  optional($result->test_program->application->crops->country)->name ?? 'N/A':'',
                (isset($result->test_program->application))?  optional($result->test_program->application->crops->name)->name ?? 'N/A':'',
                (isset($result->test_program->application))?  optional($result->test_program->application->crops)->party_number ?? 'N/A':'',
-                optional($result)->amount ?? 'N/A',
                 (isset($result->test_program->application))? optional($result->test_program->application->crops)->year ?? 'N/A':'',
                 optional($result)->count ?? 'N/A',
                 optional($result)->amount ?? '',
@@ -97,7 +95,8 @@ class ReportExport implements FromCollection, WithHeadings, WithStyles
                 ],
             ],
         ];
-        $sheet->mergeCells('A1:V1');
+        $sheet->mergeCells('A1:U1');
+
         $sheet->mergeCells('A2:A3');
         $sheet->mergeCells('B2:B3');
         $sheet->mergeCells('C2:C3');
@@ -111,52 +110,53 @@ class ReportExport implements FromCollection, WithHeadings, WithStyles
         $sheet->mergeCells('K2:K3');
         $sheet->mergeCells('L2:L3');
         $sheet->mergeCells('M2:M3');
-        $sheet->mergeCells('N2:N3');
 
-        $sheet->mergeCells('O2:V2');
+        $sheet->mergeCells('N2:U2');
 
         $sheet->setCellValue('A1', 'PAXTA TOLASINI SERTIFIKATLASHTIRISH AVTOMATLASHTIRILGAN AXBOROT TIZIMI');
-        $sheet->setCellValue('O2', 'Sifat nazorati natijalari');
+        $sheet->setCellValue('N2', 'Sifat nazorati natijalari');
 
-        $sheet->getStyle('O2:V3')->getAlignment()->setHorizontal('center');
+        $sheet->getStyle('O2:U3')->getAlignment()->setHorizontal('center');
 
         $sheet->setCellValue('A2', 'Ariza sanasi');
         $sheet->setCellValue('B2', 'Dalolatnoma raqami');
-        $sheet->setCellValue('C2', 'Na\'muna olingan viloyat');
-        $sheet->setCellValue('D2', 'Na\'muna olingan shahar yoki tuman');
-        $sheet->setCellValue('E2', 'Buyurtmachi korxona yoki tashkilot nomi');
-        $sheet->setCellValue('F2', 'Tayorlangan shaxobcha yoki sexning nomi');
-        $sheet->setCellValue('G2', 'Ishlab chiqargan davlat');
+        $sheet->setCellValue('C2', 'Sertifikat reestr raqami');
+        $sheet->setCellValue('D2', 'Na\'muna olingan viloyat');
+        $sheet->setCellValue('E2', 'Na\'muna olingan shahar yoki tuman');
+        $sheet->setCellValue('F2', 'Buyurtmachi korxona yoki tashkilot nomi');
+        $sheet->setCellValue('G2', 'Tayorlangan shaxobcha yoki sexning nomi');
+
+        $sheet->setCellValue('H2', 'Ishlab chiqargan davlat');
+
         $sheet->setCellValue('H2', 'Nomi');
         $sheet->setCellValue('I2', 'Toʼda (partiya) raqami');
-        $sheet->setCellValue('J2', 'Miqdori');
-        $sheet->setCellValue('K2', 'Hosil yili');
-        $sheet->setCellValue('L2', 'To\'dadagi toylar soni (dona)');
-        $sheet->setCellValue('M2', 'Jami og\'irlik(kg)');
-        $sheet->setCellValue('N2', 'Sof Og\'irlik(kg)');
+        $sheet->setCellValue('J2', 'Hosil yili');
+        $sheet->setCellValue('K2', 'To\'dadagi toylar soni (dona)');
+        $sheet->setCellValue('L2', 'Jami og\'irlik(kg)');
+        $sheet->setCellValue('M2', 'Sof Og\'irlik(kg)');
 
-        $sheet->setCellValue('O3', 'Tip');
-        $sheet->setCellValue('P3', 'Sort');
-        $sheet->setCellValue('Q3', 'Sinf');
-        $sheet->setCellValue('R3', 'Shtaple uzunligi');
-        $sheet->setCellValue('S3', 'Mikroneyr');
-        $sheet->setCellValue('T3', 'Solishtirma uzunlik kuchi');
-        $sheet->setCellValue('U3', 'Uzunligi bo\'yicha bir xillik ko\'rsatkichi, %');
-        $sheet->setCellValue('V3', 'Namlik ko\'rsatkichi, %');
+        $sheet->setCellValue('N3', 'Tip');
+        $sheet->setCellValue('O3', 'Sort');
+        $sheet->setCellValue('P3', 'Sinf');
+        $sheet->setCellValue('Q3', 'Shtaple uzunligi');
+        $sheet->setCellValue('R3', 'Mikroneyr');
+        $sheet->setCellValue('S3', 'Solishtirma uzunlik kuchi');
+        $sheet->setCellValue('T3', 'Uzunligi bo\'yicha bir xillik ko\'rsatkichi, %');
+        $sheet->setCellValue('U3', 'Namlik ko\'rsatkichi, %');
 
         $sheet->getStyle('A2:N2')->getFont()->setBold(true);
-        $sheet->getStyle('A1:V1')->getFont()->setBold(true);
-        $sheet->getStyle('O2:V2')->getFont()->setBold(true);
-        $sheet->getStyle('O3:V3')->getFont()->setBold(true);
+        $sheet->getStyle('A1:U1')->getFont()->setBold(true);
+        $sheet->getStyle('O2:U2')->getFont()->setBold(true);
+        $sheet->getStyle('O3:U3')->getFont()->setBold(true);
 
-        $sheet->getStyle('A1:V1')->getFill()->setFillType(Fill::FILL_SOLID);
-        $sheet->getStyle('A1:V1')->getFill()->getStartColor()->setARGB('FFFF00');
+        $sheet->getStyle('A1:U1')->getFill()->setFillType(Fill::FILL_SOLID);
+        $sheet->getStyle('A1:U1')->getFill()->getStartColor()->setARGB('FFFF00');
 
-        $sheet->getStyle('A2:V3')->getFill()->setFillType(Fill::FILL_SOLID);
-        $sheet->getStyle('A2:V3')->getFill()->getStartColor()->setARGB('33A2FF');
-        $sheet->getStyle("A1:V{$totalRows}")->applyFromArray($styleArray);
+        $sheet->getStyle('A2:U3')->getFill()->setFillType(Fill::FILL_SOLID);
+        $sheet->getStyle('A2:U3')->getFill()->getStartColor()->setARGB('33A2FF');
+        $sheet->getStyle("A1:U{$totalRows}")->applyFromArray($styleArray);
 
-        $sheet->getStyle("A1:V{$totalRows}")->getAlignment()->setHorizontal('center')->setVertical('center');
+        $sheet->getStyle("A1:U{$totalRows}")->getAlignment()->setHorizontal('center')->setVertical('center');
 
         $sheet->getRowDimension(1)->setRowHeight(30);
         $sheet->getRowDimension(2)->setRowHeight(25);
@@ -168,22 +168,23 @@ class ReportExport implements FromCollection, WithHeadings, WithStyles
         $sheet->getColumnDimension('D')->setWidth(40);
         $sheet->getColumnDimension('E')->setWidth(40);
         $sheet->getColumnDimension('F')->setWidth(50);
-        $sheet->getColumnDimension('G')->setWidth(30);
-        $sheet->getColumnDimension('H')->setWidth(25);
+        $sheet->getColumnDimension('G')->setWidth(50);
+        $sheet->getColumnDimension('H')->setWidth(30);
+        $sheet->getColumnDimension('H')->setWidth(30);
         $sheet->getColumnDimension('I')->setWidth(30);
+        
         $sheet->getColumnDimension('J')->setWidth(20);
-        $sheet->getColumnDimension('K')->setWidth(20);
-        $sheet->getColumnDimension('L')->setWidth(40);
+        $sheet->getColumnDimension('K')->setWidth(40);
+        $sheet->getColumnDimension('L')->setWidth(25);
         $sheet->getColumnDimension('M')->setWidth(20);
-        $sheet->getColumnDimension('N')->setWidth(25);
-        $sheet->getColumnDimension('O')->setWidth(20);
-        $sheet->getColumnDimension('P')->setWidth(20);
+        $sheet->getColumnDimension('N')->setWidth(20);
+        $sheet->getColumnDimension('O')->setWidth(25);
+        $sheet->getColumnDimension('P')->setWidth(25);
         $sheet->getColumnDimension('Q')->setWidth(25);
-        $sheet->getColumnDimension('R')->setWidth(25);
-        $sheet->getColumnDimension('S')->setWidth(25);
-        $sheet->getColumnDimension('T')->setWidth(30);
-        $sheet->getColumnDimension('U')->setWidth(50);
-        $sheet->getColumnDimension('V')->setWidth(30);
+        $sheet->getColumnDimension('R')->setWidth(30);
+        $sheet->getColumnDimension('S')->setWidth(35);
+        $sheet->getColumnDimension('T')->setWidth(50);
+        $sheet->getColumnDimension('U')->setWidth(30);
 
         $sheet->getDefaultRowDimension()->setRowHeight(20);
     }
