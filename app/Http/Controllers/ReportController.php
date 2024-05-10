@@ -240,17 +240,17 @@ class ReportController extends Controller{
         }
         if($number){
             $results = $results->whereHas('dalolatnoma', function ($query) use ($number) {
-                $query->where('number', $number);
+                $query->where('number', 'like', '%'.$number.'%');
             });
-        } 
+        }
         if($resster_number){
             $results = $results->whereHas('certificate', function ($query) use ($resster_number) {
-                $query->where('reestr_number', $resster_number);
+                $query->where('reestr_number', 'like', '%'.$resster_number.'%');
             });
         }
         if($party_number){
             $results = $results->whereHas('test_program.application.crops', function ($query) use ($party_number) {
-                $query->where('party_number', $party_number);
+                $query->where('party_number','like', '%'.$party_number.'%');
             });
         }
         if($sort){
