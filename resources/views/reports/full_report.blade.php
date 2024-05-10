@@ -2,15 +2,45 @@
 @section('styles')
     <style>
         th {
-            background-color: #2381c5 !important; /* gradient from orange to dark orange */
+            background-color: #2381c5 !important;
+            /* gradient from orange to dark orange */
             color: white !important;
             font-weight: bold !important;
         }
+
         .table-striped tbody tr:nth-of-type(odd) {
-            background-color: #eaf2ee; /* Light Gray */
+            background-color: #eaf2ee;
+            /* Light Gray */
         }
+
         .table-striped tbody tr:nth-of-type(even) {
-            background-color: #ffffff; /* Lighter Gray */
+            background-color: #ffffff;
+            /* Lighter Gray */
+        }
+        .filter-button {
+            margin-left: 0;
+        }
+
+        .table-responsive {
+            transform: rotate(180deg);
+            direction: rtl;
+        }
+
+        .table-responsive::-webkit-scrollbar {
+            transform: rotate(180deg);
+            direction: ltr;
+            height: 16px;
+        }
+
+        .table-responsive table {
+            transform: rotate(180deg);
+            direction: initial;
+        }
+
+        .table-responsive nav .pagination {
+            padding-top: 13px;
+            direction: initial;
+            transform: rotate(180deg);
         }
     </style>
 @endsection
@@ -23,31 +53,31 @@
             <div class="page-header">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
-                        <i class="fe fe-life-buoy mr-1"></i>&nbsp{{trans('app.Barcha arizalar bo\'yicha umumiy ro\'yxat')}}
+                        <i class="fe fe-life-buoy mr-1"></i>&nbsp{{ trans('app.Barcha arizalar bo\'yicha umumiy ro\'yxat') }}
                     </li>
                 </ol>
             </div>
             <!-- filter component -->
-            <x-filter :crop="$crop" :city="$city" :from="$from" :till="$till"  />
+            <x-filter :crop="$crop" :city="$city" :from="$from" :till="$till" />
             <!--filter component -->
 
             <div class="row">
-                <div class="col-sm-3 pt-2">
+                <div class="col-sm-3 pt-2" style=" margin-top: -46px; margin-bottom: 13px;">
                     <a class="btn btn-success" style="color: white"
                         href="{{ route('excel.export', [
                             'from' => $from,
                             'till' => $till,
                             'city' => $city,
                             'crop' => $crop,
-                        ]) }}"
-                        >
-                        <i class="fa fa-file-excel-o" style="margin-right: 6px; color: white"></i>{{ trans('app.Excel fayl') }}</a>
+                        ]) }}">
+                        <i class="fa fa-file-excel-o"
+                            style="margin-right: 6px; color: white;"></i>{{ trans('app.Excel fayl') }}</a>
                 </div>
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table id="examples1" class="table table-striped table-bordered " style="margin-top:20px;" >
+                                <table id="examples1" class="table table-striped table-bordered " style="margin-top:20px;">
                                     <thead>
                                     <tr>
                                         <th rowspan="2">#</th>
@@ -112,7 +142,7 @@
                                             </select>
                                             </td>
                                             <td>
-                                             
+
                                             </td>
                                             <td>
                                                 <select class="w-100 form-control state_of_country custom-select" name="">
@@ -241,10 +271,9 @@
                                                 </td>
                                                 @endif
 
-                                            </tr>
-                                        @endforeach
-
-                                    @endif
+                                                </tr>
+                                            @endforeach
+                                        @endif
                                     </tbody>
                                 </table>
                                 {{ $results->links() }}
@@ -262,7 +291,8 @@
         <div class="section" role="main">
             <div class="card">
                 <div class="card-body text-center">
-                    <span class="titleup text-danger"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp {{ trans('app.You Are Not Authorize This page.')}}</span>
+                    <span class="titleup text-danger"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp
+                        {{ trans('app.You Are Not Authorize This page.') }}</span>
                 </div>
             </div>
         </div>
@@ -592,4 +622,3 @@
 
 
 @endsection
-
