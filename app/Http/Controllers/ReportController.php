@@ -17,8 +17,10 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Input;
-use NunoMaduro\Collision\Adapters\Phpunit\State;
+use App\Models\Country;
+use App\Models\CropData;
+use App\Models\CropsGeneration;
+use App\Models\CropsType;
 
 //use NunoMaduro\Collision\Adapters\Phpunit\State;
 
@@ -67,7 +69,21 @@ class ReportController extends Controller{
                        ->appends(['city' => request()->input('city')])
                        ->appends(['crop' => request()->input('crop')]);
 
-        return view('reports.full_report', compact('results', 'from', 'till', 'city', 'crop', 'totalSum'));
+        $states = DB::table('tbl_states')->where('country_id', 234)->get();
+        $crop_names = CropsName::all();
+        $cities = $city ? DB::table('tbl_cities')->where('state_id', $city)->get() : '';
+        $types = $generations = '';
+        if ($crop) {
+            $types = CropsType::where('crop_id', $crop)->get();
+            $generations = CropsGeneration::where('crop_id', $crop)->get();
+        }
+
+        $names = CropsName::all();
+        $countries = Country::all();
+        $years = CropData::getYear();
+
+
+        return view('reports.full_report', compact('results', 'from', 'till', 'city', 'crop', 'totalSum', 'states'));
     }
 
     public function myreport(Request $request)

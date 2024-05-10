@@ -82,6 +82,118 @@
 
                                     </thead>
                                     <tbody>
+
+                                        <tr style="background-color: #90aec6 !important;">
+                                            <td> </td>
+                                            <td> </td>
+                                            <td>
+                                                <form class="d-flex">
+                                                    <input type="text" name="" class="search-input form-control" placeholder="DALOLATNOMA RAQAMI">
+                                                </form>
+                                            </td>
+                                            <td>
+                                                <form class="d-flex">
+                                                    <input type="text" name="" class="search-input form-control" placeholder="SERTIFIKAT REESTR RAQAMI">
+                                                </form>
+                                            </td>
+                                            <td>
+                                                <select class="w-100 form-control state_of_country custom-select "
+                                                name="city" id="city" url="{!! url('/getcityfromstate') !!}">
+                                                @if (count($states))
+                                                    <option value="">{{ trans('app.Viloyat tanlang') }}</option>
+                                                @endif
+                                                @if (!empty($states))
+                                                    @foreach ($states as $state)
+                                                        <option value="{{ $state->id }}"
+                                                            @if ($city && $city == $state->id) selected="selected" @endif>
+                                                            {{ $state->name }} </option>
+                                                    @endforeach
+                                                @endif
+                                            </select>
+                                            </td>
+                                            <td>
+                                             
+                                            </td>
+                                            <td>
+                                                <select class="w-100 form-control state_of_country custom-select" name="">
+                                                    <option value="">BUYURTMACHI KORXONA YOKI KLASTER NOMI</option>
+                                                    {{-- @if (count($states))
+                                                        <option value="">{{ trans('app.Viloyat tanlang') }}</option>
+                                                    @endif
+                                                    @if (!empty($states))
+                                                        @foreach ($states as $state)
+                                                            <option value="{{ $state->id }}"
+                                                                @if ($city && $city == $state->id) selected="selected" @endif>
+                                                                {{ $state->name }} </option>
+                                                        @endforeach
+                                                    @endif --}}
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <select class="w-100 form-control state_of_country custom-select" name="">
+                                                    <option value="">ISHLAB CHIQARUVCHI ZAVODNING NOMI</option>
+                                                    {{-- @if (count($states))
+                                                        <option value="">{{ trans('app.Viloyat tanlang') }}</option>
+                                                    @endif
+                                                    @if (!empty($states))
+                                                        @foreach ($states as $state)
+                                                            <option value="{{ $state->id }}"
+                                                                @if ($city && $city == $state->id) selected="selected" @endif>
+                                                                {{ $state->name }} </option>
+                                                        @endforeach
+                                                    @endif --}}
+                                                </select>
+                                            </td>
+                                            <td></td>
+                                            <td>
+                                                <form class="d-flex">
+                                                    <input type="text" name="" class="search-input form-control" placeholder="TOʼDA (PARTIYA) RAQAMI">
+                                                </form>
+                                            </td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>
+                                                <select class="w-100 form-control state_of_country custom-select" name="">
+                                                    <option value="">SORT</option>
+                                                    {{-- @if (count($states))
+                                                        <option value="">{{ trans('app.Viloyat tanlang') }}</option>
+                                                    @endif
+                                                    @if (!empty($states))
+                                                        @foreach ($states as $state)
+                                                            <option value="{{ $state->id }}"
+                                                                @if ($city && $city == $state->id) selected="selected" @endif>
+                                                                {{ $state->name }} </option>
+                                                        @endforeach
+                                                    @endif --}}
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <select class="w-100 form-control state_of_country custom-select" name="">
+                                                    <option value="">SINF</option>
+                                                    {{-- @if (count($states))
+                                                        <option value="">{{ trans('app.Viloyat tanlang') }}</option>
+                                                    @endif
+                                                    @if (!empty($states))
+                                                        @foreach ($states as $state)
+                                                            <option value="{{ $state->id }}"
+                                                                @if ($city && $city == $state->id) selected="selected" @endif>
+                                                                {{ $state->name }} </option>
+                                                        @endforeach
+                                                    @endif --}}
+                                                </select>
+                                            </td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
                                     @php
                                         $offset = (request()->get('page', 1) - 1) * 50;
                                     @endphp
@@ -156,7 +268,328 @@
         </div>
     @endcan
     <!-- /page content -->
-    <script src="{{ URL::asset('vendors/jquery/dist/jquery.min.js') }}"></script>
+     <!-- /page content -->
+     <script src="{{ URL::asset('vendors/jquery/dist/jquery.min.js') }}"></script>
+     <script>
+         function changeDisplay(name) {
+             //organization companies change
+             var currentUrl = window.location.href;
+             var url = new URL(currentUrl);
+
+             // Set the new query parameter
+             url.searchParams.set(name, '');
+
+             // Modify the URL and trigger an AJAX request
+             var newUrl = url.toString();
+             window.history.pushState({
+                 path: newUrl
+             }, '', newUrl);
+
+             $.ajax({
+                 url: newUrl,
+                 method: "GET",
+                 success: function(response) {
+                     window.location.reload(true);
+                 }
+             });
+         }
+     </script>
+     <script>
+         $(document).ready(function() {
+            $('#city').change(function () {
+
+            console.log('jsf');
+            var selectedCity = $(this).val();
+
+            var currentUrl = window.location.href;
+            var url = new URL(currentUrl);
+
+            // Set the new query parameter
+            url.searchParams.set('city', selectedCity);
+
+            // Modify the URL and trigger an AJAX request
+            var newUrl = url.toString();
+            window.history.pushState({ path: newUrl }, '', newUrl);
+
+            $.ajax({
+                url:  newUrl,
+                method: "GET",
+                success: function (response) {
+                    window.location.reload(true);
+                }
+            });
+        });
+
+             $('#region').change(function() {
+                 var selectedRegion = $(this).val();
+
+                 var currentUrl = window.location.href;
+                 var url = new URL(currentUrl);
+
+                 // Set the new query parameter
+                 url.searchParams.set('region', selectedRegion);
+
+                 // Modify the URL and trigger an AJAX request
+                 var newUrl = url.toString();
+                 window.history.pushState({
+                     path: newUrl
+                 }, '', newUrl);
+
+                 $.ajax({
+                     url: newUrl,
+                     method: "GET",
+                     success: function(response) {
+                         window.location.reload(true);
+                     }
+                 });
+             });
+         });
+         // add url for filter
+         $(document).ready(function() {
+             //organization companies change
+             $('#organization').change(function() {
+                 var selectedRegion = $(this).val();
+
+                 var currentUrl = window.location.href;
+                 var url = new URL(currentUrl);
+
+                 // Set the new query parameter
+                 url.searchParams.set('organization', selectedRegion);
+
+                 // Modify the URL and trigger an AJAX request
+                 var newUrl = url.toString();
+                 window.history.pushState({
+                     path: newUrl
+                 }, '', newUrl);
+
+                 $.ajax({
+                     url: newUrl,
+                     method: "GET",
+                     success: function(response) {
+                         window.location.reload(true);
+                     }
+                 });
+             });
+             //prepared companies change
+             $('#prepared').change(function() {
+                 var selectedRegion = $(this).val();
+
+                 var currentUrl = window.location.href;
+                 var url = new URL(currentUrl);
+
+                 // Set the new query parameter
+                 url.searchParams.set('prepared', selectedRegion);
+
+                 // Modify the URL and trigger an AJAX request
+                 var newUrl = url.toString();
+                 window.history.pushState({
+                     path: newUrl
+                 }, '', newUrl);
+
+                 $.ajax({
+                     url: newUrl,
+                     method: "GET",
+                     success: function(response) {
+                         window.location.reload(true);
+                     }
+                 });
+             });
+             //country change
+             $('#country').change(function() {
+                 var selectedRegion = $(this).val();
+
+                 var currentUrl = window.location.href;
+                 var url = new URL(currentUrl);
+
+                 // Set the new query parameter
+                 url.searchParams.set('country', selectedRegion);
+
+                 // Modify the URL and trigger an AJAX request
+                 var newUrl = url.toString();
+                 window.history.pushState({
+                     path: newUrl
+                 }, '', newUrl);
+
+                 $.ajax({
+                     url: newUrl,
+                     method: "GET",
+                     success: function(response) {
+                         window.location.reload(true);
+                     }
+                 });
+             });
+             //crop names change
+             $('#crops_name').change(function() {
+                 var selectedRegion = $(this).val();
+
+                 var currentUrl = window.location.href;
+                 var url = new URL(currentUrl);
+
+                 // Set the new query parameter
+                 url.searchParams.set('crop', selectedRegion);
+
+                 // Modify the URL and trigger an AJAX request
+                 var newUrl = url.toString();
+                 window.history.pushState({
+                     path: newUrl
+                 }, '', newUrl);
+
+                 $.ajax({
+                     url: newUrl,
+                     method: "GET",
+                     success: function(response) {
+                         window.location.reload(true);
+                     }
+                 });
+             });
+             //crop types change
+             $('#type').change(function() {
+                 var selectedRegion = $(this).val();
+
+                 var currentUrl = window.location.href;
+                 var url = new URL(currentUrl);
+
+                 // Set the new query parameter
+                 url.searchParams.set('type', selectedRegion);
+
+                 // Modify the URL and trigger an AJAX request
+                 var newUrl = url.toString();
+                 window.history.pushState({
+                     path: newUrl
+                 }, '', newUrl);
+
+                 $.ajax({
+                     url: newUrl,
+                     method: "GET",
+                     success: function(response) {
+                         window.location.reload(true);
+                     }
+                 });
+             });
+             //crop generation change
+             $('#generation').change(function() {
+                 var selectedRegion = $(this).val();
+
+                 var currentUrl = window.location.href;
+                 var url = new URL(currentUrl);
+
+                 // Set the new query parameter
+                 url.searchParams.set('generation', selectedRegion);
+
+                 // Modify the URL and trigger an AJAX request
+                 var newUrl = url.toString();
+                 window.history.pushState({
+                     path: newUrl
+                 }, '', newUrl);
+
+                 $.ajax({
+                     url: newUrl,
+                     method: "GET",
+                     success: function(response) {
+                         window.location.reload(true);
+                     }
+                 });
+             });
+         });
+     </script>
+     {{--    appllication add --}}
+     <script>
+         $(document).ready(function() {
+             $('select.owner_search').select2({
+                 ajax: {
+                     url: '/organization/search_by_name',
+                     delay: 300,
+                     dataType: 'json',
+                     data: function(params) {
+                         return {
+                             search: params.term
+                         }
+                     },
+                     processResults: function(data) {
+                         data = data.map((name, index) => {
+                             return {
+                                 id: name.id,
+                                 text: capitalize(name.name + (name.name ? ' - STiR:' + name
+                                     .inn : ''))
+                             }
+                         });
+                         return {
+                             results: data
+                         }
+                     }
+                 },
+                 language: {
+                     inputTooShort: function() {
+                         return '{{ trans('app.Korxona (nomi), STIR ini kiritib izlang') }}';
+                     },
+                     searching: function() {
+                         return '{{ trans('app.Izlanmoqda...') }}';
+                     },
+                     noResults: function() {
+                         return '{{ trans('app.Natija topilmadi') }}'
+                     },
+                     errorLoading: function() {
+                         return '{{ trans('app.Natija topilmadi') }}'
+                     }
+                 },
+                 placeholder: '{{ trans('app.Korxona nomini kiriting') }}',
+                 minimumInputLength: 2
+             })
+             $('select.owner_search2').select2({
+                 ajax: {
+                     url: '/prepared/search_by_name',
+                     delay: 300,
+                     dataType: 'json',
+                     data: function(params) {
+                         return {
+                             search: params.term
+                         }
+                     },
+                     processResults: function(data) {
+                         data = data.map((name, index) => {
+                             return {
+                                 id: name.id,
+                                 text: capitalize(name.name)
+                             }
+                         });
+                         return {
+                             results: data
+                         }
+                     }
+                 },
+                 language: {
+                     inputTooShort: function() {
+                         return '{{ trans('app.Korxona nomini kiritib izlang') }}';
+                     },
+                     searching: function() {
+                         return '{{ trans('app.Izlanmoqda...') }}';
+                     },
+                     noResults: function() {
+                         return '{{ trans('app.Natija topilmadi') }}'
+                     },
+                     errorLoading: function() {
+                         return '{{ trans('app.Natija topilmadi') }}'
+                     }
+                 },
+                 placeholder: '{{ trans('app.Korxona nomini kiriting') }}',
+                 minimumInputLength: 2
+             })
+
+             function capitalize(text) {
+                 var words = text.split(' ');
+                 for (var i = 0; i < words.length; i++) {
+                     if (words[i][0] == null) {
+                         continue;
+                     } else {
+                         words[i] = words[i][0].toUpperCase() + words[i].substring(1).toLowerCase();
+                     }
+
+                 }
+                 return words.join(' ');
+             }
+         });
+     </script>
+
 
 @endsection
 
