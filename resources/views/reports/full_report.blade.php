@@ -123,10 +123,11 @@
                                                            value="{{ isset($_GET['app_number']) ? $_GET['app_number'] : '' }}">
                                                 </form>
                                             </td>
+
                                             <td>
                                                 <form class="d-flex">
-                                                    <input type="text" name="app_number" class="search-input form-control"
-                                                           value="{{ isset($_GET['app_number']) ? $_GET['app_number'] : '' }}">
+                                                    <input type="text" name="app_number2" class="search-input form-control"
+                                                           value="{{ isset($_GET['app_number2']) ? $_GET['app_number2'] : '' }}">
                                                 </form>
                                             </td>
                                             <td>
