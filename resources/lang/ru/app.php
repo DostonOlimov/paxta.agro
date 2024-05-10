@@ -265,4 +265,10 @@ return[
     "Uzunligi bo'yicha bir xillik ko'rsatkichi,%"=>"Индекс однородности длины, %",
     "Namlik ko'rsatkichi,%"=>"Индекс влажности, %",
     "Sertifikat fayli"=>"Файл сертификата",
+
+    "Sortni tanlang"=>"Выберите сорт",
+    "Sinfni tanlang"=>"Выберите класс",
+    "Korxona (nomi), STIR ini kiritib izlang"=>"Поиск по вводу предприятия (название), СТИР",
+    "Korxona nomini kiriting"=>"Введите название компании",
+    "Korxona nomini kiritib izlang"=>"Поиск по названию компании",
 ];

@@ -65,10 +65,19 @@
                 <div class="col-sm-3 pt-2" style=" margin-top: -46px; margin-bottom: 13px;">
                     <a class="btn btn-success" style="color: white"
                         href="{{ route('excel.export', [
-                            'from' => $from,
-                            'till' => $till,
-                            'city' => $city,
-                            'crop' => $crop,
+                            'from' => $from?? ($_GET['from']??''),
+                            'till' => $till?? ($_GET['till']??''),
+                            'city' => $city?? ($_GET['city']??''),
+                            'crop' => $crop?? ($_GET['crop']??''),
+                            'city'=>$city?? ($_GET['city']??''),
+                            'region'=>$region?? ($_GET['region']??''),
+                            'organization'=>$organization?? ($_GET['organization']??''),
+                            'prepared'=>$prepared?? ($_GET['prepared']??''),
+                            'number'=>$number?? ($_GET['number']??''),
+                            'resster_number'=>$resster_number?? ($_GET['resster_number']??''),
+                            'party_number'=>$party_number?? ($_GET['party_number']??''),
+                            'sort'=>$sort?? ($_GET['sort']??''),
+                            'class'=>$class?? ($_GET['class']??''),
                         ]) }}">
                         <i class="fa fa-file-excel-o"
                             style="margin-right: 6px; color: white;"></i>{{ trans('app.Excel fayl') }}</a>
@@ -118,14 +127,15 @@
                                             <td> </td>
                                             <td>
                                                 <form class="d-flex">
-                                                    <input type="text" name="" class="search-input form-control" placeholder="DALOLATNOMA RAQAMI">
+                                                    <input type="text" name="number" class="search-input form-control"
+                                                        value="{{ isset($_GET['number']) ? $_GET['number'] : '' }}" >
                                                 </form>
                                             </td>
 
                                             <td>
                                                 <form class="d-flex">
-                                                    <input type="text" name="app_number2" class="search-input form-control"
-                                                           value="{{ isset($_GET['app_number2']) ? $_GET['app_number2'] : '' }}">
+                                                    <input type="text" name="resster_number" class="search-input form-control"
+                                                           value="{{ isset($_GET['resster_number']) ? $_GET['resster_number'] : '' }}">
 
                                                 </form>
                                             </td>
@@ -145,42 +155,47 @@
                                             </select>
                                             </td>
                                             <td>
-
+                                                <select class="form-control w-100 city_of_state custom-select" name="region"
+                                                id="region">
+                                                <option value="">{{ trans('app.Tumanni tanlang') }}</option>
+                                                @if (!empty($cities))
+                                                    @foreach ($cities as $city)
+                                                        <option value="{{ $city->id }}"
+                                                            @if (($region && $region == $city->id) || count($cities) == 1) selected="selected" @endif>
+                                                            {{ $city->name }} </option>
+                                                    @endforeach
+                                                @endif
+                                            </select>
                                             </td>
                                             <td>
-                                                <select class="w-100 form-control state_of_country custom-select" name="">
-                                                    <option value="">BUYURTMACHI KORXONA YOKI KLASTER NOMI</option>
-                                                    {{-- @if (count($states))
-                                                        <option value="">{{ trans('app.Viloyat tanlang') }}</option>
+                                                <select id="organization" class="form-control owner_search" name="organization">
+                                                    @if (!empty($organization))
+                                                        <option selected value="{{ $organization->id }}">
+                                                            {{ $organization->name }}</option>
                                                     @endif
-                                                    @if (!empty($states))
-                                                        @foreach ($states as $state)
-                                                            <option value="{{ $state->id }}"
-                                                                @if ($city && $city == $state->id) selected="selected" @endif>
-                                                                {{ $state->name }} </option>
-                                                        @endforeach
-                                                    @endif --}}
                                                 </select>
+                                                @if ($organization)
+                                                    <i class="fa fa-trash" style="color:red"
+                                                        onclick="changeDisplay('organization')"></i>
+                                                @endif
                                             </td>
                                             <td>
-                                                <select class="w-100 form-control state_of_country custom-select" name="">
-                                                    <option value="">ISHLAB CHIQARUVCHI ZAVODNING NOMI</option>
-                                                    {{-- @if (count($states))
-                                                        <option value="">{{ trans('app.Viloyat tanlang') }}</option>
+                                                <select id="prepared" class="form-control owner_search2" name="prepared">
+                                                    @if (!empty($prepared))
+                                                        <option selected value="{{ $prepared->id }}">{{ $prepared->name }}
+                                                        </option>
                                                     @endif
-                                                    @if (!empty($states))
-                                                        @foreach ($states as $state)
-                                                            <option value="{{ $state->id }}"
-                                                                @if ($city && $city == $state->id) selected="selected" @endif>
-                                                                {{ $state->name }} </option>
-                                                        @endforeach
-                                                    @endif --}}
                                                 </select>
+                                                @if ($prepared)
+                                                    <i class="fa fa-trash" style="color:red"
+                                                        onclick="changeDisplay('prepared')"></i>
+                                                @endif
                                             </td>
                                             <td></td>
                                             <td>
                                                 <form class="d-flex">
-                                                    <input type="text" name="" class="search-input form-control" placeholder="TOʼDA (PARTIYA) RAQAMI">
+                                                    <input type="text" name="party_number" class="search-input form-control"
+                                                        value="{{ isset($_GET['party_number']) ? $_GET['party_number'] : '' }}" >
                                                 </form>
                                             </td>
                                             <td></td>
@@ -189,34 +204,26 @@
                                             <td></td>
                                             <td></td>
                                             <td>
-                                                <select class="w-100 form-control state_of_country custom-select" name="">
-                                                    <option value="">SORT</option>
-                                                    {{-- @if (count($states))
-                                                        <option value="">{{ trans('app.Viloyat tanlang') }}</option>
-                                                    @endif
-                                                    @if (!empty($states))
-                                                        @foreach ($states as $state)
-                                                            <option value="{{ $state->id }}"
-                                                                @if ($city && $city == $state->id) selected="selected" @endif>
-                                                                {{ $state->name }} </option>
-                                                        @endforeach
-                                                    @endif --}}
-                                                </select>
+                                                <select class="form-control w-100 city_of_state custom-select" name="sort"
+                                                id="sort">
+                                                <option value="">{{ trans('app.Sortni tanlang') }}</option>
+                                                <option value="1" {{($sort==1)? "selected":''}} >1</option>
+                                                <option value="2" {{($sort==2)? "selected":''}} >2</option>
+                                                <option value="3" {{($sort==3)? "selected":''}} >3</option>
+                                                <option value="4" {{($sort==4)? "selected":''}} >4</option>
+                                                <option value="5" {{($sort==5)? "selected":''}} >5</option>
+                                            </select>
                                             </td>
                                             <td>
-                                                <select class="w-100 form-control state_of_country custom-select" name="">
-                                                    <option value="">SINF</option>
-                                                    {{-- @if (count($states))
-                                                        <option value="">{{ trans('app.Viloyat tanlang') }}</option>
-                                                    @endif
-                                                    @if (!empty($states))
-                                                        @foreach ($states as $state)
-                                                            <option value="{{ $state->id }}"
-                                                                @if ($city && $city == $state->id) selected="selected" @endif>
-                                                                {{ $state->name }} </option>
-                                                        @endforeach
-                                                    @endif --}}
-                                                </select>
+                                                <select class="form-control w-100 city_of_state custom-select" name="class"
+                                                id="class">
+                                                <option value="">{{ trans('app.Sinfni tanlang') }}</option>
+                                                <option value="1" {{($class==1)? "selected":''}}>OLIY</option>
+                                                <option value="2" {{($class==2)? "selected":''}}>YAXSHI</option>
+                                                <option value="3" {{($class==3)? "selected":''}}>O'RTA</option>
+                                                <option value="4" {{($class==4)? "selected":''}}>ODDIY</option>
+                                                <option value="5" {{($class==5)? "selected":''}}>IFLOS</option>
+                                            </select>
                                             </td>
                                             <td></td>
                                             <td></td>
@@ -427,15 +434,17 @@
                      }
                  });
              });
-             //country change
-             $('#country').change(function() {
+         });
+         $(document).ready(function() {
+             //organization companies change
+             $('#class').change(function() {
                  var selectedRegion = $(this).val();
 
                  var currentUrl = window.location.href;
                  var url = new URL(currentUrl);
 
                  // Set the new query parameter
-                 url.searchParams.set('country', selectedRegion);
+                 url.searchParams.set('class', selectedRegion);
 
                  // Modify the URL and trigger an AJAX request
                  var newUrl = url.toString();
@@ -451,63 +460,15 @@
                      }
                  });
              });
-             //crop names change
-             $('#crops_name').change(function() {
+             //prepared companies change
+             $('#sort').change(function() {
                  var selectedRegion = $(this).val();
 
                  var currentUrl = window.location.href;
                  var url = new URL(currentUrl);
 
                  // Set the new query parameter
-                 url.searchParams.set('crop', selectedRegion);
-
-                 // Modify the URL and trigger an AJAX request
-                 var newUrl = url.toString();
-                 window.history.pushState({
-                     path: newUrl
-                 }, '', newUrl);
-
-                 $.ajax({
-                     url: newUrl,
-                     method: "GET",
-                     success: function(response) {
-                         window.location.reload(true);
-                     }
-                 });
-             });
-             //crop types change
-             $('#type').change(function() {
-                 var selectedRegion = $(this).val();
-
-                 var currentUrl = window.location.href;
-                 var url = new URL(currentUrl);
-
-                 // Set the new query parameter
-                 url.searchParams.set('type', selectedRegion);
-
-                 // Modify the URL and trigger an AJAX request
-                 var newUrl = url.toString();
-                 window.history.pushState({
-                     path: newUrl
-                 }, '', newUrl);
-
-                 $.ajax({
-                     url: newUrl,
-                     method: "GET",
-                     success: function(response) {
-                         window.location.reload(true);
-                     }
-                 });
-             });
-             //crop generation change
-             $('#generation').change(function() {
-                 var selectedRegion = $(this).val();
-
-                 var currentUrl = window.location.href;
-                 var url = new URL(currentUrl);
-
-                 // Set the new query parameter
-                 url.searchParams.set('generation', selectedRegion);
+                 url.searchParams.set('sort', selectedRegion);
 
                  // Modify the URL and trigger an AJAX request
                  var newUrl = url.toString();

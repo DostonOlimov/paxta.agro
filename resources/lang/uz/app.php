@@ -305,4 +305,10 @@ return[
     "Uzunligi bo'yicha bir xillik ko'rsatkichi,%"=>"Uzunligi bo'yicha bir xillik ko'rsatkichi,%",
     "Namlik ko'rsatkichi,%"=>"Namlik ko'rsatkichi,%",
     "Sertifikat fayli"=>"Sertifikat fayli",
+
+    "Sortni tanlang"=>"Sortni tanlang",
+    "Sinfni tanlang"=>"Sinfni tanlang",
+    "Korxona (nomi), STIR ini kiritib izlang"=>"Korxona (nomi), STIR ini kiritib izlang",
+    "Korxona nomini kiriting"=>"Korxona nomini kiriting",
+    "Korxona nomini kiritib izlang"=>"Korxona nomini kiritib izlang",
 ];

@@ -255,4 +255,10 @@ return[
     "Uzunligi bo'yicha bir xillik ko'rsatkichi,%"=>"Узунлиги бўйича бир хиллик кўрсаткичи,%",
     "Namlik ko'rsatkichi,%"=>"Намлик кўрсаткичи,%",
     "Sertifikat fayli"=>"Сертификат файли",
+
+    "Sortni tanlang"=>"Сортни танланг",
+    "Sinfni tanlang"=>"Синфни танланг",
+    "Korxona (nomi), STIR ini kiritib izlang"=>"Корхона (номи), СТИР ини киритиб изланг",
+    "Korxona nomini kiriting"=>"Корхона номини киритинг",
+    "Korxona nomini kiritib izlang"=>"Корхона номини киритиб изланг",
 ];

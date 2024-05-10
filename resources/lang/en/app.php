@@ -258,4 +258,11 @@ return[
     "Uzunligi bo'yicha bir xillik ko'rsatkichi,%"=>"Length uniformity index, %",
     "Namlik ko'rsatkichi,%"=>"Moisture index,%",
     "Sertifikat fayli"=>"Certificate file",
+
+
+    "Sortni tanlang"=>"Choose a variety",
+    "Sinfni tanlang"=>"Select a class",
+    "Korxona (nomi), STIR ini kiritib izlang"=>"Search by entering enterprise (name), STIR",
+    "Korxona nomini kiriting"=>"Enter the name of the company",
+    "Korxona nomini kiritib izlang"=>"Search by entering a business name",
 ];
