@@ -11,9 +11,7 @@ use App\Models\CropsName;
 use App\Models\FinalResult;
 use App\Models\Invoice;
 use App\Models\ListRegion;
-use App\Models\OrganizationCompanies;
 use App\Models\PaymentCategory;
-use App\Models\PreparedCompanies;
 use App\Models\Region;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -55,27 +53,12 @@ class ReportController extends Controller{
 
     public function report(Request $request)
     {
-        $requestData = $request->only([
-            'app_type_selector', 'city', 'region', 'crop', 'type', 'generation', 'from', 'till', 'organization', 'prepared', 'country', 'year'
-        ]);
-        $city = $requestData['city'] ?? null;
-        $region = $requestData['region'] ?? null;
-        $crop = $requestData['crop'] ?? null;
-        $type = $requestData['type'] ?? null;
-        $generation = $requestData['generation'] ?? null;
-        $from = $requestData['from'] ?? null;
-        $till = $requestData['till'] ?? null;
-        $organization = $requestData['organization'] ?? null;
-        $prepared = $requestData['prepared'] ?? null;
-        $country = $requestData['country'] ?? null;
-        $year = $requestData['year'] ?? null;
-        $results = $this->getReport($request);
+        $city = $request->input('city');
+        $crop = $request->input('crop');
+        $from = $request->input('from');
+        $till = $request->input('till');
 
-        if ($organization || $prepared) {
-            $organization = OrganizationCompanies::find($organization);
-            $prepared = PreparedCompanies::find($prepared);
-            $city = $region = null;
-        }
+        $results = $this->getReport($request);
 
         $totalSum = $results->sum('amount');
         $results = $results->latest('id')
@@ -100,7 +83,7 @@ class ReportController extends Controller{
         $years = CropData::getYear();
 
 
-        return view('reports.full_report', compact('results', 'from', 'till', 'city', 'crop', 'totalSum', 'states','organization','region', 'prepared', 'country'));
+        return view('reports.full_report', compact('results', 'from', 'till', 'city', 'crop', 'totalSum', 'states'));
     }
 
     public function myreport(Request $request)

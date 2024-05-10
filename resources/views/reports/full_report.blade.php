@@ -79,7 +79,6 @@
                             <div class="table-responsive">
                                 <table id="examples1" class="table table-striped table-bordered " style="margin-top:20px;">
                                     <thead>
-
                                     <tr>
                                         <th rowspan="2">#</th>
                                         <th rowspan="2">{{trans('app.Ariza sanasi')}}</th>
@@ -119,8 +118,7 @@
                                             <td> </td>
                                             <td>
                                                 <form class="d-flex">
-                                                    <input type="text" name="app_number" class="search-input form-control"
-                                                           value="{{ isset($_GET['app_number']) ? $_GET['app_number'] : '' }}">
+                                                    <input type="text" name="" class="search-input form-control" placeholder="DALOLATNOMA RAQAMI">
                                                 </form>
                                             </td>
 
@@ -128,10 +126,11 @@
                                                 <form class="d-flex">
                                                     <input type="text" name="app_number2" class="search-input form-control"
                                                            value="{{ isset($_GET['app_number2']) ? $_GET['app_number2'] : '' }}">
+
                                                 </form>
                                             </td>
                                             <td>
-                                                <select class="w-100 form-control state_of_country custom-select"
+                                                <select class="w-100 form-control state_of_country custom-select "
                                                 name="city" id="city1" url="{!! url('/getcityfromstate') !!}">
                                                 @if (count($states))
                                                     <option value="">{{ trans('app.Viloyat tanlang') }}</option>
@@ -146,56 +145,78 @@
                                             </select>
                                             </td>
                                             <td>
-                                                <select class="form-control w-100 city_of_state custom-select" name="region"
-                                                        id="region">
-                                                    <option value="">{{ trans('app.Tumanni tanlang') }}</option>
-                                                    @if (!empty($cities))
-                                                        @foreach ($cities as $city)
-                                                            <option value="{{ $city->id }}"
-                                                                    @if (($region && $region == $city->id) || count($cities) == 1) selected="selected" @endif>
-                                                                {{ $city->name }} </option>
+
+                                            </td>
+                                            <td>
+                                                <select class="w-100 form-control state_of_country custom-select" name="">
+                                                    <option value="">BUYURTMACHI KORXONA YOKI KLASTER NOMI</option>
+                                                    {{-- @if (count($states))
+                                                        <option value="">{{ trans('app.Viloyat tanlang') }}</option>
+                                                    @endif
+                                                    @if (!empty($states))
+                                                        @foreach ($states as $state)
+                                                            <option value="{{ $state->id }}"
+                                                                @if ($city && $city == $state->id) selected="selected" @endif>
+                                                                {{ $state->name }} </option>
                                                         @endforeach
-                                                    @endif
+                                                    @endif --}}
                                                 </select>
                                             </td>
                                             <td>
-                                                <select id="organization" class="form-control owner_search" name="organization">
-                                                    @if (!empty($organization))
-                                                        <option selected value="{{ $organization->id }}">
-                                                            {{ $organization->name }}</option>
+                                                <select class="w-100 form-control state_of_country custom-select" name="">
+                                                    <option value="">ISHLAB CHIQARUVCHI ZAVODNING NOMI</option>
+                                                    {{-- @if (count($states))
+                                                        <option value="">{{ trans('app.Viloyat tanlang') }}</option>
                                                     @endif
+                                                    @if (!empty($states))
+                                                        @foreach ($states as $state)
+                                                            <option value="{{ $state->id }}"
+                                                                @if ($city && $city == $state->id) selected="selected" @endif>
+                                                                {{ $state->name }} </option>
+                                                        @endforeach
+                                                    @endif --}}
                                                 </select>
-                                                @if ($organization)
-                                                    <i class="fa fa-trash" style="color:red"
-                                                       onclick="changeDisplay('organization')"></i>
-                                                @endif
                                             </td>
+                                            <td></td>
                                             <td>
-                                                <select id="prepared" class="form-control owner_search2" name="prepared">
-                                                    @if (!empty($prepared))
-                                                        <option selected value="{{ $prepared->id }}">{{ $prepared->name }}
-                                                        </option>
+                                                <form class="d-flex">
+                                                    <input type="text" name="" class="search-input form-control" placeholder="TOʼDA (PARTIYA) RAQAMI">
+                                                </form>
+                                            </td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>
+                                                <select class="w-100 form-control state_of_country custom-select" name="">
+                                                    <option value="">SORT</option>
+                                                    {{-- @if (count($states))
+                                                        <option value="">{{ trans('app.Viloyat tanlang') }}</option>
                                                     @endif
+                                                    @if (!empty($states))
+                                                        @foreach ($states as $state)
+                                                            <option value="{{ $state->id }}"
+                                                                @if ($city && $city == $state->id) selected="selected" @endif>
+                                                                {{ $state->name }} </option>
+                                                        @endforeach
+                                                    @endif --}}
                                                 </select>
-                                                @if ($prepared)
-                                                    <i class="fa fa-trash" style="color:red"
-                                                       onclick="changeDisplay('prepared')"></i>
-                                                @endif
-                                            </td>
-                                            <td></td>
-                                            <td>
-
-                                            </td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td>
-
                                             </td>
                                             <td>
-
+                                                <select class="w-100 form-control state_of_country custom-select" name="">
+                                                    <option value="">SINF</option>
+                                                    {{-- @if (count($states))
+                                                        <option value="">{{ trans('app.Viloyat tanlang') }}</option>
+                                                    @endif
+                                                    @if (!empty($states))
+                                                        @foreach ($states as $state)
+                                                            <option value="{{ $state->id }}"
+                                                                @if ($city && $city == $state->id) selected="selected" @endif>
+                                                                {{ $state->name }} </option>
+                                                        @endforeach
+                                                    @endif --}}
+                                                </select>
                                             </td>
                                             <td></td>
                                             <td></td>
@@ -308,26 +329,30 @@
      </script>
      <script>
          $(document).ready(function() {
-             $('#city1').change(function () {
-                 var selectedCity = $(this).val();
+            $('#city1').change(function () {
 
-                 var currentUrl = window.location.href;
-                 var url = new URL(currentUrl);
+            console.log('jsf');
+            var selectedCity = $(this).val();
 
-                 // Set the new query parameter
-                 url.searchParams.set('city', selectedCity);
+            var currentUrl = window.location.href;
+            var url = new URL(currentUrl);
 
-                 // Modify the URL and trigger an AJAX request
-                 var newUrl = url.toString();
-                 window.history.pushState({ path: newUrl }, '', newUrl);
+            // Set the new query parameter
+            url.searchParams.set('city', selectedCity);
 
-                 $.ajax({
-                     url:  newUrl,
-                     method: "GET",
-                     success: function (response) {
-                         $('body').html(response);}
-                 });
-             });
+            // Modify the URL and trigger an AJAX request
+            var newUrl = url.toString();
+            window.history.pushState({ path: newUrl }, '', newUrl);
+
+            $.ajax({
+                url:  newUrl,
+                method: "GET",
+                success: function (response) {
+                    window.location.reload(true);
+                }
+            });
+        });
+
              $('#region').change(function() {
                  var selectedRegion = $(this).val();
 
