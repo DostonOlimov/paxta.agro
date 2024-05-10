@@ -139,7 +139,7 @@
                                                     @foreach ($states as $state)
                                                         <option value="{{ $state->id }}"
                                                             @if ($city && $city == $state->id) selected="selected" @endif>
-                                                            {{ $state->name }} </option>
+                                                            {{ __('message.' . $state->name) }} </option>
                                                     @endforeach
                                                 @endif
                                             </select>
@@ -240,7 +240,7 @@
                                                 <td><a href="{!! url('/application/view/'.optional($result->test_program->application)->id) !!}">{{ optional($result->test_program->application)->date }}</a></td>
                                                 <td>{{ optional($result->dalolatnoma)->number }}</td>
                                                 <td>{{ optional($result->certificate)->reestr_number }}</td>
-                                                <td>{{ optional($result->test_program->application->organization)->city->region->name }}</td>
+                                                <td>{{ __('message.' . optional($result->test_program->application->organization)->city->region->name) }}</td>
                                                 <td>{{ optional($result->test_program->application->organization)->city->name }}</td>
                                                 <td><a href="{!! url('/organization/view/'.$result->test_program->application->organization_id) !!}">{{ optional($result->test_program->application->organization)->name }}</a></td>
                                                 <td>{{ optional($result->test_program->application->prepared)->name }}</td>
