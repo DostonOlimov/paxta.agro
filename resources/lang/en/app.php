@@ -265,4 +265,8 @@ return[
     "Korxona (nomi), STIR ini kiritib izlang"=>"Search by entering enterprise (name), STIR",
     "Korxona nomini kiriting"=>"Enter the name of the company",
     "Korxona nomini kiritib izlang"=>"Search by entering a business name",
+
+
+    'Seleksiya (nomi), kod ini kiritib izlang'=>'Search by entering the selection (name), code',
+    'Seleksiyani nomini kiriting'=>'Enter a selection name',
 ];
