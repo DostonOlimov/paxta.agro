@@ -6,6 +6,13 @@
             /* gradient from orange to dark orange */
             color: white !important;
             font-weight: bold !important;
+            text-wrap: nowrap;
+            text-align: center;
+            font-size: 1rem !important;
+        }
+
+        table .form-control {
+            font-size: 0.9rem !important;
         }
 
         .table-striped tbody tr:nth-of-type(odd) {
@@ -28,9 +35,16 @@
 
         .table-responsive::-webkit-scrollbar {
             transform: rotate(180deg);
-            direction: ltr;
             height: 16px;
+            background-color: #d4d4d4;
+            border-radius: 25px !important;
         }
+
+        .table-responsive::-webkit-scrollbar-thumb {
+            cursor: pointer;
+            background-color: #0E46A3  !important;
+        }
+
 
         .table-responsive table {
             transform: rotate(180deg);
