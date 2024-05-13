@@ -7,13 +7,8 @@
             font-weight: bold !important;
             text-wrap: nowrap;
             text-align: center;
-            /* vertical-align: middle !important; */
             font-size: 1rem !important;
         }
-
-        /* td {
-                min-width: 88px;
-            } */
 
         table .form-control {
             font-size: 0.9rem !important;
