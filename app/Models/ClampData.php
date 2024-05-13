@@ -17,4 +17,8 @@ class ClampData  extends Model
     {
         return $this->belongsTo(Klassiyor::class, 'classer_id', 'kode');
     }
+    public function dalolatnoma(): BelongsTo
+    {
+        return $this->belongsTo(Dalolatnoma::class, 'dalolatnoma_id', 'id');
+    }
 }

@@ -73,6 +73,8 @@
 .sidebar-nav .nav-link{
     color:white;
     font-weight: 400;
+    font-size: 1rem;
+    text-wrap: pretty;
 }
 .sidebar-nav .nav-icon{
     color:white;
@@ -388,7 +390,7 @@ table.table-bordered.dataTable tbody th, table.table-bordered.dataTable tbody td
 }
 
 .table td, .table th{
-  padding: 0.25rem 0.25rem;
+  padding: 0.25rem 0.55rem;
 }
 
 table .btn{
@@ -498,7 +500,7 @@ th span.vert-header{
   }
 
   .filter-button{
-    margin: 6px;
+    margin: 6px 0;
   }
 
 
@@ -545,7 +547,7 @@ th span.vert-header{
   .filter-button{
     font-size: 0.6825rem;
     padding-left: 0.48rem;
-    padding-right: 0.48rem;
+    padding-right: 0.48rem !important;
   }
 }
 @media(min-width: 1445px)
@@ -558,6 +560,9 @@ th span.vert-header{
 
   .input-filter{
     font-size:  0.8125rem;
+    display: flex;
+    align-items: baseline;
+    column-gap: 9px;
   }
 
   .input-filter input{

@@ -8467,6 +8467,7 @@ html:not([dir=rtl]) .sidebar-close {
   background: var(--cui-sidebar-nav-link-bg);
 }
 .sidebar-nav .nav-title {
+    font-size: 0.7rem !important;
   padding: var(--cui-sidebar-nav-title-padding-y) var(--cui-sidebar-nav-title-padding-x);
   margin-top: var(--cui-sidebar-nav-title-margin-top);
   font-size: 80%;

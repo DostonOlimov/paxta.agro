@@ -72,6 +72,26 @@ class HviController extends Controller
         return redirect('hvi/list')->with('message', 'Successfully Submitted');
     }
 
+    public function view($id)
+    {
+        $tests = ClampData::whereHas('dalolatnoma', function ($query) use ($id) {
+            $query->whereHas('test_program', function ($query) use ($id) {
+                $query->whereHas('application', function ($query) use ($id) {
+                    $query->whereHas('organization', function ($query) use ($id) {
+                        $query->whereHas('city', function ($query) use ($id) {
+                            $query->where('state_id', '=', $id);
+                        });
+                    });
+                });
+            });
+        })->paginate(100);
+
+        return view('hvi.show', [
+            'results' => $tests,
+            'id' => $id
+        ]);
+    }
+
     private function getGinBalles($state_id)
     {
         return GinBalles::with('dalolatnoma.test_program.application.organization.city')
@@ -129,4 +149,6 @@ class HviController extends Controller
         $hvi->date = now();
         $hvi->save();
     }
+
+
 }
