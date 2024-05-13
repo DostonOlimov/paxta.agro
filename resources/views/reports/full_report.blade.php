@@ -6,7 +6,7 @@
             /* gradient from orange to dark orange */
             color: white !important;
             font-weight: bold !important;
-            text-wrap: nowrap;
+            white-space: nowrap; !important;
             text-align: center;
             font-size: 1rem !important;
         }
