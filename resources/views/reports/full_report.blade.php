@@ -238,7 +238,6 @@
                                         $offset = (request()->get('page', 1) - 1) * 50;
                                     @endphp
                                     @if (isset($results))
-
                                         @foreach($results as $result)
                                             <tr>
                                                 @if (isset($result->dalolatnoma->test_program->application))
