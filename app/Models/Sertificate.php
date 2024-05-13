@@ -6,6 +6,7 @@ use App\Models\Traits\HasAttachment;
 use App\Models\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -26,6 +27,10 @@ class Sertificate  extends Model
     public function final_result(): BelongsTo
     {
         return $this->belongsTo(FinalResult::class, 'final_result_id', 'id');
+    }
+    public function attachments(): MorphMany
+    {
+        return $this->morphMany(Attachment::class, 'attachable');
     }
 
 }

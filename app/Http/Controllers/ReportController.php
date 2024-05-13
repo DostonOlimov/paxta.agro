@@ -21,6 +21,8 @@ use App\Models\Country;
 use App\Models\CropData;
 use App\Models\CropsGeneration;
 use App\Models\CropsType;
+use App\Models\OrganizationCompanies;
+use App\Models\PreparedCompanies;
 
 //use NunoMaduro\Collision\Adapters\Phpunit\State;
 
@@ -53,37 +55,52 @@ class ReportController extends Controller{
 
     public function report(Request $request)
     {
-        $city = $request->input('city');
-        $crop = $request->input('crop');
-        $from = $request->input('from');
-        $till = $request->input('till');
+        $requestData = $request->only([
+            'crop','city', 'region', 'from', 'till', 'organization', 'prepared','number','reester_number','party_number','sort','class'
+        ]);
+        $city = $requestData['city'] ?? null;
+        $region = $requestData['region'] ?? null;
+        $crop = $requestData['crop'] ?? null;
+        $from = $requestData['from'] ?? null;
+        $till = $requestData['till'] ?? null;
+        $organization = $requestData['organization'] ?? null;
+        $prepared = $requestData['prepared'] ?? null;
+        $number = $requestData['number'] ?? null;
+        $resster_number=$requestData['resster_number'] ?? null;
+        $party_number=$requestData['party_number'] ?? null;
+        $sort=$requestData['sort'] ?? null;
+        $class=$requestData['class'] ?? null;
 
         $results = $this->getReport($request);
 
         $totalSum = $results->sum('amount');
         $results = $results->latest('id')
                        ->paginate(50)
-                       ->appends(['s' => request()->input('s')])
+                       ->appends(['crop' => request()->input('crop')])
                        ->appends(['till' => request()->input('till')])
                        ->appends(['from' => request()->input('from')])
                        ->appends(['city' => request()->input('city')])
-                       ->appends(['crop' => request()->input('crop')]);
+                       ->appends(['cities' => request()->input('cities')])
+                       ->appends(['organization' => request()->input('organization')])
+                       ->appends(['prepared' => request()->input('prepared')])
+                       ->appends(['states' => request()->input('states')])
+                       ->appends(['number' => request()->input('number')])
+                       ->appends(['resster_number' => request()->input('resster_number')])
+                       ->appends(['party_number' => request()->input('party_number')])
+                       ->appends(['sort' => request()->input('sort')])
+                       ->appends(['class' => request()->input('class')])
+                       ->appends(['region' => request()->input('region')]);
 
         $states = DB::table('tbl_states')->where('country_id', 234)->get();
-        $crop_names = CropsName::all();
         $cities = $city ? DB::table('tbl_cities')->where('state_id', $city)->get() : '';
-        $types = $generations = '';
-        if ($crop) {
-            $types = CropsType::where('crop_id', $crop)->get();
-            $generations = CropsGeneration::where('crop_id', $crop)->get();
+        if ($organization || $prepared) {
+            $organization = OrganizationCompanies::find($organization);
+            $prepared = PreparedCompanies::find($prepared);
+            $city = $region = null;
         }
 
-        $names = CropsName::all();
-        $countries = Country::all();
-        $years = CropData::getYear();
 
-
-        return view('reports.full_report', compact('results', 'from', 'till', 'city', 'crop', 'totalSum', 'states'));
+        return view('reports.full_report', compact('results', 'from', 'till', 'city', 'crop', 'totalSum', 'states', 'organization', 'prepared','cities', 'region','number', 'resster_number', 'party_number', 'sort', 'class'));
     }
 
     public function myreport(Request $request)
@@ -182,27 +199,64 @@ class ReportController extends Controller{
         $crop = $request->input('crop');
         $from = $request->input('from');
         $till = $request->input('till');
+        $region = $request->input('region');
+        $organization= $request->input('organization');
+        $prepared= $request->input('prepared');
+        $number =  $request->input('number') ?? null;
+        $resster_number= $request->input('resster_number') ?? null;
+        $party_number= $request->input('party_number') ?? null;
+        $sort= $request->input('sort') ?? null;
+        $class= $request->input('class') ?? null;
+
+
+        if($organization or $prepared)
+        {
+            $city = $region = null;
+        }
+        if ($organization || $prepared) {
+            $city = $region = null;
+        }
 
         $results=FinalResult::with([
-            'certificate',
+            'generation',
+            'certificate.attachment',
             'dalolatnoma.clamp_data',
-            'test_program.application',
-            'test_program.application.organization.city.region',
-            'test_program.application.prepared',
-            'test_program.application.crops.country',
-            'test_program.application.crops.name',
-            'test_program.application.crops.type',
-            'test_program.application.crops.generation',
-            'test_program.application.decision',
-            'test_program.application.tests.result.certificate'
+            'dalolatnoma.test_program.application.organization.city.region',
+            'dalolatnoma.test_program.application.prepared',
+            'dalolatnoma.test_program.application.crops.country',
+            'dalolatnoma.test_program.application.crops.name',
+            'dalolatnoma.test_program.application.crops.type',
+            'dalolatnoma.test_program.application.decision',
+            'dalolatnoma.test_program.application.tests.result.certificate'
         ]);
 
 
         if ($user->branch_id == \App\Models\User::BRANCH_STATE) {
             $user_city = $user->state_id;
-            $results = $results->whereHas('test_program.application.organization.city', function ($query) use ($user_city) {
+            $results = $results->whereHas('dalolatnoma.test_program.application.organization.city', function ($query) use ($user_city) {
                 $query->where('state_id', $user_city);
             });
+        }
+        if($number){
+            $results = $results->whereHas('dalolatnoma', function ($query) use ($number) {
+                $query->where('number', 'like', '%'.$number.'%');
+            });
+        }
+        if($resster_number){
+            $results = $results->whereHas('certificate', function ($query) use ($resster_number) {
+                $query->where('reestr_number', 'like', '%'.$resster_number.'%');
+            });
+        }
+        if($party_number){
+            $results = $results->whereHas('dalolatnoma.test_program.application.crops', function ($query) use ($party_number) {
+                $query->where('party_number','like', '%'.$party_number.'%');
+            });
+        }
+        if($sort){
+            $results = $results->where('sort',$sort);
+        }
+        if($class){
+            $results = $results->where('class',$class);
         }
 
         if ($from && $till) {
@@ -211,16 +265,35 @@ class ReportController extends Controller{
         }
 
         if ($city) {
-            $results = $results->whereHas('test_program.application.organization.city', function ($query) use ($city) {
+            $results = $results->whereHas('dalolatnoma.test_program.application.organization.city', function ($query) use ($city) {
                 $query->where('state_id', $city);
             });
         }
+        if ($region) {
+            $area = Area::find($region);
+            if($city and $area->state_id == $city){
+                $results = $results->whereHas('dalolatnoma.test_program.application.organization', function ($query) use ($region) {
+                    $query->where('city_id', '=', $region);
+                });
+            }
+        }
 
-        if ($crop) {
-            $results = $results->whereHas('test_program.application.crops', function ($query) use ($crop) {
-                $query->where('name_id', $crop);
+        if ($organization) {
+            $results = $results->whereHas('dalolatnoma.test_program.application.organization', function ($query) use ($organization) {
+                $query->where('id', '=', $organization);
             });
         }
+
+        if ($prepared) {
+            $results = $results->whereHas('dalolatnoma.test_program.application.prepared', function ($query) use ($prepared) {
+                $query->where('id', '=', $prepared);
+            });
+        }
+        // if ($crop) {
+        //     $results = $results->whereHas('test_program.application.crops', function ($query) use ($crop) {
+        //         $query->where('name_id', $crop);
+        //     });
+        // }
 
         $results = $results;
         // ->whereHas('test_program.application', function ($q) use ($year) {

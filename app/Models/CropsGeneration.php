@@ -17,6 +17,12 @@ class CropsGeneration extends Model
 {
     protected $table = 'crops_generation';
 
+    protected $fillable = [
+        'name',
+        'kod',
+       'crop_id ',
+    ];
+
     public function crops()
     {
         return $this->belongsTo(CropsName::class, 'crop_id');
