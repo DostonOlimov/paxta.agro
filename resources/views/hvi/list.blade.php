@@ -62,6 +62,7 @@
                                             <td>{{ optional($state->hvi_file)->count }}</td>
                                             <td>
                                                 <a href="{!! url('/hvi/add/'.$state->id) !!}"><button type="button" class="btn btn-round btn-success">{{trans('app.Yangilash')}}</button></a>
+                                                <a href="{!! url('/hvi/view/'.$state->id) !!}"><button type="button" class="btn btn-round btn-info">{{ trans('app.View')}}</button></a>
                                             </td>
                                         </tr>
                                     @endforeach
