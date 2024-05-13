@@ -5,7 +5,7 @@
             background-color: #2381c5 !important;
             color: white !important;
             font-weight: bold !important;
-            /* text-wrap: nowrap; */
+            white-space: nowrap; !important;
             text-align: center;
             font-size: 1rem !important;
         }
@@ -109,6 +109,7 @@
                                         <th rowspan="2">{{trans('app.Buyurtmachi korxona yoki tashkilot nomi')}}</th>
                                         <th rowspan="2">{{trans('app.Tayorlangan shaxobcha yoki sexning nomi')}}</th>
                                         <th rowspan="2">{{trans('app.Name')}}</th>
+                                        <th rowspan="2">{{trans('message.Seleksiya nomi')}}</th>
                                         <th rowspan="2">{{trans('app.Toʼda (partiya) raqami')}}</th>
                                         <th rowspan="2">{{trans('app.Hosil yili')}}</th>
                                         <th rowspan="2">{{trans("app.To'dadagi toylar soni (dona)")}}</th>
@@ -204,6 +205,18 @@
                                         </td>
                                         <td></td>
                                         <td>
+                                            <select id="selection" class="form-control seletions" name="selection">
+                                                @if (!empty($selection))
+                                                    <option selected value="{{ $selection->id }}">
+                                                        {{ $selection->name }}</option>
+                                                @endif
+                                            </select>
+                                            @if ($selection)
+                                                <i class="fa fa-trash" style="color:red"
+                                                    onclick="changeDisplay('selection')"></i>
+                                            @endif
+                                        </td>
+                                        <td>
                                             <form class="d-flex">
                                                 <input type="text" name="party_number" class="search-input form-control"
                                                        value="{{ isset($_GET['party_number']) ? $_GET['party_number'] : '' }}" >
@@ -261,6 +274,7 @@
                                                     <td><a href="{!! url('/organization/view/'.$result->dalolatnoma->test_program->application->organization_id) !!}">{{ optional($result->dalolatnoma->test_program->application->organization)->name }}</a></td>
                                                     <td>{{ optional($result->dalolatnoma->test_program->application->prepared)->name }}</td>
                                                     <td>{{ optional($result->dalolatnoma->test_program->application->crops->name)->name }}</td>
+                                                    <td>{{ optional($result->dalolatnoma->selection)->name }}</td>
                                                     <td>{{ optional($result->dalolatnoma->test_program->application->crops)->party_number }}</td>
                                                     <td>{{ optional($result->dalolatnoma->test_program->application->crops)->year }}</td>
 
@@ -297,6 +311,7 @@
                                 </table>
                                 {{ $results->links() }}
                             </div>
+
                             <h4
                                 style="position: sticky; bottom: 0; padding: 1%; color: #0052cc; width: 100%; display: flex; justify-content: space-between; background-color: white">
                                 <span>{{($totalSum)? trans("app.Jami og'irlik(kg)").': '.number_format($totalSum, 2, ',', ' '):''}}</span>
@@ -404,6 +419,30 @@
 
                 // Set the new query parameter
                 url.searchParams.set('organization', selectedRegion);
+
+                // Modify the URL and trigger an AJAX request
+                var newUrl = url.toString();
+                window.history.pushState({
+                    path: newUrl
+                }, '', newUrl);
+
+                $.ajax({
+                    url: newUrl,
+                    method: "GET",
+                    success: function(response) {
+                        window.location.reload(true);
+                    }
+                });
+            });
+            //selection companies change
+            $('#selection').change(function() {
+                var selectedRegion = $(this).val();
+
+                var currentUrl = window.location.href;
+                var url = new URL(currentUrl);
+
+                // Set the new query parameter
+                url.searchParams.set('selection', selectedRegion);
 
                 // Modify the URL and trigger an AJAX request
                 var newUrl = url.toString();
@@ -536,6 +575,46 @@
                     }
                 },
                 placeholder: '{{ trans('app.Korxona nomini kiriting') }}',
+                minimumInputLength: 2
+            })
+            $('select.seletions').select2({
+                ajax: {
+                    url: '/crops_selection/search_by_name',
+                    delay: 300,
+                    dataType: 'json',
+                    data: function(params) {
+                        return {
+                            search: params.term
+                        }
+                    },
+                    processResults: function(data) {
+                        data = data.map((name, index) => {
+                            return {
+                                id: name.id,
+                                text: capitalize(name.name + (name.name ? ' - kod:' + name
+                                    .kod : ''))
+                            }
+                        });
+                        return {
+                            results: data
+                        }
+                    }
+                },
+                language: {
+                    inputTooShort: function() {
+                        return '{{ trans('app.Seleksiya (nomi), kod ini kiritib izlang') }}';
+                    },
+                    searching: function() {
+                        return '{{ trans('app.Izlanmoqda...') }}';
+                    },
+                    noResults: function() {
+                        return '{{ trans('app.Natija topilmadi') }}'
+                    },
+                    errorLoading: function() {
+                        return '{{ trans('app.Natija topilmadi') }}'
+                    }
+                },
+                placeholder: '{{ trans('app.Seleksiyani nomini kiriting') }}',
                 minimumInputLength: 2
             })
             $('select.owner_search2').select2({

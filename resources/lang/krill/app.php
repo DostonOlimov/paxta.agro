@@ -261,4 +261,7 @@ return[
     "Korxona (nomi), STIR ini kiritib izlang"=>"Корхона (номи), СТИР ини киритиб изланг",
     "Korxona nomini kiriting"=>"Корхона номини киритинг",
     "Korxona nomini kiritib izlang"=>"Корхона номини киритиб изланг",
+
+    'Seleksiya (nomi), kod ini kiritib izlang'=>'Селексия (номи), код ини киритиб изланг',
+    'Seleksiyani nomini kiriting'=>'Селексияни номини киритинг',
 ];

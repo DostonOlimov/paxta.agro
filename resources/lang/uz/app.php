@@ -311,4 +311,7 @@ return[
     "Korxona (nomi), STIR ini kiritib izlang"=>"Korxona (nomi), STIR ini kiritib izlang",
     "Korxona nomini kiriting"=>"Korxona nomini kiriting",
     "Korxona nomini kiritib izlang"=>"Korxona nomini kiritib izlang",
+
+    'Seleksiya (nomi), kod ini kiritib izlang'=>'Seleksiya (nomi), kod ini kiritib izlang',
+    'Seleksiyani nomini kiriting'=>'Seleksiyani nomini kiriting',
 ];
