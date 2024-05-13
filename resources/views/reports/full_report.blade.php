@@ -5,7 +5,7 @@
             background-color: #2381c5 !important;
             color: white !important;
             font-weight: bold !important;
-            text-wrap: nowrap;
+            /* text-wrap: nowrap; */
             text-align: center;
             font-size: 1rem !important;
         }
