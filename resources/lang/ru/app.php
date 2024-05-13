@@ -271,4 +271,7 @@ return[
     "Korxona (nomi), STIR ini kiritib izlang"=>"Поиск по вводу предприятия (название), СТИР",
     "Korxona nomini kiriting"=>"Введите название компании",
     "Korxona nomini kiritib izlang"=>"Поиск по названию компании",
+
+    'Seleksiya (nomi), kod ini kiritib izlang'=>'Искать, введя выборку (название), код',
+    'Seleksiyani nomini kiriting'=>'Введите название выбора',
 ];

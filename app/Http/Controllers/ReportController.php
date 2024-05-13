@@ -20,6 +20,7 @@ use Illuminate\Http\Request;
 use App\Models\Country;
 use App\Models\CropData;
 use App\Models\CropsGeneration;
+use App\Models\CropsSelection;
 use App\Models\CropsType;
 use App\Models\OrganizationCompanies;
 use App\Models\PreparedCompanies;
@@ -56,11 +57,12 @@ class ReportController extends Controller{
     public function report(Request $request)
     {
         $requestData = $request->only([
-            'crop','city', 'region', 'from', 'till', 'organization', 'prepared','number','reester_number','party_number','sort','class'
+            'crop','city', 'region', 'from', 'till', 'organization', 'prepared','number','reester_number','party_number','sort','class','selection'
         ]);
         $city = $requestData['city'] ?? null;
         $region = $requestData['region'] ?? null;
         $crop = $requestData['crop'] ?? null;
+        $selection = $requestData['selection'] ?? null;
         $from = $requestData['from'] ?? null;
         $till = $requestData['till'] ?? null;
         $organization = $requestData['organization'] ?? null;
@@ -85,6 +87,7 @@ class ReportController extends Controller{
                        ->appends(['prepared' => request()->input('prepared')])
                        ->appends(['states' => request()->input('states')])
                        ->appends(['number' => request()->input('number')])
+                       ->appends(['selection' => request()->input('selection')])
                        ->appends(['resster_number' => request()->input('resster_number')])
                        ->appends(['party_number' => request()->input('party_number')])
                        ->appends(['sort' => request()->input('sort')])
@@ -93,6 +96,10 @@ class ReportController extends Controller{
 
         $states = DB::table('tbl_states')->where('country_id', 234)->get();
         $cities = $city ? DB::table('tbl_cities')->where('state_id', $city)->get() : '';
+        if($selection){
+            $selection = CropsSelection::find($selection);
+
+        }
         if ($organization || $prepared) {
             $organization = OrganizationCompanies::find($organization);
             $prepared = PreparedCompanies::find($prepared);
@@ -100,7 +107,7 @@ class ReportController extends Controller{
         }
 
 
-        return view('reports.full_report', compact('results', 'from', 'till', 'city', 'crop', 'totalSum', 'states', 'organization', 'prepared','cities', 'region','number', 'resster_number', 'party_number', 'sort', 'class'));
+        return view('reports.full_report', compact('results', 'from', 'till', 'city', 'crop', 'totalSum', 'states', 'organization', 'prepared','cities', 'region','number', 'resster_number', 'party_number', 'sort', 'class','selection'));
     }
 
     public function myreport(Request $request)
@@ -201,6 +208,7 @@ class ReportController extends Controller{
         $till = $request->input('till');
         $region = $request->input('region');
         $organization= $request->input('organization');
+        $selection= $request->input('selection');
         $prepared= $request->input('prepared');
         $number =  $request->input('number') ?? null;
         $resster_number= $request->input('resster_number') ?? null;
@@ -221,6 +229,7 @@ class ReportController extends Controller{
             'generation',
             'certificate.attachment',
             'dalolatnoma.clamp_data',
+            'dalolatnoma.selection',
             'dalolatnoma.test_program.application.organization.city.region',
             'dalolatnoma.test_program.application.prepared',
             'dalolatnoma.test_program.application.crops.country',
@@ -245,6 +254,12 @@ class ReportController extends Controller{
         if($resster_number){
             $results = $results->whereHas('certificate', function ($query) use ($resster_number) {
                 $query->where('reestr_number', 'like', '%'.$resster_number.'%');
+            });
+        }
+        if($selection){
+
+            $results = $results->whereHas('dalolatnoma.selection', function ($query) use ($selection) {
+                $query->where('id', $selection );
             });
         }
         if($party_number){
