@@ -297,7 +297,6 @@
                 @endif
             </select>
 
-
             <div id="list-date-filter" class="">
                 <div class="show-date btn btn-default filter-button m-0 rounded-2" style="font-size: 15px;">
                     {{ trans('message.Vaqt bo\'yicha filtrlash') }} <i
@@ -324,7 +323,6 @@
                     </form>
                 </div>
             </div>
-
 
             <ul class="map_statistcs__regions__stats">
                 <hr />
