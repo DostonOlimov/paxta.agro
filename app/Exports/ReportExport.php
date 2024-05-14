@@ -57,16 +57,16 @@ class ReportExport implements FromCollection, WithHeadings, WithStyles
 
         return collect([$firstRow])->concat($data->map(function ($result) {
             return [
-                $result->test_program->application->date ?? 'N/A',
+                $result->dalolatnoma->test_program->application->date ?? 'N/A',
                 optional($result->dalolatnoma)->number ?? 'N/A',
                 (optional($result->certificate)->reestr_number)??'',
-               (isset($result->test_program->application))?  optional($result->test_program->application->organization)->city->region->name ?? 'N/A':'',
-               (isset($result->test_program->application))?  optional($result->test_program->application->organization)->city->name ?? 'N/A':'',
-               (isset($result->test_program->application))?  optional($result->test_program->application->organization)->name ?? 'N/A':'',
-               (isset($result->test_program->application))?  optional($result->test_program->application->prepared)->name ?? 'N/A':'',
-               (isset($result->test_program->application))?  optional($result->test_program->application->crops->name)->name ?? 'N/A':'',
-               (isset($result->test_program->application))?  optional($result->test_program->application->crops)->party_number ?? 'N/A':'',
-                (isset($result->test_program->application))? optional($result->test_program->application->crops)->year ?? 'N/A':'',
+               (isset($result->dalolatnoma->test_program->application))?  optional($result->dalolatnoma->test_program->application->organization)->city->region->name ?? 'N/A':'',
+               (isset($result->dalolatnoma->test_program->application))?  optional($result->dalolatnoma->test_program->application->organization)->city->name ?? 'N/A':'',
+               (isset($result->dalolatnoma->test_program->application))?  optional($result->dalolatnoma->test_program->application->organization)->name ?? 'N/A':'',
+               (isset($result->dalolatnoma->test_program->application))?  optional($result->dalolatnoma->test_program->application->prepared)->name ?? 'N/A':'',
+               (isset($result->dalolatnoma->test_program->application))?  optional($result->dalolatnoma->test_program->application->crops->name)->name ?? 'N/A':'',
+               (isset($result->dalolatnoma->test_program->application))?  optional($result->dalolatnoma->test_program->application->crops)->party_number ?? 'N/A':'',
+                (isset($result->dalolatnoma->test_program->application))? optional($result->dalolatnoma->test_program->application->crops)->year ?? 'N/A':'',
                 optional($result)->count ?? 'N/A',
                 optional($result)->amount ?? '',
                 (optional($result)->amount)?optional($result)->amount - optional($result)->count * optional(optional($result->dalolatnoma->test_program->application)->prepared)->tara ?? 'N/A':'',
@@ -172,7 +172,7 @@ class ReportExport implements FromCollection, WithHeadings, WithStyles
         $sheet->getColumnDimension('H')->setWidth(30);
         $sheet->getColumnDimension('H')->setWidth(30);
         $sheet->getColumnDimension('I')->setWidth(30);
-        
+
         $sheet->getColumnDimension('J')->setWidth(20);
         $sheet->getColumnDimension('K')->setWidth(40);
         $sheet->getColumnDimension('L')->setWidth(25);
