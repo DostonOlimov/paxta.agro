@@ -125,7 +125,7 @@ class ApplicationPolicy
      */
     public function send(User $user, Application $application)
     {
-        return ( $user->isAdmin() or $user->id == 26)
+        return ( $user->isAdmin() or $user->id == 27)
             ? Response::allow()
             : Response::deny('Sizga ushbu sahifadan foydalanishga ruxsat berilmagan.');
     }
