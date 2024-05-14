@@ -3,7 +3,6 @@
     <style>
         th {
             background-color: #2381c5 !important;
-            /* gradient from orange to dark orange */
             color: white !important;
             font-weight: bold !important;
             white-space: nowrap; !important;
@@ -17,12 +16,10 @@
 
         .table-striped tbody tr:nth-of-type(odd) {
             background-color: #eaf2ee;
-            /* Light Gray */
         }
 
         .table-striped tbody tr:nth-of-type(even) {
             background-color: #ffffff;
-            /* Lighter Gray */
         }
         .filter-button {
             margin-left: 0;
