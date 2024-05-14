@@ -210,7 +210,7 @@ class DecisionController extends Controller
         ]);
     }
 
-    public function send($id)
+    public function send($id, Request $request)
     {
         // Get authenticated user
         $user = Auth::user();
@@ -230,7 +230,7 @@ class DecisionController extends Controller
         ]);
 
         // Redirect with success message
-        return redirect('decision/search')->with('message', 'Successfully Submitted');
+        return redirect('decision/search?page=' . $request->input('page'))->with('message', 'Successfully Submitted');
     }
 
 }

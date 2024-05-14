@@ -71,7 +71,7 @@
                                                 </td>
                                                 <td>
                                                 @if($app->decision->status == \App\Models\Decision::STATUS_NEW)
-                                                    <button type="button" class="btn btn-round btn-success sa-warning" url="{{ url('/decision/send/'.$app->id) }}">{{ trans('app.Tasdiqlash')}}</button>
+                                                    <button type="button" class="btn btn-round btn-success sa-warning" url="{{ url('/decision/send/'.$app->id . '?page='. request()->get('page', 1) ) }}">{{ trans('app.Tasdiqlash')}}</button>
                                                 @else
                                                      <button type="button" class="btn btn-round btn-warning">{{ trans('app.Tasdiqlangan')}}</button>
                                                 @endif
