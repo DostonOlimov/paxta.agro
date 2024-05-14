@@ -314,4 +314,6 @@ return[
 
     'Seleksiya (nomi), kod ini kiritib izlang'=>'Seleksiya (nomi), kod ini kiritib izlang',
     'Seleksiyani nomini kiriting'=>'Seleksiyani nomini kiriting',
+
+    "Izlanmoqda..."=>"Izlanmoqda...",
 ];

@@ -269,4 +269,6 @@ return[
 
     'Seleksiya (nomi), kod ini kiritib izlang'=>'Search by entering the selection (name), code',
     'Seleksiyani nomini kiriting'=>'Enter a selection name',
+
+    "Izlanmoqda..."=>"Looking for...",
 ];

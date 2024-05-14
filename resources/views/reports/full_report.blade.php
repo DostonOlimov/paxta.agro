@@ -92,6 +92,7 @@
                             'party_number'=>$party_number?? ($_GET['party_number']??''),
                             'sort'=>$sort?? ($_GET['sort']??''),
                             'class'=>$class?? ($_GET['class']??''),
+                            'selection'=>$selection?? ($_GET['selection']??''),
                         ]) }}">
                         <i class="fa fa-file-excel-o"
                            style="margin-right: 6px; color: white;"></i>{{ trans('app.Excel fayl') }}</a>

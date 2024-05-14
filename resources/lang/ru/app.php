@@ -274,4 +274,6 @@ return[
 
     'Seleksiya (nomi), kod ini kiritib izlang'=>'Искать, введя выборку (название), код',
     'Seleksiyani nomini kiriting'=>'Введите название выбора',
+
+    "Izlanmoqda..."=>"Находясь в поиске...",
 ];
