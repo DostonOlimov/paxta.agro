@@ -21,6 +21,7 @@ Auth::routes();
 
 //Dashboard
 Route::get('/home', ['middleware' => 'auth', 'uses' => '\App\Http\Controllers\HomeController@dashboard']);
+Route::get('/home2', ['middleware' => 'auth', 'uses' => '\App\Http\Controllers\HomeController@dashboard']);
 //Route::get('/', ['middleware' => 'auth','\App\Http\Controllers\DashboardController@index'])->name('home');
 Route::get('/', ['middleware' => 'auth', 'uses' => '\App\Http\Controllers\HomeController@dashboard']);
 Route::post('/change-language', [\App\Http\Controllers\LanguageController::class, 'changeLanguage']);
