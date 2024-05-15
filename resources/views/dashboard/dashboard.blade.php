@@ -1,6 +1,6 @@
 @extends('layouts.app')
 <link rel="stylesheet" href="{{ URL::asset('resources/assets/css/dashboard.css') }}" />
-<link href="https://github.hubspot.com/odometer/themes/odometer-theme-default.css" rel="stylesheet">
+{{--<link href="https://github.hubspot.com/odometer/themes/odometer-theme-default.css" rel="stylesheet">--}}
 
 @section('content')
     <div class="map_statistcs-container">
