@@ -2,28 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AktAmount;
-use App\Models\Application;
-use App\Models\CropsName;
 use App\Models\Dalolatnoma;
 use App\Models\FinalResult;
 use App\Models\Region;
-use App\Models\Sertificate;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
-
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     public function dashboard(Request $request)
     {
-        $app_type_selector = $request->input('app_type_selector');
         $city = $request->input('city');
         $crop = $request->input('crop');
         $from = $request->input('from');
@@ -108,7 +96,6 @@ class HomeController extends Controller
             'till',
             'city',
             'crop',
-            'app_type_selector',
             'sum_amount',
             'count_amount',
             'state_count',
