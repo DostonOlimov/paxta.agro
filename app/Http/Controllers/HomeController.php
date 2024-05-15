@@ -47,7 +47,7 @@ class HomeController extends Controller
                  });
         }
 
-        $app_states = Region::select('tbl_states.id', 'tbl_states.name', DB::raw('COUNT(applications.id) as application_count'))
+        $app_states = Region::select('tbl_states.id',  'tbl_states.name', DB::raw('COUNT(applications.id) as application_count'))
             ->leftJoin('tbl_cities', 'tbl_states.id', '=', 'tbl_cities.state_id')
             ->leftJoin('organization_companies', 'tbl_cities.id', '=', 'organization_companies.city_id')
             ->join('applications', 'organization_companies.id', '=', 'applications.organization_id')
