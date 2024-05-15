@@ -51,7 +51,7 @@
                         </div>
                         <div class="inside-circle" id="insideCircle">
                             {{ trans('message.Jami') }} <span
-                                style="color: #5caf5d">{{ $applications_count->all_app_count }}
+                                style="color: #5caf5d">{{ $applications_count }}
                             </span>
                         </div>
                     </div>
@@ -74,7 +74,7 @@
                             <div class="fill"></div>
                         </div>
                         <div class="inside-circle" id="insideCircle">
-                            {{ trans('message.Shundan') }} <span style="color: #fba729">{{ $crops->applications_count }}
+                            {{ trans('message.Shundan') }} <span style="color: #fba729">{{ $state_count}}
                             </span>
                         </div>
                     </div>
@@ -424,7 +424,7 @@
                     </svg>
 
                     <p>{{ trans('message.Kelgan arizalar soni') }}:</p>
-                    <span class="text-success">{{ $crops->applications_count }} {{ trans('message.ta') }}</span>
+                    <span class="text-success">{{ $state_count }} {{ trans('message.ta') }}</span>
                 </li>
                 <hr />
                 <li>

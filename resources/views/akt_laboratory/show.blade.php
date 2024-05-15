@@ -2,6 +2,38 @@
 
 @section('content')
     <style>
+        th {
+            background-color: #2381c5 !important;
+            color: white !important;
+            font-weight: bold !important;
+            text-align: center;
+            font-size: 1rem !important;
+        }
+
+        table .form-control {
+            font-size: 0.9rem !important;
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: #eaf2ee;
+        }
+
+        .table-striped tbody tr:nth-of-type(even) {
+            background-color: #ffffff;
+        }
+
+
+        .table-responsive table {
+            transform: rotate(180deg);
+            direction: initial;
+        }
+
+        .table-responsive nav .pagination {
+            padding-top: 13px;
+            direction: initial;
+            transform: rotate(180deg);
+        }
+
         .right_side .table_row, .member_right .table_row {
             border-bottom: 1px solid #dedede;
             float: left;
@@ -12,34 +44,25 @@
         .table_row .table_td {
             padding: 8px 8px !important;
         }
-       th{
-           font-weight: bold;
-       }
+        th{
+            font-weight: bold;
+        }
         td{
             font-weight: bold;
         }
         #top-scroll-btn {
+            width: 200px;
             display: none;
             position: fixed;
             bottom: 20px;
-            right: 20px;
+            font-size: 18px;
+            font-weight: bold;
             background-color: #3498db;
             color: #ffffff;
             border: none;
             border-radius: 5px;
             padding: 10px;
             cursor: pointer;
-        }
-        /* Styles for the table container with horizontal scroll */
-        .table-container {
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        .table-wrapper {
-            overflow-x: auto;
-            overflow-y: hidden;
-            white-space: nowrap;
         }
 
         /* Optional: Add a fixed header for the table */
@@ -53,6 +76,35 @@
         #examples1 th, #examples1 td {
             padding: 10px;
             text-align: left;
+        }
+
+        .table-responsive {
+            transform: rotate(180deg);
+            direction: rtl;
+        }
+
+        .table-responsive::-webkit-scrollbar {
+            transform: rotate(180deg);
+            height: 16px;
+            background-color: #d4d4d4;
+            border-radius: 25px !important;
+        }
+
+        .table-responsive::-webkit-scrollbar-thumb {
+            cursor: pointer;
+            background-color: #0E46A3  !important;
+        }
+
+
+        .table-responsive table {
+            transform: rotate(180deg);
+            direction: initial;
+        }
+
+        .table-responsive nav .pagination {
+            padding-top: 13px;
+            direction: initial;
+            transform: rotate(180deg);
         }
     </style>
     <div class="section">
@@ -98,9 +150,8 @@
                             <div class="col-md-12">
                                 <div class="card">
                                     <div class="card-body">
-                                        <div class="table-container">
-                                            <div class="table-wrapper">
-                                            <table id="examples1" class="table table-striped table-bordered nowrap" style="margin-top:20px;" >
+                                        <div class="table-responsive">
+                                            <table id="examples1" class="table table-striped table-bordered " style="margin-top:20px;">
                                                 <thead>
                                                 <tr>
                                                     <th>#</th>

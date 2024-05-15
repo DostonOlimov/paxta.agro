@@ -82,13 +82,15 @@ class AktAmountController extends Controller
             });
         });
 
-        $tests = $apps->latest('id')
+        $tests = $apps->withSum('akt_amount','amount')
+            ->latest('id')
             ->paginate(50)
             ->appends(['s' => $request->input('s')])
             ->appends(['till' => $request->input('till')])
             ->appends(['from' => $request->input('from')])
             ->appends(['city' => $request->input('city')])
             ->appends(['crop' => $request->input('crop')]);
+
         return view('akt_amount.search', compact('tests','from','till','city','crop'));
     }
     //index

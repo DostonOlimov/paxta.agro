@@ -94,7 +94,8 @@ class FinalResultsController extends Controller
             });
         });
 
-        $tests = $apps->latest('id')
+        $tests = $apps->withSum('akt_amount','amount')
+            ->latest('id')
             ->paginate(50)
             ->appends(['s' => $request->input('s')])
             ->appends(['till' => $request->input('till')])
