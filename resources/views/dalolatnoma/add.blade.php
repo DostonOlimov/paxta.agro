@@ -379,7 +379,7 @@
                 const sheet = workbook.Sheets[sheetName];
 
                 const numbers = [];
-                const columnIndices = ['A', 'B', 'C', 'D']; // Assuming you want to read from columns A, B, C, and D
+                const columnIndices = ['A', 'B', 'D', 'E']; // Assuming you want to read from columns A, B, C, and D
 
                 // Iterate over each row and each column to read the values
                 let rowIndex = 1; // Start from the first row
@@ -420,24 +420,26 @@
                     }else{
                         inputFieldsContainer.innerHTML += `
             <div class="col-md-4 row">
-                <div class="col-md-4 form-group has-feedback">
+                <div class="col-md-6 form-group has-feedback">
                     <input type="number" class="form-control" maxlength="10"
                         value="${row[0]}" name="kod_toy[${index}][0]" required min="1">
                 </div>
-                <div class="col-md-4 form-group has-feedback">
+                <div class="col-md-6 form-group has-feedback">
                     <input type="number" class="form-control" maxlength="10"
                         value="${row[1]}" name="kod_toy[${index}][1]" required min="1">
                 </div>
             </div>
             <div class="col-md-4 row">
-                <div class="col-md-4 form-group has-feedback">
+                <div class="col-md-6 form-group has-feedback">
                     <input type="number" class="form-control" maxlength="10"
                         value="${row[2]}" name="kod_toy[${index}][2]" required min="1">
                 </div>
-                <div class="col-md-4 form-group has-feedback">
+                <div class="col-md-6 form-group has-feedback">
                     <input type="number" class="form-control" maxlength="10"
                         value="${row[3]}" name="kod_toy[${index}][3]" required min="1">
                 </div>
+            </div>
+            <div class="col-md-4 row">
             </div>
             `;
                     }
