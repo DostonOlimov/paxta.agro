@@ -8,7 +8,7 @@
             <div class="page-header">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
-                        <i class="fe fe-life-buoy mr-1"></i>&nbsp {{ trans("message.Buyurtmachi korxona ro'yxatlari") }}
+                        <i class="fe fe-life-buoy mr-1"></i>&nbsp {{trans("message.Korxonalar kesimda ma'lumot")}}
                     </li>
                 </ol>
             </div>
@@ -73,7 +73,7 @@
                                                         href="{!! url('/organization/view/' . $company->id) !!}">{{ $company->name }}</a>
                                                 </td>
                                                 <td>{{ $company->kip }}</td>
-                                                <td>{{ $company->netto }}</td>
+                                                <td>{{ round(($company->netto/1000),4) }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -99,18 +99,21 @@
     <script src="{{ URL::asset('vendors/jquery/dist/jquery.min.js') }}"></script>
 
     <script>
-     function printTable() {
-        var table = document.querySelector('.myTable'); // Select the table with the specific class
-        var content = table.outerHTML; // Get the HTML content of the table
+        function printTable() {
+           var table = document.querySelector('.myTable');
+           var content = table.outerHTML;
 
-        var printWindow = window.open('', '', 'height=600,width=800'); // Open a new window (optional)
-        printWindow.document.write('<html><head><title>Print Table</title></head><body>'); // Write the HTML content into the new window
-        printWindow.document.write(content);
-        printWindow.document.write('</body></html>');
-        printWindow.document.close(); // Close the document so it can be printed
+           var printWindow = window.open('', '', 'height=600,width=800');
+           printWindow.document.write('<html><head><title>Print Table</title>');
 
-        printWindow.print(); // Print the new window
-    }
-    </script>
+           printWindow.document.write('<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">');
+           printWindow.document.write('</head><body>');
+           printWindow.document.write(content);
+           printWindow.document.write('</body></html>');
+           printWindow.document.close();
+
+           printWindow.print(); 
+       }
+       </script>
 
 @endsection

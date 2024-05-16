@@ -41,7 +41,7 @@ class CompanyExport implements FromCollection, WithHeadings, WithStyles
                 $company->kod,
                 $company->name,
                 $company->kip,
-                $company->netto,
+                ($company->netto)?round(($company->netto/1000),4) : '',
             ];
         })
     );
