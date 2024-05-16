@@ -137,5 +137,5 @@ return [
     "Toshkent viloyati" => "Tashkent Region",
     "Toshkent shahri" => "Tashkent City",
 
-    "Buyurtmachi korxona ro'yxat"=>"Customer enterprise list",
+    "Korxonalar kesimda ma'lumot"=>"Information in the section of enterprises",
 ];
