@@ -79,7 +79,7 @@
                                                                         @if($company->state_id==$region->id)
                                                                             selected
                                                                         @endif
-                                                                        value="{{ $region->id }}">{{ $region->name }}</option>
+                                                                        value="{{ $region->id }}">{{ __("message." . $region->name) }}</option>
                                                                 @endforeach
                                                             @endif
                                                         </select>
