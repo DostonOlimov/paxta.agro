@@ -74,7 +74,7 @@
                             <div class="fill"></div>
                         </div>
                         <div class="inside-circle" id="insideCircle">
-                            {{ trans('message.Shundan') }} <span style="color: #fba729">{{ $state_count}}
+                            {{ trans('message.Shundan') }} <span style="color: #fba729">{{ $state_count }}
                             </span>
                         </div>
                     </div>
@@ -446,7 +446,7 @@
                               d="M397.392 298.242c-.218-3.754 2.158-6.899 4.99-6.899h-59.956c-3.765 0-6.925 3.145-6.635 6.899 3.52 45.577 41.617 81.462 88.096 81.462 7.856 0 15.443-1.103 22.694-3.027-26.809-9.459-46.99-40.562-49.189-78.435M220.657 476.903c0-9.761 7.913-17.672 17.672-17.672h-79.525c-9.759 0-17.672 7.912-17.672 17.672 0 9.759 7.913 17.672 17.672 17.672h79.525c-9.76 0-17.672-7.913-17.672-17.672" />
                     </svg>
                     <p>{{ trans('message.Paxta tolasi miqdori') }}:</p>
-                    <span class="text-success">{{ round($sum_amount / 1000, 3) }} {{ trans('message.tonna') }}</span>
+                    <span class="text-success">{{ round($sum_amount / 1000) }} {{ trans('message.tonna') }}</span>
                 </li>
                 <hr />
                 <li>
@@ -661,7 +661,7 @@
                     </svg>
 
                     <p>{{ trans('message.Sertifikalangan paxta tolasi miqdori') }}:</p>
-                    <span class="text-success">{{ round($sum_final_result / 1000, 2) }}
+                    <span class="text-success">{{ round($sum_final_result / 1000) }}
                         {{ trans('message.tonna') }}</span>
                 </li>
                 <hr />

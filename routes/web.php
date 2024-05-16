@@ -21,6 +21,7 @@ Auth::routes();
 
 //Dashboard
 Route::get('/home', ['middleware' => 'auth', 'uses' => '\App\Http\Controllers\HomeController@dashboard']);
+Route::get('/home2', ['middleware' => 'auth', 'uses' => '\App\Http\Controllers\HomeController@dashboard']);
 //Route::get('/', ['middleware' => 'auth','\App\Http\Controllers\DashboardController@index'])->name('home');
 Route::get('/', ['middleware' => 'auth', 'uses' => '\App\Http\Controllers\HomeController@dashboard']);
 Route::post('/change-language', [\App\Http\Controllers\LanguageController::class, 'changeLanguage']);
@@ -268,7 +269,10 @@ Route::group(['prefix' => 'employee'], function () {
     Route::post('/edit/update/{id}', '\App\Http\Controllers\DalolatnomaController@update');
     Route::get('/view/{id}', '\App\Http\Controllers\DalolatnomaController@view')->name('dalolatnoma.view');
     Route::post('/store', '\App\Http\Controllers\DalolatnomaController@store')->name('dalolatnoma.store');
-});
+
+    Route::get('/tara_edit/{id}', '\App\Http\Controllers\DalolatnomaController@tara_edit');
+        Route::post('tara_edit/update/{id}', '\App\Http\Controllers\DalolatnomaController@tara_store');
+    });
 //Akt amount
 Route::group(['prefix' => 'akt_amount', 'middleware' => 'auth'], function () {
     Route::get('/search', '\App\Http\Controllers\AktAmountController@search');

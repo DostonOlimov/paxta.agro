@@ -99,8 +99,9 @@ class DalolatnomaController extends Controller
     {
         $test = TestPrograms::find($id);
         $selection = CropsSelection::get();
+        $tara = optional(optional($test->application)->prepared)->tara;
 
-        return view('dalolatnoma.add', compact('test', 'selection'));
+        return view('dalolatnoma.add', compact('test', 'selection','tara'));
     }
 
     //list
@@ -133,6 +134,7 @@ class DalolatnomaController extends Controller
         $party_number = $request->input('party_number');
         $nav = $request->input('nav');
         $sinf = $request->input('sinf');
+        $tara = $request->input('tara');
 
         $test = new Dalolatnoma();
         $test->test_program_id = $test_id;
@@ -144,6 +146,7 @@ class DalolatnomaController extends Controller
         $test->party = $party_number;
         $test->nav = $nav;
         $test->sinf = $sinf;
+        $test->tara = $tara;
         $test->save();
 
         $balls = [];
@@ -227,6 +230,7 @@ class DalolatnomaController extends Controller
         $result->party = $request->input('party_number');
         $result->nav = $request->input('nav');
         $result->sinf = $request->input('sinf');
+        $result->tara = $request->input('tara');
         $result->save();
         $akt_amount = AktAmount::where('dalolatnoma_id', $id)->sum('amount');
         if ($akt_amount = 0) {
@@ -322,5 +326,26 @@ class DalolatnomaController extends Controller
         DB::transaction(function () use ($amounts) {
             AktAmount::insert($amounts);
         });
+    }
+    public function tara_edit($id)
+    {
+        $userA = Auth::user();
+        $result = Dalolatnoma::find($id);
+
+        return view('dalolatnoma.tara_edit', compact('result'));
+    }
+
+
+    // application update
+
+    public function tara_store($id, Request $request)
+    {
+        $userA = Auth::user();
+        $result = Dalolatnoma::find($id);
+        $result->tara = $request->input('tara');
+        $result->save();
+
+        return redirect('/akt_amount/search')->with('message', 'Successfully Updated');
+
     }
 }

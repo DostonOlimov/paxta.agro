@@ -41,10 +41,8 @@ class AktLaboratoryController extends Controller
         if ($from && $till) {
             $fromTime = join('-', array_reverse(explode('-', $from)));
             $tillTime = join('-', array_reverse(explode('-', $till)));
-            $apps->whereHas('test_program.application', function ($query) use ($fromTime,$tillTime) {
-                $apps = $query->whereDate('date', '>=', $fromTime)
-                    ->whereDate('date', '<=', $tillTime);
-            });
+            $apps->whereDate('date', '>=', $fromTime)
+                ->whereDate('date', '<=', $tillTime);
         }
         if ($city) {
             $apps = $apps->whereHas('test_program.application.organization', function ($query) use ($city) {

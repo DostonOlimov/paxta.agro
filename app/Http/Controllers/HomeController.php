@@ -29,25 +29,42 @@ class HomeController extends Controller
         $from = $request->input('from');
         $till = $request->input('till');
 
-//        sum of products
-        $dalolatnoma = Dalolatnoma::with('akt_amount');
+        $dalolatnoma = Dalolatnoma::with('test_program');
+        $applications_count  = $dalolatnoma->count();
         if ($from && $till) {
             $fromTime = join('-', array_reverse(explode('-', $from)));
             $tillTime = join('-', array_reverse(explode('-', $till)));
             $dalolatnoma = $dalolatnoma->whereDate('date', '>=', $fromTime)
                 ->whereDate('date', '<=', $tillTime);
         }
-        $applications_count  = $dalolatnoma->count();
 
         if($city){
             $dalolatnoma = $dalolatnoma->whereHas('test_program.application.organization', function ($query) use ($city) {
-                     $query->whereHas('city', function ($query) use ($city) {
-                         $query->where('state_id', '=', $city);
-                     });
-                 });
+                $query->whereHas('city', function ($query) use ($city) {
+                    $query->where('state_id', '=', $city);
+                });
+            });
+        }
+        $state_count = $dalolatnoma->count();
+//        sum of products
+        $sum_amount = AktAmount::with('dalolatnoma');
+        if($city){
+            $sum_amount = $sum_amount->whereHas('dalolatnoma.test_program.application.organization', function ($query) use ($city) {
+                $query->whereHas('city', function ($query) use ($city) {
+                    $query->where('state_id', '=', $city);
+                });
+            });
+        }
+        if ($from && $till) {
+            $fromTime = join('-', array_reverse(explode('-', $from)));
+            $tillTime = join('-', array_reverse(explode('-', $till)));
+            $sum_amount = $sum_amount->whereHas('dalolatnoma', function ($query) use ($fromTime,$tillTime) {
+                $query->whereDate('date', '>=', $fromTime)
+                    ->whereDate('date', '<=', $tillTime);
+            });
         }
 
-        $app_states = Region::select('tbl_states.id',  'tbl_states.name', DB::raw('COUNT(applications.id) as application_count'))
+        $app_states = Region::select('tbl_states.id', 'tbl_states.name', DB::raw('COUNT(applications.id) as application_count'))
             ->leftJoin('tbl_cities', 'tbl_states.id', '=', 'tbl_cities.state_id')
             ->leftJoin('organization_companies', 'tbl_cities.id', '=', 'organization_companies.city_id')
             ->join('applications', 'organization_companies.id', '=', 'applications.organization_id')
@@ -81,23 +98,18 @@ class HomeController extends Controller
                     ->whereDate('date', '<=', $tillTime);
             });
         }
-        //restuls
         $sum_final_result = $sum_final_result->sum('amount');
 
         $app_states = $app_states->groupBy('tbl_states.id', 'tbl_states.name')
             ->orderBy('application_count', 'desc')
             ->get();
 
-        $dalolatnoma = $dalolatnoma->withSum('akt_amount','amount')
-            ->withCount('akt_amount')
-            ->get();
-        $sum_amount = $dalolatnoma->sum('akt_amount_sum_amount');
-        $count_amount = $dalolatnoma->sum('akt_amount_count');
-        $state_count = $dalolatnoma->count();
-
+        $count_amount = $sum_amount->count('id');
+        $sum_amount = $sum_amount->sum('amount');
 
         $states = DB::table('tbl_states')->where('country_id', '=', 234)->get()->toArray();
         $crop_names = DB::table('crops_name')->get()->toArray();
+
 
         return view('dashboard.dashboard', compact(
             'app_states',
@@ -111,8 +123,8 @@ class HomeController extends Controller
             'app_type_selector',
             'sum_amount',
             'count_amount',
-            'state_count',
-            'sum_final_result'
+            'sum_final_result',
+            'state_count'
         ));
     }
 

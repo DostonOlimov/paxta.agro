@@ -157,7 +157,7 @@
                                         </div>
                                     </div>
                                     <div class="certificate row">
-                                        <div class="col-md-4 form-group has-feedback {{ $errors->has('party_number') ? ' has-error' : '' }}">
+                                        <div class="col-md-3 form-group has-feedback {{ $errors->has('party_number') ? ' has-error' : '' }}">
                                             <label for="number" class="form-label ">To'da p/x №</label>
                                             <input type="text" class="form-control" maxlength="10" value="{{ old('party_number')}}"  name="party_number">
                                             @if ($errors->has('party_number'))
@@ -167,7 +167,7 @@
                                                 </span>
                                             @endif
                                         </div>
-                                        <div class="col-md-4 form-group has-feedback {{ $errors->has('nav') ? ' has-error' : '' }}">
+                                        <div class="col-md-3 form-group has-feedback {{ $errors->has('nav') ? ' has-error' : '' }}">
                                             <label for="number" class="form-label ">Nav p/x № </label>
                                             <input type="number" class="form-control" max="6" value="{{ old('nav')}}"  name="nav">
                                             @if ($errors->has('nav'))
@@ -177,7 +177,7 @@
                                                 </span>
                                             @endif
                                         </div>
-                                        <div class="col-md-4 form-group has-feedback {{ $errors->has('nav') ? ' has-error' : '' }}">
+                                        <div class="col-md-3 form-group has-feedback {{ $errors->has('nav') ? ' has-error' : '' }}">
                                             <label for="number" class="form-label ">Sinf p/x №</label>
                                             <input type="number" class="form-control" max="6" value="{{ old('sinf')}}"  name="sinf" required>
                                             @if ($errors->has('sinf'))
@@ -187,6 +187,17 @@
                                                 </span>
                                             @endif
                                         </div>
+                                        <div class="col-md-3 form-group has-feedback {{ $errors->has('nav') ? ' has-error' : '' }}">
+                                            <label for="number" class="form-label ">Tara (kg)</label>
+                                            <input type="number" class="form-control" step="0.001" value="{{ old('tara') ? old('tara') : $tara }}"  name="tara" required>
+                                            @if ($errors->has('tara'))
+                                                <span class="help-block">
+                                                    <strong>
+                                                        Tara no'g'ri shaklda kiritilgan</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+
                                     </div>
                                     {{-- start --}}
                                     <div class="certificate row" id="forms">
@@ -368,7 +379,7 @@
                 const sheet = workbook.Sheets[sheetName];
 
                 const numbers = [];
-                const columnIndices = ['A', 'B', 'C', 'D']; // Assuming you want to read from columns A, B, C, and D
+                const columnIndices = ['A', 'B', 'D', 'E']; // Assuming you want to read from columns A, B, C, and D
 
                 // Iterate over each row and each column to read the values
                 let rowIndex = 1; // Start from the first row
@@ -409,24 +420,26 @@
                     }else{
                         inputFieldsContainer.innerHTML += `
             <div class="col-md-4 row">
-                <div class="col-md-4 form-group has-feedback">
+                <div class="col-md-6 form-group has-feedback">
                     <input type="number" class="form-control" maxlength="10"
                         value="${row[0]}" name="kod_toy[${index}][0]" required min="1">
                 </div>
-                <div class="col-md-4 form-group has-feedback">
+                <div class="col-md-6 form-group has-feedback">
                     <input type="number" class="form-control" maxlength="10"
                         value="${row[1]}" name="kod_toy[${index}][1]" required min="1">
                 </div>
             </div>
             <div class="col-md-4 row">
-                <div class="col-md-4 form-group has-feedback">
+                <div class="col-md-6 form-group has-feedback">
                     <input type="number" class="form-control" maxlength="10"
                         value="${row[2]}" name="kod_toy[${index}][2]" required min="1">
                 </div>
-                <div class="col-md-4 form-group has-feedback">
+                <div class="col-md-6 form-group has-feedback">
                     <input type="number" class="form-control" maxlength="10"
                         value="${row[3]}" name="kod_toy[${index}][3]" required min="1">
                 </div>
+            </div>
+            <div class="col-md-4 row">
             </div>
             `;
                     }

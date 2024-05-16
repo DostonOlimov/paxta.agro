@@ -46,10 +46,8 @@ class AktAmountController extends Controller
         if ($from && $till) {
             $fromTime = join('-', array_reverse(explode('-', $from)));
             $tillTime = join('-', array_reverse(explode('-', $till)));
-            $apps->whereHas('test_program.application', function ($query) use ($fromTime,$tillTime) {
-                $query->whereDate('date', '>=', $fromTime)
+            $apps->whereDate('date', '>=', $fromTime)
                     ->whereDate('date', '<=', $tillTime);
-            });
         }
         if ($city) {
             $apps = $apps->whereHas('test_program.application.organization', function ($query) use ($city) {
@@ -155,7 +153,7 @@ class AktAmountController extends Controller
         $tests = AktAmount::where('dalolatnoma_id',$id)->get()->toArray();
         $sum_amount = AktAmount::where('dalolatnoma_id',$id)->sum('amount');
         $count= AktAmount::where('dalolatnoma_id',$id)->count();
-        $tara = optional(Dalolatnoma::find($id)->test_program->application->prepared)->tara;
+        $tara = optional(Dalolatnoma::find($id))->tara;
 
         if($tests){
             $data1 =array_chunk($tests, 50);

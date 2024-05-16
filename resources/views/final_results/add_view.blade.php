@@ -18,7 +18,6 @@ th{
 td{
             font-weight: bold;
         }
-
     </style>
     <div class="section">
         <div class="page-header">
@@ -100,7 +99,7 @@ td{
                                                                     <td>{{optional(optional($dalolatnoma->test_program->application)->crops)->party_number}}</td>
                                                                     <td> {{ $count->count}}</td>
                                                                     <td> {{ $count->amount}}</td>
-                                                                    <td> {{ $count->amount - $count->count * optional(optional($dalolatnoma->test_program->application)->prepared)->tara}}</td>
+                                                                    <td> {{ $count->amount - $count->count * $dalolatnoma->tara}}</td>
                                                                     <td> 4</td>
                                                                     <td> {{ $count->sort}}</td>
                                                                     <td> {{ optional(\App\Models\CropsGeneration::where('kod','=',$count->class)->first())->name}}</td>
