@@ -74,7 +74,7 @@
 										<td>{{ $i }}</td>
 										<td>{{ $klassiyor->name }}</td>
 										<td>{{ $klassiyor->kode }}</td>
-										<td>{{ optional($klassiyor->laboratory)->city->region->name }}</td>
+										<td>{{ __("message." . optional($klassiyor->laboratory)->city->region->name) }}</td>
 										<td>
 											<a href="{!! url ('/klassiyor/list/edit/'.$klassiyor->id) !!}"> <button type="button" class="btn btn-round btn-success">{{ trans('app.Edit')}}</button></a>
 

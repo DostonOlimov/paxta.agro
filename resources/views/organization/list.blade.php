@@ -77,7 +77,7 @@
                                         <td><a href="{!! url('/organization/view/'.$company->id) !!}"> {{ $company->name }}</a></td>
                                         <td>{{ $company->owner_name }}</td>
                                         <td>{{ $company->inn }}</td>
-                                        <td>{{ optional($company->city->region)->name }}</td>
+                                        <td>{{ __("message." . optional($company->city->region)->name) }}</td>
 										<td>{{ optional($company->city)->name }}</td>
 										<td>
 											<a href="{!! url ('/organization/list/edit/'.$company->id) !!}"> <button type="button" class="btn btn-round btn-success">{{ trans('app.Edit')}}</button></a>

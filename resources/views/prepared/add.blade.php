@@ -79,7 +79,7 @@
                                                             @if(!empty($regions))
                                                                 @foreach($regions as $region)
                                                                     <option
-                                                                        value="{{ $region->id }}">{{ $region->name }}</option>
+                                                                        value="{{ $region->id }}">{{ __("message." . $region->name) }}</option>
                                                                 @endforeach
                                                             @endif
                                                         </select>

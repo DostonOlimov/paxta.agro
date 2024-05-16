@@ -113,7 +113,7 @@
                                                         <select class="w-100 form-control state_of_country custom-select" name="state_id"
                                                                 url="{!! url('/getcityfromstate') !!}">
                                                             @if(count($states))
-                                                                <option value="">Viloyat tanlang</option>
+                                                                <option value="">{{__("app.Viloyat tanlang")}}</option>
                                                             @endif
 
                                                             @if(!empty($states))
@@ -128,7 +128,7 @@
 
                                                                         @endif
 
-                                                                    > {{$state->name}} </option>
+                                                                    > {{__("message." . $state->name)}} </option>
 
                                                                 @endforeach
 
