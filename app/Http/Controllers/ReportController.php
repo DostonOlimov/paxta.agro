@@ -40,6 +40,55 @@ class ReportController extends Controller{
         ->get();
         return \Maatwebsite\Excel\Facades\Excel::download(new \App\Exports\ReportExport($data), 'hisobot.xlsx');
     }
+    public function export_company(Request $request)
+    {
+        $user = Auth::user();
+        $city = $request->input('city') ?? null;
+        $crop = $request->input('crop') ?? null;
+        $from = $request->input('from') ?? null;
+        $till = $request->input('till') ?? null;
+        $s = $request->input('s') ?? null;
+
+        $companiesQuery = DB::table('dalolatnoma AS d')
+            ->join('akt_amount AS akt', 'd.id', '=', 'akt.dalolatnoma_id')
+            ->join('test_programs AS tp', 'd.test_program_id', '=', 'tp.id')
+            ->join('applications AS app', 'tp.app_id', '=', 'app.id')
+            ->join('organization_companies AS oc', 'app.organization_id', '=', 'oc.id')
+            ->join('tbl_cities AS city', 'oc.city_id', '=', 'city.id')
+            ->join('tbl_states AS state', 'city.state_id', '=', 'state.id')
+            ->join('prepared_companies AS pc', 'app.prepared_id', '=', 'pc.id')
+            ->select('oc.id','pc.kod', 'oc.name', DB::raw('count(akt.shtrix_kod) as kip'), DB::raw('sum(akt.amount) as netto'))
+            ->groupBy('oc.id','pc.kod','oc.name');
+
+        if ($user->branch_id == \App\Models\User::BRANCH_STATE) {
+            $user_city = $user->state_id;
+            $companiesQuery=$companiesQuery->whereExists(function ($query) use ($user_city) {
+                $query->select(DB::raw(1))
+                    ->from('organization_cities')
+                    ->whereColumn('organization_cities.id', 'app.organization_id')
+                    ->where('organization_cities.state_id', $user_city);
+            });
+        }
+
+        if ($from && $till) {
+            $from = Carbon::createFromFormat('d-m-Y', $from)->format('Y-m-d');
+            $till = Carbon::createFromFormat('d-m-Y', $till)->format('Y-m-d');
+
+            $companiesQuery=$companiesQuery->whereDate('d.date', '>=', $from)
+                ->whereDate('d.date', '<=', $till);
+        }
+        if ($s) {
+            $companiesQuery=$companiesQuery->where('oc.name', 'like', '%'.$s.'%');
+        }
+
+        if ($city) {
+            $companiesQuery=$companiesQuery->where('state.id',$city);
+        }
+
+        $companies = $companiesQuery->get();
+
+        return \Maatwebsite\Excel\Facades\Excel::download(new \App\Exports\CompanyExport($companies), 'hisobot.xlsx');
+    }
 
     private function reportData(Request $request)
     {

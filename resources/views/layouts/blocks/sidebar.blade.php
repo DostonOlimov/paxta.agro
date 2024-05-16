@@ -32,8 +32,8 @@
                         </svg>{{trans('message.Laboratoriya ma\'lumotlari')}}</a></li>
                     <li class="nav-item"><a class="nav-link" href="{!! url('organization-company-report') !!}">
                         <svg class="nav-icon">
-                            <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-list"></use>
-                        </svg>{{trans('message.Buyurtmachi korxona ro\'yxat')}}</a></li>
+                            <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-building"></use>
+                        </svg>{{trans("message.Buyurtmachi korxona ro'yxat")}}</a></li>
                 </ul>
             </li>
         @endif

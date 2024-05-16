@@ -29,6 +29,7 @@ Route::post('/change-language', [\App\Http\Controllers\LanguageController::class
 Route::get('/full-report', '\App\Http\Controllers\ReportController@report')->name('report.full_report');
 Route::get('/report', '\App\Http\Controllers\ReportController@myreport')->name('report.report');
 Route::get('/export','\App\Http\Controllers\ReportController@excel_export')->name('excel.export');
+Route::get('/export_company','\App\Http\Controllers\ReportController@export_company')->name('export.company');
 Route::get('/organization-company-report', '\App\Http\Controllers\ReportController@company_report')->name('report.company_report');
 
     Route::group(['prefix' => 'user', 'middleware' => 'auth'], function () {

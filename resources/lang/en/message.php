@@ -135,5 +135,7 @@ return [
     "Sirdaryo viloyati" => "Sirdarya Region",
     "Surxondaryo viloyati" => "Surkhandarya Region",
     "Toshkent viloyati" => "Tashkent Region",
-    "Toshkent shahri" => "Tashkent City"
+    "Toshkent shahri" => "Tashkent City",
+
+    "Buyurtmachi korxona ro'yxat"=>"Customer enterprise list",
 ];

@@ -264,6 +264,9 @@ return[
 
     'Seleksiya (nomi), kod ini kiritib izlang'=>'Селексия (номи), код ини киритиб изланг',
     'Seleksiyani nomini kiriting'=>'Селексияни номини киритинг',
-    
+
     "Izlanmoqda..."=>"Изланмоқда...",
+
+    "Kip sonni"=>"Kip sonni",
+    "Netto massai"=>"Netto massai",
 ];

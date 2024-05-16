@@ -136,4 +136,6 @@ return [
     "Surxondaryo viloyati" => "Сурхандарьинская обл.",
     "Toshkent viloyati" => "Ташкентская обл.",
     "Toshkent shahri" => "Город Ташкент",
+
+    "Buyurtmachi korxona ro'yxat"=>"Список предприятий-клиентов",
 ];

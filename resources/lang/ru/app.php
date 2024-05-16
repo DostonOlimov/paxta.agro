@@ -276,4 +276,7 @@ return[
     'Seleksiyani nomini kiriting'=>'Введите название выбора',
 
     "Izlanmoqda..."=>"Находясь в поиске...",
+
+    "Kip sonni"=>"Кип номер",
+    "Netto massai"=>"Нетто Массаи",
 ];

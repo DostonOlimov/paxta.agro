@@ -271,4 +271,7 @@ return[
     'Seleksiyani nomini kiriting'=>'Enter a selection name',
 
     "Izlanmoqda..."=>"Looking for...",
+
+    "Kip sonni"=>"Kip number",
+    "Netto massai"=>"Netto Massai",
 ];

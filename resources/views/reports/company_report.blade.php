@@ -32,19 +32,32 @@
             <!--filter component -->
 
             <div class="row">
+                <div class="col-sm-3 pt-2" style=" margin-top: -46px; margin-bottom: 13px;">
+                    <button onclick="printTable()" class="btn btn-primary">{{trans("app.Chop etish")}}</button>
+                    <a class="btn btn-success" style="color: white"
+                       href="{{ route('export.company', [
+                            'from' => $from?? ($_GET['from']??''),
+                            'till' => $till?? ($_GET['till']??''),
+                            'city' => $city?? ($_GET['city']??''),
+                            'crop' => $crop?? ($_GET['crop']??''),
+                        ]) }}">
+                        <i class="fa fa-file-excel-o"
+                           style="margin-right: 6px; color: white;"></i>{{ trans('app.Excel fayl') }}</a>
+
+                </div>
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table id="examples1" class="table table-striped table-bordered nowrap"
+                                <table class="table table-striped table-bordered nowrap myTable"
                                     style="margin-top:20px;">
                                     <thead>
                                         <tr>
                                             <th class="border-bottom-0 border-top-0">#</th>
-                                            <th>{{ trans('app.Kod') }}</th>
+                                            <th>{{trans('app.Zavod kodi')}}</th>
                                             <th>{{ trans('app.Buyurtmachi tashkilot nomi') }}</th>
-                                            <th>{{ trans('app.Kip') }}</th>
-                                            <th>{{ trans('app.Netto') }}</th>
+                                            <th>{{ trans('app.Kip sonni') }}</th>
+                                            <th>{{ trans('app.Netto massai') }}</th>
                                         </tr>
 
                                     </thead>
@@ -86,25 +99,18 @@
     <script src="{{ URL::asset('vendors/jquery/dist/jquery.min.js') }}"></script>
 
     <script>
-        $('body').on('click', '.sa-warning', function() {
+     function printTable() {
+        var table = document.querySelector('.myTable'); // Select the table with the specific class
+        var content = table.outerHTML; // Get the HTML content of the table
 
-            var url = $(this).attr('url');
+        var printWindow = window.open('', '', 'height=600,width=800'); // Open a new window (optional)
+        printWindow.document.write('<html><head><title>Print Table</title></head><body>'); // Write the HTML content into the new window
+        printWindow.document.write(content);
+        printWindow.document.write('</body></html>');
+        printWindow.document.close(); // Close the document so it can be printed
 
-
-            swal({
-                title: "O'chirishni istaysizmi?",
-                text: "O'chirilgan ma'lumotlar qayta tiklanmaydi!",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#297FCA",
-                confirmButtonText: "Ha, o'chirish!",
-                cancelButtonText: "O'chirishni bekor qilish",
-                closeOnConfirm: false
-            }).then((result) => {
-                window.location.href = url;
-
-            });
-        });
+        printWindow.print(); // Print the new window
+    }
     </script>
 
 @endsection

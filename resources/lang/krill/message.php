@@ -150,4 +150,6 @@ return [
     "Surxondaryo viloyati" => "Сурхондарё вилояти",
     "Toshkent viloyati" => "Тошкент вилояти",
     "Toshkent shahri" => "Тошкент шаҳри",
+
+    "Buyurtmachi korxona ro'yxat"=>"Буюртмачи корхона рўйхат",
 ];

@@ -206,5 +206,7 @@ return [
     "Sirdaryo viloyati" => "Sirdaryo viloyati",
     "Surxondaryo viloyati" => "Surxondaryo viloyati",
     "Toshkent viloyati" => "Toshkent viloyati",
-    "Toshkent shahri" => "Toshkent shahri"
+    "Toshkent shahri" => "Toshkent shahri",
+
+    "Buyurtmachi korxona ro'yxat"=>"Buyurtmachi korxona ro'yxat",
 ];

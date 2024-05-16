@@ -316,4 +316,7 @@ return[
     'Seleksiyani nomini kiriting'=>'Seleksiyani nomini kiriting',
 
     "Izlanmoqda..."=>"Izlanmoqda...",
+
+    "Kip sonni"=>"Kip sonni",
+    "Netto massai"=>"Netto massai",
 ];
