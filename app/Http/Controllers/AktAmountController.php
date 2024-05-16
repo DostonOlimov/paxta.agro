@@ -153,7 +153,7 @@ class AktAmountController extends Controller
         $tests = AktAmount::where('dalolatnoma_id',$id)->get()->toArray();
         $sum_amount = AktAmount::where('dalolatnoma_id',$id)->sum('amount');
         $count= AktAmount::where('dalolatnoma_id',$id)->count();
-        $tara = optional(Dalolatnoma::find($id)->test_program->application->prepared)->tara;
+        $tara = optional(Dalolatnoma::find($id))->tara;
 
         if($tests){
             $data1 =array_chunk($tests, 50);

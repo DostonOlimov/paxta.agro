@@ -123,7 +123,7 @@
                                     </div>
                                     <div class="certificate row">
                                         <div
-                                            class="col-md-4 form-group has-feedback {{ $errors->has('party_number') ? ' has-error' : '' }}">
+                                            class="col-md-3 form-group has-feedback {{ $errors->has('party_number') ? ' has-error' : '' }}">
                                             <label for="number" class="form-label ">To'da p/x №</label>
                                             <input type="text" class="form-control" maxlength="10"
                                                 value="{{ $result->party }}" name="party_number">
@@ -135,7 +135,7 @@
                                             @endif
                                         </div>
                                         <div
-                                            class="col-md-4 form-group has-feedback {{ $errors->has('nav') ? ' has-error' : '' }}">
+                                            class="col-md-3 form-group has-feedback {{ $errors->has('nav') ? ' has-error' : '' }}">
                                             <label for="number" class="form-label ">Nav p/x № </label>
                                             <input type="number" class="form-control" max="6"
                                                 value="{{ $result->nav }}" name="nav">
@@ -147,7 +147,7 @@
                                             @endif
                                         </div>
                                         <div
-                                            class="col-md-4 form-group has-feedback {{ $errors->has('nav') ? ' has-error' : '' }}">
+                                            class="col-md-3 form-group has-feedback {{ $errors->has('nav') ? ' has-error' : '' }}">
                                             <label for="number" class="form-label ">Sinf p/x №</label>
                                             <input type="number" class="form-control" max="6"
                                                 value="{{ $result->sinf }}" name="sinf" required>
@@ -155,6 +155,16 @@
                                                 <span class="help-block">
                                                     <strong>
                                                         Sinf no'g'ri shaklda kiritilgan</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+                                        <div class="col-md-3 form-group has-feedback {{ $errors->has('nav') ? ' has-error' : '' }}">
+                                            <label for="number" class="form-label ">Tara (kg)</label>
+                                            <input type="number" class="form-control" step="0.001" value="{{ $result->tara }}"  name="tara" required>
+                                            @if ($errors->has('tara'))
+                                                <span class="help-block">
+                                                    <strong>
+                                                        Tara no'g'ri shaklda kiritilgan</strong>
                                                 </span>
                                             @endif
                                         </div>

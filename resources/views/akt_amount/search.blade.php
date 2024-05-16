@@ -45,6 +45,7 @@
                                         <th>{{trans('app.Buyurtmachi korxona yoki tashkilot nomi')}}</th>
                                         <th>{{trans('app.Sertifikatlanuvchi mahsulot')}}</th>
                                         <th>{{trans('app.amount')}}</th>
+                                        <th>{{trans('app.Tara og\'irligi(kg)')}}</th>
                                         <th>{{trans('app.Action')}}</th>
                                     </tr>
 
@@ -61,6 +62,8 @@
                                             <td><a href="{!! url('/organization/view/'.optional($test->test_program)->application->organization_id) !!}">{{ optional($test->test_program)->application->organization->name }}</a></td>
                                             <td>{{ optional($test->test_program)->application->crops->name->name }}</td>
                                             <td @if(! $test->akt_amount_sum_amount) class="text-danger" @endif>{{ $test->akt_amount_sum_amount ? $test->akt_amount_sum_amount : 0 }} kg</td>
+                                            <td class="text-center">{{ $test->tara }}<br><a href="{!! url('/dalolatnoma/tara_edit/'.$test->id) !!}"><button type="button" class="btn btn-round btn-success">{{ trans('app.Edit')}}</button></a>
+                                            </td>
                                             <td>
                                                 <a href="{!! url('/akt_amount/view/'.$test->id) !!}"><button type="button" class="btn btn-round btn-info">{{ trans('app.View')}}</button></a>
                                                 <a href="{!! url('/akt_amount/edit/'.$test->id) !!}"><button type="button" class="btn btn-round btn-warning">{{ trans('app.Edit')}}</button></a>
