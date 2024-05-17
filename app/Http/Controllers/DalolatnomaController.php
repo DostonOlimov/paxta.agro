@@ -233,6 +233,7 @@ class DalolatnomaController extends Controller
         $result->tara = $request->input('tara');
         $result->save();
         $akt_amount = AktAmount::where('dalolatnoma_id', $id)->sum('amount');
+
         if ($akt_amount = 0) {
         foreach ($kod_toy as $item) {
             $conditions = ['id' => $item[0]];
@@ -244,9 +245,10 @@ class DalolatnomaController extends Controller
                 'to_toy' => $item[4],
             ];
 
-            GinBalles::updateOrCreate($conditions, $data);
-        }
 
+        }
+            dd($data);
+            GinBalles::updateOrCreate($conditions, $data);
         AktAmount::where('dalolatnoma_id', $id)->delete();
         $amount = new AktAmount();
 
@@ -316,9 +318,9 @@ class DalolatnomaController extends Controller
     {
         $amounts = [];
 
-            for ($j =81252 ; $j <=81471  ; $j++) {
+            for ($j =70575 ; $j <=70634  ; $j++) {
                 $amounts[] = [
-                    'dalolatnoma_id' => 10,
+                    'dalolatnoma_id' => 415,
                     'shtrix_kod' => $j,
                 ];
             }
