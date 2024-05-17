@@ -76,7 +76,7 @@
 										<td>{{ $company->name }}</td>
 										<td>{{ $company->kod }}</td>
 										<td>{{ $company->tara}}</td>
-										<td>{{ optional($company->region)->name }}</td>
+										<td>{{ __("message." . optional($company->region)->name) }}</td>
 										<td>
 											<a href="{!! url ('/prepared/list/edit/'.$company->id) !!}"> <button type="button" class="btn btn-round btn-success">{{ trans('app.Edit')}}</button></a>
 

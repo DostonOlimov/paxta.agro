@@ -134,7 +134,7 @@
 
                                                                         @endif
 
-                                                                    > {{$state->name}} </option>
+                                                                    > {{__("message." . $state->name)}} </option>
 
                                                                 @endforeach
 
