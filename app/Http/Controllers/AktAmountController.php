@@ -101,9 +101,9 @@ class AktAmountController extends Controller
     public function edit($id)
     {
         $tests = AktAmount::where('dalolatnoma_id',$id)->get()->toArray();
+        $balls = GinBalles::where('dalolatnoma_id',$id)->get();
         if(!$tests){
             $amounts = [];
-            $balls = GinBalles::where('dalolatnoma_id',$id)->get();
             foreach ($balls as $ball){
                 for ($j = $ball->from_number; $j <= $ball->to_number; $j++) {
                     $amounts[] = [
@@ -118,13 +118,21 @@ class AktAmountController extends Controller
 
             $tests = AktAmount::where('dalolatnoma_id',$id)->get()->toArray();
         }
+        $i = 0;
+        foreach ($balls as $ball){
+            for ($j = $ball->from_toy; $j <= $ball->to_toy; $j++) {
+                $tests[$i]['created_at'] = $j;
+                $i++;
+            }
+        }
 
         $data1 = array_chunk($tests, 50);
 
 
         return view('akt_amount.edit', [
             'data1' => $data1,
-            'id'=>$id
+            'id'=>$id,
+            'balls'=>$balls
         ]);
     }
 
