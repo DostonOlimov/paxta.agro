@@ -36,20 +36,35 @@ class CompanyExport implements FromCollection, WithHeadings, WithStyles
         $data = collect($this->data);
         $firstRow = [];
 
-        return collect([$firstRow])->concat($data->map(function ($company) {
+        $collection = collect([$firstRow])->concat($data->map(function ($company) {
             return [
                 $company->kod,
                 $company->name,
                 $company->kip,
-                ($company->netto)?round(($company->netto/1000),4) : '',
+                ($company->netto) ? round(($company->netto / 1000), 4) : '',
             ];
-        })
-    );
+        }));
+
+        $totalKip = $data->sum('kip');
+        $totalNetto = $data->sum(function ($company) {
+            return ($company->netto) ? round(($company->netto / 1000), 4) : 0;
+        });
+
+        $totalsRow = [
+            "Respublika bo'yicha jami:",
+            '',
+            $totalKip,
+            $totalNetto,
+        ];
+
+        $collection->push($totalsRow);
+
+        return $collection;
     }
 
     public function styles(Worksheet $sheet)
     {
-        $totalRows = count($this->data) + 2;
+        $totalRows = count($this->data) + 3;
 
         $styleArray = [
             'borders' => [
@@ -60,15 +75,17 @@ class CompanyExport implements FromCollection, WithHeadings, WithStyles
             ],
         ];
         $sheet->mergeCells('A1:D1');
+        $sheet->mergeCells("A{$totalRows}:B{$totalRows}");
 
         $sheet->setCellValue('A1', 'PAXTA TOLASINI SERTIFIKATLASHTIRISH AVTOMATLASHTIRILGAN AXBOROT TIZIMI');
 
         $sheet->setCellValue('A2', 'Zavod kodi');
         $sheet->setCellValue('B2', 'Buyurtmachi tashkilot nomi');
-        $sheet->setCellValue('C2', 'Kip sonni');
-        $sheet->setCellValue('D2', 'Netto massai');
+        $sheet->setCellValue('C2', 'Kip soni');
+        $sheet->setCellValue('D2', 'Netto massasi (t)');
 
         $sheet->getStyle('A1:D1')->getFont()->setBold(true);
+        $sheet->getStyle("A{$totalRows}:D{$totalRows}")->getFont()->setBold(true);
 
         $sheet->getStyle('A1:D1')->getFill()->setFillType(Fill::FILL_SOLID);
         $sheet->getStyle('A1:D1')->getFill()->getStartColor()->setARGB('FFFF00');
