@@ -89,12 +89,16 @@
                                                     @for($i = 0; $i < 50; $i++)
                                                         <tr>
                                                             @foreach($data1 as $data)
-                                                            <td>{{ 50 * ($loop->iteration-1) + $i +1 }}</td>
+                                                            <td>
+                                                                @if(isset($data[$i]))
+                                                                    {{ $data[$i]['created_at'] }}
+                                                                @endif
+                                                            </td>
                                                             <td>
                                                                 @if(isset($data[$i]))
                                                                     <div class="input-container">
-                                                                        <input type="text" step="0.1" class="form-control" name="amount" id="amount{{$data[$i]['id']}}"  oninput="formatNumber({{$data[$i]['id']}})" myattr = {{$loop->iteration}}
-                                                                               onchange="saveAnswer({{$data[$i]['id']}} , this ,{{$loop->iteration}})"  value="{{$data[$i]['amount']}}" @if($data[$i]['amount']) {{'disabled'}} @endif>
+                                                                        <input type="text" step="0.1" class="form-control" name="amount" id="amount{{$data[$i]['id']}}"  oninput="formatNumber({{$data[$i]['id']}})"  myattr = {{$loop->iteration}}
+                                                                               onchange="saveAnswer({{$data[$i]['id']}} , this , {{$loop->iteration}} ) "  value="{{$data[$i]['amount']}}" @if($data[$i]['amount']) {{'disabled'}} @endif>
                                                                         @if($data[$i]['amount']) <i class="fa fa-pencil pencil" onclick="changeDisplay(this,{{$data[$i]['id']}})"></i> @endif
                                                                     </div>
                                                                 @endif
