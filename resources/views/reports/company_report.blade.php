@@ -80,6 +80,12 @@
                                 </table>
                                 {{ $companies->links() }}
                             </div>
+                            <h4
+                            style="position: sticky; bottom: 0; padding: 1%; color: #0052cc; width: 100%; display: flex; justify-content: end; background-color: white">
+                            <span style="margin-right: 3%">{{ trans('app.Kip soni').": ".$kipTotal}}</span>
+                            <span style="margin-right: 1%">{{ trans('app.Massasi').": ".$nettoTotal }}</span>
+                            {{-- <span>{{($totalSum)? trans("app.Jami og'irlik(kg)").': '.number_format($totalSum, 2, ',', ' '):''}}</span> --}}
+                        </h4>
                         </div>
                     </div>
                 </div>

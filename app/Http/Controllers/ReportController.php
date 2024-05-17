@@ -205,13 +205,18 @@ class ReportController extends Controller{
             $companiesQuery=$companiesQuery->where('state.id',$city);
         }
 
+        $kipTotal = $companiesQuery->get()->sum('kip');
+        $nettoTotal = $companiesQuery->get()->sum(function ($company) {
+            return ($company->netto) ? round(($company->netto / 1000), 4) : 0;
+        });
         $companies = $companiesQuery->paginate(50)
             ->appends(['crop' => request()->input('crop')])
             ->appends(['till' => request()->input('till')])
             ->appends(['from' => request()->input('from')])
             ->appends(['city' => request()->input('city')]);
 
-        return view('reports.company_report', compact('companies', 'from', 'till', 'crop', 'city'));
+
+        return view('reports.company_report', compact('companies', 'from', 'till', 'crop', 'city','kipTotal','nettoTotal'));
     }
 
 
