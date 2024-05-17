@@ -56,8 +56,8 @@
                                             <th class="border-bottom-0 border-top-0">#</th>
                                             <th>{{trans('app.Zavod kodi')}}</th>
                                             <th>{{ trans('app.Buyurtmachi tashkilot nomi') }}</th>
-                                            <th>{{ trans('app.Kip sonni') }}</th>
-                                            <th>{{ trans('app.Netto massai') }}</th>
+                                            <th>{{ trans('app.Kip soni') }}</th>
+                                            <th>{{ trans('app.Massasi') }}</th>
                                         </tr>
 
                                     </thead>
@@ -112,7 +112,7 @@
            printWindow.document.write('</body></html>');
            printWindow.document.close();
 
-           printWindow.print(); 
+           printWindow.print();
        }
        </script>
 

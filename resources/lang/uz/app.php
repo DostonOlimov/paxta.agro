@@ -317,6 +317,6 @@ return[
 
     "Izlanmoqda..."=>"Izlanmoqda...",
 
-    "Kip sonni"=>"Kip soni",
-    "Netto massai"=>"Netto massasi",
+    "Kip soni"=>"Kip soni",
+    "Massasi"=>"Massasi (t)",
 ];

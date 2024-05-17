@@ -272,6 +272,6 @@ return[
 
     "Izlanmoqda..."=>"Looking for...",
 
-    "Kip sonni"=>"Kip number",
-    "Netto massai"=>"Netto Massai",
+    "Kip soni"=>"Kip number",
+    "Massasi"=>"Weight (t)",
 ];
