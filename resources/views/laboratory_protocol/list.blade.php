@@ -66,7 +66,7 @@
                                                         href="{!! url('/organization/view/' . $test->test_program->application->organization_id) !!}">{{ $test->test_program->application->organization->name }}</a>
                                                 </td>
                                                 <td>{{ $test->test_program->application->crops->name->name }}</td>
-                                                <td>{{ $test->akt_amount_sum_amount ? $test->akt_amount_sum_amount : 0 }} kg</td>
+                                                <td>{{ $test->akt_amount_sum_amount ? $test->akt_amount_sum_amount - $test->toy_count * $test->tara : 0 }} kg</td>
                                                 <td>
                                                     @if (isset($test->measurement_mistake) && isset($test->laboratory_result) && isset($test->result) && !isset($test->laboratory_final_results))
                                                         <a href="{!! url('laboratory-protocol/add/' . $test->id) !!}"> <button type="button"

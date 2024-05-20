@@ -60,7 +60,7 @@
                                             <td> {{ optional($test->test_program->application->crops)->party_number }}</td>
                                             <td><a href="{!! url('/organization/view/'.$test->test_program->application->organization_id) !!}">{{ $test->test_program->application->organization->name }}</a></td>
                                             <td>{{ $test->test_program->application->crops->name->name }}</td>
-                                            <td>{{ $test->akt_amount_sum_amount ? $test->akt_amount_sum_amount : 0 }} kg</td>
+                                            <td>{{ $test->akt_amount_sum_amount ? $test->akt_amount_sum_amount - $test->toy_count * $test->tara: 0 }} kg</td>
                                             <td>
                                                 <a href="{!! url('/final_results/add/'.$test->id) !!}"><button type="button" class="btn btn-round btn-success">{{ trans('app.Qo\'shish')}}</button></a>
                                                 <a href="{!! url('/final_results/add/view/'.$test->id) !!}"><button type="button" class="btn btn-round btn-info">{{ trans('app.View')}}</button></a>
