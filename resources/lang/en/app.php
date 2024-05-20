@@ -274,4 +274,7 @@ return[
 
     "Kip soni"=>"Kip number",
     "Massasi"=>"Weight (t)",
+
+    "Bo'lak partiya"=>"Piece party",
+    "Sertifikat sanasi"=>"Date of certificate",
 ];

@@ -209,4 +209,6 @@ return [
     "Toshkent shahri" => "Toshkent shahri",
 
     "Korxonalar kesimda ma'lumot"=>"Korxonalar kesimda ma'lumot",
+
+    "Ishlab chiqaruvchi zavodlar kesimda ma'lumot"=>"Ishlab chiqaruvchi zavodlar kesimda ma'lumot",
 ];

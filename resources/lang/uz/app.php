@@ -319,4 +319,7 @@ return[
 
     "Kip soni"=>"Kip soni",
     "Massasi"=>"Massasi (t)",
+
+    "Bo'lak partiya"=>"Bo'lak partiya",
+    "Sertifikat sanasi"=>"Sertifikat sanasi",
 ];

@@ -32,6 +32,7 @@ Route::get('/report', '\App\Http\Controllers\ReportController@myreport')->name('
 Route::get('/export','\App\Http\Controllers\ReportController@excel_export')->name('excel.export');
 Route::get('/export_company','\App\Http\Controllers\ReportController@export_company')->name('export.company');
 Route::get('/organization-company-report', '\App\Http\Controllers\ReportController@company_report')->name('report.company_report');
+Route::get('/prepared-company-report', '\App\Http\Controllers\ReportController@prepared_report')->name('report.prepared_report');
 
     Route::group(['prefix' => 'user', 'middleware' => 'auth'], function () {
         Route::get('/list', 'Usercontroller@userslist');
