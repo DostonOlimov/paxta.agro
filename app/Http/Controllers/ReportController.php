@@ -404,8 +404,13 @@ class ReportController extends Controller
         }
 
         if ($from && $till) {
-            $results = $results->whereDate('created_at', '>=', $from)
-                ->whereDate('created_at', '<=', $till);
+            $from = Carbon::createFromFormat('d-m-Y', $from)->format('Y-m-d');
+            $till = Carbon::createFromFormat('d-m-Y', $till)->format('Y-m-d');
+
+            $results = $results->whereHas('dalolatnoma', function ($query) use ($from,$till) {
+                $query->whereDate('date', '>=', $from)
+                ->whereDate('date', '<=', $till);
+            });
         }
 
         if ($city) {

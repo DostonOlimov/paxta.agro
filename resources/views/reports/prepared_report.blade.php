@@ -73,7 +73,7 @@
                                         @foreach ($prepareds as $key => $prepared)
                                             @foreach ($prepared as $inside_key => $box)
                                                 <tr>
-                                                    <td style="font-weight: 700; font-size: 15px" colspan="2">
+                                                    <td style="font-weight: 700; font-size: 15px" colspan="10">
                                                         &nbsp
                                                         <span style="text-decoration: underline;">{{ $inside_key }}</span>
                                                         <span style="text-decoration: underline;">{{ $key }}</span>
