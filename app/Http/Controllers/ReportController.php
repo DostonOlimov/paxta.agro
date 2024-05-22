@@ -229,6 +229,8 @@ class ReportController extends Controller
         $s = $request->input('s') ?? null;
 
         $prepareds = $this->getReport($request);
+
+        $totalSum = $prepareds->sum('amount');
         if ($s) {
             $prepareds = $prepareds->whereHas('dalolatnoma.test_program.application.prepared', function ($query) use ($s) {
                 $query->where('name', 'like', '%' . $s . '%');
@@ -237,7 +239,7 @@ class ReportController extends Controller
         $prepareds = $prepareds->get()
             ->groupBy(['dalolatnoma.test_program.application.prepared.name', 'dalolatnoma.test_program.application.prepared.kod']);
 
-        return view('reports.prepared_report', compact('prepareds', 'from', 'till', 'crop', 'city', 's'));
+        return view('reports.prepared_report', compact('prepareds', 'from', 'till', 'crop', 'city', 's','totalSum'));
     }
 
 
@@ -359,6 +361,7 @@ class ReportController extends Controller
             'certificate.attachment',
             'dalolatnoma.clamp_data',
             'dalolatnoma.selection',
+            'dalolatnoma.akt_amount',
             'dalolatnoma.test_program.application.organization.city.region',
             'dalolatnoma.test_program.application.prepared',
             'dalolatnoma.test_program.application.crops.country',

@@ -112,6 +112,10 @@
                                     </tbody>
                                 </table>
                             </div>
+                            <h4
+                            style="position: sticky; bottom: 0; padding: 1%; color: #0052cc; width: 100%; display: flex; justify-content: space-between; background-color: white">
+                            <span>{{($totalSum)? trans("app.Jami og'irlik(kg)").': '.number_format($totalSum, 2, ',', ' '):''}}</span>
+                        </h4>
                         </div>
                     </div>
                 </div>
