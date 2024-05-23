@@ -32,18 +32,19 @@
             <!--filter component -->
 
             <div class="row">
-                {{-- <div class="col-sm-3 pt-2" style=" margin-top: -46px; margin-bottom: 13px;">
+                <div class="col-sm-3 pt-2" style=" margin-top: -46px; margin-bottom: 13px;">
                     <button onclick="printTable()" class="btn btn-primary">{{trans("app.Chop etish")}}</button>
                     <a class="btn btn-success" style="color: white"
-                       href="{{ route('export.company', [
+                       href="{{ route('export.prepared', [
                             'from' => $from?? ($_GET['from']??''),
                             'till' => $till?? ($_GET['till']??''),
                             'city' => $city?? ($_GET['city']??''),
                             'crop' => $crop?? ($_GET['crop']??''),
+                            's' => $crop?? ($_GET['s']??''),
                         ]) }}">
                         <i class="fa fa-file-excel-o"
                            style="margin-right: 6px; color: white;"></i>{{ trans('app.Excel fayl') }}</a>
-                </div> --}}
+                </div>
 
                 <div class="col-md-12">
                     <div class="card">
@@ -81,7 +82,7 @@
                                                 </tr>
 
                                                 @foreach ($box as $item)
-                                                    <tr style="text-align: unset">
+                                                    <tr>
                                                         <td></td>
                                                         {{-- <td>{{ $item->amount }}</td> --}}
                                                         <td>{{ optional($item->dalolatnoma->test_program->application->crops)->party_number }}
@@ -102,7 +103,7 @@
                                                         <td>{{ $item->sort }}</td>
                                                         <td>{{ $item->generation->name }}</td>
                                                         <td>{{ $item->count }}</td>
-                                                        <td> {{ optional($item)->amount ? $item->amount . ' kg' : '' }}</td>
+                                                        <td> {{ optional($item)->amount ? $item->amount . ' ' : '' }}</td>
                                                         <td> {{ $item->amount != null ? $item->amount - $item->count * optional($item->dalolatnoma)->tara : '' }}
                                                         </td>
                                                     </tr>
@@ -134,4 +135,21 @@
     <!-- /page content -->
     <script src="{{ URL::asset('vendors/jquery/dist/jquery.min.js') }}"></script>
 
+    <script>
+        function printTable() {
+           var table = document.querySelector('.myTable');
+           var content = table.outerHTML;
+
+           var printWindow = window.open('', '', 'height=600,width=800');
+           printWindow.document.write('<html><head><title>Print Table</title>');
+
+           printWindow.document.write('<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">');
+           printWindow.document.write('</head><body>');
+           printWindow.document.write(content);
+           printWindow.document.write('</body></html>');
+           printWindow.document.close();
+
+           printWindow.print();
+       }
+       </script>
 @endsection

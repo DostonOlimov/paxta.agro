@@ -42,6 +42,19 @@ class ReportController extends Controller
             ->get();
         return \Maatwebsite\Excel\Facades\Excel::download(new \App\Exports\ReportExport($data), 'hisobot.xlsx');
     }
+    public function excel_prepared(Request $request)
+    {
+        $s = $request->input('s') ?? null;
+        $data = $this->getReport($request);
+        if ($s) {
+            $data = $data->whereHas('dalolatnoma.test_program.application.prepared', function ($query) use ($s) {
+                $query->where('name', 'like', '%' . $s . '%');
+            });
+        }
+        $data = $data->get()
+            ->groupBy(['dalolatnoma.test_program.application.prepared.name', 'dalolatnoma.test_program.application.prepared.kod']);
+        return \Maatwebsite\Excel\Facades\Excel::download(new \App\Exports\PreparedExport($data), 'hisobot.xlsx');
+    }
     public function export_company(Request $request)
     {
         $user = Auth::user();
