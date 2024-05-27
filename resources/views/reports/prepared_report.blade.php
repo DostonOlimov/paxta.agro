@@ -35,7 +35,7 @@
                 <div class="col-sm-3 pt-2" style=" margin-top: -46px; margin-bottom: 13px;">
                     <button onclick="printTable()" class="btn btn-primary">{{trans("app.Chop etish")}}</button>
                     <a class="btn btn-success" style="color: white"
-                       href="{{ route('export.prepared', [
+                        href="{{ route('export.prepared', [
                             'from' => $from?? ($_GET['from']??''),
                             'till' => $till?? ($_GET['till']??''),
                             'city' => $city?? ($_GET['city']??''),
@@ -43,7 +43,7 @@
                             's' => $crop?? ($_GET['s']??''),
                         ]) }}">
                         <i class="fa fa-file-excel-o"
-                           style="margin-right: 6px; color: white;"></i>{{ trans('app.Excel fayl') }}</a>
+                            style="margin-right: 6px; color: white;"></i>{{ trans('app.Excel fayl') }}</a>
                 </div>
 
                 <div class="col-md-12">
@@ -114,9 +114,9 @@
                                 </table>
                             </div>
                             <h4
-                            style="position: sticky; bottom: 0; padding: 1%; color: #0052cc; width: 100%; display: flex; justify-content: space-between; background-color: white">
-                            <span>{{($totalSum)? trans("app.Jami og'irlik(kg)").': '.number_format($totalSum, 2, ',', ' '):''}}</span>
-                        </h4>
+                                style="position: sticky; bottom: 0; padding: 1%; color: #0052cc; width: 100%; display: flex; justify-content: space-between; background-color: white">
+                                <span>{{($totalSum)? trans("app.Jami og'irlik(kg)").': '.number_format($totalSum, 2, ',', ' '):''}}</span>
+                            </h4>
                         </div>
                     </div>
                 </div>
@@ -137,19 +137,23 @@
 
     <script>
         function printTable() {
-           var table = document.querySelector('.myTable');
-           var content = table.outerHTML;
+            var table = document.querySelector('.myTable');
+            var content = table.outerHTML;
 
-           var printWindow = window.open('', '', 'height=600,width=800');
-           printWindow.document.write('<html><head><title>Print Table</title>');
+            var printWindow = window.open('', '', 'height=600,width=800');
+            printWindow.document.write('<html><head><title>Print Table</title>');
 
-           printWindow.document.write('<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">');
-           printWindow.document.write('</head><body>');
-           printWindow.document.write(content);
-           printWindow.document.write('</body></html>');
-           printWindow.document.close();
+            printWindow.document.write(
+                '<style>' +
+                'th, td, table { border: 1px solid #333 !important; padding: 8px !important; border-collapse: collapse !important; width: 100% !important; }' +
+                '</style>'
+            );
+            printWindow.document.write('</head><body>');
+            printWindow.document.write(content);
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
 
-           printWindow.print();
-       }
-       </script>
+            printWindow.print();
+        }
+    </script>
 @endsection
