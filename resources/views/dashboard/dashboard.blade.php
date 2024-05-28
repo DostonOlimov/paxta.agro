@@ -910,7 +910,7 @@
                     const circumference =
                         Math.PI * (circleElements[index].getAttribute("r") * 2);
                     const dashArray =
-                        (number / 1400) * circumference + " " + circumference;
+                        (number / 2500) * circumference + " " + circumference;
                     circleElements[index].setAttribute("stroke-dasharray", dashArray);
                 });
             }
@@ -918,8 +918,7 @@
             setInterval(updateStrokeDashArray, 500);
 
             const states = [
-                "3999", "4000", "4002", "4003", "4004", "4005", "4006", "4007", "4008", "4009", "4010", "4011",
-                "4012"
+                "3999", "4000", "4002", "4003", "4004", "4005", "4006", "4007", "4008", "4009", "4010", "4011", "4012"
             ];
             states.forEach(function(stateId) {
                 var city = <?php echo json_encode($city); ?>;
