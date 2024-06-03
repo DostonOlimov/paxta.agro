@@ -53,7 +53,7 @@
                                     style="margin-top:20px;">
                                     <thead>
                                         <tr>
-                                            <th class="border-bottom-0 border-top-0">#</th>
+                                            <th class="border-bottom-0 border-top-0" style="width: 4%">#</th>
                                             <th>{{trans('app.Zavod kodi')}}</th>
                                             <th>{{ trans('app.Buyurtmachi tashkilot nomi') }}</th>
                                             <th>{{ trans('app.Kip soni') }}</th>
@@ -111,6 +111,12 @@
 
            var printWindow = window.open('', '', 'height=600,width=800');
            printWindow.document.write('<html><head><title>Print Table</title>');
+
+            printWindow.document.write(
+                '<style>' +
+                'th, td, table { border: 1px solid #333 !important; padding: 8px !important; border-collapse: collapse !important; width: 100% !important; }' +
+                '</style>'
+            );
 
            printWindow.document.write('<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">');
            printWindow.document.write('</head><body>');
