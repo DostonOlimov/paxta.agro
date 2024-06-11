@@ -8,7 +8,7 @@
             <div class="page-header">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
-                        <i class="fe fe-life-buoy mr-1"></i>&nbsp {{trans("message.Korxonalar kesimda ma'lumot")}}
+                        <i class="fe fe-life-buoy mr-1"></i>&nbsp {{ trans("message.Korxonalar kesimda ma'lumot") }}
                     </li>
                 </ol>
             </div>
@@ -33,28 +33,27 @@
 
             <div class="row">
                 <div class="col-sm-3 pt-2" style=" margin-top: -46px; margin-bottom: 13px;">
-                    <button onclick="printTable()" class="btn btn-primary">{{trans("app.Chop etish")}}</button>
+                    <button onclick="printTable()" class="btn btn-primary">{{ trans('app.Chop etish') }}</button>
                     <a class="btn btn-success" style="color: white"
-                       href="{{ route('export.company', [
-                            'from' => $from?? ($_GET['from']??''),
-                            'till' => $till?? ($_GET['till']??''),
-                            'city' => $city?? ($_GET['city']??''),
-                            'crop' => $crop?? ($_GET['crop']??''),
+                        href="{{ route('export.company', [
+                            'from' => $from ?? ($_GET['from'] ?? ''),
+                            'till' => $till ?? ($_GET['till'] ?? ''),
+                            'city' => $city ?? ($_GET['city'] ?? ''),
+                            'crop' => $crop ?? ($_GET['crop'] ?? ''),
                         ]) }}">
                         <i class="fa fa-file-excel-o"
-                           style="margin-right: 6px; color: white;"></i>{{ trans('app.Excel fayl') }}</a>
+                            style="margin-right: 6px; color: white;"></i>{{ trans('app.Excel fayl') }}</a>
 
                 </div>
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-striped table-bordered nowrap myTable"
-                                    style="margin-top:20px;">
+                                <table class="table table-striped table-bordered nowrap myTable" style="margin-top:20px;">
                                     <thead>
                                         <tr>
                                             <th class="border-bottom-0 border-top-0" style="width: 4%">#</th>
-                                            <th>{{trans('app.Zavod kodi')}}</th>
+                                            <th>{{ trans('app.Zavod kodi') }}</th>
                                             <th>{{ trans('app.Buyurtmachi tashkilot nomi') }}</th>
                                             <th>{{ trans('app.Kip soni') }}</th>
                                             <th>{{ trans('app.Massasi') }}</th>
@@ -69,11 +68,10 @@
                                             <tr>
                                                 <td>{{ $offset + $loop->iteration }}</td>
                                                 <td> {{ $company->kod }}</td>
-                                                <td><a
-                                                        href="{!! url('/organization/view/' . $company->id) !!}">{{ $company->name }}</a>
+                                                <td><a href="{!! url('/organization/view/' . $company->id) !!}">{{ $company->name }}</a>
                                                 </td>
                                                 <td>{{ $company->kip }}</td>
-                                                <td>{{ round(($company->netto/1000),4) }}</td>
+                                                <td>{{ round($company->netto / 1000, 4) }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -81,11 +79,11 @@
                                 {{ $companies->links() }}
                             </div>
                             <h4
-                            style="position: sticky; bottom: 0; padding: 1%; color: #0052cc; width: 100%; display: flex; justify-content: end; background-color: white">
-                            <span style="margin-right: 3%">{{ trans('app.Kip soni').": ".$kipTotal}}</span>
-                            <span style="margin-right: 1%">{{ trans('app.Massasi').": ".$nettoTotal }}</span>
-                            {{-- <span>{{($totalSum)? trans("app.Jami og'irlik(kg)").': '.number_format($totalSum, 2, ',', ' '):''}}</span> --}}
-                        </h4>
+                                style="position: sticky; bottom: 0; padding: 1%; color: #0052cc; width: 100%; display: flex; justify-content: end; background-color: white">
+                                <span style="margin-right: 3%">{{ trans('app.Kip soni') . ': ' . $kipTotal }}</span>
+                                <span style="margin-right: 1%">{{ trans('app.Massasi') . ': ' . $nettoTotal }}</span>
+                                {{-- <span>{{($totalSum)? trans("app.Jami og'irlik(kg)").': '.number_format($totalSum, 2, ',', ' '):''}}</span> --}}
+                            </h4>
                         </div>
                     </div>
                 </div>
@@ -106,26 +104,32 @@
 
     <script>
         function printTable() {
-           var table = document.querySelector('.myTable');
-           var content = table.outerHTML;
+            var table = document.querySelector('.myTable');
+            var content = table.outerHTML;
 
-           var printWindow = window.open('', '', 'height=600,width=800');
-           printWindow.document.write('<html><head><title>Print Table</title>');
+            var printWindow = window.open('', '', 'height=600,width=800');
+            printWindow.document.write('<html><head><title>Print Table</title>');
 
             printWindow.document.write(
                 '<style>' +
-                'th, td, table { border: 1px solid #333 !important; padding: 8px !important; border-collapse: collapse !important; width: 100% !important; }' +
+                '@media print {' +
+                '   th:first-child, td:first-child { width: 10% !important; }' +
+                '   th:nth-child(2), td:nth-child(2) { width: 15% !important; }' + // Change the width of the second td
+                '   th, td { border: 1px solid #333 !important; padding: 8px !important; border-collapse: collapse !important; width: 100% !important; }' +
+                '}' +
                 '</style>'
             );
 
-           printWindow.document.write('<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">');
-           printWindow.document.write('</head><body>');
-           printWindow.document.write(content);
-           printWindow.document.write('</body></html>');
-           printWindow.document.close();
+            printWindow.document.write(
+                '<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">'
+                );
+            printWindow.document.write('</head><body>');
+            printWindow.document.write(content);
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
 
-           printWindow.print();
-       }
-       </script>
+            printWindow.print();
+        }
+    </script>
 
 @endsection
