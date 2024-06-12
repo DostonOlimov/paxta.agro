@@ -102,6 +102,7 @@
                                     <thead>
                                     <tr>
                                         <th rowspan="2">#</th>
+                                        <th rowspan="2">{{trans('app.HVI ma\'lumotlari')}}</th>
                                         <th rowspan="2">{{trans('app.Ariza sanasi')}}</th>
                                         <th rowspan="2">{{trans('app.Dalolatnoma raqami')}}</th>
                                         <th rowspan="2">{{trans('app.Sertifikat reestr raqami')}}</th>
@@ -267,6 +268,9 @@
                                             <tr>
                                                 @if (isset($result->dalolatnoma->test_program->application))
                                                     <td>{{$offset + $loop->iteration}}</td>
+                                                    <td>
+                                                        <a href="{!! url('/akt_laboratory/view/' . $result->dalolatnoma->id) !!}"><button type="button" class="btn btn-round btn-info">{{ trans('app.View')}}</button></a>
+                                                    </td>
                                                     <td><a href="{!! url('/application/view/'.optional($result->dalolatnoma->test_program->application)->id) !!}">{{ optional($result->dalolatnoma->test_program->application)->date }}</a></td>
                                                     <td>{{ optional($result->dalolatnoma)->number }}</td>
                                                     <td>{{ optional($result->certificate)->reestr_number }}</td>

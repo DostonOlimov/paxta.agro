@@ -12,21 +12,6 @@
                     </li>
                 </ol>
             </div>
-            @if (session('message'))
-                <div class="row massage">
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <div class="alert alert-success text-center">
-                            @if (session('message') == 'Successfully Submitted')
-                                <label for="checkbox-10 colo_success"> {{ trans('app.Successfully Submitted') }}</label>
-                            @elseif(session('message') == 'Successfully Updated')
-                                <label for="checkbox-10 colo_success"> {{ trans('app.Successfully Updated') }} </label>
-                            @elseif(session('message') == 'Successfully Deleted')
-                                <label for="checkbox-10 colo_success"> {{ trans('app.Successfully Deleted') }} </label>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-            @endif
             <!-- filter component -->
             <x-filter :crop="$crop" :city="$city" :from="$from" :till="$till" />
             <!--filter component -->
@@ -112,6 +97,7 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+
                             </div>
                             <h4
                                 style="position: sticky; bottom: 0; padding: 1%; color: #0052cc; width: 100%; display: flex; justify-content: space-between; background-color: white">
