@@ -21,9 +21,6 @@
         .table-striped tbody tr:nth-of-type(even) {
             background-color: #ffffff;
         }
-        .filter-button {
-            margin-left: 0;
-        }
 
         .table-responsive {
             transform: rotate(180deg);
@@ -53,6 +50,7 @@
             direction: initial;
             transform: rotate(180deg);
         }
+
     </style>
 @endsection
 @section('content')
@@ -76,20 +74,20 @@
                 <div class="col-sm-3 pt-2" style=" margin-top: -46px; margin-bottom: 13px;">
                     <a class="btn btn-success" style="color: white"
                        href="{{ route('excel.export', [
-                            'from' => $from?? ($_GET['from']??''),
-                            'till' => $till?? ($_GET['till']??''),
-                            'city' => $city?? ($_GET['city']??''),
-                            'crop' => $crop?? ($_GET['crop']??''),
-                            'city'=>$city?? ($_GET['city']??''),
-                            'region'=>$region?? ($_GET['region']??''),
-                            'organization'=>$organization?? ($_GET['organization']??''),
-                            'prepared'=>$prepared?? ($_GET['prepared']??''),
-                            'number'=>$number?? ($_GET['number']??''),
-                            'resster_number'=>$resster_number?? ($_GET['resster_number']??''),
-                            'party_number'=>$party_number?? ($_GET['party_number']??''),
-                            'sort'=>$sort?? ($_GET['sort']??''),
-                            'class'=>$class?? ($_GET['class']??''),
-                            'selection'=>$selection?? ($_GET['selection']??''),
+                            'from' => $from ?? ($_GET['from'] ?? ''),
+                            'till' => $till ?? ($_GET['till'] ?? ''),
+                            'city' => $city ?? ($_GET['city'] ?? ''),
+                            'crop' => $crop ?? ($_GET['crop'] ?? ''),
+                            'city' => $city ?? ($_GET['city'] ?? ''),
+                            'region' => $region ?? ($_GET['region'] ?? ''),
+                            'organization' => $organization ?? ($_GET['organization'] ?? ''),
+                            'prepared' => $prepared ?? ($_GET['prepared'] ?? ''),
+                            'number' => $number ?? ($_GET['number'] ?? ''),
+                            'resster_number' => $resster_number ?? ($_GET['resster_number'] ?? ''),
+                            'party_number' => $party_number ?? ($_GET['party_number'] ?? ''),
+                            'sort' => $sort ?? ($_GET['sort'] ?? ''),
+                            'class' => $class ?? ($_GET['class'] ?? ''),
+                            'selection' => $selection ?? ($_GET['selection'] ?? ''),
                         ]) }}">
                         <i class="fa fa-file-excel-o"
                            style="margin-right: 6px; color: white;"></i>{{ trans('app.Excel fayl') }}</a>
@@ -98,7 +96,7 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table id="examples1" class="table table-striped table-bordered " style="margin-top:20px;">
+                                <table id="example1"  class="table table-striped table-bordered " style="margin-top:20px;">
                                     <thead>
                                     <tr>
                                         <th rowspan="2">#</th>
@@ -137,6 +135,7 @@
                                     <tbody>
 
                                     <tr style="background-color: #90aec6 !important;">
+                                        <td> </td>
                                         <td> </td>
                                         <td> </td>
                                         <td>
@@ -285,7 +284,7 @@
 
                                                     <td> {{ $result->count}}</td>
                                                     <td> {{ (optional($result)->amount)? $result->amount." kg":''}}</td>
-                                                    <td> {{ ($result->amount!=null)?$result->amount - $result->count * optional($result->dalolatnoma)->tara : ''}}</td>
+                                                    <td> {{ ($result->amount!=null)? $result->amount - $result->count * optional($result->dalolatnoma)->tara : ''}}</td>
                                                     <td> 4</td>
                                                     <td> {{ $result->sort}}</td>
                                                     <td> {{ optional($result->generation)->name}}</td>
@@ -676,6 +675,4 @@
             }
         });
     </script>
-
-
 @endsection
