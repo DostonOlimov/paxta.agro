@@ -69,7 +69,7 @@
                             </div>
 
                             <div class="table-responsive">
-                                <table class="table table-striped table-bordered nowrap" style="width:100%;">
+                                <table id="datatable" class="table table-striped table-bordered nowrap" style="width:100%;">
                                     <thead>
                                         <tr>
                                             <th>#</th>

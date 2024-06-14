@@ -85,7 +85,6 @@
 								@endforeach
 								</tbody>
 							</table>
-                                {{$klassiyors->links()}}
 						</div>
 					</div>
 				</div>

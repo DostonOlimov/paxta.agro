@@ -58,7 +58,7 @@
 							</div>
 							<div class="table-responsive">
 								<table id="datatable" class="table table-striped table-bordered nowrap" style="margin-top:20px; width:100%;">
-								<thead>
+								<thead style="font-weight: bold !important;">
 									<tr>
 										<th>#</th>
 										<th>{{trans('app.Korxona nomi')}}</th>
@@ -89,7 +89,7 @@
 								@endforeach
 								</tbody>
 							</table>
-                                {{$companies->links()}}
+{{--                                {{$companies->links()}}--}}
 						</div>
 					</div>
 				</div>

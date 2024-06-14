@@ -51,7 +51,7 @@ class OrganizationCompaniesController extends Controller
                     $query->where('state_id', '=', $user_city);
             });
         }
-        $companies = $companies->paginate(50);
+        $companies = $companies->get();
         return view('organization.list', compact('companies','title'));
     }
 

@@ -54,7 +54,7 @@ class KlassiyorController extends Controller
             });
         }
 
-        $klassiyors = $klassiyor->orderBy('id', 'desc')->paginate(50);
+        $klassiyors = $klassiyor->orderBy('id', 'desc')->get();
 
         return view('klassiyor.list', compact('klassiyors'));
     }

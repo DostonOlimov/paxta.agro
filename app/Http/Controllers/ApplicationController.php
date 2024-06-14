@@ -28,6 +28,15 @@ class ApplicationController extends Controller
         $from = $request->input('from');
         $till = $request->input('till');
 
+        $sort_by = $request->get('sort_by', 'id'); // default sorting by 'id'
+        $sort_order = $request->get('sort_order', 'desc'); // default order is ascending
+
+        // Validate the sort_by column to prevent SQL injection
+        $columns = ['id', 'status', 'date','organization','amount']; // Add your table columns here
+        if (!in_array($sort_by, $columns)) {
+            $sort_by = 'id';
+        }
+
         $apps = Application::with('organization')
             ->with('crops')
             ->with('crops.name')
@@ -74,15 +83,24 @@ class ApplicationController extends Controller
                 }
             });
         });
+        if ($sort_by == 'organization') {
+            $apps->join('organization_companies', 'applications.organization_id', '=', 'organization_companies.id')
+                ->orderBy('organization_companies.name', $sort_order);
+        } elseif ($sort_by == 'amount') {
+            $apps->join('crop_data', 'applications.crop_data_id', '=', 'crop_data.id')
+                ->orderBy('crop_data.amount', $sort_order);
+        }else{
+            $apps->orderBy($sort_by, $sort_order);
+        }
 
-        $apps = $apps->latest('id')
-            ->paginate(50)
+        $apps = $apps->paginate(50)
             ->appends(['s' => $request->input('s')])
             ->appends(['till' => $request->input('till')])
             ->appends(['from' => $request->input('from')])
             ->appends(['city' => $request->input('city')])
-            ->appends(['crop' => $request->input('crop')]);
-        return view('application.list', compact('apps','from','till','city','crop'));
+            ->appends(['crop' => $request->input('crop')])
+            ->appends(['sort_by' => $sort_by, 'sort_order' => $sort_order]);
+        return view('application.list', compact('apps','from','till','city','crop', 'sort_by', 'sort_order'));
     }
 
 
