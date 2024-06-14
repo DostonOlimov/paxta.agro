@@ -12,6 +12,7 @@ use Carbon\Carbon;
 class PreparedExport implements FromCollection, WithHeadings, WithStyles
 {
     protected $prepareds;
+    protected $totalRows;
 
     public function __construct($prepareds)
     {
@@ -91,6 +92,8 @@ class PreparedExport implements FromCollection, WithHeadings, WithStyles
 
         $collection->push($totalsRow);
 
+        $this->totalRows = $collection->count() + 2;
+
         return $collection;
     }
 
@@ -110,8 +113,7 @@ class PreparedExport implements FromCollection, WithHeadings, WithStyles
 
     public function styles(Worksheet $sheet)
     {
-        // $totalRows = (count($this->prepareds->flatten()) + 3)*1000; // Data rows + 2 heading rows + 1 totals row
-        $totalRows = 500; // Data rows + 2 heading rows + 1 totals row
+        $totalRows = $this->totalRows;
 
         $styleArray = [
             'borders' => [

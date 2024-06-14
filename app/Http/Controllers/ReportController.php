@@ -44,8 +44,15 @@ class ReportController extends Controller
     }
     public function excel_prepared(Request $request)
     {
+        $user = Auth::user();
         $s = $request->input('s') ?? null;
         $data = $this->getReport($request);
+        if(empty($city) && $user->branch_id == \App\Models\User::BRANCH_MAIN){
+            $user_city = 4012;
+            $data = $data->whereHas('dalolatnoma.test_program.application.organization.city', function ($query) use ($user_city) {
+                $query->where('state_id', $user_city);
+            });
+        }
         if ($s) {
             $data = $data->whereHas('dalolatnoma.test_program.application.prepared', function ($query) use ($s) {
                 $query->where('name', 'like', '%' . $s . '%');
