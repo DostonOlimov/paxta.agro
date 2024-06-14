@@ -241,8 +241,20 @@ class ReportController extends Controller
         $till = $request->input('till') ?? null;
         $s = $request->input('s') ?? null;
 
-        $prepareds = $this->getReport($request);
 
+        $prepareds = $this->getReport($request);
+        if ($user->branch_id == \App\Models\User::BRANCH_STATE) {
+            $user_city = $user->state_id;
+            $prepareds = $prepareds->whereHas('dalolatnoma.test_program.application.organization.city', function ($query) use ($user_city) {
+                $query->where('state_id', $user_city);
+            });
+        }
+        else{
+            $user_city = $user->state_id??4121;
+            $prepareds = $prepareds->whereHas('dalolatnoma.test_program.application.organization.city', function ($query) use ($user_city) {
+                $query->where('state_id', $user_city);
+            });
+        }
         $totalSum = $prepareds->sum('amount');
         if ($s) {
             $prepareds = $prepareds->whereHas('dalolatnoma.test_program.application.prepared', function ($query) use ($s) {
