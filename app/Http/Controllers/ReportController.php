@@ -243,14 +243,8 @@ class ReportController extends Controller
 
 
         $prepareds = $this->getReport($request);
-        if ($user->branch_id == \App\Models\User::BRANCH_STATE) {
-            $user_city = $user->state_id;
-            $prepareds = $prepareds->whereHas('dalolatnoma.test_program.application.organization.city', function ($query) use ($user_city) {
-                $query->where('state_id', $user_city);
-            });
-        }
-        else{
-            $user_city = $user->state_id??4121;
+        if(empty($city) && $user->branch_id == \App\Models\User::BRANCH_MAIN){
+            $user_city = 4012;
             $prepareds = $prepareds->whereHas('dalolatnoma.test_program.application.organization.city', function ($query) use ($user_city) {
                 $query->where('state_id', $user_city);
             });
