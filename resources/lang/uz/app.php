@@ -226,6 +226,7 @@ return[
     'Laboratoriya nomi'=>'Laboratoriya nomi',
     'In Xaus qo\'shish'=>'In Xaus qo\'shish',
     'Laboratoriya ma\'lumotlari hali yuklanmagan'=>'Laboratoriya ma\'lumotlari hali yuklanmagan',
+    'HVI ma\'lumotlari' => 'HVI ma\'lumotlari',
 
     "Sinov bayonnomasi"=>"Sinov bayonnomasi",
     "Ortga"=>"Ortga",
@@ -267,8 +268,6 @@ return[
     "Laboratoriya kodi"=>"Laboratoriya kodi",
     "Sinov laboratoriyasi nomi"=>"Sinov laboratoriyasi nomi",
     "Akkredatsiya guvohnomadi"=>"Akkredatsiya guvohnomadi",
-    "Klassiyor nomi"=>"Klassiyor nomi",
-    "Klassiyor kodi"=>"Klassiyor kodi",
     "Laboratory Operators"=>"Laboratoriya operatorlari",
     "Operator Name"=>"Operator nomi",
     "Laboratory Name"=>"Laboratoriya nomi",
@@ -282,7 +281,6 @@ return[
     "Sifat ko'rsatkich bo'yicha me'yoriy hujjat"=>"Sifat ko'rsatkich bo'yicha me'yoriy hujjat",
     "Ekin turi"=>"Ekin turi",
 
-    "Laboratoriya nomi"=>"Laboratoriya nomi",
 
     "Edit Laboratory Operator"=>"Tahrirlash laboratoriya operatori",
 
@@ -319,4 +317,7 @@ return[
 
     "Kip soni"=>"Kip soni",
     "Massasi"=>"Massasi (t)",
+
+    "Bo'lak partiya"=>"Bo'lak partiya",
+    "Sertifikat sanasi"=>"Sertifikat sanasi",
 ];

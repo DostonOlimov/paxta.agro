@@ -269,4 +269,7 @@ return[
 
     "Kip soni"=>"Кип сони",
     "Massai"=>"Массаси (т)",
+
+    "Bo'lak partiya"=>"Бўлак партия",
+    "Sertifikat sanasi"=>"Сертификат санаси",
 ];

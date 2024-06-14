@@ -34,6 +34,10 @@
                         <svg class="nav-icon">
                             <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-building"></use>
                         </svg>{{trans("message.Korxonalar kesimda ma'lumot")}}</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{!! url('prepared-company-report') !!}">
+                        <svg class="nav-icon">
+                            <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-institution"></use>
+                        </svg>{{trans("message.Ishlab chiqaruvchi zavodlar kesimda ma'lumot")}}</a></li>
                 </ul>
             </li>
         @endif

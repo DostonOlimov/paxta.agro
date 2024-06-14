@@ -82,9 +82,9 @@ class CompanyExport implements FromCollection, WithHeadings, WithStyles
         $sheet->setCellValue('A2', 'Zavod kodi');
         $sheet->setCellValue('B2', 'Buyurtmachi tashkilot nomi');
         $sheet->setCellValue('C2', 'Kip soni');
-        $sheet->setCellValue('D2', 'Netto massasi (t)');
+        $sheet->setCellValue('D2', 'Massasi (t)');
 
-        $sheet->getStyle('A1:D1')->getFont()->setBold(true);
+        $sheet->getStyle('A1:D2')->getFont()->setBold(true);
         $sheet->getStyle("A{$totalRows}:D{$totalRows}")->getFont()->setBold(true);
 
         $sheet->getStyle('A1:D1')->getFill()->setFillType(Fill::FILL_SOLID);

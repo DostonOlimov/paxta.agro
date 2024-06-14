@@ -53,7 +53,7 @@
                                     style="margin-top:20px;">
                                     <thead>
                                         <tr>
-                                            <th class="border-bottom-0 border-top-0">#</th>
+                                            <th class="border-bottom-0 border-top-0" style="width: 4%">#</th>
                                             <th>{{trans('app.Zavod kodi')}}</th>
                                             <th>{{ trans('app.Buyurtmachi tashkilot nomi') }}</th>
                                             <th>{{ trans('app.Kip soni') }}</th>
@@ -80,6 +80,12 @@
                                 </table>
                                 {{ $companies->links() }}
                             </div>
+                            <h4
+                            style="position: sticky; bottom: 0; padding: 1%; color: #0052cc; width: 100%; display: flex; justify-content: end; background-color: white">
+                            <span style="margin-right: 3%">{{ trans('app.Kip soni').": ".$kipTotal}}</span>
+                            <span style="margin-right: 1%">{{ trans('app.Massasi').": ".$nettoTotal }}</span>
+                            {{-- <span>{{($totalSum)? trans("app.Jami og'irlik(kg)").': '.number_format($totalSum, 2, ',', ' '):''}}</span> --}}
+                        </h4>
                         </div>
                     </div>
                 </div>
@@ -105,6 +111,12 @@
 
            var printWindow = window.open('', '', 'height=600,width=800');
            printWindow.document.write('<html><head><title>Print Table</title>');
+
+            printWindow.document.write(
+                '<style>' +
+                'th, td, table { border: 1px solid #333 !important; padding: 8px !important; border-collapse: collapse !important; width: 100% !important; }' +
+                '</style>'
+            );
 
            printWindow.document.write('<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">');
            printWindow.document.write('</head><body>');
