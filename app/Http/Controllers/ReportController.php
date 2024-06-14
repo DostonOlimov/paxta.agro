@@ -195,22 +195,17 @@ class ReportController extends Controller
             ->groupBy('oc.id', 'pc.kod', 'oc.name');
 
         if ($user->branch_id == \App\Models\User::BRANCH_STATE) {
-            $user_city = $user->state_id;
-            $companiesQuery = $companiesQuery->whereExists(function ($query) use ($user_city) {
-                $query->select(DB::raw(1))
-                    ->from('organization_cities')
-                    ->whereColumn('organization_cities.id', 'app.organization_id')
-                    ->where('organization_cities.state_id', $user_city);
-            });
+            $user_state = $user->state_id;
+            $companiesQuery = $companiesQuery->where('state.id', $user_state);
         }
 
         if ($from && $till) {
             $from = Carbon::createFromFormat('d-m-Y', $from)->format('Y-m-d');
             $till = Carbon::createFromFormat('d-m-Y', $till)->format('Y-m-d');
 
-            $companiesQuery = $companiesQuery->whereDate('d.date', '>=', $from)
-                ->whereDate('d.date', '<=', $till);
+            $companiesQuery = $companiesQuery->whereBetween('d.date', [$from, $till]);
         }
+
         if ($s) {
             $companiesQuery = $companiesQuery->where('oc.name', 'like', '%' . $s . '%');
         }
@@ -219,19 +214,18 @@ class ReportController extends Controller
             $companiesQuery = $companiesQuery->where('state.id', $city);
         }
 
-        $kipTotal = $companiesQuery->get()->sum('kip');
-        $nettoTotal = $companiesQuery->get()->sum(function ($company) {
+        $companies = $companiesQuery->get();
+        $kipTotal = $companies->sum('kip');
+        $nettoTotal = $companies->sum(function ($company) {
             return ($company->netto) ? round(($company->netto / 1000), 4) : 0;
         });
-        $companies = $companiesQuery->paginate(50)
-            ->appends(['crop' => request()->input('crop')])
-            ->appends(['till' => request()->input('till')])
-            ->appends(['from' => request()->input('from')])
-            ->appends(['city' => request()->input('city')]);
 
+        $companies = $companiesQuery->paginate(50)
+            ->appends($request->except('page'));
 
         return view('reports.company_report', compact('companies', 'from', 'till', 'crop', 'city', 'kipTotal', 'nettoTotal'));
     }
+
     public function prepared_report(Request $request)
     {
         $user = Auth::user();
