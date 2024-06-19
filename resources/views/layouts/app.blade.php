@@ -115,6 +115,18 @@ $settings = settings();
 <script src="{{ URL::asset('resources/assets/plugins/multipleselect/multiple-select.js') }}"></script>
 <script src="{{ URL::asset('resources/assets/plugins/multipleselect/multi-select.js') }}"></script>
 
+<script src="{{ URL::asset('resources/assets/plugins/datatable/js/jquery.dataTables.js') }}"></script>
+<script src="{{ URL::asset('resources/assets/plugins/datatable/js/dataTables.bootstrap4.js') }}"></script>
+<script src="{{ URL::asset('resources/assets/plugins/datatable/js/dataTables.buttons.min.js') }}"></script>
+
+<script src="{{ URL::asset('resources/assets/plugins/datatable/js/buttons.bootstrap4.min.js') }}"></script>
+<script src="{{ URL::asset('resources/assets/plugins/datatable/js//vfs_fonts.js') }}"></script>
+<script src="{{ URL::asset('resources/assets/plugins/datatable/js/buttons.html5.min.js') }}"></script>
+<script src="{{ URL::asset('resources/assets/plugins/datatable/js/buttons.print.min.js') }}"></script>
+<script src="{{ URL::asset('resources/assets/plugins/datatable/js/buttons.colVis.min.js') }}"></script>
+<script src="{{ URL::asset('resources/assets/plugins/datatable/dataTables.responsive.min.js') }}"></script>
+<script src="{{ URL::asset('resources/assets/plugins/datatable/responsive.bootstrap4.min.js') }}"></script>
+<script src="{{ URL::asset('resources/assets/plugins/datatable/datatable.js') }}"></script>
 
 <script sync type="text/javascript" src="{{ URL::asset('resources/assets/plugins/table-export/file-saver.min.js') }}"></script>
 <script sync type="text/javascript" src="{{ URL::asset('resources/assets/plugins/table-export/blob.min.js') }}"></script>
@@ -155,6 +167,20 @@ $settings = settings();
             }
         });
     }
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        moment().format();
+        $('.card-body').removeClass('p-6');
+        $('#datatable-1_length label').css('visibility', 'hidden');
+        $('#datatable-1_wrapper #datatable-1_info').css('visibility', 'hidden');
+        $('#datatable-1_wrapper #datatable-1_paginate').css('visibility', 'hidden');
+        $('#example-3_length label,#example-3_wrapper #example-3_info, #example-3_wrapper #example-3_paginate, #example-3_wrapper #example-3_filter').hide();
+
+        $('select, input[type!="password"]').attr("autocomplete", "off").attr("title", "");
+        $('input, select').attr("data-pattern-mismatch", "Kerakli shaklda to'ldiring").attr("data-original-title", "Maydonni to'ldiring");
+        $('input[type="checkbox"]').attr("data-pattern-mismatch", "").attr("data-value-missing", "");
+    })
 </script>
 
 </body>

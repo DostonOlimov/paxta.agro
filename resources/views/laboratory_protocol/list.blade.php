@@ -36,7 +36,7 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table id="examples1" class="table table-striped table-bordered nowrap"
+                                <table class="table table-striped table-bordered nowrap"
                                     style="margin-top:20px;">
                                     <thead>
                                         <tr>

@@ -2,9 +2,6 @@
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 @endphp
 <style>
-    body {
-        width: fit-content;
-    }
     body,
     p,
     span,

@@ -57,16 +57,71 @@
 {{--                        <!--filter component -->--}}
 
 						<div class="table-responsive">
-							<table id="examples1" class="table table-striped table-bordered nowrap display" style="margin-top:20px;" >
+							<table class="table table-striped table-bordered nowrap display" style="margin-top:20px;" >
 								<thead>
 									<tr>
-                                        <th class="border-bottom-0 border-top-0">#</th>
-                                        <th class="border-bottom-0 border-top-0">{{ trans('app.Ariza statusi') }}</th>
-										<th class="border-bottom-0 border-top-0">{{trans('app.Ariza raqami')}}</th>
-                                        <th class="border-bottom-0 border-top-0">{{trans('app.Ariza sanasi')}}</th>
-										<th class="border-bottom-0 border-top-0">{{trans('app.Buyurtmachi korxona yoki tashkilot nomi')}}</th>
+                                        <th>#</th>
+                                        <th class="border-bottom-0 border-top-0">
+                                            <a href="{{ route('listapplication', ['sort_by' => 'status', 'sort_order' => ($sort_by === 'status' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
+                                                {{ trans('app.Ariza statusi') }}
+                                                @if($sort_by === 'status')
+                                                    @if($sort_order === 'asc')
+                                                        <i class="fa fa-arrow-up"></i>
+                                                    @else
+                                                        <i class="fa fa-arrow-down"></i>
+                                                    @endif
+                                                @endif
+                                            </a>
+                                        </th>
+										<th class="border-bottom-0 border-top-0">
+                                            <a href="{{ route('listapplication', ['sort_by' => 'id', 'sort_order' => ($sort_by === 'id' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
+                                                {{trans('app.Ariza raqami')}}
+                                                @if($sort_by === 'id')
+                                                    @if($sort_order === 'asc')
+                                                        <i class="fa fa-arrow-up"></i>
+                                                    @else
+                                                        <i class="fa fa-arrow-down"></i>
+                                                    @endif
+                                                @endif
+                                            </a>
+                                        </th>
+                                        <th class="border-bottom-0 border-top-0">
+                                            <a href="{{ route('listapplication', ['sort_by' => 'date', 'sort_order' => ($sort_by === 'date' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
+                                                {{trans('app.Ariza sanasi')}}
+                                                @if($sort_by === 'date')
+                                                    @if($sort_order === 'asc')
+                                                        <i class="fa fa-arrow-up"></i>
+                                                    @else
+                                                        <i class="fa fa-arrow-down"></i>
+                                                    @endif
+                                                @endif
+                                            </a>
+                                        </th>
+										<th class="border-bottom-0 border-top-0">
+                                            <a href="{{ route('listapplication', ['sort_by' => 'organization', 'sort_order' => ($sort_by === 'organization' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
+                                                {{trans('app.Buyurtmachi korxona yoki tashkilot nomi')}}
+                                                @if($sort_by === 'organization')
+                                                    @if($sort_order === 'asc')
+                                                        <i class="fa fa-arrow-up"></i>
+                                                    @else
+                                                        <i class="fa fa-arrow-down"></i>
+                                                    @endif
+                                                @endif
+                                            </a>
+                                        </th>
 										<th class="border-bottom-0 border-top-0">{{trans('app.Sertifikatlanuvchi mahsulot')}}</th>
-										<th class="border-bottom-0 border-top-0">{{trans('app.amount')}}</th>
+										<th class="border-bottom-0 border-top-0">
+                                            <a href="{{ route('listapplication', ['sort_by' => 'amount', 'sort_order' => ($sort_by === 'amount' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
+                                                {{trans('app.amount')}}
+                                                @if($sort_by === 'amount')
+                                                    @if($sort_order === 'asc')
+                                                        <i class="fa fa-arrow-up"></i>
+                                                    @else
+                                                        <i class="fa fa-arrow-down"></i>
+                                                    @endif
+                                                @endif
+                                            </a>
+                                        </th>
 										<th class="border-bottom-0 border-top-0">{{trans('app.Hosil yili')}}</th>
                                         <th class="border-bottom-0 border-top-0">{{trans('app.Action')}}</th>
 									</tr>
@@ -96,7 +151,7 @@
 								@endforeach
 								</tbody>
                     	</table>
-                            {{ $apps->links() }}
+                            {{ $apps->appends(['sort_by' => $sort_by, 'sort_order' => $sort_order])->links() }}
                     	</div>
 
 					</div>
