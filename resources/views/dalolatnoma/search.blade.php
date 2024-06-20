@@ -40,10 +40,43 @@
                                     <thead>
                                     <tr>
                                         <th class="border-bottom-0 border-top-0">#</th>
-                                        <th class="border-bottom-0 border-top-0">{{trans("app.To'da (partya) raqami")}}</th>
-                                        <th>{{trans('app.Sinov dasturi raqami')}}</th>
-                                        <th>{{trans('app.Sinov bayonnomasi sanasi')}}</th>
-                                        <th>{{trans('app.Buyurtmachi tashkilot nomi')}}</th>
+                                        <th class="border-bottom-0 border-top-0">
+                                            <a href="{{ route('dalolatnoma.search', ['sort_by' => 'party_number', 'sort_order' => ($sort_by === 'party_number' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
+                                                {{ trans('app.To\'da (partya) raqami') }}
+                                                @if($sort_by === 'party_number')
+                                                    @if($sort_order === 'asc')
+                                                        <i class="fa fa-arrow-up"></i>
+                                                    @else
+                                                        <i class="fa fa-arrow-down"></i>
+                                                    @endif
+                                                @endif
+                                            </a>
+                                        </th>
+                                        <th>{{ trans('app.Sinov dasturi raqami') }}</th>
+                                        <th class="border-bottom-0 border-top-0">
+                                            <a href="{{ route('dalolatnoma.search', ['sort_by' => 'date', 'sort_order' => ($sort_by === 'date' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
+                                                {{ trans('app.Sinov bayonnomasi sanasi') }}
+                                                @if($sort_by === 'date')
+                                                    @if($sort_order === 'asc')
+                                                        <i class="fa fa-arrow-up"></i>
+                                                    @else
+                                                        <i class="fa fa-arrow-down"></i>
+                                                    @endif
+                                                @endif
+                                            </a>
+                                        </th>
+                                        <th class="border-bottom-0 border-top-0">
+                                            <a href="{{ route('dalolatnoma.search', ['sort_by' => 'organization', 'sort_order' => ($sort_by === 'organization' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
+                                                {{ trans('app.Buyurtmachi tashkilot nomi') }}
+                                                @if($sort_by === 'organization')
+                                                    @if($sort_order === 'asc')
+                                                        <i class="fa fa-arrow-up"></i>
+                                                    @else
+                                                        <i class="fa fa-arrow-down"></i>
+                                                    @endif
+                                                @endif
+                                            </a>
+                                        </th>
                                         <th>{{trans('app.Sertifikatlanuvchi mahsulot')}}</th>
                                         <th>{{trans('app.Action')}}</th>
                                     </tr>

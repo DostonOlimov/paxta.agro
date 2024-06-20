@@ -2,105 +2,47 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Traits\DalolatnomaTrait;
 use App\Models\Application;
 use App\Models\ClampData;
-use App\Models\CropData;
-use App\Models\CropProductionType;
 use App\Models\Dalolatnoma;
 use App\Models\Decision;
 use App\Models\FinalResult;
-use App\Models\Indicator;
-use App\Models\Laboratories;
 use App\Models\Nds;
-use App\Models\ProductionType;
 use App\Models\Sertificate;
-use App\Models\TestProgramIndicators;
-use App\Models\TestPrograms;
-use App\Models\User;
 use App\Services\AttachmentService;
-use App\tbl_activities;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class FinalResultsController extends Controller
 {
+    use DalolatnomaTrait;
+
     private $attachmentService;
 
     public function __construct(AttachmentService $attachmentService)
     {
         $this->attachmentService = $attachmentService;
     }
-    //search
+
+    // Search
     public function search(Request $request)
     {
-        $user = Auth::user();
         $city = $request->input('city');
         $crop = $request->input('crop');
         $from = $request->input('from');
         $till = $request->input('till');
+        $sort_by = $request->get('sort_by', 'id');
+        $sort_order = $request->get('sort_order', 'desc');
 
-        $apps= Dalolatnoma::with('test_program')
-            ->with('test_program.application')
-            ->with('test_program.application.decision')
-            ->with('test_program.application.crops.name')
-            ->with('test_program.application.crops.type')
-            ->with('test_program.application.organization')
-           ;
-        if ($user->branch_id == User::BRANCH_STATE ) {
-            $user_city = $user->state_id;
-            $apps = $apps->whereHas('test_program.application.organization', function ($query) use ($user_city) {
-                $query->whereHas('city', function ($query) use ($user_city) {
-                    $query->where('state_id', '=', $user_city);
-                });
-            });
-        }
-        if ($from && $till) {
-            $fromTime = join('-', array_reverse(explode('-', $from)));
-            $tillTime = join('-', array_reverse(explode('-', $till)));
-            $apps->whereDate('date', '>=', $fromTime)
-                ->whereDate('date', '<=', $tillTime);
-        }
-        if ($city) {
-            $apps = $apps->whereHas('test_program.application.organization', function ($query) use ($city) {
-                $query->whereHas('city', function ($query) use ($city) {
-                    $query->where('state_id', '=', $city);
-                });
-            });
-        }
-        if ($crop) {
-            $apps = $apps->whereHas('test_program.application.crops', function ($query) use ($crop) {
-                $query->where('name_id', '=', $crop);
-            });
-        }
-        $apps->when($request->input('s'), function ($query, $searchQuery) {
-            $query->where(function ($query) use ($searchQuery) {
-                if (is_numeric($searchQuery)) {
-                    $query->whereHas('test_program.application', function ($query) use ($searchQuery) {
-                        $query->where('app_number', $searchQuery);
-                    });
-                } else {
-                    $query->whereHas('test_program.application.crops.name', function ($query) use ($searchQuery) {
-                        $query->where('name', 'like', '%' . addslashes($searchQuery) . '%');
-                    })->orWhereHas('test_program.application.crops.type', function ($query) use ($searchQuery) {
-                        $query->where('name', 'like', '%' . addslashes($searchQuery) . '%');
-                    })->orWhereHas('test_program.application.crops.generation', function ($query) use ($searchQuery) {
-                        $query->where('name', 'like', '%' . addslashes($searchQuery) . '%');
-                    });
+        $apps = $this->buildQuery($request);
 
-                }
-            });
-        });
-
-        $tests = $apps->withSum('akt_amount','amount')
-            ->latest('id')
+        $tests = $apps->withSum('akt_amount', 'amount')
             ->paginate(50)
-            ->appends(['s' => $request->input('s')])
-            ->appends(['till' => $request->input('till')])
-            ->appends(['from' => $request->input('from')])
-            ->appends(['city' => $request->input('city')])
-            ->appends(['crop' => $request->input('crop')]);
-        return view('final_results.search', compact('tests','from','till','city','crop'));
+            ->appends($request->except('page'));
+
+        return view('final_results.search', compact('tests', 'from', 'till', 'city', 'crop', 'sort_by', 'sort_order'));
     }
     //index
     public function add($id)

@@ -229,7 +229,7 @@ Route::group(['prefix' => 'employee'], function () {
     });
 //Decision
     Route::group(['prefix' => 'decision', 'middleware' => 'auth'], function () {
-    Route::get('search','App\Http\Controllers\DecisionController@search');
+    Route::get('search','App\Http\Controllers\DecisionController@search')->name('decision.search');
     Route::get('/add/{id}', '\App\Http\Controllers\DecisionController@add');
     Route::get('/list', '\App\Http\Controllers\DecisionController@list');
     Route::get('/list/delete/{id}', '\App\Http\Controllers\DecisionController@destory');
@@ -262,7 +262,7 @@ Route::group(['prefix' => 'employee'], function () {
 
 //Dalolatnoma
     Route::group(['prefix' => 'dalolatnoma', 'middleware' => 'auth'], function () {
-    Route::get('/search', '\App\Http\Controllers\DalolatnomaController@search');
+    Route::get('/search', '\App\Http\Controllers\DalolatnomaController@search')->name('dalolatnoma.search');
     Route::get('/myadd', '\App\Http\Controllers\DalolatnomaController@myadd');
     Route::get('/add/{id}', '\App\Http\Controllers\DalolatnomaController@add');
     Route::get('/list', '\App\Http\Controllers\DalolatnomaController@list');
@@ -277,7 +277,7 @@ Route::group(['prefix' => 'employee'], function () {
     });
 //Akt amount
 Route::group(['prefix' => 'akt_amount', 'middleware' => 'auth'], function () {
-    Route::get('/search', '\App\Http\Controllers\AktAmountController@search');
+    Route::get('/search', '\App\Http\Controllers\AktAmountController@search')->name('akt_amount.search');
     Route::get('/add/{id}', '\App\Http\Controllers\AktAmountController@add');
     Route::get('/list', '\App\Http\Controllers\AktAmountController@list');
     Route::get('/list/delete/{id}', '\App\Http\Controllers\AktAmountController@destory');
@@ -308,7 +308,7 @@ Route::group(['prefix' => 'hvi', 'middleware' => 'auth'], function () {
 });
     //Final results
     Route::group(['prefix' => 'final_results', 'middleware' => 'auth'], function () {
-    Route::get('/search', '\App\Http\Controllers\FinalResultsController@search');
+    Route::get('/search', '\App\Http\Controllers\FinalResultsController@search')->name('final_results.search');
     Route::get('/add/{id}', '\App\Http\Controllers\FinalResultsController@add');
     Route::get('/add/view/{id}', '\App\Http\Controllers\FinalResultsController@add_view');
     Route::get('/add2/{id}', '\App\Http\Controllers\FinalResultsController@add2');
@@ -339,7 +339,7 @@ Route::group(['prefix' => 'final_decision', 'middleware' => 'auth'], function ()
 });
 //Namlik
 Route::group(['prefix' => 'humidity', 'middleware' => 'auth'], function () {
-    Route::get('/search', '\App\Http\Controllers\HumidityController@search');
+    Route::get('/search', '\App\Http\Controllers\HumidityController@search')->name('humidity.search');
     Route::get('/add/{id}', '\App\Http\Controllers\HumidityController@add');
     Route::get('/list', '\App\Http\Controllers\HumidityController@list');
     Route::get('/list/delete/{id}', '\App\Http\Controllers\HumidityController@destory');
@@ -350,7 +350,7 @@ Route::group(['prefix' => 'humidity', 'middleware' => 'auth'], function () {
 });
 //Namlik natijasi
 Route::group(['prefix' => 'humidity_result', 'middleware' => 'auth'], function () {
-    Route::get('/search', '\App\Http\Controllers\HumidityResultController@search');
+    Route::get('/search', '\App\Http\Controllers\HumidityResultController@search')->name('humidity_result.search');
     Route::get('/add/{id}', '\App\Http\Controllers\HumidityResultController@add');
     Route::get('/list', '\App\Http\Controllers\HumidityResultController@list');
     Route::get('/list/delete/{id}', '\App\Http\Controllers\HumidityResultController@destory');
@@ -361,7 +361,7 @@ Route::group(['prefix' => 'humidity_result', 'middleware' => 'auth'], function (
 });
 //measurement mistake
 Route::group(['prefix' => 'measurement_mistake', 'middleware' => 'auth'], function () {
-    Route::get('/search', '\App\Http\Controllers\MeasurementMistakeController@search');
+    Route::get('/search', '\App\Http\Controllers\MeasurementMistakeController@search')->name('measurement_mistake.search');
     Route::get('/add/{id}', '\App\Http\Controllers\MeasurementMistakeController@add');
     Route::get('/list', '\App\Http\Controllers\MeasurementMistakeController@list');
     Route::get('/list/delete/{id}', '\App\Http\Controllers\MeasurementMistakeController@destory');
@@ -383,7 +383,7 @@ Route::group(['prefix' => 'laboratory_protocol', 'middleware' => 'auth'], functi
 });
 //Laboratory results
 Route::group(['prefix' => 'laboratory-protocol', 'middleware' => 'auth'], function () {
-    Route::get('/list', '\App\Http\Controllers\LaboratoryProtocolController@list');
+    Route::get('/list', '\App\Http\Controllers\LaboratoryProtocolController@list')->name('laboratory_protocol.list');
     Route::get('/add/{id}', '\App\Http\Controllers\LaboratoryProtocolController@add');
     Route::get('/view/{id}', '\App\Http\Controllers\LaboratoryProtocolController@view')->name('lab.view');
     Route::post('/store', '\App\Http\Controllers\LaboratoryProtocolController@store');
