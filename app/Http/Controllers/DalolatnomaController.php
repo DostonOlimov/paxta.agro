@@ -33,6 +33,14 @@ class DalolatnomaController extends Controller
         $crop = $request->input('crop');
         $from = $request->input('from');
         $till = $request->input('till');
+        $sort_by = $request->get('sort_by', 'id'); // default sorting by 'id'
+        $sort_order = $request->get('sort_order', 'desc'); // default order is ascending
+
+        // Validate the sort_by column to prevent SQL injection
+        $columns = ['id', 'party_number', 'date','organization','year']; // Add your table columns here
+        if (!in_array($sort_by, $columns)) {
+            $sort_by = 'id';
+        }
 
         $apps= TestPrograms::with('application')
             ->with('application.crops.name')
@@ -84,15 +92,29 @@ class DalolatnomaController extends Controller
                 }
             });
         });
-
-        $tests = $apps->latest('id')
-            ->paginate(50)
+        if ($sort_by == 'organization') {
+            $apps->join('applications', 'test_programs.app_id', '=', 'applications.id')
+                ->join('organization_companies', 'applications.organization_id', '=', 'organization_companies.id')
+                ->orderBy('organization_companies.name', $sort_order);
+        } elseif ($sort_by == 'party_number') {
+            $apps->join('applications', 'test_programs.app_id', '=', 'applications.id')
+                ->join('crop_data', 'applications.crop_data_id', '=', 'crop_data.id')
+                ->orderBy('crop_data.party_number', $sort_order);
+        }elseif ($sort_by == 'date') {
+            $apps->join('applications', 'test_programs.app_id', '=', 'applications.id')
+                ->orderBy('applications.date', $sort_order);
+        }
+        else{
+            $apps->orderBy($sort_by, $sort_order);
+        }
+        $tests = $apps->paginate(50)
             ->appends(['s' => $request->input('s')])
             ->appends(['till' => $request->input('till')])
             ->appends(['from' => $request->input('from')])
             ->appends(['city' => $request->input('city')])
-            ->appends(['crop' => $request->input('crop')]);
-        return view('dalolatnoma.search', compact('tests','from','till','city','crop'));
+            ->appends(['crop' => $request->input('crop')])
+            ->appends(['sort_by' => $sort_by, 'sort_order' => $sort_order]);
+        return view('dalolatnoma.search', compact('tests','from','till','city','crop','sort_by','sort_order'));
     }
     //index
     public function add($id)

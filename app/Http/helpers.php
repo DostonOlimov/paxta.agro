@@ -4,6 +4,7 @@ use App\Models\DefaultModels\tbl_settings;
 use \Illuminate\Database\Eloquent\Model;
 use \Illuminate\Http\Request;
 use \Illuminate\Http\JsonResponse;
+use Carbon\Carbon;
 
 const USER_DATE_FORMAT = 'd-m-Y';
 const USER_DOT_DATE_FORMAT = 'd.m.Y';
@@ -43,9 +44,30 @@ const INVOICE_ENABLED_REGIONS = [
     FARGONA_ID,
 
 ];
-function myHelperFunction() {
-    echo 'salom';
+if (!function_exists('formatUzbekDate')) {
+    function formatUzbekDate($date)
+    {
+        $uzbekMonthNames = [
+            '01' => 'yanvar',
+            '02' => 'fevral',
+            '03' => 'mart',
+            '04' => 'aprel',
+            '05' => 'may',
+            '06' => 'iyun',
+            '07' => 'iyul',
+            '08' => 'avgust',
+            '09' => 'sentabr',
+            '10' => 'oktabr',
+            '11' => 'noyabr',
+            '12' => 'dekabr'
+        ];
+
+        $date = Carbon::parse($date);
+        return $date->isoFormat("D") . ' - ' . $uzbekMonthNames[$date->isoFormat("MM")] . ' ' . $date->isoFormat("Y");
+    }
 }
+
+
 const TASHKENT_LIST_ID = 26;
 
 const INVOICE_RECEIVER_MFO = '00014';

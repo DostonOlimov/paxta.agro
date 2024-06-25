@@ -221,8 +221,10 @@ return[
     'In xaus aniqlangan sana'=>'In xaus aniqlangan sana',
     'Tara og\'irligi(kg)'=>'Tara og\'irligi(kg)',
     'Klassiyor qo\'shish'=>'Klassiyor qo\'shish',
-    'Klassiyor nomi'=>'Klassiyor nomi',
-    'Klassiyor kodi'=>'Klassiyor kodi',
+    'To\'da partya raqami'=>'To\'da partya raqami',
+    'Sof og\'irligi (kg)' => 'Sof og\'irligi (kg)',
+    'Zavod nomi va kodi' => 'Zavod nomi va kodi',
+    'Dalolatnoma sanasi' => 'Dalolatnoma sanasi',
     'Laboratoriya nomi'=>'Laboratoriya nomi',
     'In Xaus qo\'shish'=>'In Xaus qo\'shish',
     'Laboratoriya ma\'lumotlari hali yuklanmagan'=>'Laboratoriya ma\'lumotlari hali yuklanmagan',
@@ -281,8 +283,6 @@ return[
     "Sifat ko'rsatkich nomi"=>"Sifat ko'rsatkich nomi",
     "Sifat ko'rsatkich bo'yicha me'yoriy hujjat"=>"Sifat ko'rsatkich bo'yicha me'yoriy hujjat",
     "Ekin turi"=>"Ekin turi",
-
-    "Laboratoriya nomi"=>"Laboratoriya nomi",
 
     "Edit Laboratory Operator"=>"Tahrirlash laboratoriya operatori",
 

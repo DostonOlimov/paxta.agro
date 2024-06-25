@@ -40,11 +40,56 @@
                                     <thead>
                                     <tr>
                                         <th class="border-bottom-0 border-top-0">#</th>
-                                        <th>{{trans("app.Dalolatnoma raqami")}}</th>
-                                        <th class="border-bottom-0 border-top-0">{{trans("app.To'da (partya) raqami")}}</th>
-                                        <th>{{trans('app.Buyurtmachi korxona yoki tashkilot nomi')}}</th>
+                                        <th class="border-bottom-0 border-top-0">
+                                            <a href="{{ route('akt_amount.search', ['sort_by' => 'number', 'sort_order' => ($sort_by === 'number' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
+                                                {{ trans('app.Sinov dasturi raqami') }}
+                                                @if($sort_by === 'number')
+                                                    @if($sort_order === 'asc')
+                                                        <i class="fa fa-arrow-up"></i>
+                                                    @else
+                                                        <i class="fa fa-arrow-down"></i>
+                                                    @endif
+                                                @endif
+                                            </a>
+                                        </th>
+                                        <th class="border-bottom-0 border-top-0">
+                                            <a href="{{ route('akt_amount.search', ['sort_by' => 'party_number', 'sort_order' => ($sort_by === 'party_number' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
+                                                {{ trans('app.To\'da (partya) raqami') }}
+                                                @if($sort_by === 'party_number')
+                                                    @if($sort_order === 'asc')
+                                                        <i class="fa fa-arrow-up"></i>
+                                                    @else
+                                                        <i class="fa fa-arrow-down"></i>
+                                                    @endif
+                                                @endif
+                                            </a>
+                                        </th>
+                                        <th class="border-bottom-0 border-top-0">
+                                            <a href="{{ route('akt_amount.search', ['sort_by' => 'date', 'sort_order' => ($sort_by === 'date' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
+                                                {{ trans('app.Dalolatnoma sanasi') }}
+                                                @if($sort_by === 'date')
+                                                    @if($sort_order === 'asc')
+                                                        <i class="fa fa-arrow-up"></i>
+                                                    @else
+                                                        <i class="fa fa-arrow-down"></i>
+                                                    @endif
+                                                @endif
+                                            </a>
+                                        </th>
+                                        <th class="border-bottom-0 border-top-0">
+                                            <a href="{{ route('akt_amount.search', ['sort_by' => 'prepared', 'sort_order' => ($sort_by === 'prepared' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
+                                                {{ trans('app.Zavod nomi va kodi') }}
+                                                @if($sort_by === 'prepared')
+                                                    @if($sort_order === 'asc')
+                                                        <i class="fa fa-arrow-up"></i>
+                                                    @else
+                                                        <i class="fa fa-arrow-down"></i>
+                                                    @endif
+                                                @endif
+                                            </a>
+                                        </th>
                                         <th>{{trans('app.Sertifikatlanuvchi mahsulot')}}</th>
-                                        <th>Sof og'irligi (kg)</th>
+                                        <th class="border-bottom-0 border-top-0">{{ trans('app.Sof og\'irligi (kg)') }}</th>
                                         <th>{{trans('app.Tara og\'irligi(kg)')}}</th>
                                         <th>{{trans('app.Action')}}</th>
                                     </tr>
@@ -57,9 +102,10 @@
                                     @foreach($tests as $test)
                                         <tr>
                                             <td>{{$offset + $loop->iteration}}</td>
-                                            <td>{{ $test->number }}</td>
+                                            <td>{{ optional(optional($test->test_program->application)->decision)->number }}</td>
                                             <td> {{ optional($test->test_program->application->crops)->party_number }}</td>
-                                            <td><a href="{!! url('/organization/view/'.optional($test->test_program)->application->organization_id) !!}">{{ optional($test->test_program)->application->organization->name }}</a></td>
+                                            <td> {{ $test->date }}</td>
+                                            <td>{{ optional($test->test_program)->application->prepared->name }} - {{ optional($test->test_program)->application->prepared->kod }}</td>
                                             <td>{{ optional($test->test_program)->application->crops->name->name }}</td>
                                             <td @if(! $test->akt_amount_sum_amount) class="text-danger" @endif>{{ $test->akt_amount_sum_amount ? $test->akt_amount_sum_amount - $test->toy_count * $test->tara : 0 }} kg</td>
                                             <td class="text-center">{{ $test->tara }}<br><a href="{!! url('/dalolatnoma/tara_edit/'.$test->id) !!}"><button type="button" class="btn btn-round btn-success">{{ trans('app.Edit')}}</button></a>
