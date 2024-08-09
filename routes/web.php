@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\App;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\Customercontroller;
 use App\Http\Controllers\LaboratoryOperatorController;
 
@@ -35,11 +34,11 @@ Route::get('/excel_prepared','\App\Http\Controllers\ReportController@excel_prepa
 Route::get('/organization-company-report', '\App\Http\Controllers\ReportController@company_report')->name('report.company_report');
 Route::get('/prepared-company-report', '\App\Http\Controllers\ReportController@prepared_report')->name('report.prepared_report');
 
-    Route::group(['prefix' => 'user', 'middleware' => 'auth'], function () {
-        Route::get('/list', 'Usercontroller@userslist');
-        Route::get('/list/{id}', 'Usercontroller@usershow');
-        Route::get('/get', 'Usercontroller@get_users');
-    });
+//    Route::group(['prefix' => 'user', 'middleware' => 'auth'], function () {
+//        Route::get('/list', 'Usercontroller@userslist');
+//        Route::get('/list/{id}', 'Usercontroller@usershow');
+//        Route::get('/get', 'Usercontroller@get_users');
+//    });
 //employee modulea
 Route::get('/attachments/{id}/download', '\App\Http\Controllers\AttachmentsController@download')->name('attachment.download');
 
@@ -241,7 +240,6 @@ Route::group(['prefix' => 'employee'], function () {
     Route::post('decision/store', '\App\Http\Controllers\DecisionController@store')->name('decision.store');
     Route::get('decision/report', '\App\Http\Controllers\DecisionController@report')->name('decision.report');
     Route::get('decision/report/export', '\App\Http\Controllers\DecisionController@export')->name('decision.report.export');
-    Route::resource('decision/payments', '\App\Http\Controllers\PaymentsController', ['as' => 'decision']);
     Route::get('decision/{invoice_id}/serve', '\App\Http\Controllers\DecisionController@serve')->name('decision.serve');
     Route::get('decision/{id}/redo', '\App\Http\Controllers\DecisionController@redo')->name('decision.redo');
     Route::get('decision/view/{id}', '\App\Http\Controllers\DecisionController@view')->name('decision.view');
@@ -321,16 +319,16 @@ Route::group(['prefix' => 'hvi', 'middleware' => 'auth'], function () {
     Route::get('/update/{id}', '\App\Http\Controllers\FinalResultsController@update');
     });
 //Sertificates
-Route::group(['prefix' => 'sertificate', 'middleware' => 'auth'], function () {
-    Route::get('/search', '\App\Http\Controllers\SertificateController@search');
-    Route::get('/add/{id}', '\App\Http\Controllers\SertificateController@add');
-    Route::get('/list', '\App\Http\Controllers\SertificateController@list');
-    Route::get('/list/delete/{id}', '\App\Http\Controllers\SertificateController@destory');
-    Route::get('/list/edit/{id}', '\App\Http\Controllers\SertificateController@edit');
-    Route::post('/list/edit/update/{id}', '\App\Http\Controllers\SertificateController@update');
-    Route::get('/view/{id}', '\App\Http\Controllers\SertificateController@view');
-    Route::post('/store', '\App\Http\Controllers\SertificateController@store');
-});
+//Route::group(['prefix' => 'sertificate', 'middleware' => 'auth'], function () {
+//    Route::get('/search', '\App\Http\Controllers\SertificateController@search');
+//    Route::get('/add/{id}', '\App\Http\Controllers\SertificateController@add');
+//    Route::get('/list', '\App\Http\Controllers\SertificateController@list');
+//    Route::get('/list/delete/{id}', '\App\Http\Controllers\SertificateController@destory');
+//    Route::get('/list/edit/{id}', '\App\Http\Controllers\SertificateController@edit');
+//    Route::post('/list/edit/update/{id}', '\App\Http\Controllers\SertificateController@update');
+//    Route::get('/view/{id}', '\App\Http\Controllers\SertificateController@view');
+//    Route::post('/store', '\App\Http\Controllers\SertificateController@store');
+//});
 //final decisions
 Route::group(['prefix' => 'final_decision', 'middleware' => 'auth'], function () {
     Route::get('/search', '\App\Http\Controllers\FinalDecisionController@search');

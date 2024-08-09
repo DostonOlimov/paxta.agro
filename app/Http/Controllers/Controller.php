@@ -9,10 +9,10 @@ use Illuminate\Routing\Controller as BaseController;
 
 class Controller extends BaseController
 {
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
     public function __construct()
     {
-        $this->middleware('auth')->except('my_view');
+//        $this->middleware('auth')->except('my_view');
     }
-
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 }

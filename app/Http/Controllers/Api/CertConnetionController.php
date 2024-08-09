@@ -11,27 +11,24 @@ use App\Models\PreparedCompanies;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
-
 class CertConnetionController extends Controller
 {
-
-    public function __construct()
-    {
-        $this->middleware('auth')->except('login');
-    }
     public function login(Request $request)
     {
+        // Validate the incoming request data
         $request->validate([
-            'email' => 'required',
+            'email' => 'required|email',
             'password' => 'required',
         ]);
 
+        // Attempt to authenticate the user with the provided credentials
         if (!auth()->attempt($request->only('email', 'password'))) {
             return response()->json('User not found', 401);
         }
 
         $user = auth()->user();
 
+        // Check if the user already has an API token, if not, create one
         if (!$user->api_token) {
             $user->api_token = $user->createToken('authToken')->accessToken;
             $user->save();
@@ -40,121 +37,109 @@ class CertConnetionController extends Controller
         return response()->json(['user' => $user->api_token]);
     }
 
-    public function crop_name()
+    public function cropName()
     {
-        $cropData = CropsName::get();
-        // dd(request()->getHost());
-        return response()->successJson($cropData);
+        // Fetch all crop names from the database
+        $cropData = CropsName::all();
+        return response()->json(['success' => true, 'data' => $cropData]);
     }
-    public function crop_type(Request $request)
+
+    public function cropType(Request $request)
     {
-        $name_id = $request->input('id');
+        // Get the 'id' parameter from the request
+        $nameId = $request->input('id');
 
-        if ($name_id) {
-            $cropData = CropsType::where('crop_id', $name_id)->get();
-
-            return response()->successJson($cropData);
+        if ($nameId) {
+            // Fetch crop types that match the given crop name ID
+            $cropData = CropsType::where('crop_id', $nameId)->get();
+            return response()->json(['success' => true, 'data' => $cropData]);
         }
-        return response()->errorJson(null, 404, 'Crop Type not found');
+
+        return response()->json(['success' => false, 'message' => 'Crop Type not found'], 404);
     }
 
-    public function organization_company(Request $request)
+    public function organizationCompany(Request $request)
     {
-        // unset($data['id']);
-        $data = $request->all()['data'];
+        // Get the 'data' parameter from the request
+        $data = $request->input('data');
 
         if (isset($data['inn'])) {
-            $model = OrganizationCompanies::where('inn', $data['inn'])->first();
-
-            if ($model) {
-                return response()->json($model->id);
-            } else {
-                $data = OrganizationCompanies::create($data);
-                return response()->json($data->id);
-            }
-        } else {
-            return response()->json(null);
+            // Find or create an organization company by 'inn'
+            $company = OrganizationCompanies::firstOrCreate(['inn' => $data['inn']], $data);
+            return response()->json(['id' => $company->id]);
         }
+
+        return response()->json(null);
     }
 
-    public function org_compy_edit(Request $request)
+    public function orgCompyEdit(Request $request)
     {
         try {
+            // Validation rules
             $rules = [
                 'id' => 'required|numeric',
+                'name' => 'required|string',
+                'city_id' => 'required|numeric',
+                'address' => 'required|string',
+                'owner_name' => 'required|string',
+                'phone_number' => 'required|string',
+                'inn' => 'required|string',
             ];
 
+            // Validate the request data
             $validator = Validator::make($request->all(), $rules);
 
             if ($validator->fails()) {
-                return response()->errorJson($validator->errors(), 422, 'Validation error');
+                return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
             }
 
-            $org_compy = OrganizationCompanies::findOrFail($request->input('id'));
-            $org_compy->update([
-                'name'  => $request->input('name'),
-                'city_id'  => $request->input('city'),
-                'address'  => $request->input('address'),
-                'owner_name'  => $request->input('owner_name'),
-                'phone_number'  => $request->input('mobile'),
-                'inn'  => $request->input('inn'),
-            ]);
-            if (!$org_compy) {
-                return response()->errorJson(null, 404, 'Organization Companies ID Not found');
-            }
+            // Find the organization company by ID and update it
+            $orgCompy = OrganizationCompanies::findOrFail($request->input('id'));
+            $orgCompy->update($request->only(['name', 'city_id', 'address', 'owner_name', 'phone_number', 'inn']));
 
-            return response()->successJson($org_compy, 200);
+            return response()->json(['success' => true, 'data' => $orgCompy], 200);
         } catch (QueryException $e) {
-            if ($e->errorInfo[1] == 1452) {
-                return response()->errorJson(null, 422, 'Foreign key constraint violation: The organization ID provided does not exist.');
-            }
-
-            return response()->errorJson(null, 500, 'Database error: ' . $e->getMessage());
+            $errorMessage = $e->errorInfo[1] == 1452 ?
+                'Foreign key constraint violation: The organization ID provided does not exist.' :
+                'Database error: ' . $e->getMessage();
+            return response()->json(['success' => false, 'message' => $errorMessage], 500);
         }
     }
 
-    public function org_compy_view(Request $request)
+    public function orgCompyView(Request $request)
     {
-        // unset($data['id']);
+        // Get the 'id' parameter from the request
         $id = $request->input('id');
 
-        $model = OrganizationCompanies::with(['city.region'])->find($id);
+        // Find the organization company by ID and include related city and region
+        $company = OrganizationCompanies::with(['city.region'])->find($id);
 
-        if ($model) {
-            return response()->json($model);
-        } else {
-            return response()->json(false);
+        if ($company) {
+            return response()->json($company);
         }
+
+        return response()->json(false);
     }
-    public function prepared_company(Request $request)
+
+    public function preparedCompany(Request $request)
     {
+        // Get parameters from the request
         $name = $request->input('name');
-        $country_id = $request->input('country_id');
-        $state_id = $request->input('state_id');
+        $countryId = $request->input('country_id');
+        $stateId = $request->input('state_id');
         $kod = $request->input('kod');
         $tara = $request->input('tara');
-        if ($name !== null) {
-            $model = PreparedCompanies::where('name', 'like', $name)
-                // ->where('country_id', $country_id)
-                ->where('state_id', $state_id)
-                ->where('kod', $kod)
-                ->where('tara', $tara)
-                ->first();
 
-            if ($model) {
-                return response()->json($model->id);
-            } else {
-                $newModel = PreparedCompanies::create([
-                    'name' => $name,
-                    // 'country_id' => $country_id,
-                    'state_id' => $state_id,
-                    'kod' => $kod,
-                    'tara' => $tara,
-                ]);
-                return response()->json($newModel->id);
-            }
-        } else {
-            return response()->json(null);
+        if ($name !== null) {
+            // Find or create a prepared company by name, state ID, kod, and tara
+            $company = PreparedCompanies::firstOrCreate(
+                ['name' => $name, 'state_id' => $stateId, 'kod' => $kod, 'tara' => $tara],
+                ['country_id' => $countryId]
+            );
+
+            return response()->json(['id' => $company->id]);
         }
+
+        return response()->json(null);
     }
 }

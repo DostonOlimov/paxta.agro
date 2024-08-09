@@ -5,17 +5,13 @@ use App\Http\Controllers\Api\CertConnetionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-// Route::group(['prefix' => 'customers'], function () {
-//     Route::get('/', '\App\Http\Controllers\Api\Customercontroller@index')->name('customers.list');
-//     Route::get('info', '\App\Http\Controllers\Api\Customercontroller@info')->name('customers.info');
-// });
+Route::middleware('auth:sanctum')->get('/users', function (Request $request){
+    return $request->users;
+});
 
-// Route::get('vehicles', '\App\Http\Controllers\Api\VehiclesController@index')->name('vehicles.list');
-
-// Route::get('invoices', '\App\Http\Controllers\Api\InvoicesController@index')->name('invoices.list');
-// Route::get('invoices/{id}', '\App\Http\Controllers\Api\InvoicesController@show')->name('invoices.show');
-
-// Route::post('notifications/{notifiableType}/{notifiableId}', 'NotificationsController@store')->name('notifications.store');
+Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1'],function () {
+    Route::apiResource('applications' , ApplicationController::class);
+});
 
 Route::post('login', [CertConnetionController::class, 'login']);
 

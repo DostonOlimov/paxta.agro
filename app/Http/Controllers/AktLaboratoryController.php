@@ -2,149 +2,105 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Traits\DalolatnomaTrait;
 use App\Jobs\InsideQueueJob;
 use App\Models\AktAmount;
 use App\Models\ClampData;
 use App\Models\Dalolatnoma;
-use App\Models\GinBalles;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\DefaultModels\MyTableReader;
-use App\Jobs\ProcessFile;
-use App\Models\User;
 
 class AktLaboratoryController extends Controller
 {
-    //search
+    use DalolatnomaTrait;
+
+    // Search method to find Dalolatnoma records based on various filters
     public function search(Request $request)
     {
-        $user = Auth::user();
         $city = $request->input('city');
         $crop = $request->input('crop');
         $from = $request->input('from');
         $till = $request->input('till');
+        $sortBy = $request->get('sort_by', 'id');
+        $sortOrder = $request->get('sort_order', 'desc');
 
-        $apps= Dalolatnoma::with('test_program')
-            ->with('test_program.application')
-            ->with('test_program.application.decision')
-            ->with('test_program.application.crops.name')
-            ->with('test_program.application.crops.type')
-            ->with('test_program.application.organization');
-        if ($user->branch_id == User::BRANCH_STATE ) {
-            $user_city = $user->state_id;
-            $apps = $apps->whereHas('test_program.application.organization', function ($query) use ($user_city) {
-                $query->whereHas('city', function ($query) use ($user_city) {
-                    $query->where('state_id', '=', $user_city);
-                });
-            });
-        }
-        if ($from && $till) {
-            $fromTime = join('-', array_reverse(explode('-', $from)));
-            $tillTime = join('-', array_reverse(explode('-', $till)));
-            $apps->whereDate('date', '>=', $fromTime)
-                ->whereDate('date', '<=', $tillTime);
-        }
-        if ($city) {
-            $apps = $apps->whereHas('test_program.application.organization', function ($query) use ($city) {
-                $query->whereHas('city', function ($query) use ($city) {
-                    $query->where('state_id', '=', $city);
-                });
-            });
-        }
-        if ($crop) {
-            $apps = $apps->whereHas('test_program.application.crops', function ($query) use ($crop) {
-                $query->where('name_id', '=', $crop);
-            });
-        }
-        $apps->when($request->input('s'), function ($query, $searchQuery) {
-            $query->where(function ($query) use ($searchQuery) {
-                if (is_numeric($searchQuery)) {
-                    $query->whereHas('test_program.application', function ($query) use ($searchQuery) {
-                        $query->where('app_number', $searchQuery);
-                    });
-                } else {
-                    $query->whereHas('test_program.application.crops.name', function ($query) use ($searchQuery) {
-                        $query->where('name', 'like', '%' . addslashes($searchQuery) . '%');
-                    })->orWhereHas('test_program.application.crops.type', function ($query) use ($searchQuery) {
-                        $query->where('name', 'like', '%' . addslashes($searchQuery) . '%');
-                    })->orWhereHas('test_program.application.crops.generation', function ($query) use ($searchQuery) {
-                        $query->where('name', 'like', '%' . addslashes($searchQuery) . '%');
-                    });
+        // Build query based on request filters
+        $applications = $this->buildQuery($request);
 
-                }
-            });
-        });
-
-        $tests = $apps->latest('id')
+        // Fetch the results with the sum of 'amount' from related 'akt_amount' and paginate
+        $tests = $applications->withSum('akt_amount', 'amount')
             ->paginate(50)
-            ->appends(['s' => $request->input('s')])
-            ->appends(['till' => $request->input('till')])
-            ->appends(['from' => $request->input('from')])
-            ->appends(['city' => $request->input('city')])
-            ->appends(['crop' => $request->input('crop')]);
-        return view('akt_laboratory.search', compact('tests','from','till','city','crop'));
+            ->appends($request->except('page'));
+
+        // Return the search view with results and filters
+        return view('akt_laboratory.search', compact('tests', 'from', 'till', 'city', 'crop', 'sortBy', 'sortOrder'));
     }
-    //index
+
+    // Show the 'add' view with Dalolatnoma details
     public function add($id)
     {
         $test = Dalolatnoma::with('gin_balles')->find($id);
         return view('akt_laboratory.add', compact('test'));
     }
 
+    // Store the uploaded file and dispatch a job to process it
     public function store(Request $request)
     {
         $id = $request->input('id');
         $user = Auth::user();
-        $state_id = $user->state_id;
+        $stateId = $user->state_id;
 
         if ($request->hasFile('file')) {
             $file = $request->file('file');
 
-                $filePath = $file->storeAs('uploads/' . $state_id, $file->getClientOriginalName());
+            // Store the file in the 'uploads/{state_id}' directory with the original name
+            $filePath = $file->storeAs('uploads/' . $stateId, $file->getClientOriginalName());
 
-                    InsideQueueJob::dispatch([
-                        'path' => $filePath,
-                        'id' => $id,
-                    ]);
+            // Dispatch a job to process the file
+            InsideQueueJob::dispatch([
+                'path' => $filePath,
+                'id' => $id,
+            ]);
         }
 
-        return redirect('/akt_laboratory/search')->with('success','Role muvaffaqatli yaratildi.');
-
+        return redirect('/akt_laboratory/search')->with('success', 'Role muvaffaqatli yaratildi.');
     }
+
+    // Show the 'edit' view with AktAmount details
     public function edit($id)
     {
-        $tests = AktAmount::where('dalolatnoma_id',$id)->get()->toArray();
+        $tests = AktAmount::where('dalolatnoma_id', $id)->get()->toArray();
 
-        $data1 =  array_chunk($tests, ceil(count($tests)/4));
+        // Split the results into chunks for better display in the view
+        $dataChunks = array_chunk($tests, ceil(count($tests) / 4));
 
         return view('akt_laboratory.edit', [
-            'results' => $data1,
+            'results' => $dataChunks,
         ]);
     }
 
-
-    public function save_amount(Request $request)
+    // Save the updated amount for a specific AktAmount record
+    public function saveAmount(Request $request)
     {
-
         $id = $request->input('id');
         $amount = $request->input('amount');
-        $result = AktAmount::find($id);
-        if($amount > 0 and $amount < 1000){
-            $result->amount = $amount;
-        }
-        $result->save();
 
+        $result = AktAmount::find($id);
+        if ($amount > 0 && $amount < 1000) {
+            $result->amount = $amount;
+            $result->save();
+        }
 
         return response()->json(['message' => 'Answer saved successfully']);
     }
+
+    // Show the 'view' page with ClampData details for a specific Dalolatnoma
     public function view($id)
     {
-        $tests = ClampData::where('dalolatnoma_id',$id)->get();
+        $tests = ClampData::where('dalolatnoma_id', $id)->get();
         return view('akt_laboratory.show', [
             'results' => $tests,
             'id' => $id
         ]);
     }
-
-
 }
