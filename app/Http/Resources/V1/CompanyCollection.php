@@ -4,7 +4,7 @@ namespace App\Http\Resources\V1;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class CityCollection extends ResourceCollection
+class CompanyCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
@@ -14,8 +14,9 @@ class CityCollection extends ResourceCollection
      */
     public function toArray($request)
     {
+
         return [
-            'data' => CityResource::collection($this->collection),
+            'data' => CompanyResouerce::collection($this->collection),
         ];
     }
 }

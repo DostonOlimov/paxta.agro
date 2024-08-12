@@ -14,34 +14,42 @@ use Illuminate\Http\Request;
 
 class CityController extends Controller
 {
-    public function index(Request $request, CityFilter $filter)
+    public function index(Request $request, CityFilter $filter): CityCollection
     {
+        // Initialize query
         $query = Area::query();
+
+        // Apply filters
         $filters = $request->only(array_keys($filter->safeParams));
         $query = $filter->apply($query, $filters);
 
-        $statId = $request->input('stateId');
-
-        if($statId){
-            $query = $query->where('state_id',$statId);
+        // Optionally add state filter
+        $stateId = $request->input('stateId');
+        if ($stateId) {
+            $query->where('state_id', $stateId);
         }
 
-        $states = $query->get();
+        // Retrieve and return results
+        $areas = $query->get();
 
-        return new CityCollection($states);
+        return new CityCollection($areas);
     }
 
-    public function show($id)
+    public function show(Request $request, $id): CityResource
     {
-        $includeCities = request()->query('includeCities');
+        // Retrieve the 'includeCities' parameter
+        $includeCities = filter_var($request->query('includeCities'), FILTER_VALIDATE_BOOLEAN);
 
-        if(!$includeCities){
-             $application = Area::findOrFail($id);
-        }else{
-            $application = Area::findOrFail($id);
+        // Find the Area by ID
+        $query = Area::query();
+
+        if ($includeCities) {
+            $query->with('cities'); // Assuming 'cities' is the relation you want to include
         }
 
-        return new CityResource($application);
+        $area = $query->findOrFail($id);
+
+        return new CityResource($area);
     }
 
 }
