@@ -11,6 +11,8 @@ Route::middleware('auth:sanctum')->get('/users', function (Request $request){
 
 Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1'],function () {
     Route::apiResource('applications' , ApplicationController::class);
+    Route::apiResource('states' , StateController::class);
+    Route::apiResource('cities' , CityController::class);
 });
 
 Route::post('login', [CertConnetionController::class, 'login']);

@@ -27,5 +27,5 @@ class ApplicationFilter extends ApiFilter{
         'lt' => '<',
         'lte' => '<='
     ];
-
+    
 }

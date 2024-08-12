@@ -21,7 +21,11 @@ class ApiFilter {
 
                 foreach ($operators as $operator) {
                     if (isset($value[$operator])) {
-                        $query->where($column, $this->operatorMap[$operator], $value[$operator]);
+                        if ($operator === 'lk') {
+                            $query->where($column, 'like', '%' . $value[$operator] . '%'); // Use '%' for wildcard
+                        } else {
+                            $query->where($column, $this->operatorMap[$operator], $value[$operator]);
+                        }
                     }
                 }
             }
