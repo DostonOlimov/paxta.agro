@@ -4,7 +4,7 @@ namespace App\Http\Resources\V1;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ApplicationResource extends JsonResource
+class CropNameResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,10 +16,10 @@ class ApplicationResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'date' => $this->date,
-            'status' => $this->status,
-            'createdBy' => $this->created_by,
-
+            'name' => $this->name,
+            'kodtnved' => $this->kodtnved,
+            'types' => CropTypeResource::collection($this->whenLoaded('types')),
+            'generations' => CropGenerationResource::collection($this->whenLoaded('generations'))
         ];
     }
 }

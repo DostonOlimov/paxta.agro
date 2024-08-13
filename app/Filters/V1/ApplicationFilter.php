@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class ApplicationFilter extends ApiFilter{
 
-    public $safeParams = [
+    public array $safeParams = [
         'id' => ['eq'],
         'status' => ['eq', 'ne'],
         'type' => ['eq'],
@@ -15,11 +15,11 @@ class ApplicationFilter extends ApiFilter{
         'acceptedDate' => ['gt', 'lt']
     ];
 
-    protected $columnMap = [
+    protected array $columnMap = [
         'acceptedDate' => 'accepted_date'
     ];
 
-    protected $operatorMap = [
+    protected array $operatorMap = [
         'eq' => '=',
         'ne' => '!=',
         'gt' => '>',
@@ -27,5 +27,5 @@ class ApplicationFilter extends ApiFilter{
         'lt' => '<',
         'lte' => '<='
     ];
-    
+
 }

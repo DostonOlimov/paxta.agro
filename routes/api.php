@@ -15,6 +15,9 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1'],fu
     Route::apiResource('cities' , CityController::class);
     Route::apiResource('factories' , FactoryController::class);
     Route::apiResource('companies' , CompanyController::class);
+    Route::apiResource('crop_types' , CropTypeController::class);
+    Route::apiResource('crop_generations' , CropGenerationController::class);
+    Route::apiResource('crop_names' , CropNameController::class);
 });
 
 Route::post('login', [CertConnetionController::class, 'login']);

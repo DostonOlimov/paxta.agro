@@ -5,7 +5,7 @@ use App\Filters\ApiFilter;
 
 class FactoryFilter extends ApiFilter{
 
-    public $safeParams = [
+    public array $safeParams = [
         'id' => ['eq'],
         'name' => ['lk'],
         'stateId' => ['eq'],
@@ -13,7 +13,7 @@ class FactoryFilter extends ApiFilter{
         'kod' => ['eq'],
     ];
 
-    protected $operatorMap = [
+    protected array $operatorMap = [
         'eq' => '=',
         'lk' => 'like',
         'gt' => '>',
@@ -22,7 +22,7 @@ class FactoryFilter extends ApiFilter{
         'lte' => '<='
     ];
 
-    protected $columnMap = [
+    protected array $columnMap = [
         'stateId' => 'state_id'
     ];
 

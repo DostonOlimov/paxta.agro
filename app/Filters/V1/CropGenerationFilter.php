@@ -3,11 +3,12 @@ namespace App\Filters\V1;
 
 use App\Filters\ApiFilter;
 
-class CityFilter extends ApiFilter{
+class CropGenerationFilter extends ApiFilter{
 
     public array $safeParams = [
         'id' => ['eq'],
         'name' => ['lk'],
+        'kod' => ['eq']
     ];
 
     protected array $operatorMap = [

@@ -30,12 +30,12 @@ class CropsName extends Model
     {
         return $this->belongsTo(Nds::class,'id','crop_id');
     }
-    public function areas(): HasMany
+    public function types(): HasMany
     {
         return $this->hasMany(CropsType::class, 'crop_id');
     }
 
-    public function listRegion(): HasMany
+    public function generations(): HasMany
     {
         return $this->hasMany(CropsGeneration::class, 'crop_id');
     }

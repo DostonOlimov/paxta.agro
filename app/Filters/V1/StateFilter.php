@@ -5,12 +5,12 @@ use App\Filters\ApiFilter;
 
 class StateFilter extends ApiFilter{
 
-    public $safeParams = [
+    public array $safeParams = [
         'id' => ['eq'],
         'name' => ['lk'],
     ];
 
-    protected $operatorMap = [
+    protected array $operatorMap = [
         'eq' => '=',
         'lk' => 'like',
     ];
