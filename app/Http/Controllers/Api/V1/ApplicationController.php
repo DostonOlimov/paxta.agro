@@ -7,9 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\ApplicationCollection;
 use App\Http\Resources\V1\ApplicationResource;
 use App\Models\Application;
+use App\Models\OrganizationCompanies;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Validator;
 
 
 class ApplicationController extends Controller
@@ -17,19 +16,35 @@ class ApplicationController extends Controller
     public function index(Request $request, ApplicationFilter $filter)
     {
         $query = Application::query();
-        $filters = $request->only(array_keys($filter->safeParams));
-        $query = $filter->apply($query, $filters);
 
-        $applications = $query->paginate(10);
+        // Extract filters from request
+        $filters = $this->getFilters($request, $filter);
 
-        return new ApplicationCollection($applications);
+        // Apply filters to the query
+        $filteredQuery = $filter->apply($query, $filters);
+
+        // Get the results
+        $data = $filteredQuery->with('crops')
+            ->with('organization')
+            ->with('prepared')
+            ->paginate(10);
+
+        return new ApplicationCollection($data);
     }
 
-    public function show($id)
+    public function show(int $id)
     {
-        $application = Application::findOrFail($id);
+        $data = Application::with('crops')
+            ->with('organization')
+            ->with('prepared')
+            ->findOrFail($id);
 
-        return new ApplicationResource($application);
+        return new ApplicationResource($data);
+    }
+
+    private function getFilters(Request $request, ApplicationFilter $filter): array
+    {
+        return $request->only(array_keys($filter->safeParams));
     }
 
 }

@@ -16,10 +16,14 @@ class CropDataResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'stateId' => $this->state_id,
-            'stateName' => optional($this->region)->name
-
+            'cropName' => optional($this->name)->name,
+            'kodtnved' => 'kodtnved',
+            'partyNumber' => $this->party_number,
+            'measureType' => $this->measure_type,
+            'amount' => $this->amount,
+            'year' => $this->year,
+            'toyCount' => $this->toy_count,
+            'countryName' => optional($this->country)->name,
         ];
     }
 }

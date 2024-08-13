@@ -19,7 +19,9 @@ class ApplicationResource extends JsonResource
             'date' => $this->date,
             'status' => $this->status,
             'createdBy' => $this->created_by,
-
+            'cropData' => new CropDataResource($this->whenLoaded('crops')),
+            'companyData' => new CompanyResource($this->whenLoaded('organization')),
+            'factoryData' => new FactoryResource($this->whenLoaded('prepared')),
         ];
     }
 }

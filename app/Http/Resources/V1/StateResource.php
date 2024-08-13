@@ -18,7 +18,7 @@ class StateResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'cities' => CityResource::collection($this->whenLoaded('areas'))
-            
+
         ];
     }
 }

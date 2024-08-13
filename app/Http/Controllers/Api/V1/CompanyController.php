@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Filters\V1\CompanyFilter;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\CompanyCollection;
-use App\Http\Resources\V1\CompanyResouerce;
+use App\Http\Resources\V1\CompanyResource;
 use App\Models\OrganizationCompanies;
 use Illuminate\Http\Request;
 
@@ -32,7 +32,7 @@ class CompanyController extends Controller
     {
         $data = OrganizationCompanies::findOrFail($id);
 
-        return new CompanyResouerce($data);
+        return new CompanyResource($data);
     }
 
     private function getFilters(Request $request, CompanyFilter $filter): array

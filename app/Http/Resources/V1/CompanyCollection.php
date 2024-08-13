@@ -16,7 +16,7 @@ class CompanyCollection extends ResourceCollection
     {
 
         return [
-            'data' => CompanyResouerce::collection($this->collection),
+            'data' => CompanyResource::collection($this->collection),
         ];
     }
 }

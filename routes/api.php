@@ -18,6 +18,9 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1'],fu
     Route::apiResource('crop_types' , CropTypeController::class);
     Route::apiResource('crop_generations' , CropGenerationController::class);
     Route::apiResource('crop_names' , CropNameController::class);
+    Route::apiResource('crop_data' , CropDataController::class);
+
+    Route::post('/login', [\App\Http\Controllers\Api\V1\AuthController::class, 'login']);
 });
 
 Route::post('login', [CertConnetionController::class, 'login']);

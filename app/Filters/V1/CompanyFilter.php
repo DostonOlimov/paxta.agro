@@ -23,7 +23,11 @@ class CompanyFilter extends ApiFilter
 
     protected array $operatorMap = [
         'eq' => '=',
-        'lk' => 'like',
+        'ne' => '!=',
+        'gt' => '>',
+        'gte' => '>=',
+        'lt' => '<',
+        'lte' => '<='
     ];
 
     protected array $columnMap = [

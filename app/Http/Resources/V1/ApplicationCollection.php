@@ -14,17 +14,11 @@ class ApplicationCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-
         return [
             'data' => ApplicationResource::collection($this->collection),
-//            'meta' => [
-//                'current_page' => $this->currentPage(),
-//                'from' => $this->firstItem(),
-//                'last_page' => $this->lastPage(),
-//                'per_page' => $this->perPage(),
-//                'to' => $this->lastItem(),
-//                'total' => $this->total(),
-//            ],
+            'links' => [
+                'self' => 'link-value',
+            ],
         ];
     }
 }
