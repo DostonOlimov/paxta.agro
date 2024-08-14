@@ -21,10 +21,9 @@ class AuthController extends Controller
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
 
-        // Create a new personal access token
-        $tokenResult = $user->createToken('Personal Access Token');
-        $accessToken = $tokenResult->accessToken;
+        // Generate token using Sanctum
+        $token = $user->createToken('api-token')->plainTextToken;
 
-        return response()->json(['token' => $accessToken], 200);
+        return response()->json(['token' => $token]);
     }
 }
