@@ -3,18 +3,21 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Filters\V1\ApplicationFilter;
-use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\ApplicationCollection;
 use App\Http\Resources\V1\ApplicationResource;
 use App\Models\Application;
-use App\Models\OrganizationCompanies;
 use Illuminate\Http\Request;
 
 
 class ApplicationController extends Controller
 {
+    const PAGINATE = 10;
+
     public function index(Request $request, ApplicationFilter $filter)
     {
+        // Validate the 'includeCities' parameter
+        $page = filter_var($request->query('page'), FILTER_VALIDATE_INT) ?? 1;
+
         $query = Application::query();
 
         // Extract filters from request
@@ -27,7 +30,7 @@ class ApplicationController extends Controller
         $data = $filteredQuery->with('crops')
             ->with('organization')
             ->with('prepared')
-            ->paginate(10);
+            ->paginate(self::PAGINATE, ['*'], 'page', $page);
 
         return new ApplicationCollection($data);
     }

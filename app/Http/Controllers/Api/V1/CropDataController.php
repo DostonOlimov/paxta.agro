@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Filters\V1\CropDataFilter;
-use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\CropDataCollection;
 use App\Http\Resources\V1\CropDataResource;
 use App\Models\CropData;

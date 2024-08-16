@@ -1,6 +1,5 @@
 <?php
-
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\V1;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -13,6 +12,7 @@ class Controller extends BaseController
 
     public function __construct()
     {
-        $this->middleware('auth')->except('my_view');
+        // Apply Sanctum middleware or any API-specific middleware here if needed
+//        $this->middleware('auth:sanctum');
     }
 }

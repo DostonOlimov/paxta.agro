@@ -3,12 +3,9 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Filters\V1\CityFilter;
-use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\CityCollection;
 use App\Http\Resources\V1\CityResource;
 use App\Models\Area;
-use App\Models\Region;
-use App\Models\Role;
 use Illuminate\Http\Request;
 
 

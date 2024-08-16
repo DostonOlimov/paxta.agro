@@ -28,7 +28,7 @@ Route::group([
 });
 
 
-Route::post('login', [CertConnetionController::class, 'login']);
+//Route::post('login', [CertConnetionController::class, 'login']);
 
 Route::middleware('auth:api')->group(function (){
     Route::get('cropName', [CertConnetionController::class, 'crop_name']);

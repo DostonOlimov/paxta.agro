@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Filters\V1\CropGenerationFilter;
-use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\CropGenerationCollection;
 use App\Http\Resources\V1\CropGenerationResource;
 use App\Models\CropsGeneration;

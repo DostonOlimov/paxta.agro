@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Filters\V1\StateFilter;
-use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\StateCollection;
 use App\Http\Resources\V1\StateResource;
 use App\Models\Region;
@@ -14,8 +13,9 @@ use Illuminate\Http\Request;
 class StateController extends Controller
 {
 
-    public function index(Request $request, StateFilter $filter): StateCollection
+    public function index(Request $request, StateFilter $filter)
     {
+
         // Define validation rules
         $validator = Validator::make($request->all(), [
             'includeCities' => 'boolean',

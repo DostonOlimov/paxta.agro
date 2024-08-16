@@ -3,11 +3,9 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Filters\V1\CropNameFilter;
-use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\CropNameCollection;
 use App\Http\Resources\V1\CropNameResource;
 use App\Models\CropsName;
-use App\Models\Region;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 

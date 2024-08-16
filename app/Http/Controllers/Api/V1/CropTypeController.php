@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Filters\V1\CropTypeFilter;
-use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\CropTypeCollection;
 use App\Http\Resources\V1\CropTypeResource;
 use App\Models\CropsType;
