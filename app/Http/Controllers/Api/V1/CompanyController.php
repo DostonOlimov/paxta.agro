@@ -29,6 +29,7 @@ class CompanyController extends Controller
 
     public function show(int $id)
     {
+        // find data with given id
         $data = OrganizationCompanies::findOrFail($id);
 
         return new CompanyResource($data);
@@ -38,14 +39,14 @@ class CompanyController extends Controller
 
         // Validate the request data
         $validatedData = $request->validate([
-            'inn' => 'required|int|max:9',
+            'inn' => 'required|int|digits:9',
             'name' => 'required|string|max:255',
             'city_id' => 'required|exists:tbl_cities,id',
             'address' => 'nullable|string',
             'owner_name' => 'nullable|string|max:255',
             'phone_number' => 'nullable|string|max:255',
-        ]);
-        dd($validatedData);
+        ],);
+        
         // Check if a company with the same INN already exists
         $existingCompany = OrganizationCompanies::where('inn', $validatedData['inn'])->first();
 
