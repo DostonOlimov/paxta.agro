@@ -13,30 +13,50 @@ class FactoryController extends Controller
 {
     public function index(Request $request, FactoryFilter $filter)
     {
-        $query = PreparedCompanies::query();
+        try {
+            $query = PreparedCompanies::query();
 
-        // Extract filters from request
-        $filters = $this->getFilters($request, $filter);
+            // Extract filters from request
+            $filters = $this->getFilters($request, $filter);
 
-        // Apply filters to the query
-        $filteredQuery = $filter->apply($query, $filters);
+            // Apply filters to the query
+            $filteredQuery = $filter->apply($query, $filters);
 
-        // Get the results
-        $states = $filteredQuery->get();
+            // Get the results
+            $factories = $filteredQuery->get();
 
-        return new FactoryCollection($states);
+            return $this->successResponse(
+                new FactoryCollection($factories),
+                'Factories retrieved successfully'
+            );
+
+        } catch (\Exception $e) {
+            return $this->errorResponse('An unexpected error occurred', [], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     public function show(int $id)
     {
-        $factory = PreparedCompanies::findOrFail($id);
+        try {
+            $factory = PreparedCompanies::find($id);
 
-        return new FactoryResource($factory);
+            if (!$factory) {
+                return $this->notFoundResponse('Factory not found');
+            }
+
+            return $this->successResponse(
+                new FactoryResource($factory),
+                'Factory retrieved successfully'
+            );
+
+        } catch (\Exception $e) {
+            return $this->errorResponse('An unexpected error occurred', [], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     private function getFilters(Request $request, FactoryFilter $filter): array
     {
         return $request->only(array_keys($filter->safeParams));
     }
-
 }
+

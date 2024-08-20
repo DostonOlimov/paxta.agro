@@ -11,32 +11,56 @@ use Illuminate\Http\Request;
 
 class CropGenerationController extends Controller
 {
-    public function index(Request $request, CropGenerationFilter $filter): CropGenerationCollection
+    public function index(Request $request, CropGenerationFilter $filter)
     {
-        // Initialize query
-        $query = CropsGeneration::query();
+        try {
+            // Initialize query
+            $query = CropsGeneration::query();
 
-        // Apply filters
-        $filters = $request->only(array_keys($filter->safeParams));
-        $query = $filter->apply($query, $filters);
+            // Apply filters
+            $filters = $request->only(array_keys($filter->safeParams));
+            $query = $filter->apply($query, $filters);
 
-        // Optionally add crop filter
-        $cropId = $request->input('cropId');
-        if ($cropId) {
-            $query->where('crop_id', $cropId);
+            // Optionally add crop filter
+            $cropId = $request->input('cropId');
+            if ($cropId) {
+                $query->where('crop_id', $cropId);
+            }
+
+            // Retrieve and return results
+            $data = $query->get();
+
+            if ($data->isEmpty()) {
+                return $this->notFoundResponse('No crop generations found');
+            }
+
+            return $this->successResponse(
+                new CropGenerationCollection($data),
+                'Crop generations retrieved successfully'
+            );
+
+        } catch (\Exception $e) {
+            return $this->errorResponse('An unexpected error occurred', [], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-
-        // Retrieve and return results
-        $data = $query->get();
-
-        return new CropGenerationCollection($data);
     }
 
-    public function show(Request $request, $id): CropGenerationResource
+    public function show(Request $request, $id)
     {
-        $data = CropsGeneration::findOrFail($id);
+        try {
+            $data = CropsGeneration::find($id);
 
-        return new CropGenerationResource($data);
+            if (!$data) {
+                return $this->notFoundResponse('Crop generation not found');
+            }
+
+            return $this->successResponse(
+                new CropGenerationResource($data),
+                'Crop generation retrieved successfully'
+            );
+
+        } catch (\Exception $e) {
+            return $this->errorResponse('An unexpected error occurred', [], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
-
 }
+
