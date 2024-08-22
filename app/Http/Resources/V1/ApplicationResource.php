@@ -17,11 +17,16 @@ class ApplicationResource extends JsonResource
         return [
             'id' => $this->id,
             'date' => $this->date,
+            'type' => $this->type,
             'status' => $this->status,
             'createdBy' => $this->created_by,
+            'data' => $this->data,
             'cropData' => new CropDataResource($this->whenLoaded('crops')),
             'companyData' => new CompanyResource($this->whenLoaded('organization')),
             'factoryData' => new FactoryResource($this->whenLoaded('prepared')),
+            'comment' => new ApplicationCommentResource($this->whenLoaded('comment')),
+            'files' => new ApplicationCommentResource($this->whenLoaded('files')),
+
         ];
     }
 }

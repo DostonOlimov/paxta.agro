@@ -59,6 +59,10 @@ class Application extends Model
     {
         return $this->belongsTo(Decision::class, 'id','app_id');
     }
+    public function comment()
+    {
+        return $this->belongsTo(AppStatusChanges::class, 'id','app_id');
+    }
     public function files()
     {
         return $this->belongsTo(Files::class, 'id','app_id');

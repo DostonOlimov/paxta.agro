@@ -17,7 +17,8 @@ class CropDataResource extends JsonResource
         return [
             'id' => $this->id,
             'cropName' => optional($this->name)->name,
-            'kodtnved' => 'kodtnved',
+            'nameId' => optional($this->name)->id,
+            'kodtnved' => $this->kodtnved,
             'partyNumber' => $this->party_number,
             'measureType' => $this->measure_type,
             'amount' => $this->amount,
