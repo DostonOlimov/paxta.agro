@@ -278,13 +278,13 @@
 
 
                         swal({
-                            title: "Haqiqatdan ham tasdiqlashni istaysizmi?",
+                            title: "Haqiqatdan ham arizani qabul qilishni xohlaysizmi?",
                             text: "Tasdiqlash uchun barcha ma'lumotlar to'g'riligiga ishonchiz komilmi!",
                             type: "warning",
                             showCancelButton: true,
                             confirmButtonColor: "#297FCA",
-                            confirmButtonText: "Tasdiqlash!",
-                            cancelButtonText: "Tasdiqlashni bekor qilish",
+                            confirmButtonText: "Qabul qilish!",
+                            cancelButtonText: "Bekor qilish",
                             closeOnConfirm: false
                         }).then((result) => {
                             window.location.href = url;

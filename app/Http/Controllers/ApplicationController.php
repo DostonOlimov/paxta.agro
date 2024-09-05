@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Models\Application;
+use App\Models\AppStatusChanges;
 use App\Models\CropData;
 use App\Models\OrganizationCompanies;
 use Illuminate\Support\Facades\Auth;
@@ -223,34 +224,32 @@ class ApplicationController extends Controller
         $app = Application::find($id);
         $this->authorize('update', $app);
         $app->status = Application::STATUS_ACCEPTED;
+        $app->progress = Application::PROGRESS_ANSWERED;
+        $app->accepted_date = date('Y-m-d');
+        $app->accepted_id = Auth::user()->id;
         $app->save();
         return redirect('application/list')->with('message', 'Successfully Submitted');
     }
     public function reject(Request $request, $id)
     {
-        // $app = Application::find($id);
+         $app = Application::find($id);
 
-        // return view('application.reject', compact('app'));
-
-        $app = Application::find($id);
-        $app->status = Application::STATUS_REJECTED;
-        $app->save();
-        return redirect('application/list')->with('message', 'Successfully Submitted');
+         return view('application.reject', compact('app'));
     }
     public function reject_store(Request $request)
     {
         $app_id = $request->input('app_id');
-        // $reason = $request->input('reason');
+        $reason = $request->input('reason');
         $app = Application::find($app_id);
         $this->authorize('accept', $app);
         $app->status = Application::STATUS_REJECTED;
         $app->save();
-        // $changes = new AppStatusChanges();
-        // $changes->app_id = $app_id;
-        // $changes->status = Application::STATUS_REJECTED;
-        // $changes->comment = $reason;
-        // $changes->user_id = Auth::user()->id;
-        // $changes->save();
+         $changes = new AppStatusChanges();
+         $changes->app_id = $app_id;
+         $changes->status = Application::STATUS_REJECTED;
+         $changes->comment = $reason;
+         $changes->user_id = Auth::user()->id;
+         $changes->save();
 
         return redirect('application/list')->with('message', 'Successfully Submitted');
     }

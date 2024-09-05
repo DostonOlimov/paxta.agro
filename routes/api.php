@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 Route::group([
     'prefix' => 'v1',
     'namespace' => 'App\Http\Controllers\Api\V1',
-//    'middleware' => 'auth:sanctum' // Add your middleware here
+    'middleware' => 'auth:sanctum' // Add your middleware here
 ], function () {
     Route::apiResource('applications', ApplicationController::class);
     Route::apiResource('states', StateController::class);

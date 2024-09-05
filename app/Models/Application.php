@@ -19,6 +19,14 @@ class Application extends Model
     const STATUS_FINISHED = 4;
     const STATUS_DELETED = 5;
 
+    const PROGRESS_INITIAL = 1;
+    const PROGRESS_ANSWERED = 2;
+    const PROGRESS_DECISION = 3;
+    const PROGRESS_EXAMPLE = 4;
+    const PROGRESS_LABORATORY = 5;
+    const PROGRESS_CONCLUSION = 6;
+    const PROGRESS_FINISHED = 7;
+
     protected $table = 'applications';
 
     protected $fillable = [
