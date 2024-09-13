@@ -15,4 +15,22 @@ class Controller extends BaseController
     {
         $this->middleware('auth')->except('my_view');
     }
+
+    /**
+     * Generate a standardized error response.
+     *
+     * @param string $message The error message to be returned.
+     * @param array $errors An array of errors (optional).
+     * @param int $statusCode The HTTP status code for the response (default: 500).
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function errorResponse(string $message, array $errors = [], int $statusCode = 500)
+    {
+        return response()->json([
+            'success' => false,
+            'message' => $message,
+            'errors' => $errors
+        ], $statusCode);
+    }
+
 }

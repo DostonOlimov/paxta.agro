@@ -71,6 +71,8 @@ Route::group(['prefix' => 'employee'], function () {
     Route::get('/getcompany', '\App\Http\Controllers\CropAjaxController@getcompany')->name('get.company');
 
     Route::get('/process-excel', '\App\Http\Controllers\CropAjaxController@processExcel');
+    Route::get('/get_company_data', '\App\Http\Controllers\CompanyAjaxController@getCompanyById')->name('get.company_data');
+
 
 // Cities
     Route::group(['prefix' => 'cities', 'middleware' => 'auth'], function () {

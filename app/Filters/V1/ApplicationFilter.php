@@ -15,6 +15,7 @@ class ApplicationFilter extends ApiFilter
         'companyId' => ['eq'],
         'factoryId' => ['eq'],
         'nameId' => ['eq'],
+        'partyNumber' => ['eq','lk'],
         'stateId' => ['eq'],
         'cityId' => ['eq'],
         'createdBy' => ['eq'],
@@ -24,6 +25,7 @@ class ApplicationFilter extends ApiFilter
     protected array $operatorMap = [
         'eq' => '=',
         'ne' => '!=',
+        'lk' => 'like',
         'gt' => '>',
         'gte' => '>=',
         'lt' => '<',
@@ -36,12 +38,32 @@ class ApplicationFilter extends ApiFilter
         'createdBy' => 'created_by'
     ];
 
+    protected array $sortColumnMap  = [
+        'organization' => [
+            'table' => 'organization_companies',
+            'column' => 'organization_companies.name',
+            'foreign_key' => 'applications.organization_id',
+            'local_key' => 'organization_companies.id'
+        ],
+        'amount' => [
+            'table' => 'crop_data',
+            'column' => 'crop_data.amount',
+            'foreign_key' => 'applications.crop_data_id',
+            'local_key' => 'crop_data.id'
+        ],
+        'party_number' => [
+            'table' => 'crop_data',
+            'column' => 'crop_data.party_number',
+            'foreign_key' => 'applications.crop_data_id',
+            'local_key' => 'crop_data.id'
+        ]
+    ];
     /**
      * Determine if a filter requires joining another table.
      */
     protected function requiresJoin(string $key): bool
     {
-        return in_array($key, ['nameId', 'cityId', 'stateId','year']);
+        return in_array($key, ['nameId','partyNumber', 'cityId', 'stateId','year']);
     }
 
     /**
@@ -51,7 +73,7 @@ class ApplicationFilter extends ApiFilter
     {
         if ($key === 'cityId') {
             $query->join('organization_companies', 'applications.organization_id', '=', 'organization_companies.id');
-        } elseif($key === 'nameId' or $key === 'year'){
+        } elseif($key === 'nameId' or $key === 'year' or $key === 'partyNumber'){
             $query->join('crop_data', 'applications.crop_data_id', '=', 'crop_data.id');
         }
         elseif ($key === 'stateId') {
@@ -67,6 +89,7 @@ class ApplicationFilter extends ApiFilter
     {
         $joinColumnMap = [
             'nameId' => 'crop_data.name_id',
+            'partyNumber' => 'crop_data.party_number',
             'stateId' => 'tbl_cities.state_id',
             'cityId' => 'organization_companies.city_id',
             'year' => 'crop_data.year'
@@ -74,4 +97,6 @@ class ApplicationFilter extends ApiFilter
 
         return $joinColumnMap[$key] ?? $this->getColumn($key);
     }
+
+
 }

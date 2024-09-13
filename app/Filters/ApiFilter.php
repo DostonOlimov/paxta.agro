@@ -9,6 +9,7 @@ abstract class ApiFilter
     protected array $safeParams = [];
     protected array $columnMap = [];
     protected array $operatorMap = [];
+    protected array $sortColumnMap = [];
 
     /**
      * Apply the filters to the query.
@@ -27,7 +28,30 @@ abstract class ApiFilter
 
         return $query;
     }
+    /**
+     * Apply sorting to the query dynamically.
+     *
+     * @param Builder $query
+     * @param string $sort_by
+     * @param string $sort_order
+     * @return Builder
+     */
+    public function applySorting(Builder $query, string $sort_by, string $sort_order): Builder
+    {
+        // Check if sorting requires a join
+        if (array_key_exists($sort_by, $this->sortColumnMap)) {
+            $sortData = $this->sortColumnMap[$sort_by];
+            // Apply the join and order by the related column
+            $query->join($sortData['table'], $sortData['foreign_key'], '=', $sortData['local_key'])
+                ->orderBy($sortData['column'], $sort_order);
+        } else {
+            // Ensure you're ordering by the correct `id` column
+            $sort_by = $sort_by === 'id' ? 'applications.id' : $sort_by;
+            $query->orderBy($sort_by, $sort_order);
+        }
 
+        return $query;
+    }
     /**
      * Check if the parameter is safe for filtering.
      *
@@ -125,4 +149,7 @@ abstract class ApiFilter
     {
         return $this->getColumn($key); // Override in child classes if needed
     }
+
+
+
 }

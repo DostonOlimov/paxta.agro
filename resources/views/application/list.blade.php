@@ -52,10 +52,6 @@
 							</div>
 						</div>
 
-{{--                        <!-- filter component -->--}}
-                        <x-filter :crop="$crop" :city="$city" :from="$from" :till="$till"  />
-{{--                        <!--filter component -->--}}
-
 						<div class="table-responsive">
 							<table class="table table-striped table-bordered nowrap display" style="margin-top:20px;" >
 								<thead>
@@ -86,6 +82,18 @@
                                             </a>
                                         </th>
                                         <th class="border-bottom-0 border-top-0">
+                                            <a href="{{ route('listapplication', ['sort_by' => 'party_number', 'sort_order' => ($sort_by === 'party_number' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
+                                                {{trans('app.Toʼda (partiya) raqami')}}
+                                                @if($sort_by === 'party_number')
+                                                    @if($sort_order === 'asc')
+                                                        <i class="fa fa-arrow-up"></i>
+                                                    @else
+                                                        <i class="fa fa-arrow-down"></i>
+                                                    @endif
+                                                @endif
+                                            </a>
+                                        </th>
+                                        <th class="border-bottom-0 border-top-0">
                                             <a href="{{ route('listapplication', ['sort_by' => 'date', 'sort_order' => ($sort_by === 'date' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
                                                 {{trans('app.Ariza sanasi')}}
                                                 @if($sort_by === 'date')
@@ -97,6 +105,7 @@
                                                 @endif
                                             </a>
                                         </th>
+                                        <th class="border-bottom-0 border-top-0">{{trans('app.Viloyat nomi')}}</th>
 										<th class="border-bottom-0 border-top-0">
                                             <a href="{{ route('listapplication', ['sort_by' => 'organization', 'sort_order' => ($sort_by === 'organization' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
                                                 {{trans('app.Buyurtmachi korxona yoki tashkilot nomi')}}
@@ -127,6 +136,98 @@
 									</tr>
 								</thead>
 								<tbody>
+                                <tr style="background-color: #90aec6 !important;">
+                                    <td> </td>
+                                    <td>
+                                        <select class="w-100 form-control" name="status[eq]" id="status">
+                                            @if (count($all_status))
+                                                <option value="" selected>Barchasi</option>
+                                            @endif
+                                            @foreach ($all_status as $key => $name)
+                                                <option value="{{ $key }}"
+                                                        @if (isset($filterValues['status']) && $filterValues['status'] == $key)
+                                                        selected
+                                                    @endif>
+                                                    {{ $name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <form class="d-flex">
+                                            <input type="text" name="id[eq]" class="search-input form-control"
+                                                   value="{{ isset($filterValues['id']) ? $filterValues['id'] : '' }}">
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <form class="d-flex">
+                                            <input type="text" name="partyNumber[lk]" class="search-input form-control"
+                                                   value="{{ isset($filterValues['partyNumber']) ? $filterValues['partyNumber'] : '' }}">
+                                        </form>
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                        <select class="w-100 form-control name_of_corn custom-select" name="stateId"
+                                                id="stateId">
+                                                <option value="" selected>Viloyat nomini tanlang</option>
+                                            @if (!empty($states))
+                                                @foreach ($states as $name)
+                                                    <option value="{{ $name->id }}"
+                                                            @if (isset($filterValues['stateId']) && $filterValues['stateId'] == $name->id)
+                                                            selected
+                                                        @endif>
+                                                        {{ $name->name }} </option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select id="organization" class="form-control owner_search" name="organization">
+                                            @if (!empty($organization))
+                                                <option selected value="{{ $organization->id }}">
+                                                    {{ $organization->name }}</option>
+                                            @endif
+                                        </select>
+                                        @if ($organization)
+                                            <i class="fa fa-trash" style="color:red"
+                                               onclick="changeDisplay('companyId[eq]')"></i>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <select class="w-100 form-control name_of_corn custom-select" name="name"
+                                                id="crops_name">
+                                            @if (count($names))
+                                                <option value="" selected>
+                                                    Mahsulot turini tanlang</option>
+                                            @endif
+                                            @if (!empty($names))
+                                                @foreach ($names as $name)
+                                                    <option value="{{ $name->id }}"
+                                                            @if (isset($filterValues['nameId']) && $filterValues['nameId'] == $name->id)
+                                                                selected
+                                                            @endif>
+                                                        {{ $name->name }} </option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                    </td>
+                                    <td>
+                                    </td>
+                                    <td>
+                                        <select class="w-100 form-control" name="year" id="year">
+                                            <option value="" selected>Hosil yilini tanlang</option>
+                                            @foreach ($years as $key => $name)
+                                                <option value="{{ $key }}"
+                                                        @if (isset($filterValues['year']) && $filterValues['year'] == $key)
+                                                            selected
+                                                        @endif>
+                                                    {{ $name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </td>
+                                    <td></td>
+                                </tr>
                                 @php
                                     $offset = (request()->get('page', 1) - 1) * 50;
                                 @endphp
@@ -138,8 +239,10 @@
                                             class="btn btn-round btn-{{ $app->status_color }}">{{ $app->status_name }}</button></a>
                                         </td>
                                         <td> <a href="{!! url('/application/view/'.$app->id) !!}">{{ $app->id }}</a></td>
+                                        <td>{{ optional($app->crops)->party_number }}</td>
                                         <td> <a href="{!! url('/application/view/'.$app->id) !!}">{{ $app->date }}</a></td>
-                                        <td><a href="{!! url('/organization/view/'.$app->organization_id) !!}">{{ optional($app->organization)->name }}</a></td>
+                                        <td> {{ optional(optional(optional($app->organization)->area)->region)->name }}</td>
+                                        <td><a href="#" class="company-link" data-id="{{ $app->organization_id }}">{{ optional($app->organization)->name }}</a></td>
 										<td>{{ optional($app->crops->name)->name }}</td>
 										<td>{{ optional($app->crops)->amount_name }}</td>
                                         <td>{{ optional($app->crops)->year }}</td>
@@ -168,29 +271,27 @@
 		</div>
 	</div>
 @endcan
- <!-- /page content -->
-<script src="{{ URL::asset('vendors/jquery/dist/jquery.min.js') }}"></script>
-<script>
- $('body').on('click', '.sa-warning', function() {
+@endsection
+@section('scripts')
+    <script>
+        var translations = {
+            inputTooShort: '{{ trans('app.Korxona (nomi), STIR ini kiritib izlang') }}',
+            searching: '{{ trans('app.Izlanmoqda...') }}',
+            noResults: '{{ trans('app.Natija topilmadi') }}',
+            errorLoading: '{{ trans('app.Natija topilmadi') }}',
+            placeholder: '{{ trans('app.Korxona nomini kiriting') }}'
+        };
 
-	  var url =$(this).attr('url');
-
-
-        swal({
-            title: "O'chirishni istaysizmi?",
-			text: "O'chirilgan ma'lumotlar qayta tiklanmaydi!",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#297FCA",
-            confirmButtonText: "Ha, o'chirish!",
-            cancelButtonText: "O'chirishni bekor qilish",
-            closeOnConfirm: false
-        }).then((result) => {
-			window.location.href = url;
-
-        });
-    });
-
-</script>
-
+        const labels = {
+            inn: @json(trans('app.Tashkilot STIRi')),
+            owner: @json(trans('app.Tashkilot rahbari')),
+            phone: @json(trans('app.Telefon raqami')),
+            address: @json(trans('app.Address')),
+            state: @json(trans('app.Viloyat nomi')),
+            city: @json(trans('app.Tuman nomi'))
+        };
+    </script>
+    <script src="{{ asset('js/my_js_files/filter.js') }}"></script>
+    <script src="{{ asset('js/my_js_files/get_company.js') }}"></script>
+    <script src="{{ asset('js/my_js_files/view_company.js') }}"></script>
 @endsection

@@ -131,11 +131,46 @@ class Application extends Model
 
     protected static function boot()
     {
-        static::addGlobalScope(function ($query) {
-            $query->where('status','!=', self::STATUS_DELETED);
-        });
+        parent::boot(); // Always call the parent boot first
 
-        parent::boot();
+        // Ensure the user is authenticated
+        $user = auth()->user();
+
+        if ($user) {
+            // Add global scope for filtering by user's state
+            if ($user->branch_id == User::BRANCH_STATE) {
+                $user_city = $user->state_id;
+
+                static::addGlobalScope('cityStateScope', function ($query) use ($user_city) {
+                    $query->whereHas('organization', function ($query) use ($user_city) {
+                        $query->whereHas('city', function ($query) use ($user_city) {
+                            $query->where('state_id', '=', $user_city);
+                        });
+                    });
+                });
+            }
+            if ($user->crop_branch == User::CROP_BRANCH_CHIGIT) {
+                // Add global scope for filtering by chigit's apps
+                static::addGlobalScope('chigitAppScope', function ($query) {
+                    $query->whereHas('crops', function ($query) {
+                        $query->where('name_id', '=', 2);
+                    });
+                });
+            } elseif ($user->crop_branch == User::CROP_BRANCH_TOLA) {
+                // Add global scope for filtering by chigit's apps
+                static::addGlobalScope('chigitAppScope', function ($query) {
+                    $query->whereHas('crops', function ($query) {
+                        $query->where('name_id', '=', 1);
+                    });
+                });
+            }
+        }
+
+        // Add global scope to exclude deleted status
+        static::addGlobalScope('nonDeletedStatusScope', function ($query) {
+            $query->where('status', '!=', self::STATUS_DELETED);
+        });
     }
+
 
 }

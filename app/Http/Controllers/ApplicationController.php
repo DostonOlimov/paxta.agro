@@ -3,101 +3,69 @@
 namespace App\Http\Controllers;
 
 
+use App\Filters\V1\ApplicationFilter;
 use App\Models\Application;
 use App\Models\AppStatusChanges;
 use App\Models\CropData;
+use App\Models\CropsName;
 use App\Models\OrganizationCompanies;
+use App\Models\Region;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\DefaultModels\tbl_activities;
-use App\Models\User;
+use Symfony\Component\HttpFoundation\Response;
 
 class ApplicationController extends Controller
 {
-    public function applicationlist(Request $request)
+    public function applicationlist(Request $request, ApplicationFilter $filter)
     {
+//        try {
+            // Default sorting by 'id' and order by 'desc'
+            $sort_by = $request->get('sort_by', 'id');
+            $sort_order = $request->get('sort_order', 'desc');
 
-        $user = Auth::User();
-        $city = $request->input('city');
-        $crop = $request->input('crop');
-        $from = $request->input('from');
-        $till = $request->input('till');
+            // Extract filters from request
+            $filters = $this->getFilters($request, $filter);
 
-        $sort_by = $request->get('sort_by', 'id'); // default sorting by 'id'
-        $sort_order = $request->get('sort_order', 'desc'); // default order is ascending
+            // Initialize filter values for use in the view
+            $filterValues = array_map(fn($conditions) => reset($conditions), $filters);
 
-        // Validate the sort_by column to prevent SQL injection
-        $columns = ['id', 'status', 'date','organization','amount']; // Add your table columns here
-        if (!in_array($sort_by, $columns)) {
-            $sort_by = 'id';
-        }
+            // Start building the query
+            $query = Application::query();
 
-        $apps = Application::with('organization')
-            ->with('crops')
-            ->with('crops.name')
-            ->with('crops.type');
-        if($user->branch_id == User::BRANCH_STATE ){
-            $user_city = $user->state_id;
-            $apps = $apps->whereHas('organization', function ($query) use ($user_city) {
-                $query->whereHas('city', function ($query) use ($user_city) {
-                    $query->where('state_id', '=', $user_city);
-                });
-            });
-        }
-        if ($from && $till) {
-            $fromTime = join('-', array_reverse(explode('-', $from)));
-            $tillTime = join('-', array_reverse(explode('-', $till)));
-            $apps = $apps->whereDate('date', '>=', $fromTime)
-                ->whereDate('date', '<=', $tillTime);
-        }
-        if ($city) {
-            $apps = $apps->whereHas('organization', function ($query) use ($city) {
-                $query->whereHas('city', function ($query) use ($city) {
-                    $query->where('state_id', '=', $city);
-                });
-            });
-        }
-        if ($crop) {
-            $apps = $apps->whereHas('crops', function ($query) use ($crop) {
-                    $query->where('name_id', '=', $crop);
-            });
-        }
-        $apps->when($request->input('s'), function ($query, $searchQuery) {
-            $query->where(function ($query) use ($searchQuery) {
-                if (is_numeric($searchQuery)) {
-                    $query->orWhere('app_number', $searchQuery);
-                } else {
-                    $query->whereHas('crops.name', function ($query) use ($searchQuery) {
-                            $query->where('name', 'like', '%' . addslashes($searchQuery) . '%');
-                    })->orWhereHas('crops.type', function ($query) use ($searchQuery) {
-                        $query->where('name', 'like', '%' . addslashes($searchQuery) . '%');
-                    })->orWhereHas('crops.generation', function ($query) use ($searchQuery) {
-                        $query->where('name', 'like', '%' . addslashes($searchQuery) . '%');
-                    });
+            // Apply filters and sorting to the query
+            $filteredQuery = $filter->apply($query, $filters);
+            $sortedQuery = $filter->applySorting($filteredQuery, $sort_by, $sort_order);
 
-                }
-            });
-        });
-        if ($sort_by == 'organization') {
-            $apps->join('organization_companies', 'applications.organization_id', '=', 'organization_companies.id')
-                ->orderBy('organization_companies.name', $sort_order);
-        } elseif ($sort_by == 'amount') {
-            $apps->join('crop_data', 'applications.crop_data_id', '=', 'crop_data.id')
-                ->orderBy('crop_data.amount', $sort_order);
-        }else{
-            $apps->orderBy($sort_by, $sort_order);
-        }
+            // Arrays for filter selects
+            $all_status = Application::getStatus();
+            $names = CropsName::all();
+            $states = Region::all();
+            $years = CropData::getYear();
 
-        $apps = $apps->paginate(50)
-            ->appends(['s' => $request->input('s')])
-            ->appends(['till' => $request->input('till')])
-            ->appends(['from' => $request->input('from')])
-            ->appends(['city' => $request->input('city')])
-            ->appends(['crop' => $request->input('crop')])
-            ->appends(['sort_by' => $sort_by, 'sort_order' => $sort_order]);
-        return view('application.list', compact('apps','from','till','city','crop', 'sort_by', 'sort_order'));
+            // Fetch organization data if companyId filter is applied
+            $organization = $filterValues['companyId'] ?? null
+                    ? OrganizationCompanies::find($filterValues['companyId'])
+                    : null;
+
+            // Fetch the paginated results with relationships
+            $apps = $sortedQuery->with(['crops', 'organization', 'prepared'])
+                ->paginate(50);
+
+            // Return the view with necessary data
+            return view('application.list', compact(
+                'apps', 'all_status', 'names', 'years', 'organization',
+                'filterValues', 'sort_by', 'sort_order', 'states'
+            ));
+
+//        } catch (\Throwable $e) {
+//            // Log the error for debugging
+//            \Log::error($e);
+//            return $this->errorResponse('An unexpected error occurred', [], Response::HTTP_INTERNAL_SERVER_ERROR);
+//        }
     }
+
 
 
     // application addform
@@ -252,6 +220,11 @@ class ApplicationController extends Controller
          $changes->save();
 
         return redirect('application/list')->with('message', 'Successfully Submitted');
+    }
+
+    private function getFilters(Request $request, ApplicationFilter $filter): array
+    {
+        return $request->only(array_keys($filter->safeParams));
     }
 
 }
