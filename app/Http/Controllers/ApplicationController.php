@@ -20,7 +20,7 @@ class ApplicationController extends Controller
 {
     public function applicationlist(Request $request, ApplicationFilter $filter)
     {
-        try {
+//        try {
             // Default sorting by 'id' and order by 'desc'
             $sort_by = $request->get('sort_by', 'id');
             $sort_order = $request->get('sort_order', 'desc');
@@ -32,7 +32,8 @@ class ApplicationController extends Controller
             $filterValues = array_map(fn($conditions) => reset($conditions), $filters);
 
             // Start building the query
-            $query = Application::query();
+            $query = Application::query()
+                ->select('applications.id as application_id', 'applications.*');
 
             // Apply filters and sorting to the query
             $filteredQuery = $filter->apply($query, $filters);
@@ -58,12 +59,12 @@ class ApplicationController extends Controller
                 'apps', 'all_status', 'names', 'years', 'organization',
                 'filterValues', 'sort_by', 'sort_order', 'states'
             ));
-
-        } catch (\Throwable $e) {
-            // Log the error for debugging
-            \Log::error($e);
-            return $this->errorResponse('An unexpected error occurred', [], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
+//
+//        } catch (\Throwable $e) {
+//            // Log the error for debugging
+//            \Log::error($e);
+//            return $this->errorResponse('An unexpected error occurred', [], Response::HTTP_INTERNAL_SERVER_ERROR);
+//        }
     }
 
 

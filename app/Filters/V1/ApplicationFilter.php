@@ -78,7 +78,7 @@ class ApplicationFilter extends ApiFilter
         }
         elseif ($key === 'stateId') {
             $query->join('organization_companies', 'applications.organization_id', '=', 'organization_companies.id')
-                ->join('tbl_cities', 'organization_companies.city_id', '=', 'tbl_cities.id');
+                ->join('tbl_cities as cities', 'organization_companies.city_id', '=', 'cities.id');
         }
     }
 
@@ -90,7 +90,7 @@ class ApplicationFilter extends ApiFilter
         $joinColumnMap = [
             'nameId' => 'crop_data.name_id',
             'partyNumber' => 'crop_data.party_number',
-            'stateId' => 'tbl_cities.state_id',
+            'stateId' => 'cities.state_id',
             'cityId' => 'organization_companies.city_id',
             'year' => 'crop_data.year'
         ];

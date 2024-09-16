@@ -43,7 +43,8 @@ class DecisionController extends Controller
             $filterValues = array_map(fn($conditions) => reset($conditions), $filters);
 
             // Start building the query
-            $query = Application::query();
+            $query = Application::query()
+                ->select('applications.id as application_id', 'applications.*');
 
             // Apply filters and sorting to the query
             $filteredQuery = $filter->apply($query, $filters);

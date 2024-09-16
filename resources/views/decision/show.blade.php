@@ -2,7 +2,7 @@
 
 @section('content')
     @can('view', \App\Models\User::class)
-        @php $address = $decision->laboratory->full_address  @endphp
+        @php $address = $decision->laboratory->address_kod . ' ' . $decision->laboratory->full_address  @endphp
     <div class=" content-area ">
         <div class="page-header">
             <h4 class="page-title mb-0" style="color:white">Qaror</h4>

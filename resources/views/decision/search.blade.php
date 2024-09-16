@@ -111,12 +111,12 @@
                                                     id="stateId">
                                                 <option value="" selected>Viloyat nomini tanlang</option>
                                                 @if (!empty($states))
-                                                    @foreach ($states as $name)
-                                                        <option value="{{ $name->id }}"
-                                                                @if (isset($filterValues['stateId']) && $filterValues['stateId'] == $name->id)
+                                                    @foreach ($states as $state)
+                                                        <option value="{{ $state->id }}"
+                                                                @if (isset($filterValues['stateId']) && $filterValues['stateId'] == $state->id)
                                                                 selected
                                                             @endif>
-                                                            {{ $name->name }} </option>
+                                                            {{ $state->name }} </option>
                                                     @endforeach
                                                 @endif
                                             </select>
@@ -199,7 +199,7 @@
 
                                                 @else
                                                 <td>
-                                                    <a href="{!! url('/decision/add/'.$app->id) !!}"><button type="button" class="btn btn-round btn-success"><i class="fa fa-plus-circle"></i> {{trans('app.Qo\'shish')}} &nbsp;</button></a>
+                                                    <a href="{!! url('/decision/add/'. $app->id) !!}"><button type="button" class="btn btn-round btn-success"><i class="fa fa-plus-circle"></i> {{trans('app.Qo\'shish')}} &nbsp;</button></a>
                                                 </td>
                                                 <td></td>
                                             @endif
