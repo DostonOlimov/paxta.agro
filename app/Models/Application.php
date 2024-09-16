@@ -176,6 +176,4 @@ class Application extends Model
             });
         });
     }
-
-
 }
