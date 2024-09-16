@@ -131,7 +131,7 @@ class Application extends Model
 
     protected static function boot()
     {
-        $year =  session('year') ?  session('year') : 2023;
+        $year =  session('year') ?  session('year') : 2024;
 
         parent::boot(); // Always call the parent boot first
 
