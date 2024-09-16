@@ -24,6 +24,7 @@ Route::get('/home2', ['middleware' => 'auth', 'uses' => '\App\Http\Controllers\H
 //Route::get('/', ['middleware' => 'auth','\App\Http\Controllers\DashboardController@index'])->name('home');
 Route::get('/', ['middleware' => 'auth', 'uses' => '\App\Http\Controllers\HomeController@dashboard']);
 Route::post('/change-language', [\App\Http\Controllers\LanguageController::class, 'changeLanguage']);
+Route::post('/change-year', [\App\Http\Controllers\LanguageController::class, 'changeYear']);
 
 //profile
 Route::get('/full-report', '\App\Http\Controllers\ReportController@report')->name('report.full_report');

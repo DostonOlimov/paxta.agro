@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    @can('accept', $user)
+    @can('accept', $app)
         <style>
             .right_side .table_row, .member_right .table_row {
                 border-bottom: 1px solid #dedede;
@@ -35,12 +35,12 @@
                     </div>
                 </div>
             @endif
-            @if ($user->status == \App\Models\Application::STATUS_REJECTED)
+            @if ($app->status == \App\Models\Application::STATUS_REJECTED)
                 <div class="row massage">
                     <div class="col-md-12 col-sm-12">
                         <div class="alert alert-danger text-center">
                             <label for="checkbox-10 colo_danger">Ariza rad etilgan.
-                                {{-- {{ optional($user->comment)->comment }} --}}
+                                {{-- {{ optional($app->comment)->comment }} --}}
                             </label>
                         </div>
                     </div>
@@ -54,26 +54,26 @@
                                 <div class="tab_wrapper page-tab">
                                     <ul class="tab_list">
                                         <li class="btn-warning">
-                                            <a class="text-light" href="{{  url('/application/list') }}">
+                                            <a class="text-light" href="{{  url()->previous() }}">
                                                 <span class="visible-xs"></span>
                                                 <i class="fa fa-arrow-left">&nbsp;</i> {{trans('app.Orqaga')}}
                                             </a>
                                         </li>
                                         <li class="btn-primary">
-                                            <a class="text-light" href="{!! url('/application/edit/'.$user->id)!!}">
+                                            <a class="text-light" href="{!! url('/application/edit/'.$app->id)!!}">
                                                 <span class="visible-xs"></span>
                                                 <i class="fa fa-edit fa-lg">&nbsp;</i> {{ trans('app.Edit')}}
                                             </a>
                                         </li>
-                                        @if($user->status == \App\Models\Application::STATUS_NEW)
+                                        @if($app->status == \App\Models\Application::STATUS_NEW)
                                         <li class="btn-success">
-                                            <a class="text-light sa-warning" url="{!! url('/application/accept/'.$user->id)!!}">
+                                            <a class="text-light sa-warning" url="{!! url('/application/accept/'.$app->id)!!}">
                                                 <span class="visible-xs"></span>
                                                 <i class="fa fa-check fa-lg">&nbsp;</i> Qabul qilish
                                             </a>
                                         </li>
                                         <li class="btn-danger">
-                                            <a class="text-light" href="{!! url('/application/reject/'.$user->id)!!}">
+                                            <a class="text-light" href="{!! url('/application/reject/'.$app->id)!!}">
                                                 <span class="visible-xs"></span>
                                                 <i class="fa fa-times fa-lg">&nbsp;</i> Rad etish
                                             </a>
@@ -94,18 +94,18 @@
                                                 </div>
                                                 <div class="col-md-7 col-sm-12 table_td">
                                             <span class="txt_color">
-                                                {{ \Carbon\Carbon::parse($user->date)->format('d.m.Y') }}
+                                                {{ \Carbon\Carbon::parse($app->date)->format('d.m.Y') }}
                                             </span>
                                                 </div>
                                             </div>
-                                            @if(isset($user->user->name))
+                                            @if(isset($app->user->name))
                                             <div class="table_row row">
                                                 <div class="col-md-5 col-sm-12 table_td">
                                                     <b>Xodim</b>
                                                 </div>
                                                 <div class="col-md-7 col-sm-12 table_td">
                                             <span class="txt_color">
-                                                {{ $user->user->name . ' ' . $user->user->lastname }}
+                                                {{ $app->user->name . ' ' . $app->user->lastname }}
                                             </span>
                                                 </div>
                                             </div>
@@ -116,7 +116,7 @@
                                                 </div>
                                                 <div class="col-md-7 col-sm-12 table_td">
                                             <span class="txt_color">
-                                                {{ optional($user->prepared)->name  }}
+                                                {{ optional($app->prepared)->name  }}
                                             </span>
                                                 </div>
                                             </div>
@@ -126,7 +126,7 @@
                                                 </div>
                                                 <div class="col-md-7 col-sm-12 table_td">
                                             <span class="txt_color">
-                                                {{ optional($user->crops->name)->name  }}
+                                                {{ optional($app->crops->name)->name  }}
                                             </span>
                                                 </div>
                                             </div>
@@ -137,7 +137,7 @@
                                                 </div>
                                                 <div class="col-md-7 col-sm-12 table_td">
                                             <span class="txt_color">
-                                                {{ optional($user->crops)->kodtnved  }}
+                                                {{ optional($app->crops)->kodtnved  }}
                                             </span>
                                                 </div>
                                             </div>
@@ -147,7 +147,7 @@
                                                 </div>
                                                 <div class="col-md-7 col-sm-12 table_td">
                                             <span class="txt_color">
-                                                {{ optional($user->crops)->party_number  }}
+                                                {{ optional($app->crops)->party_number  }}
                                             </span>
                                                 </div>
                                             </div>
@@ -157,7 +157,7 @@
                                                 </div>
                                                 <div class="col-md-7 col-sm-12 table_td">
                                             <span class="txt_color">
-                                                {{ optional($user->crops)->amount_name  }}
+                                                {{ optional($app->crops)->amount_name  }}
                                             </span>
                                                 </div>
                                             </div>
@@ -167,7 +167,17 @@
                                                 </div>
                                                 <div class="col-md-7 col-sm-12 table_td">
                                             <span class="txt_color">
-                                                {{ optional($user->crops)->year  }}
+                                                {{ optional($app->crops)->year  }}
+                                            </span>
+                                                </div>
+                                            </div>
+                                            <div class="table_row row">
+                                                <div class="col-md-5 col-sm-12 table_td">
+                                                    <b>Sertifikatalashtirish sxemasi</b>
+                                                </div>
+                                                <div class="col-md-7 col-sm-12 table_td">
+                                            <span class="txt_color">
+                                                {{ optional($app->crops)->sxeme_number  }}
                                             </span>
                                                 </div>
                                             </div>
@@ -247,9 +257,9 @@
                                                 </div>
                                             </div>
 
-                                                @can('edit', $user)
+                                                @can('edit', $app)
                                                     <div class="col-12 text-right m-2">
-                                                        <a href="/application/edit/{{ $user->id }}">
+                                                        <a href="/application/edit/{{ $app->id }}">
                                                             <button class="btn btn-primary">O'zgartirish</button>
                                                         </a>
                                                     </div>

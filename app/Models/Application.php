@@ -131,6 +131,8 @@ class Application extends Model
 
     protected static function boot()
     {
+        $year =  session('year') ?  session('year') : 2023;
+
         parent::boot(); // Always call the parent boot first
 
         // Ensure the user is authenticated
@@ -167,8 +169,11 @@ class Application extends Model
         }
 
         // Add global scope to exclude deleted status
-        static::addGlobalScope('nonDeletedStatusScope', function ($query) {
-            $query->where('status', '!=', self::STATUS_DELETED);
+        static::addGlobalScope('nonDeletedStatusScope', function ($query) use ($year) {
+            $query->where('status', '!=', self::STATUS_DELETED)
+                ->whereHas('crops', function ($query) use ($year) {
+                    $query->where('year', '=', $year);
+            });
         });
     }
 

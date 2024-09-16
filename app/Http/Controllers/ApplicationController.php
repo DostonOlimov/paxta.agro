@@ -20,7 +20,7 @@ class ApplicationController extends Controller
 {
     public function applicationlist(Request $request, ApplicationFilter $filter)
     {
-//        try {
+        try {
             // Default sorting by 'id' and order by 'desc'
             $sort_by = $request->get('sort_by', 'id');
             $sort_order = $request->get('sort_order', 'desc');
@@ -59,11 +59,11 @@ class ApplicationController extends Controller
                 'filterValues', 'sort_by', 'sort_order', 'states'
             ));
 
-//        } catch (\Throwable $e) {
-//            // Log the error for debugging
-//            \Log::error($e);
-//            return $this->errorResponse('An unexpected error occurred', [], Response::HTTP_INTERNAL_SERVER_ERROR);
-//        }
+        } catch (\Throwable $e) {
+            // Log the error for debugging
+            \Log::error($e);
+            return $this->errorResponse('An unexpected error occurred', [], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
 
@@ -87,55 +87,54 @@ class ApplicationController extends Controller
     public function store(Request $request)
     {
         $this->authorize('create', Application::class);
-        $userA = Auth::user();
-        $crop = new CropData();
-        $crop->name_id = $request->input('name');
-        $crop->country_id = $request->input('country');
-        $crop->kodtnved = $request->input('tnved');
-        $crop->party_number = $request->input('party_number');
-        $crop->measure_type = $request->input('measure_type');
-        $crop->amount = $request->input('amount');
-        $crop->year = $request->input('year');
-        $crop->toy_count = $request->input('toy_count');
-        $crop->sxeme_number = 7;
-        $crop->save();
-        $id = $crop->id;
 
-        $app = new Application();
-        $app->crop_data_id = $id;
-        $app->organization_id = $request->input('organization');
-        $app->prepared_id = $request->input('prepared');
-        $app->type = Application::TYPE_1;
-        $app->date = join('-', array_reverse(explode('-', $request->input('dob'))));
-        $app->status = Application::STATUS_FINISHED;
-        $app->data = $request->input('data');
-        $app->created_by = $userA->id;
-        $app->save();
+        $user = Auth::user();
 
-        $active = new tbl_activities;
-        $active->ip_adress = $_SERVER['REMOTE_ADDR'];
-        $active->user_id = $userA->id;
-        $active->action_id = $app->id;
-        $active->action_type = 'app_add';
-        $active->action = "Ariza qo'shildi";
-        $active->time = date('Y-m-d H:i:s');
-        $active->save();
+        $crop = CropData::create([
+            'name_id'       => $request->input('name'),
+            'country_id'    => $request->input('country'),
+            'kodtnved'      => $request->input('tnved'),
+            'party_number'  => $request->input('party_number'),
+            'measure_type'  => $request->input('measure_type'),
+            'amount'        => $request->input('amount'),
+            'year'          => $request->input('year'),
+            'toy_count'     => $request->input('toy_count'),
+            'sxeme_number'  => $request->input('sxeme_number'),
+        ]);
 
-        return redirect('/application/list')->with('message', 'Successfully Submitted');
+        $application = Application::create([
+            'crop_data_id'     => $crop->id,
+            'organization_id'  => $request->input('organization'),
+            'prepared_id'      => $request->input('prepared'),
+            'type'             => Application::TYPE_1,
+            'date'             => $request->input('dob') ? date('Y-m-d', strtotime($request->input('dob'))) : null,
+            'status'           => Application::STATUS_FINISHED,
+            'data'             => $request->input('data'),
+            'created_by'       => $user->id,
+        ]);
 
+        tbl_activities::create([
+            'ip_adress'   => request()->ip(),
+            'user_id'     => $user->id,
+            'action_id'   => $application->id,
+            'action_type' => 'app_add',
+            'action'      => "Ariza qo'shildi",
+            'time'        => now(),
+        ]);
+
+        return redirect()->route('listapplication')->with('message', 'Successfully Submitted');
     }
 
     // application edit
 
     public function edit($id)
     {
-        $editid = $id;
         $title = "Arizani o'zgartirish";
-        $app = Application::find($editid);
+        $app = Application::findOrFail($id); // Use findOrFail to handle missing records
 
         $type = Application::getType();
-        $names = DB::table('crops_name')->get()->toArray();
-        $countries = DB::table('tbl_countries')->get()->toArray();
+        $names = DB::table('crops_name')->get();
+        $countries = DB::table('tbl_countries')->get();
         $measure_types = CropData::getMeasureType();
         $year = CropData::getYear();
 
@@ -143,85 +142,98 @@ class ApplicationController extends Controller
     }
 
 
-    // application update
+// application update
 
     public function update($id, Request $request)
     {
-        $userA = Auth::user();
-        $app = Application::find($id);
+        $user = Auth::user();
+        $app = Application::findOrFail($id); // Use findOrFail for better error handling
 
-        $app->organization_id = $request->input('organization');
-        $app->prepared_id = $request->input('prepared');
-        $app->date = join('-', array_reverse(explode('-', $request->input('dob'))));
-        $app->data = $request->input('data');
-        $app->save();
+        $app->update([
+            'organization_id' => $request->input('organization'),
+            'prepared_id'     => $request->input('prepared'),
+            'date'            => $request->input('dob') ? date('Y-m-d', strtotime($request->input('dob'))) : null,
+            'data'            => $request->input('data'),
+        ]);
 
-        $crop =CropData::find($app->crop_data_id);
-        $crop->name_id = $request->input('name');
-        $crop->country_id = $request->input('country');
-        $crop->kodtnved = $request->input('tnved');
-        $crop->party_number = $request->input('party_number');
-        $crop->measure_type = $request->input('measure_type');
-        $crop->amount = $request->input('amount');
-        $crop->year = $request->input('year');
-        $crop->toy_count = $request->input('toy_count');
-        $crop->save();
+        $crop = CropData::findOrFail($app->crop_data_id); // Same for CropData
 
-        $active = new tbl_activities;
-        $active->ip_adress = $_SERVER['REMOTE_ADDR'];
-        $active->user_id = $userA->id;
-        $active->action_id = $app->id;
-        $active->action_type = 'app_edit';
-        $active->action = "Ariza O'zgartirildi";
-        $active->time = date('Y-m-d H:i:s');
-        $active->save();
-        return redirect('/application/list')->with('message', 'Successfully Updated');
+        $crop->update([
+            'name_id'       => $request->input('name'),
+            'country_id'    => $request->input('country'),
+            'kodtnved'      => $request->input('tnved'),
+            'party_number'  => $request->input('party_number'),
+            'measure_type'  => $request->input('measure_type'),
+            'amount'        => $request->input('amount'),
+            'year'          => $request->input('year'),
+            'toy_count'     => $request->input('toy_count'),
+            'sxeme_number'     => $request->input('sxeme_number'),
+        ]);
 
+        tbl_activities::create([
+            'ip_adress'   => request()->ip(),
+            'user_id'     => $user->id,
+            'action_id'   => $app->id,
+            'action_type' => 'app_edit',
+            'action'      => "Ariza O'zgartirildi",
+            'time'        => now(),
+        ]);
+
+        return redirect()->route('listapplication')->with('message', 'Successfully Updated');
     }
 
     public function showapplication($id)
     {
-        $user = Application::findOrFail($id);
-        $company = OrganizationCompanies::with('city')->findOrFail($user->organization_id);
+        $app = Application::findOrFail($id);
+        $company = OrganizationCompanies::with('city')->findOrFail($app->organization_id);
 
-        return view('application.show', compact('user','company'));
+        return view('application.show', compact('app', 'company'));
     }
 
+    //accept online applications
     public function accept($id)
     {
-        $app = Application::find($id);
+        $app = Application::findOrFail($id);
         $this->authorize('update', $app);
-        $app->status = Application::STATUS_ACCEPTED;
-        $app->progress = Application::PROGRESS_ANSWERED;
-        $app->accepted_date = date('Y-m-d');
-        $app->accepted_id = Auth::user()->id;
-        $app->save();
-        return redirect('application/list')->with('message', 'Successfully Submitted');
-    }
-    public function reject(Request $request, $id)
-    {
-         $app = Application::find($id);
 
-         return view('application.reject', compact('app'));
+        $app->update([
+            'status'       => Application::STATUS_ACCEPTED,
+            'progress'     => Application::PROGRESS_ANSWERED,
+            'accepted_date'=> now(),
+            'accepted_id'  => Auth::id(),
+        ]);
+
+        return redirect()->route('listapplication')->with('message', 'Successfully Accepted');
     }
+
+    //reject online applications
+    public function reject($id)
+    {
+        $app = Application::findOrFail($id);
+
+        return view('application.reject', compact('app'));
+    }
+
     public function reject_store(Request $request)
     {
-        $app_id = $request->input('app_id');
-        $reason = $request->input('reason');
-        $app = Application::find($app_id);
+        $app = Application::findOrFail($request->input('app_id'));
         $this->authorize('accept', $app);
-        $app->status = Application::STATUS_REJECTED;
-        $app->save();
-         $changes = new AppStatusChanges();
-         $changes->app_id = $app_id;
-         $changes->status = Application::STATUS_REJECTED;
-         $changes->comment = $reason;
-         $changes->user_id = Auth::user()->id;
-         $changes->save();
 
-        return redirect('application/list')->with('message', 'Successfully Submitted');
+        $app->update([
+            'status' => Application::STATUS_REJECTED,
+        ]);
+
+        AppStatusChanges::create([
+            'app_id'  => $app->id,
+            'status'  => Application::STATUS_REJECTED,
+            'comment' => $request->input('reason'),
+            'user_id' => Auth::id(),
+        ]);
+
+        return redirect()->route('listapplication')->with('message', 'Application Rejected Successfully');
     }
 
+    //getting safe params for filter
     private function getFilters(Request $request, ApplicationFilter $filter): array
     {
         return $request->only(array_keys($filter->safeParams));

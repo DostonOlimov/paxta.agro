@@ -45,6 +45,7 @@
                 $('#application-id').text(currentdecision.number)
                 $('#application-organization').text(currentdecision.application.organization.name)
                 $('#crop-name').text(currentdecision.application.crops.name.name)
+                $('#sxeme-number').text(currentdecision.application.crops.sxeme_number)
                 $('#crop-tnved').text(currentdecision.application.crops.kodtnved)
 
                 $('#laboratory-address').text(address)

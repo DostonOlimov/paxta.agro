@@ -28,31 +28,50 @@
               Sertifikatlashtirish uchun berilgan arizasini koʼrib chiqib quyidagilarni ma'lum qilamiz:
                 </h3>
 
-                <h3 class=" text-left">
-                    1. Sertifikatlashtirish ishlari _____7______ - sxemasi bo‘yicha o‘tkaziladi.
-                </h3>
+    <ol class="text-left" style="font-size: 22px;">
+        <li>
+            Sertifikatlashtirish ishlari ______<span id="sxeme-number"></span>_____ - sxemasi bo‘yicha o‘tkaziladi.
+        </li>
 
-                <h3 class="text-left">
-                    2. Sertifikatlashtirish uchun sinovlar  <span id="laboratory-name"></span>da (akkreditatsiya guvohnomasi
-                    <span id="laboratory-certificate"></span>, manzil:      <span id="laboratory-address"></span> ) amalga oshiriladi.
-                </h3>
+        <li>
+            Sertifikatlashtirish uchun sinovlar <span id="laboratory-name"></span>da (akkreditatsiya guvohnomasi
+            <span id="laboratory-certificate"></span>, manzil: <span id="laboratory-address"></span>) amalga oshiriladi.
+        </li>
 
-                <h3 class=" text-left">
-                    3. Sertifikatlashtirish &nbsp;<span id="nds-type"></span>&nbsp;  <span id="nds-number"></span>&nbsp; <span id="nds-name"></span>
-                     talablariga muvofiq amalga oshiriladi.
-                </h3>
+        <li>
+            Sertifikatlashtirish
+            @if(optional(optional($decision->application)->crops)->name_id == 2)
+                UzTR 99-007:2016;
+            @endif
+            &nbsp;<span id="nds-type"></span>&nbsp;<span id="nds-number"></span>&nbsp;<span id="nds-name"></span>
+            talablariga muvofiq amalga oshiriladi.
+        </li>
+        @if(optional(optional($decision->application)->crops)->sxeme_number == 3)
+            <li>
+                Ishlab chiqarishni tekshirish:  {{optional(optional($decision->application)->organization)->name }}.<br>
+               <span style="font-size: 18px;">manzil:</span> {{optional(optional(optional(optional($decision->application)->organization)->area)->region)->name }}  {{optional(optional(optional($decision->application)->organization)->area)->name }} {{optional(optional($decision->application)->organization)->address }}
+               <span style="font-size: 18px;"><br> tekshirish turi:</span>Sertifikatlashtirish
+            </li>
+        @else
+            <li>
+                Ishlab chiqarishni tekshirish: Sertifikatlash sxemasida nazarda tutilmagan.
+            </li>
+        @endif
 
-                <h3 class=" text-left">
-                    4. Ishlab chiqarishni tekshirish: Sertifikatlash sxemasida nazarda tutilmagan.
-                </h3>
+        <li>
+            To‘lov turi: Shartnoma asosida.
+        </li>
 
-                <h3 class=" text-left">
-                    5. To‘lov turi: Shartnoma asosida.
-                </h3>
+        <li>
+            Sertifikatlashtirish uchun talab etiladi:
+            @if(optional(optional($decision->application)->crops)->name_id == 2)
+                {{$decision->application->data}}
+            @else
+                To'daga tegishli barcha ma'lumotlar.
+            @endif
+        </li>
+    </ol>
 
-                <h3 class=" text-left">
-                    6. Sertifikatlashtirish uchun talab etiladi: To'daga tegishli barcha ma'lumotlar.
-                </h3>
 
 </div>
 

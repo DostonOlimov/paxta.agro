@@ -24,11 +24,7 @@ class TestPrograms  extends Model
 
     protected $fillable = [
         'app_id',
-        'count',
-        'measure_type',
-        'weigth',
-        'created_by',
-        'updated_by',
+        'director_id',
     ];
 
     public function application(): BelongsTo

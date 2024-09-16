@@ -13,4 +13,11 @@ class LanguageController extends Controller
         session(['language'=>$language]);
         return response()->json(['success' => true]);
     }
+    public function changeYear(Request $request)
+    {
+        $year = $request->input('year');
+
+        session(['year'=>$year]);
+        return response()->json(['success' => true]);
+    }
 }
