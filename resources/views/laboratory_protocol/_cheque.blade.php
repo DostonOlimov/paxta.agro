@@ -34,7 +34,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
             nazorat qilish Inspektsiyasi qoshidagi<br> --}}
                 “Qishloq xoʻjaligi mahsulotlari sifatini baholash markazi” davlat muassasasining.<br>
                 {{ $test->test_program->application->decision->laboratory->name }} <br>
-                <span style="font-size: 23px !important">Davlat reestri raqami {{ $test->test_program->application->decision->laboratory->certificate . ' ' . $test->test_program->application->decision->laboratory->address }}</span>
+                <span style="font-size: 23px !important">Davlat reestri raqami {{ $test->test_program->application->decision->laboratory->certificate . ' ' . $test->test_program->application->decision->laboratory->full_address }}</span>
             </b>
         </h2>
         <div style="display: flex; justify-content: end; padding-right: 12%;">
