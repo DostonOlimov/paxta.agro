@@ -27,9 +27,6 @@
                     </div>
                 </div>
             @endif
-        <!-- filter component -->
-            <x-filter :crop="$crop" :city="$city" :from="$from" :till="$till"  />
-            <!--filter component -->
 
             <div class="row">
                 <div class="col-md-12">
@@ -99,26 +96,26 @@
                                     @php
                                         $offset = (request()->get('page', 1) - 1) * 50;
                                     @endphp
-                                    @foreach($tests as $test)
+                                    @foreach($apps as $app)
                                         <tr>
                                             <td>{{$offset + $loop->iteration}}</td>
-                                            <td>{{ optional(optional($test->test_program->application)->decision)->number }}</td>
-                                            <td> {{ optional($test->test_program->application->crops)->party_number }}</td>
-                                            <td> {{ $test->date }}</td>
-                                            <td>{{ optional($test->test_program)->application->prepared->name }} - {{ optional($test->test_program)->application->prepared->kod }}</td>
-                                            <td>{{ optional($test->test_program)->application->crops->name->name }}</td>
-                                            <td @if(! $test->akt_amount_sum_amount) class="text-danger" @endif>{{ $test->akt_amount_sum_amount ? $test->akt_amount_sum_amount - $test->toy_count * $test->tara : 0 }} kg</td>
-                                            <td class="text-center">{{ $test->tara }}<br><a href="{!! url('/dalolatnoma/tara_edit/'.$test->id) !!}"><button type="button" class="btn btn-round btn-success">{{ trans('app.Edit')}}</button></a>
+                                            <td>{{ optional(optional($app->test_program->application)->decision)->number }}</td>
+                                            <td> {{ optional($app->test_program->application->crops)->party_number }}</td>
+                                            <td> {{ $app->date }}</td>
+                                            <td>{{ optional($app->test_program)->application->prepared->name }} - {{ optional($app->test_program)->application->prepared->kod }}</td>
+                                            <td>{{ optional($app->test_program)->application->crops->name->name }}</td>
+                                            <td @if(! $app->akt_amount_sum_amount) class="text-danger" @endif>{{ $app->akt_amount_sum_amount ? $app->akt_amount_sum_amount - $app->toy_count * $app->tara : 0 }} kg</td>
+                                            <td class="text-center">{{ $app->tara }}<br><a href="{!! url('/dalolatnoma/tara_edit/'.$app->id) !!}"><button type="button" class="btn btn-round btn-success">{{ trans('app.Edit')}}</button></a>
                                             </td>
                                             <td>
-                                                <a href="{!! url('/akt_amount/view/'.$test->id) !!}"><button type="button" class="btn btn-round btn-info">{{ trans('app.View')}}</button></a>
-                                                <a href="{!! url('/akt_amount/edit/'.$test->id) !!}"><button type="button" class="btn btn-round btn-warning">{{ trans('app.Edit')}}</button></a>
+                                                <a href="{!! url('/akt_amount/view/'.$app->id) !!}"><button type="button" class="btn btn-round btn-info">{{ trans('app.View')}}</button></a>
+                                                <a href="{!! url('/akt_amount/edit/'.$app->id) !!}"><button type="button" class="btn btn-round btn-warning">{{ trans('app.Edit')}}</button></a>
                                             </td>
                                         </tr>
                                     @endforeach
                                     </tbody>
                                 </table>
-                                {{$tests->links()}}
+                                {{$apps->links()}}
                             </div>
                         </div>
                     </div>

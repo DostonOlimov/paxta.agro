@@ -46,9 +46,11 @@
             </tr>
         @endforeach
     </table>
+        @if($decision->application->crops->name_id == 1)
     <h4>
         *3,4,5 navlar uchun to'dadagi na'munalarni 10% gacha sinaladi.
     </h4>
+            @endif
 
 </div>
 

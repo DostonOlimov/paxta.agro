@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Application;
 use App\Models\DefaultModels\tbl_settings;
 use \Illuminate\Database\Eloquent\Model;
 use \Illuminate\Http\Request;
@@ -67,12 +68,6 @@ if (!function_exists('formatUzbekDate')) {
     }
 }
 
-
-const TASHKENT_LIST_ID = 26;
-
-const INVOICE_RECEIVER_MFO = '00014';
-const INVOICE_RECEIVER_TIN = '305540954';
-
 if (!function_exists('isSmsablePhone')) {
     function isSmsablePhone($val): bool
     {
@@ -94,12 +89,6 @@ if (!function_exists('prettyPhone')) {
     }
 }
 
-
-function getDocumentName($documentId)
-{
-    $doc = DB::table('documents')->where('id', '=', $documentId)->first();
-    return $doc ? $doc->name : '';
-}
 
 
 if (!function_exists('getAccessStatusUser')) {
@@ -193,23 +182,6 @@ if (!function_exists('getDatepicker')) {
 
     }
 
-}
-
-function compareIncomeEntries($a, $b)
-{
-    $aDate = strtotime($a->date);
-    $bDate = strtotime($b->date);
-    if ($aDate == $bDate) {
-        $aDate = strtotime($a->created_at);
-        $bDate = strtotime($b->created_at);
-        if ($aDate == $bDate) {
-            return 0;
-        } else {
-            return ($aDate > $bDate) ? -1 : 1;
-        }
-    } else {
-        return ($aDate > $bDate) ? -1 : 1;
-    }
 }
 
 function numberFormat($number, $format = '', $precision = 2)
@@ -529,4 +501,40 @@ function getJWTPayload($token) {
     $els = explode('.', $token);
     $base64 = str_replace(['-', '+'], ['_', '/'], $els[1]);
     return json_decode(base64_decode($base64));
+}
+
+if (! function_exists('getAppStatus')) {
+    function getAppStatus()
+    {
+        return \Illuminate\Support\Facades\Cache::remember('applications', 60*60, function () {
+            return \App\Models\Application::getStatus();
+        });
+    }
+}
+
+if (! function_exists('getCropsNames')) {
+    function getCropsNames()
+    {
+        return \Illuminate\Support\Facades\Cache::remember('crops_names', 60*60, function () {
+            return \App\Models\CropsName::all();
+        });
+    }
+}
+
+if (! function_exists('getRegions')) {
+    function getRegions()
+    {
+        return \Illuminate\Support\Facades\Cache::remember('regions', 60*60, function () {
+            return \App\Models\Region::all();
+        });
+    }
+}
+
+if (! function_exists('getCropYears')) {
+    function getCropYears()
+    {
+        return \Illuminate\Support\Facades\Cache::remember('crop_data_years', 60*60, function () {
+            return \App\Models\CropData::getYear();
+        });
+    }
 }

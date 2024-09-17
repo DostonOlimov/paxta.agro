@@ -10,6 +10,7 @@ use App\Models\CropData;
 use App\Models\CropsName;
 use App\Models\OrganizationCompanies;
 use App\Models\Region;
+use App\Services\SearchService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -18,53 +19,32 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ApplicationController extends Controller
 {
-    public function applicationlist(Request $request, ApplicationFilter $filter)
+    public function applicationlist(Request $request, ApplicationFilter $filter,SearchService $service)
     {
-//        try {
-            // Default sorting by 'id' and order by 'desc'
-            $sort_by = $request->get('sort_by', 'id');
-            $sort_order = $request->get('sort_order', 'desc');
+        try {
+            $names = getCropsNames();
+            $states = getRegions();
+            $years = getCropYears();
+            $all_status = getAppStatus();
 
-            // Extract filters from request
-            $filters = $this->getFilters($request, $filter);
+                return $service->search(
+                    $request,
+                    $filter,
+                    Application::class,
+                    [
+                        'crops',
+                        'organization',
+                        'prepared'
+                    ],
+                    compact('names', 'states', 'years','all_status'),
+                    'application.list'
+                );
 
-            // Initialize filter values for use in the view
-            $filterValues = array_map(fn($conditions) => reset($conditions), $filters);
-
-            // Start building the query
-            $query = Application::query()
-                ->select('applications.id as application_id', 'applications.*');
-
-            // Apply filters and sorting to the query
-            $filteredQuery = $filter->apply($query, $filters);
-            $sortedQuery = $filter->applySorting($filteredQuery, $sort_by, $sort_order);
-
-            // Arrays for filter selects
-            $all_status = Application::getStatus();
-            $names = CropsName::all();
-            $states = Region::all();
-            $years = CropData::getYear();
-
-            // Fetch organization data if companyId filter is applied
-            $organization = $filterValues['companyId'] ?? null
-                    ? OrganizationCompanies::find($filterValues['companyId'])
-                    : null;
-
-            // Fetch the paginated results with relationships
-            $apps = $sortedQuery->with(['crops', 'organization', 'prepared'])
-                ->paginate(50);
-
-            // Return the view with necessary data
-            return view('application.list', compact(
-                'apps', 'all_status', 'names', 'years', 'organization',
-                'filterValues', 'sort_by', 'sort_order', 'states'
-            ));
-//
-//        } catch (\Throwable $e) {
-//            // Log the error for debugging
-//            \Log::error($e);
-//            return $this->errorResponse('An unexpected error occurred', [], Response::HTTP_INTERNAL_SERVER_ERROR);
-//        }
+        } catch (\Throwable $e) {
+            // Log the error for debugging
+            \Log::error($e);
+            return $this->errorResponse('An unexpected error occurred', [], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
 
@@ -232,12 +212,6 @@ class ApplicationController extends Controller
         ]);
 
         return redirect()->route('listapplication')->with('message', 'Application Rejected Successfully');
-    }
-
-    //getting safe params for filter
-    private function getFilters(Request $request, ApplicationFilter $filter): array
-    {
-        return $request->only(array_keys($filter->safeParams));
     }
 
 }

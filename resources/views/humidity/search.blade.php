@@ -27,9 +27,6 @@
                     </div>
                 </div>
             @endif
-        <!-- filter component -->
-            <x-filter :crop="$crop" :city="$city" :from="$from" :till="$till"  />
-            <!--filter component -->
 
             <div class="row">
                 <div class="col-md-12">
@@ -97,28 +94,28 @@
                                     @php
                                         $offset = (request()->get('page', 1) - 1) * 50;
                                     @endphp
-                                    @foreach($tests as $test)
+                                    @foreach($apps as $app)
                                         <tr>
                                             <td>{{$offset + $loop->iteration}}</td>
-                                            <td>{{ optional(optional($test->test_program->application)->decision)->number }}</td>
-                                            <td> {{ optional($test->test_program->application->crops)->party_number }}</td>
-                                            <td>{{$test->date }}</td>
-                                            <td>{{ $test->test_program->application->prepared->name }} - {{ $test->test_program->application->prepared->kod }}</td>
-                                            <td>{{ $test->test_program->application->crops->name->name }}</td>
+                                            <td>{{ optional(optional($app->test_program->application)->decision)->number }}</td>
+                                            <td> {{ optional($app->test_program->application->crops)->party_number }}</td>
+                                            <td>{{$app->date }}</td>
+                                            <td>{{ $app->test_program->application->prepared->name }} - {{ $app->test_program->application->prepared->kod }}</td>
+                                            <td>{{ $app->test_program->application->crops->name->name }}</td>
                                             <td>
-                                            <?php $testid=Auth::User()->id; ?>
-                                                @if($result = $test->humidity)
+                                            <?php $appid=Auth::User()->id; ?>
+                                                @if($result = $app->humidity)
                                                     <a href="{!! url('/humidity/view/'. $result->id) !!}"><button type="button" class="btn btn-round btn-info">{{ trans('app.View')}}</button></a>
                                                     <a href="{!! url('/humidity/edit/'. $result->id) !!}"><button type="button" class="btn btn-round btn-warning">{{ trans('app.Edit')}}</button></a>
                                                 @else
-                                                    <a href="{!! url('/humidity/add/'. $test->id) !!}"><button type="button" class="btn btn-round btn-success">&nbsp;{{trans("app.Dalolatnomani kiritish")}} &nbsp;</button></a>
+                                                    <a href="{!! url('/humidity/add/'. $app->id) !!}"><button type="button" class="btn btn-round btn-success">&nbsp;{{trans("app.Dalolatnomani kiritish")}} &nbsp;</button></a>
                                                 @endif
                                             </td>
                                         </tr>
                                     @endforeach
                                     </tbody>
                                 </table>
-                                {{$tests->links()}}
+                                {{$apps->links()}}
                             </div>
                         </div>
                     </div>

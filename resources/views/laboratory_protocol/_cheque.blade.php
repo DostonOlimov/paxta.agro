@@ -20,7 +20,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
             {{-- <span style="display: block" class="text-center"><b>1/1</b></span> --}}
             <h2 class="text-center" style="font-size: 27px">
                 <b> «T A S D I Q L A Y M A N»<br>
-                    Markaziy laboratoriya boshlig‘i
+                    {{ $test->test_program->application->decision->laboratory->name }} boshlig‘i
                     <span style="padding: 5px; display: block">
                         {{ $test->laboratory_final_results->director->lastname . '. ' . substr($test->laboratory_final_results->director->name, 0, 1) }}</span>
                     <span style="padding: 5px;" id="application-date"></span> yil

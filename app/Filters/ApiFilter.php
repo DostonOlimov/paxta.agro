@@ -46,7 +46,7 @@ abstract class ApiFilter
                 ->orderBy($sortData['column'], $sort_order);
         } else {
             // Ensure you're ordering by the correct `id` column
-            $sort_by = $sort_by === 'id' ? 'applications.id' : $sort_by;
+            $sort_by = $sort_by === 'id' ? 'id' : $sort_by;
             $query->orderBy($sort_by, $sort_order);
         }
 

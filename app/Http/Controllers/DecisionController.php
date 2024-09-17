@@ -4,20 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Filters\V1\ApplicationFilter;
 use App\Models\Application;
-use App\Models\CropData;
-use App\Models\CropsName;
 use App\Models\Decision;
 use App\Models\Laboratories;
 use App\Models\Nds;
 use App\Models\DefaultModels\tbl_activities;
-use App\Models\OrganizationCompanies;
-use App\Models\Region;
 use App\Models\TestPrograms;
 use App\Models\User;
+use App\Services\SearchService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
-use Symfony\Component\HttpFoundation\Response;
 
 class DecisionController extends Controller
 {
@@ -29,48 +25,26 @@ class DecisionController extends Controller
     }
 
     //search
-    public function search(Request $request, ApplicationFilter $filter)
+    public function search(Request $request, ApplicationFilter $filter,SearchService $service)
     {
         try {
-            // Default sorting by 'id' and order by 'desc'
-            $sort_by = $request->get('sort_by', 'id');
-            $sort_order = $request->get('sort_order', 'desc');
+            $names = getCropsNames();
+            $states = getRegions();
+            $years = getCropYears();
 
-            // Extract filters from request
-            $filters = $this->getFilters($request, $filter);
-
-            // Initialize filter values for use in the view
-            $filterValues = array_map(fn($conditions) => reset($conditions), $filters);
-
-            // Start building the query
-            $query = Application::query()
-                ->select('applications.id as application_id', 'applications.*');
-
-            // Apply filters and sorting to the query
-            $filteredQuery = $filter->apply($query, $filters);
-            $sortedQuery = $filter->applySorting($filteredQuery, $sort_by, $sort_order);
-
-            // Arrays for filter selects
-            $all_status = Application::getStatus();
-            $names = CropsName::all();
-            $states = Region::all();
-            $years = CropData::getYear();
-
-            // Fetch organization data if companyId filter is applied
-            $organization = $filterValues['companyId'] ?? null
-                    ? OrganizationCompanies::find($filterValues['companyId'])
-                    : null;
-
-            // Fetch the paginated results with relationships
-            $apps = $sortedQuery->with(['crops', 'organization', 'prepared','decision'])
-                ->whereIn('status',[Application::STATUS_ACCEPTED,Application::STATUS_FINISHED])
-                ->paginate(50);
-
-            // Return the view with necessary data
-            return view('decision.search', compact(
-                'apps', 'all_status', 'names', 'years', 'organization',
-                'filterValues', 'sort_by', 'sort_order', 'states'
-            ));
+            return $service->search(
+                $request,
+                $filter,
+                Application::class,
+                [
+                    'crops',
+                    'organization',
+                    'prepared'
+                ],
+                compact('names', 'states', 'years'),
+                'decision.search',
+                [Application::STATUS_ACCEPTED, Application::STATUS_FINISHED]
+            );
 
         } catch (\Throwable $e) {
             // Log the error for debugging
@@ -229,12 +203,6 @@ class DecisionController extends Controller
 
         // Redirect with success message
         return redirect('decision/search?page=' . $request->input('page'))->with('message', 'Successfully Submitted');
-    }
-
-    //getting safe params for filter
-    private function getFilters(Request $request, ApplicationFilter $filter): array
-    {
-        return $request->only(array_keys($filter->safeParams));
     }
 
 }

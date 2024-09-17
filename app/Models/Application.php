@@ -27,7 +27,7 @@ class Application extends Model
     const PROGRESS_CONCLUSION = 6;
     const PROGRESS_FINISHED = 7;
 
-    protected $table = 'applications';
+    public $table = 'applications';
 
     protected $fillable = [
         'crop_data_id',

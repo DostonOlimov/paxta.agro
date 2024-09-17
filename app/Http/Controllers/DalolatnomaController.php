@@ -2,121 +2,62 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\V1\ApplicationFilter;
 use App\Models\AktAmount;
 use App\Models\Application;
 use App\Models\CropData;
+use App\Models\CropsName;
 use App\Models\CropsSelection;
 use App\Models\Decision;
 use App\Models\Dalolatnoma;
 use App\Models\GinBalles;
-use App\Models\Indicator;
-use App\Models\Laboratories;
-use App\Models\Nds;
+use App\Models\OrganizationCompanies;
+use App\Models\Region;
 use App\Models\Sertificate;
 use App\Models\TestPrograms;
 use App\Models\DefaultModels\tbl_activities;
-use App\Models\User;
 use App\Rules\DifferentsShtrixKod;
 use App\Rules\EqualToyCount;
+use App\Services\SearchService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Response;
 
 class DalolatnomaController extends Controller
 {
-    //search
-    public function search(Request $request)
+    public function search(Request $request, ApplicationFilter $filter,SearchService $service)
     {
-        $user = Auth::user();
-        $city = $request->input('city');
-        $crop = $request->input('crop');
-        $from = $request->input('from');
-        $till = $request->input('till');
-        $sort_by = $request->get('sort_by', 'id'); // default sorting by 'id'
-        $sort_order = $request->get('sort_order', 'desc'); // default order is ascending
+        try {
+            $names = getCropsNames();
+            $states = getRegions();
+            $years = getCropYears();
+            $all_status = getAppStatus();
 
-        // Validate the sort_by column to prevent SQL injection
-        $columns = ['id', 'party_number', 'date','organization','year']; // Add your table columns here
-        if (!in_array($sort_by, $columns)) {
-            $sort_by = 'id';
-        }
+            return $service->search(
+                $request,
+                $filter,
+                Application::class,
+                [
+                    'crops',
+                    'organization',
+                    'prepared'
+                ],
+                compact('names', 'states', 'years','all_status'),
+                'dalolatnoma.search',
+                [Application::STATUS_ACCEPTED, Application::STATUS_FINISHED],
+                true
+            );
 
-        $apps= TestPrograms::with('application')
-            ->with('application.crops.name')
-            ->with('application.crops.type')
-            ->with('application.organization');
-        if ($user->branch_id == User::BRANCH_STATE ) {
-            $user_city = $user->state_id;
-            $apps = $apps->whereHas('application.organization', function ($query) use ($user_city) {
-                $query->whereHas('city', function ($query) use ($user_city) {
-                    $query->where('state_id', '=', $user_city);
-                });
-            });
+        } catch (\Throwable $e) {
+            // Log the error for debugging
+            \Log::error($e);
+            return $this->errorResponse('An unexpected error occurred', [], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-        if ($from && $till) {
-            $fromTime = join('-', array_reverse(explode('-', $from)));
-            $tillTime = join('-', array_reverse(explode('-', $till)));
-            $apps->whereHas('application', function ($query) use ($fromTime,$tillTime) {
-                $apps = $query->whereDate('date', '>=', $fromTime)
-                    ->whereDate('date', '<=', $tillTime);
-            });
-        }
-        if ($city) {
-            $apps = $apps->whereHas('application.organization', function ($query) use ($city) {
-                $query->whereHas('city', function ($query) use ($city) {
-                    $query->where('state_id', '=', $city);
-                });
-            });
-        }
-        if ($crop) {
-            $apps = $apps->whereHas('application.crops', function ($query) use ($crop) {
-                $query->where('name_id', '=', $crop);
-            });
-        }
-        $apps->when($request->input('s'), function ($query, $searchQuery) {
-            $query->where(function ($query) use ($searchQuery) {
-                if (is_numeric($searchQuery)) {
-                    $query->whereHas('application', function ($query) use ($searchQuery) {
-                        $query->where('app_number', $searchQuery);
-                    });
-                } else {
-                    $query->whereHas('application.crops.name', function ($query) use ($searchQuery) {
-                        $query->where('name', 'like', '%' . addslashes($searchQuery) . '%');
-                    })->orWhereHas('application.crops.type', function ($query) use ($searchQuery) {
-                        $query->where('name', 'like', '%' . addslashes($searchQuery) . '%');
-                    })->orWhereHas('application.crops.generation', function ($query) use ($searchQuery) {
-                        $query->where('name', 'like', '%' . addslashes($searchQuery) . '%');
-                    });
-
-                }
-            });
-        });
-        if ($sort_by == 'organization') {
-            $apps->join('applications', 'test_programs.app_id', '=', 'applications.id')
-                ->join('organization_companies', 'applications.organization_id', '=', 'organization_companies.id')
-                ->orderBy('organization_companies.name', $sort_order);
-        } elseif ($sort_by == 'party_number') {
-            $apps->join('applications', 'test_programs.app_id', '=', 'applications.id')
-                ->join('crop_data', 'applications.crop_data_id', '=', 'crop_data.id')
-                ->orderBy('crop_data.party_number', $sort_order);
-        }elseif ($sort_by == 'date') {
-            $apps->join('applications', 'test_programs.app_id', '=', 'applications.id')
-                ->orderBy('applications.date', $sort_order);
-        }
-        else{
-            $apps->orderBy($sort_by, $sort_order);
-        }
-        $tests = $apps->paginate(50)
-            ->appends(['s' => $request->input('s')])
-            ->appends(['till' => $request->input('till')])
-            ->appends(['from' => $request->input('from')])
-            ->appends(['city' => $request->input('city')])
-            ->appends(['crop' => $request->input('crop')])
-            ->appends(['sort_by' => $sort_by, 'sort_order' => $sort_order]);
-        return view('dalolatnoma.search', compact('tests','from','till','city','crop','sort_by','sort_order'));
     }
-    //index
+
+    //add
     public function add($id)
     {
         $test = TestPrograms::find($id);
@@ -125,15 +66,6 @@ class DalolatnomaController extends Controller
 
         return view('dalolatnoma.add', compact('test', 'selection','tara'));
     }
-
-    //list
-    public function list()
-    {
-        $title = 'Normativ hujjatlar';
-        $testss = Nds::with('crops')->orderBy('id')->get();
-        return view('dalolatnoma.list', compact('decisions','title'));
-    }
-
     //  store
     public function store(Request $request)
     {

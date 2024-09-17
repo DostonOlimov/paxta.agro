@@ -6,21 +6,19 @@ use App\Filters\ApiFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
-class ApplicationFilter extends ApiFilter
+class DalolatnomaFilter extends ApiFilter
 {
     public array $safeParams = [
         'id' => ['eq'],
-        'type' => ['eq'],
+        'number' => ['eq'],
         'date' => ['gt','lt'],
-        'status' => ['eq','ne'],
-        'companyId' => ['eq'],
-        'factoryId' => ['eq'],
-        'nameId' => ['eq'],
-        'partyNumber' => ['eq','lk'],
-        'stateId' => ['eq'],
-        'cityId' => ['eq'],
-        'createdBy' => ['eq'],
-        'year' => ['eq'],
+        'selectionCode' => ['eq','ne','lk'],
+        'toyCount' => ['eq'],
+        'amount' => ['eq'],
+        'party' => ['eq'],
+        'sinf' => ['eq'],
+        'nav' => ['eq'],
+        'tara' => ['eq'],
     ];
 
     protected array $operatorMap = [
@@ -34,9 +32,8 @@ class ApplicationFilter extends ApiFilter
     ];
 
     protected array $columnMap = [
-        'companyId' => 'organization_id',
-        'factoryId' => 'prepared_id',
-        'createdBy' => 'created_by'
+        'selectionCode' => 'selection_code',
+        'toyCount' => 'toy_count',
     ];
 
     protected array $sortColumnMap  = [

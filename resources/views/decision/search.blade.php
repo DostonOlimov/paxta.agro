@@ -165,6 +165,8 @@
                                             </select>
                                         </td>
                                         <td></td>
+                                        <td></td>
+                                        <td></td>
                                     </tr>
                                     @php
                                         $offset = (request()->get('page', 1) - 1) * 50;
@@ -191,7 +193,7 @@
                                                 </td>
                                                 <td>
                                                 @if($app->decision->status == \App\Models\Decision::STATUS_NEW)
-                                                    <button type="button" class="btn btn-round btn-success sa-warning" url="{{ url('/decision/send/'.$app->id . '?page='. request()->get('page', 1) ) }}"><i class="fa fa-check-circle"></i> {{ trans('app.Tasdiqlash')}}</button>
+                                                    <button type="button" class="btn btn-round btn-success sa-warning" url="{{ url('/decision/send/'.$app->id . '?page='. request()->get('page', 1) ) }}"><i class="fa fa-pencil"></i> {{ trans('app.Tasdiqlash')}}</button>
                                                 @else
                                                      <button type="button" class="btn btn-round btn-warning"><i class="fa fa-check-circle"></i> {{ trans('app.Tasdiqlangan')}}</button>
                                                 @endif
