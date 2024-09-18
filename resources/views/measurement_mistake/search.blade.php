@@ -27,9 +27,6 @@
                     </div>
                 </div>
         @endif
-        <!-- filter component -->
-            <x-filter :crop="$crop" :city="$city" :from="$from" :till="$till"  />
-            <!--filter component -->
 
             <div class="row">
                 <div class="col-md-12">
@@ -41,8 +38,8 @@
                                     <tr>
                                         <th class="border-bottom-0 border-top-0">#</th>
                                         <th class="border-bottom-0 border-top-0">
-                                            <a href="{{ route('measurement_mistake.search', ['sort_by' => 'number', 'sort_order' => ($sort_by === 'number' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
-                                                {{ trans('app.Sinov dasturi raqami') }}
+                                            <a href="{{ route('humidity_result.search', ['sort_by' => 'number', 'sort_order' => ($sort_by === 'number' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
+                                                {{ trans('app.Dalolatnoma raqami') }}
                                                 @if($sort_by === 'number')
                                                     @if($sort_order === 'asc')
                                                         <i class="fa fa-arrow-up"></i>
@@ -53,7 +50,7 @@
                                             </a>
                                         </th>
                                         <th class="border-bottom-0 border-top-0">
-                                            <a href="{{ route('measurement_mistake.search', ['sort_by' => 'party_number', 'sort_order' => ($sort_by === 'party_number' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
+                                            <a href="{{ route('humidity_result.search', ['sort_by' => 'party_number', 'sort_order' => ($sort_by === 'party_number' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
                                                 {{ trans('app.To\'da (partya) raqami') }}
                                                 @if($sort_by === 'party_number')
                                                     @if($sort_order === 'asc')
@@ -65,7 +62,7 @@
                                             </a>
                                         </th>
                                         <th class="border-bottom-0 border-top-0">
-                                            <a href="{{ route('measurement_mistake.search', ['sort_by' => 'date', 'sort_order' => ($sort_by === 'date' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
+                                            <a href="{{ route('humidity_result.search', ['sort_by' => 'date', 'sort_order' => ($sort_by === 'date' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
                                                 {{ trans('app.Dalolatnoma sanasi') }}
                                                 @if($sort_by === 'date')
                                                     @if($sort_order === 'asc')
@@ -76,10 +73,11 @@
                                                 @endif
                                             </a>
                                         </th>
+                                        <th class="border-bottom-0 border-top-0">{{trans('app.Viloyat nomi')}}</th>
                                         <th class="border-bottom-0 border-top-0">
-                                            <a href="{{ route('measurement_mistake.search', ['sort_by' => 'prepared', 'sort_order' => ($sort_by === 'prepared' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
-                                                {{ trans('app.Zavod nomi va kodi') }}
-                                                @if($sort_by === 'prepared')
+                                            <a href="{{ route('humidity_result.search', ['sort_by' => 'organization', 'sort_order' => ($sort_by === 'organization' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
+                                                {{trans('app.Buyurtmachi korxona yoki tashkilot nomi')}}
+                                                @if($sort_by === 'organization')
                                                     @if($sort_order === 'asc')
                                                         <i class="fa fa-arrow-up"></i>
                                                     @else
@@ -88,37 +86,99 @@
                                                 @endif
                                             </a>
                                         </th>
-                                        <th>{{trans('app.Xatolik(Mic)')}}</th>
-                                        <th>{{trans('app.Xatolik(Strength)')}}</th>
-                                        <th>{{trans('app.Xatolik(Uniformity)')}}</th>
-                                        <th>{{trans('app.Xatolik(Length)')}}</th>
+                                        <th class="border-bottom-0 border-top-0">
+                                            {{ trans('app.Zavod nomi va kodi') }}
+                                        </th>
+                                        <th>{{trans('app.Sertifikatlanuvchi mahsulot')}}</th>
                                         <th>{{trans('app.Action')}}</th>
                                     </tr>
 
                                     </thead>
                                     <tbody>
+                                    <tr style="background-color: #90aec6 !important;">
+                                    <td></td>
+                                    <td>
+                                        <form class="d-flex">
+                                            <input type="text" name="number[eq]" class="search-input form-control"
+                                                   value="{{ isset($filterValues['number']) ? $filterValues['number'] : '' }}">
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <form class="d-flex">
+                                            <input type="text" name="partyNumber[lk]" class="search-input form-control"
+                                                   value="{{ isset($filterValues['partyNumber']) ? $filterValues['partyNumber'] : '' }}">
+                                        </form>
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                        <select class="w-100 form-control name_of_corn custom-select" name="stateId"
+                                                id="stateId">
+                                            <option value="" selected>Viloyat nomini tanlang</option>
+                                            @if (!empty($states))
+                                                @foreach ($states as $name)
+                                                    <option value="{{ $name->id }}"
+                                                            @if (isset($filterValues['stateId']) && $filterValues['stateId'] == $name->id)
+                                                            selected
+                                                        @endif>
+                                                        {{ $name->name }} </option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select id="organization" class="form-control owner_search" name="organization">
+                                            @if (!empty($organization))
+                                                <option selected value="{{ $organization->id }}">
+                                                    {{ $organization->name }}</option>
+                                            @endif
+                                        </select>
+                                        @if ($organization)
+                                            <i class="fa fa-trash" style="color:red"
+                                               onclick="changeDisplay('companyId[eq]')"></i>
+                                        @endif
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                        <select class="w-100 form-control name_of_corn custom-select" name="name"
+                                                id="crops_name">
+                                            @if (count($names))
+                                                <option value="" selected>
+                                                    Mahsulot turini tanlang</option>
+                                            @endif
+                                            @if (!empty($names))
+                                                @foreach ($names as $name)
+                                                    <option value="{{ $name->id }}"
+                                                            @if (isset($filterValues['nameId']) && $filterValues['nameId'] == $name->id)
+                                                            selected
+                                                        @endif>
+                                                        {{ $name->name }} </option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                    </td>
+                                    <td></td>
+                                    </tr>
                                     @php
                                         $offset = (request()->get('page', 1) - 1) * 50;
                                     @endphp
-                                    @foreach($tests as $test)
+                                    @foreach($apps as $app)
                                         <tr>
                                             <td>{{$offset + $loop->iteration}}</td>
-                                            <td>{{ optional(optional($test->test_program->application)->decision)->number }}</td>
-                                            <td> {{ optional($test->test_program->application->crops)->party_number }}</td>
-                                            <td>{{$test->date }}</td>
-                                            <td>{{ $test->test_program->application->prepared->name }} - {{ $test->test_program->application->prepared->kod }}</td>
-                                            <td>{{$test->measurement_mistake ? round(optional($test->measurement_mistake)->mic,2) : ''}}</td>
-                                            <td>{{$test->measurement_mistake ? round(optional($test->measurement_mistake)->strength,1) : '' }}</td>
-                                            <td>{{$test->measurement_mistake ? round(optional($test->measurement_mistake)->uniform,1) : '' }}</td>
-                                            <td>{{$test->measurement_mistake ? round(optional($test->measurement_mistake)->fiblength,3) : ''}}</td>
+                                            <td>{{ $app->number }}</td>
+                                            <td> {{ optional($app->test_program->application->crops)->party_number }}</td>
+                                            <td> {{ $app->date }}</td>
+                                            <td> {{ optional(optional(optional($app->test_program->application->organization)->area)->region)->name }}</td>
+                                            <td><a href="#" class="company-link" data-id="{{ $app->test_program->application->organization_id }}">{{ optional($app->test_program->application->organization)->name }}</a></td>
+                                            <td>{{ optional($app->test_program)->application->prepared->name }} - {{ optional($app->test_program)->application->prepared->kod }}</td>
+                                            <td>{{ optional($app->test_program)->application->crops->name->name }}</td>
                                             <td>
-                                                <?php $testid=Auth::User()->id; ?>
-                                                @if($test->humidity_result)
-                                                    @if($result = $test->measurement_mistake)
+                                                <?php $appid=Auth::User()->id; ?>
+                                                @if($app->humidity_result)
+                                                    @if($result = $app->measurement_mistake)
                                                         <a href="{!! url('/measurement_mistake/view/'. $result->id) !!}"><button type="button" class="btn btn-round btn-info">{{ trans('app.View')}}</button></a>
                                                         <a href="{!! url('/measurement_mistake/edit/'. $result->id) !!}"><button type="button" class="btn btn-round btn-warning">{{ trans('app.Edit')}}</button></a>
                                                     @else
-                                                        <a href="{!! url('/measurement_mistake/add/'. $test->id) !!}"><button type="button" class="btn btn-round btn-success">&nbsp;Dalolatnomani kiritish &nbsp;</button></a>
+                                                        <a href="{!! url('/measurement_mistake/add/'. $app->id) !!}"><button type="button" class="btn btn-round btn-success">&nbsp;Dalolatnomani kiritish &nbsp;</button></a>
                                                     @endif
                                                 @endif
                                             </td>
@@ -126,7 +186,7 @@
                                     @endforeach
                                     </tbody>
                                 </table>
-                                {{$tests->links()}}
+                                {{$apps->links()}}
                             </div>
                         </div>
                     </div>

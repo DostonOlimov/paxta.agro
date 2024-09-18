@@ -19,6 +19,12 @@ class DalolatnomaFilter extends ApiFilter
         'sinf' => ['eq'],
         'nav' => ['eq'],
         'tara' => ['eq'],
+        'companyId' => ['eq'],
+        'factoryId' => ['eq'],
+        'nameId' => ['eq'],
+        'partyNumber' => ['eq','lk'],
+        'stateId' => ['eq'],
+        'cityId' => ['eq'],
     ];
 
     protected array $operatorMap = [
@@ -41,19 +47,37 @@ class DalolatnomaFilter extends ApiFilter
             'table' => 'organization_companies',
             'column' => 'organization_companies.name',
             'foreign_key' => 'applications.organization_id',
-            'local_key' => 'organization_companies.id'
-        ],
-        'amount' => [
-            'table' => 'crop_data',
-            'column' => 'crop_data.amount',
-            'foreign_key' => 'applications.crop_data_id',
-            'local_key' => 'crop_data.id'
+            'local_key' => 'organization_companies.id',
+            'joins' => [
+                [
+                    'table' => 'test_programs',
+                    'foreign_key' => 'dalolatnoma.test_program_id',
+                    'local_key' => 'test_programs.id'
+                ],
+                [
+                    'table' => 'applications',
+                    'foreign_key' => 'test_programs.app_id',
+                    'local_key' => 'applications.id'
+                ],
+            ]
         ],
         'party_number' => [
             'table' => 'crop_data',
             'column' => 'crop_data.party_number',
             'foreign_key' => 'applications.crop_data_id',
-            'local_key' => 'crop_data.id'
+            'local_key' => 'crop_data.id',
+            'joins' => [
+                [
+                    'table' => 'test_programs',
+                    'foreign_key' => 'dalolatnoma.test_program_id',
+                    'local_key' => 'test_programs.id'
+                ],
+                [
+                    'table' => 'applications',
+                    'foreign_key' => 'test_programs.app_id',
+                    'local_key' => 'applications.id'
+                ],
+            ]
         ]
     ];
     /**
@@ -61,7 +85,7 @@ class DalolatnomaFilter extends ApiFilter
      */
     protected function requiresJoin(string $key): bool
     {
-        return in_array($key, ['nameId','partyNumber', 'cityId', 'stateId','year']);
+        return in_array($key, ['nameId','partyNumber',  'stateId','companyId']);
     }
 
     /**
@@ -69,13 +93,15 @@ class DalolatnomaFilter extends ApiFilter
      */
     protected function applyJoin(Builder $query, string $key): void
     {
-        if ($key === 'cityId') {
-            $query->join('organization_companies', 'applications.organization_id', '=', 'organization_companies.id');
-        } elseif($key === 'nameId' or $key === 'year' or $key === 'partyNumber'){
-            $query->join('crop_data', 'applications.crop_data_id', '=', 'crop_data.id');
+        if($key === 'nameId' or $key === 'partyNumber'){
+            $query->join('test_programs', 'dalolatnoma.test_program_id', '=', 'test_programs.id')
+                ->join('applications', 'test_programs.app_id', '=', 'applications.id')
+                ->join('crop_data', 'applications.crop_data_id', '=', 'crop_data.id');
         }
-        elseif ($key === 'stateId') {
-            $query->join('organization_companies', 'applications.organization_id', '=', 'organization_companies.id')
+        elseif ($key === 'stateId' or $key === 'companyId') {
+            $query->join('test_programs', 'dalolatnoma.test_program_id', '=', 'test_programs.id')
+                ->join('applications', 'test_programs.app_id', '=', 'applications.id')
+                ->join('organization_companies', 'applications.organization_id', '=', 'organization_companies.id')
                 ->join('tbl_cities as cities', 'organization_companies.city_id', '=', 'cities.id');
         }
     }
@@ -89,8 +115,7 @@ class DalolatnomaFilter extends ApiFilter
             'nameId' => 'crop_data.name_id',
             'partyNumber' => 'crop_data.party_number',
             'stateId' => 'cities.state_id',
-            'cityId' => 'organization_companies.city_id',
-            'year' => 'crop_data.year'
+            'companyId' => 'applications.organization_id'
         ];
 
         return $joinColumnMap[$key] ?? $this->getColumn($key);

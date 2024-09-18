@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\V1\DalolatnomaFilter;
 use App\Http\Controllers\Traits\DalolatnomaTrait;
 use App\Models\AktAmount;
 use App\Models\Application;
@@ -13,6 +14,7 @@ use App\Models\InXaus;
 use App\Models\LaboratoryResult;
 use App\Models\MeasurementMistake;
 use App\Rules\ExsistInXaus;
+use App\Services\SearchService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -21,23 +23,36 @@ use Illuminate\Support\Facades\DB;
 
 class MeasurementMistakeController extends Controller
 {
-    use DalolatnomaTrait;
-    // Search
-    public function search(Request $request)
+    //search
+    public function search(Request $request, DalolatnomaFilter $filter,SearchService $service)
     {
-        $city = $request->input('city');
-        $crop = $request->input('crop');
-        $from = $request->input('from');
-        $till = $request->input('till');
-        $sort_by = $request->get('sort_by', 'id');
-        $sort_order = $request->get('sort_order', 'desc');
+        try {
+            $names = getCropsNames();
+            $states = getRegions();
+            $years = getCropYears();
 
-        $apps = $this->buildQuery($request);
+            return $service->search(
+                $request,
+                $filter,
+                Dalolatnoma::class,
+                [
+                    'test_program',
+                    'test_program.application',
+                    'test_program.application.decision',
+                    'test_program.application.organization',
+                    'test_program.application.prepared',
+                ],
+                compact('names', 'states', 'years'),
+                'measurement_mistake.search',
+                [],
+                false
+            );
 
-        $tests = $apps->paginate(50)
-            ->appends($request->except('page'));
-
-        return view('measurement_mistake.search', compact('tests','from','till','city','crop', 'sort_by', 'sort_order'));
+        } catch (\Throwable $e) {
+            // Log the error for debugging
+            \Log::error($e);
+            return $this->errorResponse('An unexpected error occurred', [], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
     //index
     public function add($id)

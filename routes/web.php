@@ -288,6 +288,9 @@ Route::group(['prefix' => 'akt_amount', 'middleware' => 'auth'], function () {
     Route::post('/store', '\App\Http\Controllers\AktAmountController@store')->name('akt_amount.store');
     Route::post('/save-amount', [\App\Http\Controllers\AktAmountController::class, 'save_amount'])->name('save.amount');
 
+    Route::get('/excel/{id}', '\App\Http\Controllers\AktAmountController@excel');
+    Route::get('/excel_store', '\App\Http\Controllers\AktAmountController@excelStore');
+
 });
 //Akt laboratory
 Route::group(['prefix' => 'akt_laboratory', 'middleware' => 'auth'], function () {

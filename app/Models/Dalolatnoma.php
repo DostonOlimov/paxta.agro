@@ -22,6 +22,21 @@ class Dalolatnoma  extends Model
 {
     protected $table = 'dalolatnoma';
 
+    protected $fillable = [
+        'id',
+        'test_program_id',
+        'number',
+        'date',
+        'toy_count',
+        'amount',
+        'party',
+        'selection_code',
+        'sinf',
+        'nav',
+        'tara'
+    ];
+
+
 
     public function test_program(): BelongsTo
     {

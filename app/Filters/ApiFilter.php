@@ -41,12 +41,19 @@ abstract class ApiFilter
         // Check if sorting requires a join
         if (array_key_exists($sort_by, $this->sortColumnMap)) {
             $sortData = $this->sortColumnMap[$sort_by];
-            // Apply the join and order by the related column
+
+            // Apply all necessary joins, including multiple joins if defined
+            if (isset($sortData['joins']) && is_array($sortData['joins'])) {
+                foreach ($sortData['joins'] as $join) {
+                    $query->join($join['table'], $join['foreign_key'], '=', $join['local_key']);
+                }
+            }
+
+            // Apply the main join and order by the related column
             $query->join($sortData['table'], $sortData['foreign_key'], '=', $sortData['local_key'])
                 ->orderBy($sortData['column'], $sort_order);
         } else {
-            // Ensure you're ordering by the correct `id` column
-            $sort_by = $sort_by === 'id' ? 'id' : $sort_by;
+            // Default sorting by the passed column
             $query->orderBy($sort_by, $sort_order);
         }
 

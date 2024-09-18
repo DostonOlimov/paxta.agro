@@ -130,4 +130,26 @@ class AktAmountController extends Controller
             }
         }
     }
+
+    // Edit
+    public function excel($id)
+    {
+        $tests = AktAmount::where('dalolatnoma_id', $id)->get()->toArray();
+        $balls = GinBalles::where('dalolatnoma_id', $id)->get();
+
+        if (empty($tests)) {
+            $amounts = $this->generateAmounts($id, $balls);
+            DB::transaction(function () use ($amounts) {
+                AktAmount::insert($amounts);
+            });
+
+            $tests = AktAmount::where('dalolatnoma_id', $id)->get()->toArray();
+        }
+
+        $this->populateCreatedAt($tests, $balls);
+
+        $data1 = array_chunk($tests, 50);
+
+        return view('akt_amount.excel', compact('data1', 'id', 'balls'));
+    }
 }

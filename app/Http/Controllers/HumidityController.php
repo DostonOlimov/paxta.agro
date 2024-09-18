@@ -3,17 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Filters\V1\DalolatnomaFilter;
-use App\Http\Controllers\Traits\DalolatnomaTrait;
 use App\Models\Application;
-use App\Models\CropData;
-use App\Models\CropsName;
 use App\Models\CropsSelection;
 use App\Models\Decision;
 use App\Models\Dalolatnoma;
-use App\Models\Nds;
 use App\Models\Humidity;
-use App\Models\OrganizationCompanies;
-use App\Models\Region;
 use App\Services\SearchService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

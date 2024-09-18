@@ -2,38 +2,49 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Traits\DalolatnomaTrait;
+use App\Filters\V1\DalolatnomaFilter;
 use App\Jobs\InsideQueueJob;
 use App\Models\AktAmount;
 use App\Models\ClampData;
 use App\Models\Dalolatnoma;
+use App\Services\SearchService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AktLaboratoryController extends Controller
 {
-    use DalolatnomaTrait;
 
-    // Search method to find Dalolatnoma records based on various filters
-    public function search(Request $request)
+    public function search(Request $request, DalolatnomaFilter $filter,SearchService $service)
     {
-        $city = $request->input('city');
-        $crop = $request->input('crop');
-        $from = $request->input('from');
-        $till = $request->input('till');
-        $sortBy = $request->get('sort_by', 'id');
-        $sortOrder = $request->get('sort_order', 'desc');
+        try {
+            $names = getCropsNames();
+            $states = getRegions();
+            $years = getCropYears();
 
-        // Build query based on request filters
-        $applications = $this->buildQuery($request);
+            return $service->search(
+                $request,
+                $filter,
+                Dalolatnoma::class,
+                [
+                    'test_program',
+                    'test_program.application',
+                    'test_program.application.decision',
+                    'test_program.application.organization',
+                    'test_program.application.prepared',
+                ],
+                compact('names', 'states', 'years'),
+                'akt_laboratory.search',
+                [],
+                false,
+                'akt_amount', // Related model for withSum
+                'amount'      // Column to sum
+            );
 
-        // Fetch the results with the sum of 'amount' from related 'akt_amount' and paginate
-        $tests = $applications->withSum('akt_amount', 'amount')
-            ->paginate(50)
-            ->appends($request->except('page'));
-
-        // Return the search view with results and filters
-        return view('akt_laboratory.search', compact('tests', 'from', 'till', 'city', 'crop', 'sortBy', 'sortOrder'));
+        } catch (\Throwable $e) {
+            // Log the error for debugging
+            \Log::error($e);
+            return $this->errorResponse('An unexpected error occurred', [], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     // Show the 'add' view with Dalolatnoma details
