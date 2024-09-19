@@ -190,6 +190,8 @@ class ReportController extends Controller
         $till = $request->input('till') ?? null;
         $s = $request->input('s') ?? null;
 
+        $year =  session('year') ?  session('year') : 2024;
+
         $companiesQuery = DB::table('dalolatnoma AS d')
             ->join('akt_amount AS akt', 'd.id', '=', 'akt.dalolatnoma_id')
             ->join('test_programs AS tp', 'd.test_program_id', '=', 'tp.id')
@@ -198,6 +200,8 @@ class ReportController extends Controller
             ->join('tbl_cities AS city', 'oc.city_id', '=', 'city.id')
             ->join('tbl_states AS state', 'city.state_id', '=', 'state.id')
             ->join('prepared_companies AS pc', 'app.prepared_id', '=', 'pc.id')
+            ->join('crop_data','app.crop_data_id','=','crop_data.id')
+            ->where('crop_data.year', $year)
             ->select('oc.id', 'pc.kod', 'oc.name', DB::raw('count(akt.shtrix_kod) as kip'), DB::raw('sum(akt.amount) as netto'))
             ->groupBy('oc.id', 'pc.kod', 'oc.name');
 

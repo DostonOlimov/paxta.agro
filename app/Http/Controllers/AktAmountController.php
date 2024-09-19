@@ -152,4 +152,30 @@ class AktAmountController extends Controller
 
         return view('akt_amount.excel', compact('data1', 'id', 'balls'));
     }
+
+    public function store(Request $request)
+    {
+        $id = $request->input('id');
+        $dal = Dalolatnoma::findOrFail($id);
+
+        // Sanitize and filter only relevant inputs (those that start with 'amount')
+        $amounts = $request->only(array_filter($request->keys(), fn($key) => str_starts_with($key, 'amount')));
+
+        // Early return if no amount data is found
+        if (empty($amounts)) {
+            return redirect('/akt_amount/search')->with('error', 'No amounts provided.');
+        }
+
+        foreach ($dal->akt_amount as $index => $akt) {
+            // Match amount keys dynamically (amount1, amount2, etc.)
+            $amountKey = 'amount' . ($index + 1);
+
+            if (isset($amounts[$amountKey])) {
+                $akt->update(['amount' => $amounts[$amountKey]]);
+            }
+        }
+
+        return redirect('/akt_amount/search')->with('message', 'Successfully saved');
+    }
+
 }

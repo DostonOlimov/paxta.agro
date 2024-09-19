@@ -87,37 +87,31 @@
                                         <i class="fa fa-edit fa-lg">&nbsp;</i>
                                         <b>{{ trans('app.Edit')}}</b>
                                     </li>
-{{--                                    <li class="btn-success">--}}
-{{--                                        <a href="{!! url('/akt_amount/excel/'.$id)!!}">--}}
-{{--                                            <span ></span>--}}
-{{--                                            <i class="fa fa-file-excel-o  text-white">&nbsp; Excel orqali yuklash</i>--}}
-{{--                                        </a>--}}
-{{--                                    </li>--}}
                                 </ul>
                             </div>
                         </div>
                         <div class="col-md-3 file-input-container">
-                            <span class="file-label"><i class="fa fa-file-excel-o"></i> Fayl yuklash</span>
+                            <span class="file-label"><i class="fa fa-file-excel-o"></i> Faylni tanlang</span>
                             <input type="file" class="file-input" id="excelFile" name="excelFile" accept=".xlsx, .xls">
                         </div>
+                        <div class="col-md-3 file-input-container">
+                            <span class="fa fa-upload"></span>
+                            <a class="text-white" href="/img/example.xlsx">Na'muna fayli</a>
+                        </div>
+                        <form id="myForm" method="post" enctype="multipart/form-data"  action="{!! url('akt_amount/store') !!}"
+                              data-parsley-validate class="form-horizontal form-label-left">
+                            @csrf
+                            <input type="hidden" name="id" value="{{$id}}">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="table-responsive row">
+
                                             <table id="examples1" class="table table-striped table-bordered nowrap" style="margin-top:20px;" >
                                                 <thead>
-                                                <tr>
-                                                    @foreach($data1 as $data)
-                                                        <th class="border-bottom-0 border-top-0">#</th>
-                                                        <th>Og'irlik (kg)</th>
-                                                    @endforeach
-                                                </tr>
                                                 </thead>
                                                 <tbody>
-                                                <form id="myForm" method="get" enctype="multipart/form-data"
-                                                      data-parsley-validate class="form-horizontal form-label-left">
-                                                    @csrf
                                                     @for($i = 0; $i < 50; $i++)
                                                         <tr>
                                                             @foreach($data1 as $data)
@@ -129,8 +123,8 @@
                                                                 <td>
                                                                     @if(isset($data[$i]))
                                                                         <div class="input-container">
-                                                                            <input type="text" step="0.1" class="form-control" name="amount" id="amount{{ 50 * ($loop->iteration - 1) + $i +1 }}"  oninput="formatNumber({{$data[$i]['id']}})"  myattr = {{$loop->iteration}}
-                                                                                onchange="saveAnswer({{$data[$i]['id']}} , this , {{$loop->iteration}} ) "  value="{{$data[$i]['amount']}}" @if($data[$i]['amount']) {{'disabled'}} @endif>
+                                                                            <input type="text" step="0.1" class="form-control" name="amount{{ 50 * ($loop->iteration - 1) + $i +1 }}" id="amount{{ 50 * ($loop->iteration - 1) + $i +1 }}"
+                                                                                 value="{{$data[$i]['amount']}}" @if($data[$i]['amount']) {{'disabled'}} @endif>
                                                                             @if($data[$i]['amount']) <i class="fa fa-pencil pencil" onclick="changeDisplay(this,{{$data[$i]['id']}})"></i> @endif
                                                                         </div>
                                                                     @endif
@@ -138,25 +132,18 @@
                                                             @endforeach
                                                         </tr>
                                                     @endfor
-                                                </form>
-                                                @foreach($data1 as $d)
-                                                    <td></td>
-                                                    <td><div class="input-container">
-                                                            <input type="number" step="0.001" name="sum"  class="form-control" id="sum{{$loop->iteration}}" disabled value="{{array_sum(array_column($d, 'amount'))}}">
-                                                            <i class="pencil ">kg</i> </div></td>
-                                                @endforeach
                                                 </tbody>
                                             </table>
-                                            <div id="inputContainer"></div> <!-- Container to dynamically append inputs -->
-                                            <div>
-                                                <a href="{!! url('/akt_amount/view/'.$id) !!}"><button type="button" class="btn btn-round btn-success">{{ trans('app.Submit')}}</button></a>
-                                            </div>
-
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                            <div class="col-md-6 col-sm-6">
+                                <a class="btn btn-primary" href="{{ URL::previous() }}">{{ trans('app.Cancel')}}</a>
+                                <button type="submit" onclick="disableButton()" id="submitter" class="btn btn-success">{{ trans('app.Submit')}}</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -174,7 +161,7 @@
                         const sheet = workbook.Sheets[sheetName];
                         const jsonData = XLSX.utils.sheet_to_json(sheet);
 
-                        // Call a function to dynamically create inputs
+                        // Call a function to populate inputs with amounts based on "№ toy"
                         populateInputs(jsonData);
                     };
 
@@ -182,33 +169,29 @@
                 });
 
                 function populateInputs(data) {
-                    const inputContainer = document.getElementById('inputContainer');
-                    inputContainer.innerHTML = ''; // Clear the container before adding inputs
-
                     data.forEach((row, rowIndex) => {
-                        // Iterate over each key-value pair in the row
-                        Object.entries(row).forEach(([key, value], index) => {
-                            // Create a unique name for the input field based on the key
-                            const inputName = key.toLowerCase().replace(/[^a-z0-9]/g, ''); // e.g., "Toy og'irligi, kg" becomes "toyogirligikg"
+                        // Assuming that '№ toy' is the identifier and "Toy og'irligi, kg" is the amount
+                        var toyNumber = row['№ toy '];
+                        var amount = row["Toy og'irligi, kg"];
 
-                            // Create a new input element
-                            let number = (rowIndex + 1);
-                            const inputField = document.getElementById('amount' . number);
-                            // inputField.value = value;
-                            console.log(key);
-                            // inputField.type = 'text';
-                            // inputField.name = inputName + (rowIndex + 1); // Ensure unique name per row (e.g., toyogirligikg1)
-                            // inputField.value = value;
-                            //
-                            // // Create a label for the input field
-                            // const label = document.createElement('label');
-                            // label.innerHTML = key + ' (' + inputName + (rowIndex + 1) + '): ';
-                            //
-                            // // Append the label and input field to the container
-                            // inputContainer.appendChild(label);
-                            // inputContainer.appendChild(inputField);
-                            // inputContainer.appendChild(document.createElement('br')); // Add line break
-                        });
+
+                        let myRow = Math.floor(Object.keys(row).length / 2);
+
+                        // Find the input field by its ID (assuming toy numbers align with input IDs like 'amount1', 'amount2', etc.)
+                        var inputField = document.getElementById('amount' + toyNumber);
+
+                        if (inputField) {
+                            inputField.value = amount;
+                        }
+
+                        for ( let i = 1; i < (myRow-1); i++ ){
+                            toyNumber = row['№ toy _' + i];
+                            amount = row["Toy og'irligi, kg_" + i];
+                            inputField = document.getElementById('amount' + toyNumber);
+                            if (inputField) {
+                                inputField.value = amount;
+                            }
+                        }
                     });
                 }
             </script>

@@ -194,30 +194,28 @@
             </div>
         </div>
     @endcan
-    <!-- /page content -->
-    <script src="{{ URL::asset('vendors/jquery/dist/jquery.min.js') }}"></script>
-
-    <script>
-        $('body').on('click', '.sa-warning', function() {
-
-            var url =$(this).attr('url');
-
-
-            swal({
-                title: "O'chirishni istaysizmi?",
-                text: "O'chirilgan ma'lumotlar qayta tiklanmaydi!",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#297FCA",
-                confirmButtonText: "Ha, o'chirish!",
-                cancelButtonText: "O'chirishni bekor qilish",
-                closeOnConfirm: false
-            }).then((result) => {
-                window.location.href = url;
-
-            });
-        });
-
-    </script>
-
 @endsection
+@section('scripts')
+    <script>
+        var translations = {
+            inputTooShort: '{{ trans('app.Korxona (nomi), STIR ini kiritib izlang') }}',
+            searching: '{{ trans('app.Izlanmoqda...') }}',
+            noResults: '{{ trans('app.Natija topilmadi') }}',
+            errorLoading: '{{ trans('app.Natija topilmadi') }}',
+            placeholder: '{{ trans('app.Korxona nomini kiriting') }}'
+        };
+
+        const labels = {
+            inn: @json(trans('app.Tashkilot STIRi')),
+            owner: @json(trans('app.Tashkilot rahbari')),
+            phone: @json(trans('app.Telefon raqami')),
+            address: @json(trans('app.Address')),
+            state: @json(trans('app.Viloyat nomi')),
+            city: @json(trans('app.Tuman nomi'))
+        };
+    </script>
+    <script src="{{ asset('js/my_js_files/filter.js') }}"></script>
+    <script src="{{ asset('js/my_js_files/get_company.js') }}"></script>
+    <script src="{{ asset('js/my_js_files/view_company.js') }}"></script>
+@endsection
+

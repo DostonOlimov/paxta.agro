@@ -65,12 +65,12 @@
                                         <i class="fa fa-edit fa-lg">&nbsp;</i>
                                         <b>{{ trans('app.Edit')}}</b>
                                     </li>
-{{--                                    <li class="btn-success">--}}
-{{--                                        <a href="{!! url('/akt_amount/excel/'.$id)!!}">--}}
-{{--                                            <span ></span>--}}
-{{--                                            <i class="fa fa-file-excel-o  text-white">&nbsp; Excel orqali yuklash</i>--}}
-{{--                                        </a>--}}
-{{--                                    </li>--}}
+                                    <li class="btn-success">
+                                        <a href="{!! url('/akt_amount/excel/'.$id)!!}">
+                                            <span ></span>
+                                            <i class="fa fa-file-excel-o  text-white">&nbsp; Excel orqali yuklash</i>
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
