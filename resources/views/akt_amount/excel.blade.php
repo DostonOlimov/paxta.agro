@@ -192,19 +192,22 @@
                             const inputName = key.toLowerCase().replace(/[^a-z0-9]/g, ''); // e.g., "Toy og'irligi, kg" becomes "toyogirligikg"
 
                             // Create a new input element
-                            const inputField = document.createElement('input');
-                            inputField.type = 'text';
-                            inputField.name = inputName + (rowIndex + 1); // Ensure unique name per row (e.g., toyogirligikg1)
-                            inputField.value = value;
-
-                            // Create a label for the input field
-                            const label = document.createElement('label');
-                            label.innerHTML = key + ' (' + inputName + (rowIndex + 1) + '): ';
-
-                            // Append the label and input field to the container
-                            inputContainer.appendChild(label);
-                            inputContainer.appendChild(inputField);
-                            inputContainer.appendChild(document.createElement('br')); // Add line break
+                            let number = (rowIndex + 1);
+                            const inputField = document.getElementById('amount' . number);
+                            // inputField.value = value;
+                            console.log(key);
+                            // inputField.type = 'text';
+                            // inputField.name = inputName + (rowIndex + 1); // Ensure unique name per row (e.g., toyogirligikg1)
+                            // inputField.value = value;
+                            //
+                            // // Create a label for the input field
+                            // const label = document.createElement('label');
+                            // label.innerHTML = key + ' (' + inputName + (rowIndex + 1) + '): ';
+                            //
+                            // // Append the label and input field to the container
+                            // inputContainer.appendChild(label);
+                            // inputContainer.appendChild(inputField);
+                            // inputContainer.appendChild(document.createElement('br')); // Add line break
                         });
                     });
                 }
