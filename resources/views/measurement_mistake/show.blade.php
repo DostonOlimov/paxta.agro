@@ -480,13 +480,13 @@
                                                     </tr>
                                                     <tr>
                                                         @php
-                                                            $humidity = round($result->dalolatnoma->laboratory_result->humidity , 2);
-                                                            $m_humidity = round($result->humidity , 2);
+                                                            $humidity = $result->dalolatnoma->laboratory_result->humidity;
+                                                            $m_humidity = $result->humidity ;
                                                             $dif_humidity = (8.5 - ($humidity+$m_humidity)) - (($humidity-$m_humidity) - 5)
                                                         @endphp
                                                         <td>Namlikning massa nisbati, %</td>
-                                                        <td >{{ $humidity }}%</td>
-                                                        <td>{{ $m_humidity }}</td>
+                                                        <td >{{ round($humidity,2) }}%</td>
+                                                        <td>{{ round($m_humidity,2) }}</td>
                                                         <td>O'zDSt 604 п.5.7</td>
                                                         <td>5,0 ± 8,5 %</td>
                                                         <td>
@@ -526,14 +526,14 @@
                                                                                 <div class="my_svg" style="@if($dif_humidity >= 0) top:10px;@else bottom:2px; @endif"></div>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="div2">{{ $humidity + $m_humidity }}</div>
-                                                                        <div class="div3">{{ $humidity + $m_humidity }}</div>
+                                                                        <div class="div2">{{ round($humidity + $m_humidity,2) }}</div>
+                                                                        <div class="div3">{{  round($humidity + $m_humidity,2) }}</div>
 
-                                                                        <div class="div6">{{ $m_humidity }}</div>
-                                                                        <div class="div7">{{ $m_humidity }}</div>
+                                                                        <div class="div6">{{ round($m_humidity,2) }}</div>
+                                                                        <div class="div7">{{ round($m_humidity,2) }}</div>
 
-                                                                        <div class="div10">{{ $humidity - $m_humidity }}</div>
-                                                                        <div class="div11">{{ $humidity - $m_humidity }}</div>
+                                                                        <div class="div10">{{  round($humidity - $m_humidity,2) }}</div>
+                                                                        <div class="div11">{{  round($humidity - $m_humidity,2) }}</div>
                                                                     </div>
                                                                     <div class="layout-right-bottom">5.0</div>
                                                                 </div>
