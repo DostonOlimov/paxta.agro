@@ -70,8 +70,6 @@
                                         <div class="col-md-6 col-sm-6">
                                             <a class="btn btn-primary"
                                                href="{{ URL::previous() }}">{{ trans('app.Cancel') }}</a>
-                                            <a class="btn btn-warning"
-                                               href="{{ '/in_xaus/add' }}">{{ trans('app.In Xaus qo\'shish') }}</a>
                                             <button type="submit" onclick="disableButton()" id="submitter"
                                                     class="btn btn-success">{{ trans('app.Submit') }}</button>
                                         </div>

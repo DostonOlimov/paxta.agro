@@ -169,7 +169,7 @@
                                                         <h3 class="text-left">Buyurtmachi korxona {{ optional($result->dalolatnoma)->test_program->application->organization->name }}</h3>
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <h3 class="text-right">Partiya raqami {{ optional($result->dalolatnoma)->party }}</h3>
+                                                        <h3 class="text-right">Partiya raqami {{ $result->dalolatnoma->test_program->application->crops->party_number }}</h3>
                                                     </div>
                                                 </div>
                                             <div class="table-wrapper">

@@ -177,7 +177,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
                 <td>{{ round($item->mic,1) }}</td>
                 <td>{{ round($item->strength,1) }}</td>
                 <td>{{ round($item->uniform,1) }}</td>
-                <td>{{ round($item->humidity/10,1) }}</td>
+                <td>{{ round($item->dalolatnoma->laboratory_result->humidity/10,1) }}</td>
                 <td>{{ round($item->dalolatnoma->laboratory_result->fiblength/100,2) }}</td>
             </tr>
             @endforeach
@@ -209,7 +209,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
                 <td>
                     @if (77 < $final_result[0]->uniform && $final_result[0]->uniform < 86) muvofiq @else nomuvofiq @endif </td>
                 <td>
-                    @if (5.0 < ($final_result[0]->humidity/10) && ($final_result[0]->humidity/10) < 8.5) muvofiq @else nomuvofiq @endif </td>
+                    @if (5.0 < ($final_result[0]->dalolatnoma->laboratory_result->humidity/10) && ($final_result[0]->dalolatnoma->laboratory_result->humidity/10) < 8.5) muvofiq @else nomuvofiq @endif </td>
                 <td>
                     @if (1.08 < ($final_result[0]->dalolatnoma->laboratory_result->fiblength/100) &&
                         ($final_result[0]->dalolatnoma->laboratory_result->fiblength/100) < 1.17) muvofiq @else nomuvofiq @endif </td>

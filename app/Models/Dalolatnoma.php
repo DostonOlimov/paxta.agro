@@ -29,6 +29,7 @@ class Dalolatnoma  extends Model
         'date',
         'toy_count',
         'amount',
+        'amount2',
         'party',
         'selection_code',
         'sinf',

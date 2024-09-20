@@ -272,6 +272,7 @@ Route::group(['prefix' => 'employee'], function () {
     Route::post('/edit/update/{id}', '\App\Http\Controllers\DalolatnomaController@update');
     Route::get('/view/{id}', '\App\Http\Controllers\DalolatnomaController@view')->name('dalolatnoma.view');
     Route::post('/store', '\App\Http\Controllers\DalolatnomaController@store')->name('dalolatnoma.store');
+    Route::post('/store2', '\App\Http\Controllers\DalolatnomaController@store2')->name('dalolatnoma.store2');
 
     Route::get('/tara_edit/{id}', '\App\Http\Controllers\DalolatnomaController@tara_edit');
         Route::post('tara_edit/update/{id}', '\App\Http\Controllers\DalolatnomaController@tara_store');

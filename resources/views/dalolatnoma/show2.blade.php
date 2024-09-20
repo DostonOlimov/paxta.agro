@@ -10,6 +10,7 @@
             padding: 5px 5px ;!important;
             font-size: 16px;
         }
+
     </style>
 @endsection
 @section('content')
@@ -92,20 +93,20 @@
                                                     </div>
                                                 </div>
                                                 <div class="row">
-                                                @foreach($result->gin_balles as $ball)
-                                                    <div class="col-md-3">
-                                                        <h2 >dan: {{$ball->from_number}}</h2>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <h2 >gacha: {{$ball->to_number}}</h2>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <h2 >dan: {{$ball->from_toy}}</h2>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <h2 >gacha: {{$ball->to_toy}}</h2>
-                                                    </div>
-                                                @endforeach
+                                                    @foreach($result->gin_balles as $ball)
+                                                        <div class="col-md-3">
+                                                            <h2 >dan: {{$ball->from_number}}</h2>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <h2 >gacha: {{$ball->to_number}}</h2>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <h2 >dan: {{$ball->from_toy}}</h2>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <h2 >gacha: {{$ball->to_toy}}</h2>
+                                                        </div>
+                                                    @endforeach
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-6">

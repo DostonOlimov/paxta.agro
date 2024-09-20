@@ -56,9 +56,14 @@ class DalolatnomaController extends Controller
     //add
     public function add($id)
     {
-        $test = TestPrograms::find($id);
+        $test = TestPrograms::findOrFail($id);
+        $crop_id = $test->application->crops->name_id;
         $selection = CropsSelection::get();
         $tara = optional(optional($test->application)->prepared)->tara;
+
+        if($crop_id == 2){
+            return view('dalolatnoma.add2', compact('test', 'selection','tara'));
+        }
 
         return view('dalolatnoma.add', compact('test', 'selection','tara'));
     }
@@ -123,6 +128,30 @@ class DalolatnomaController extends Controller
 
         return redirect('/akt_amount/search');
     }
+    public function store2(Request $request)
+    {
+        $data = $request->only([
+            'test_id', 'number', 'selection_code', 'toy_count', 'amount', 'amount2','party_number', 'nav', 'sinf', 'tara', 'date'
+        ]);
+
+        $date = $this->formatDate($data['date']);
+
+        $dal = Dalolatnoma::create([
+            'test_program_id' => $data['test_id'],
+            'number' => $data['number'],
+            'date' => $date,
+            'selection_code' => $data['selection_code'],
+            'toy_count' => $data['toy_count'],
+            'amount' => $data['amount2'],
+            'amount2' => $data['amount'],
+            'party' => $data['party_number'],
+            'nav' => 1,
+            'sinf' => 1,
+            'tara' => 1,
+        ]);
+
+        return redirect('/dalolatnoma/search')->with('message', 'Successfully Created');
+    }
 
 
     //update
@@ -133,6 +162,11 @@ class DalolatnomaController extends Controller
         $certificate =  Sertificate::where('final_result_id', '=', $result->id)->first();
         $gin_balles = GinBalles::where('dalolatnoma_id', $id)->get();
         $selection = CropsSelection::get();
+
+        $crop_id = $test->application->crops->name_id;
+        if($crop_id == 2){
+            return view('dalolatnoma.edit2',  compact('test', 'result', 'certificate', 'gin_balles','selection'));
+        }
 
         return view('dalolatnoma.edit', compact('test', 'result', 'certificate', 'gin_balles','selection'));
     }
@@ -199,6 +233,13 @@ class DalolatnomaController extends Controller
         ];
 
         $my_date = $date->isoFormat("D") . ' - ' . $uzbekMonthNames[$date->isoFormat("MM")] . ' '. $date->isoFormat("Y") ;
+        $crop_id = $tests->test_program->application->crops->name_id;
+        if($crop_id == 2){
+            return view('dalolatnoma.show2', [
+                'result' => $tests,
+                'date' => $my_date
+            ]);
+        }
         return view('dalolatnoma.show', [
             'result' => $tests,
             'date' => $my_date
