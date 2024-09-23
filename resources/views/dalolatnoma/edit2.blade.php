@@ -38,7 +38,7 @@
                                     </ul>
                                 </div>
                             </div>
-                            <form id="invoice-form" method="post" action="update/{{ $result->id }}"
+                            <form id="invoice-form" method="post" action="update2/{{ $result->id }}"
                                   enctype="multipart/form-data" data-parsley-validate class="form-horizontal form-label-left">
                                 @csrf
                                 <div class="row">
@@ -95,236 +95,35 @@
                                                 </span>
                                             @endif
                                         </div>
-                                        <div
-                                            class="col-md-4 form-group has-feedback {{ $errors->has('toy_count') ? ' has-error' : '' }}">
-                                            <label for="number" class="form-label ">Jami na'munalar soni<label
-                                                    class="text-danger">*</label> </label>
-                                            <input type="number" class="form-control" value="{{ $result->toy_count }}"
-                                                   name="toy_count" required>
-                                            @if ($errors->has('toy_count'))
-                                                <span class="help-block">
-                                                    <strong class="text-danger">{{ $errors->first('toy_count') }}</strong>
-                                                </span>
-                                            @endif
-                                        </div>
-                                        <div
-                                            class="col-md-4 form-group has-feedback {{ $errors->has('amount') ? ' has-error' : '' }}">
-                                            <label for="number" class="form-label ">Olingan na'munaning og'irligi(kg)<label
-                                                    class="text-danger">*</label></label>
-                                            <input type="number" step="0.01" class="form-control"
-                                                   value="{{ $result->amount }}" name="amount" required>
-                                            @if ($errors->has('amount'))
-                                                <span class="help-block">
-                                                    <strong>
-                                                        Sinf no'g'ri shaklda kiritilgan</strong>
-                                                </span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div class="certificate row">
-                                        <div
-                                            class="col-md-3 form-group has-feedback {{ $errors->has('party_number') ? ' has-error' : '' }}">
-                                            <label for="number" class="form-label ">To'da p/x №</label>
-                                            <input type="text" class="form-control" maxlength="10"
-                                                   value="{{ $result->party }}" name="party_number">
+                                        <div class="col-md-4 form-group has-feedback {{ $errors->has('party_number') ? ' has-error' : '' }}">
+                                            <label for="number" class="form-label ">To'da raqami</label>
+                                            <input type="text" class="form-control" maxlength="10" value="{{ $result->party }}"  name="party_number">
                                             @if ($errors->has('party_number'))
                                                 <span class="help-block">
-                                                    <strong>
-                                                        To'da raqami noto'g'ri shaklda kiritilgan</strong>
-                                                </span>
+                                                <strong>
+                                                    To'da raqami noto'g'ri shaklda kiritilgan
+                                                </strong>
+                                            </span>
                                             @endif
                                         </div>
-                                        <div
-                                            class="col-md-3 form-group has-feedback {{ $errors->has('nav') ? ' has-error' : '' }}">
-                                            <label for="number" class="form-label ">Nav p/x № </label>
-                                            <input type="number" class="form-control" max="6"
-                                                   value="{{ $result->nav }}" name="nav">
-                                            @if ($errors->has('nav'))
+                                        <div class="col-md-4 form-group has-feedback {{ $errors->has('toy_count') ? ' has-error' : '' }}">
+                                            <label for="number" class="form-label ">To'da miqdori(tonna)<label class="text-danger">*</label> </label>
+                                            <input type="number" class="form-control" value="{{ $result->toy_count }}"  name="toy_count" required>
+                                            @if ($errors->has('toy_count'))
                                                 <span class="help-block">
-                                                    <strong>
-                                                        Nav noto'g'ri shaklda kiritilgan</strong>
+                                                    <strong class="text-danger">{{$errors->first('toy_count')}}</strong>
                                                 </span>
                                             @endif
                                         </div>
-                                        <div
-                                            class="col-md-3 form-group has-feedback {{ $errors->has('nav') ? ' has-error' : '' }}">
-                                            <label for="number" class="form-label ">Sinf p/x №</label>
-                                            <input type="number" class="form-control" max="6"
-                                                   value="{{ $result->sinf }}" name="sinf" required>
-                                            @if ($errors->has('sinf'))
-                                                <span class="help-block">
-                                                    <strong>
-                                                        Sinf no'g'ri shaklda kiritilgan</strong>
-                                                </span>
-                                            @endif
+                                        <div class="col-md-6 form-group has-feedback {{ $errors->has('amount') ? ' has-error' : '' }}">
+                                            <label for="number" class="form-label ">Tashqi ko'rinish uchun olingan na'munaning og'irligi(kg)<label class="text-danger">*</label></label>
+                                            <input type="number" step="0.01" class="form-control"  value="{{ $result->amount2 }}"  name="amount2">
                                         </div>
-                                        <div class="col-md-3 form-group has-feedback {{ $errors->has('nav') ? ' has-error' : '' }}">
-                                            <label for="number" class="form-label ">Tara (kg)</label>
-                                            <input type="number" class="form-control" step="0.001" value="{{ $result->tara }}"  name="tara" required>
-                                            @if ($errors->has('tara'))
-                                                <span class="help-block">
-                                                    <strong>
-                                                        Tara no'g'ri shaklda kiritilgan</strong>
-                                                </span>
-                                            @endif
+
+                                        <div class="col-md-6 form-group has-feedback {{ $errors->has('amount') ? ' has-error' : '' }}">
+                                            <label for="number" class="form-label ">Sinov uchun olingan na'munaning og'irligi(kg)<label class="text-danger">*</label></label>
+                                            <input type="number" step="0.01" class="form-control"  value="{{ $result->amount }}"  name="amount" required>
                                         </div>
-                                    </div>
-
-                                    <div class="certificate row" id="forms" style="margin-bottom: 1%">
-
-                                        @foreach ($gin_balles as $key => $item)
-                                            <input type="text" hidden name="kod_toy[{{ $key }}][0]"
-                                                   value="{{ optional($item)->id }}">
-                                            <div class="col-md-5 row">
-                                                @if ($key == 0)
-                                                    <label for="number" class="form-label ">Shtrix kod raqami:<label
-                                                            class="text-danger">*</label></label>
-                                                @endif
-                                                <div
-                                                    class="col-md-6 form-group has-feedback {{ $errors->has('kod_toy[' . $key . '][1]') ? ' has-error' : '' }}">
-                                                    <input type="number" class="form-control" maxlength="10"
-                                                           value="{{ optional($item)->from_number }}"
-                                                           name="kod_toy[{{ $key }}][1]" required>
-                                                    @if ($key == 0)
-                                                        <label for="number" class="form-label ">dan</label>
-                                                    @endif
-                                                    @if ($errors->has('kod_toy[' . $key . '}}][1]'))
-                                                        <span class="help-block">
-                                                            <strong
-                                                                class="text-danger">{{ $errors->first('kod_toy[' . $key . '][1]') }}</strong>
-                                                        </span>
-                                                    @endif
-                                                </div>
-                                                <div
-                                                    class="col-md-6 form-group has-feedback {{ $errors->has('kod_toy[' . $key . '][2]') ? ' has-error' : '' }}">
-                                                    <input type="number" class="form-control"
-                                                           value="{{ optional($item)->to_number }}"
-                                                           name="kod_toy[{{ $key }}][2]" required>
-                                                    @if ($key == 0)
-                                                        <label for="number" class="form-label ">gacha </label>
-                                                    @endif
-                                                    @if ($errors->has('kod_toy[{{ $key }}][2]'))
-                                                        <span class="help-block">
-                                                            <strong
-                                                                class="text-danger">{{ $errors->first('kod_toy[' . $key . '][2]') }}</strong>
-                                                        </span>
-                                                    @endif
-                                                </div>
-                                            </div>
-                                            <div class="col-md-5 row">
-                                                @if ($key == 0)
-                                                    <label for="number" class="form-label ">Toylar ketma-ketligi:<label
-                                                            class="text-danger">*</label></label>
-                                                @endif
-                                                <div
-                                                    class="col-md-6 form-group has-feedback {{ $errors->has('kod_toy[' . $key . '][3]') ? ' has-error' : '' }}">
-                                                    <input type="number" style="margin:5px" class="form-control" maxlength="10"
-                                                           value="{{ optional($item)->from_toy }}"
-                                                           name="kod_toy[{{ $key }}][3]" required>
-                                                    @if ($key == 0)
-                                                        <label for="number" class="form-label ">dan</label>
-                                                    @endif
-                                                </div>
-                                                <div
-                                                    class="col-md-6 form-group has-feedback {{ $errors->has('kod_toy[' . $key . '][4]') ? ' has-error' : '' }}">
-                                                    <input type="number" class="form-control"
-                                                           value="{{ optional($item)->to_toy }}"
-                                                           name="kod_toy[{{ $key }}][4]" required>
-                                                    @if ($key == 0)
-                                                        <label for="number" class="form-label ">gacha </label>
-                                                    @endif
-                                                </div>
-                                            </div>
-
-
-                                            {{-- start --}}
-                                            @if ($key == 0)
-                                                <div class="col-md-2 row ">
-                                                    <label></label>
-                                                    <div class="col-md-6 col-sm-6">
-                                                        <div onclick="addField();" class="btn btn-success"> <i
-                                                                class="fa fa-plus-circle fa-lg">&nbsp;</i>
-                                                            <b>{{ trans('app.Qo\'shish') }}</b>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endif
-                                        @endforeach
-
-                                        <script>
-                                            var fieldId = @json($gin_balles->count() - 1); ///
-
-                                            function addElement(parentId, elementTag, elementId, html) {
-                                                var id = document.getElementById(parentId);
-                                                var newElement = document.createElement(elementTag);
-                                                newElement.setAttribute('id', elementId);
-                                                newElement.innerHTML = html;
-                                                id.appendChild(newElement);
-                                            }
-
-                                            function removeField(elementId) {
-                                                var fieldId = "field-" + elementId;
-                                                var element = document.getElementById(fieldId);
-                                                element.parentNode.removeChild(element);
-                                            }
-
-                                            function addField() {
-                                                fieldId++;
-                                                var html =
-                                                    `<br>
-                                                    <input type="text"  hidden name="kod_toy[` + fieldId +
-                                                    `][0]" value="null">
-                                                     <div class="row">  <div class="col-md-5 row">
-                                                            <div class="col-md-6 form-group has-feedback">
-                                                                <input type="number" class="form-control" maxlength="10"
-                                                                    value="{{ old('kod_toy[`+ fieldId + `][1]') }}" name="kod_toy[` +
-                                                    fieldId + `][1]" required>
-                                                                @if ($errors->has('kod_toy[`+ fieldId + `][1]'))
-                                                    <span class="help-block">
-                                                        <strong class="text-danger">{{ $errors->first('kod_toy[`+ fieldId + `][1]') }}</strong>
-                                                                    </span>
-                                                                @endif
-                                                    </div>
-                                                    <div class="col-md-6 form-group has-feedback">
-                                                        <input type="number" class="form-control" value="{{ old('kod_toy[`+ fieldId + `][2]') }}"
-                                                                    name="kod_toy[` + fieldId +
-                                                    `][2]" required>
-                                                                @if ($errors->has('kod_toy[`+ fieldId + `][2]'))
-                                                    <span class="help-block">
-                                                        <strong class="text-danger">{{ $errors->first('kod_toy[`+ fieldId + `][2]') }}</strong>
-                                                                    </span>
-                                                                @endif
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-5 row">
-                                                    <div class="col-md-6 form-group has-feedback">
-                                                        <input type="number" class="form-control" maxlength="10"
-                                                            value="{{ old('kod_toy[`+ fieldId + `][3]') }}" name="kod_toy[` +
-                                                    fieldId + `][3]" required>
-                                                            </div>
-                                                            <div class="col-md-6 form-group has-feedback">
-                                                                <input type="number" class="form-control" value="{{ old('kod_toy[`+ fieldId + `][4]') }}"
-                                                                    name="kod_toy[` + fieldId + `][4]" required>
-                                                                @if ($errors->has('kod_toy[`+ fieldId + `][4]'))
-                                                    <span class="help-block">
-                                                        <strong class="text-danger">{{ $errors->first('kod_toy[`+ fieldId + `][4]') }}</strong>
-                                                                    </span>
-                                                                @endif
-                                                    </div>
-                                                </div>` +
-                                                    `<div class="col-md-2 row "> <label></label>
-                                                            <div class="col-md-6 col-sm-6"> <div onclick="removeField(` +
-                                                    fieldId + `);" class="btn btn-danger">
-                                                                    <i class="fa fa-minus-circle fa-lg">&nbsp;</i>
-                                                                    {{ trans('app.Olib tashlash') }}</div>
-                                                            </div>
-                                                        </div>
-                                                    </div> <br>`;
-                                                addElement('forms', 'div', 'field-' + fieldId, html);
-                                            }
-                                        </script>
-
-                                        {{-- end --}}
                                     </div>
 
                                     <div class="form-group col-md-12 col-sm-12">

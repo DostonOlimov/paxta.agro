@@ -170,7 +170,26 @@ class DalolatnomaController extends Controller
 
         return view('dalolatnoma.edit', compact('test', 'result', 'certificate', 'gin_balles','selection'));
     }
+    public function update2($id,Request $request)
+    {
+        $dalolatnoma = Dalolatnoma::findOrFail($id);
 
+        $dalolatnoma->number = $request->input('number');
+
+        if ($dalolatnoma->date != $request->input('date')) {
+            $dalolatnoma->date = $this->formatDate($request->input('date'));
+        }
+
+        $dalolatnoma->selection_code = $request->input('selection_code');
+        $dalolatnoma->toy_count = $request->input('toy_count');
+        $dalolatnoma->amount = $request->input('amount');
+        $dalolatnoma->party = $request->input('party_number');
+        $dalolatnoma->amount2 = $request->input('amount2');
+        $dalolatnoma->save();
+
+
+        return redirect('/dalolatnoma/search')->with('message', 'Successfully Created');
+    }
     // application update
     public function update($id, Request $request)
     {

@@ -107,7 +107,7 @@ td{
                                                                     <td> {{ round($count->mic,1)}}</td>
                                                                     <td> {{ round($count->strength,1)}}</td>
                                                                     <td> {{ round($count->uniform,1)}}</td>
-                                                                    <td> {{ round(($count->humidity),2)}}</td>
+                                                                    <td> {{ round(($count->humidity/10),2)}}</td>
                                                                 </tr>
                                                                 @php $amount +=  $count->amount @endphp
                                                             @endforeach

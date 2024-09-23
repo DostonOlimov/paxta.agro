@@ -270,6 +270,7 @@ Route::group(['prefix' => 'employee'], function () {
     Route::get('/list/delete/{id}', '\App\Http\Controllers\DalolatnomaController@destory');
     Route::get('/edit/{id}', '\App\Http\Controllers\DalolatnomaController@edit');
     Route::post('/edit/update/{id}', '\App\Http\Controllers\DalolatnomaController@update');
+    Route::post('/edit/update2/{id}', '\App\Http\Controllers\DalolatnomaController@update2');
     Route::get('/view/{id}', '\App\Http\Controllers\DalolatnomaController@view')->name('dalolatnoma.view');
     Route::post('/store', '\App\Http\Controllers\DalolatnomaController@store')->name('dalolatnoma.store');
     Route::post('/store2', '\App\Http\Controllers\DalolatnomaController@store2')->name('dalolatnoma.store2');

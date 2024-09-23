@@ -10,6 +10,16 @@
             padding: 5px 5px ;!important;
             font-size: 16px;
         }
+        .underline-space {
+            flex-grow: 1;
+            border-bottom: 1px solid black; /* Creates the underline */
+            margin-left: 10px; /* Adjust space before underline as needed */
+        }
+
+        .flex-container {
+            display: flex;
+            align-items: center;
+        }
 
     </style>
 @endsection
@@ -59,63 +69,63 @@
                                     <div class="card-body">
                                         <div class="table-container">
                                             <div id="invoice-cheque" class="py-4 col-12" style=" font-family: Times New Roman;">
-                                                <h1 class="text-center">"Qishloq xo'jaligi mahsulotlari sifatini baholash markazi" davlat muassasining</h1>
-                                                <h1 class="text-center">{{optional($result->test_program)->application->decision->laboratory->name}}</h1>
-                                                <h1 class="text-center fw-bold">Paxta tolasini na'muna olish dalolatnomasi № {{$result->number}}</h1>
+                                                <h1 class="text-center">"Qishloq xo'jaligi mahsulotlari sifatini baholash markazi" davlat muassasi</h1>
+                                                <h2 class="text-center">Namuna olish va identifikatlash dalolatnomasi </h2>
+                                                <h2 class="text-center">{{$date}} yil</h2>
 
                                                 <div class="row">
-                                                    <div class="col-md-6">
-                                                        <h2 class="text-left">Tanlov joyi: {{optional($result->test_program)->application->organization->name}}</h2>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <h2 class="text-right">{{$date}} yil</h2>
+                                                    <div class="col-md-12">
+                                                        <h2 class="text-left">Ishlab chiqaruvchi nomi: {{optional($result->test_program)->application->organization->name}}</h2>
                                                     </div>
                                                 </div>
 
-                                                <h2 class="text-left">Ishlab chiqaruvchi nomi : <span  class="text-decoration-underline">&nbsp;&nbsp;{{optional($result->test_program)->application->prepared->name}} - {{optional($result->test_program)->application->prepared->kod}}</span></h2>
-                                                <h2 class="text-left">Paxta tolasi to'dasi p/x № <span  class="text-decoration-underline">&nbsp;&nbsp;{{$result->party}}&nbsp;&nbsp;</span> &nbsp;&nbsp;, navi p/x <span  class="text-decoration-underline">&nbsp;&nbsp;{{$result->nav}}&nbsp;&nbsp;</span> &nbsp;&nbsp;, sinfi p/x <span  class="text-decoration-underline">&nbsp;&nbsp;{{$result->sinf}}&nbsp;&nbsp;</span></h2>
+                                                <h2 class="flex-container">
+                                                    DM “Markaz” vakili tomonidan:
+                                                    <span class="underline-space"></span>
+                                                </h2>
 
+                                                <h2 class="flex-container">
+                                                    Korxona vakillari ishtirokida:
+                                                    <span class="underline-space"></span>
+                                                </h2>
+                                                <h2>
+                                                    <span style="text-decoration: underline">&nbsp;&nbsp;O’z DSt 596:2014 ;   UzTR 99-007:2016 &nbsp;&nbsp;</span>talablariga
+                                                    muvofiqligini tekshirish uchun tayyor maxsulotdan namunalar tanlab olindi
+                                                </h2>
+                                                <h2>Namuna quyidagi MX asosida tanlab olindi ___
+                                                    <span style="text-decoration: underline">&nbsp;&nbsp; &nbsp;&nbsp;O’zDSt 598:2008 п 5.1; п 5.3   ГОСТ_10852-86 п 2.2.1; п 2.2.2
+                                                    </span>
+                                                </h2>
+                                                <h2>Qo‘shimcha ma'lumotlar:    seleksion nav:
+                                                    <span style="text-decoration: underline">{{$result->selection->name}} probootbornik vositasida  olindi
+                                                    </span>
+                                                </h2>
+                                                <table class="table table-bordered">
+                                                    <tr>
+                                                        <th rowspan="2">Tekshirilayotgan mahsulot nomi	</th>
+                                                        <th rowspan="2">O‘lchov birligi	</th>
+                                                        <th rowspan="2">To‘da raqami	</th>
+                                                        <th rowspan="2">To‘da miqdori</th>
+                                                        <th rowspan="2">Ishlab chiqarish sanasi</th>
+                                                        <th colspan="2">Olingan namunalar miqdori)</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>tashqi ko‘rinish uchun</td>
+                                                        <td>Sinov uchun  </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Literlangan texnik chigit</td>
+                                                        <td>tonna</td>
+                                                        <td>{{$result->party}}</td>
+                                                        <td>{{$result->toy_count}}</td>
+                                                        <td>{{$result->test_program->application->crops->year}} yil hosilidan</td>
+                                                        <td>{{$result->amount2}}</td>
+                                                        <td>{{$result->amount}}</td>
+                                                    </tr>
 
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <h2 class="text-left">Seleksion navi <span  class="text-decoration-underline">&nbsp;&nbsp;{{$result->selection->name}}</span></h2>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <h2 class="text-right">Jamlangan hajmdagi toylar soni  <span  class="text-decoration-underline">&nbsp;&nbsp;{{$result->toy_count}}</span></h2>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <h2 class="text-left">Shtrix kod raqami:</h2>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <h2 class="text-left">Toylar ketma-ketligi:</h2>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    @foreach($result->gin_balles as $ball)
-                                                        <div class="col-md-3">
-                                                            <h2 >dan: {{$ball->from_number}}</h2>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <h2 >gacha: {{$ball->to_number}}</h2>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <h2 >dan: {{$ball->from_toy}}</h2>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <h2 >gacha: {{$ball->to_toy}}</h2>
-                                                        </div>
-                                                    @endforeach
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <h2 class="text-left">Olingan na'munalar soni : <span  class="text-decoration-underline">&nbsp;&nbsp;{{$result->toy_count}}</span></h2>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <h2 class="text-left">Olingan na'munalar massasi,kg : <span  class="text-decoration-underline">&nbsp;&nbsp;{{$result->amount}}</span></h2>
-                                                    </div>
-                                                </div>
+                                                </table>
+                                                <h5>Namuna  ishlab chiqaruvchi tarozisida o‘lchangan.</h5>
+                                                <h2>Namuna olingan to‘dani, sinov natijalari olingunga qadar tashishga ruxsat etilmaydi.</h2>
                                             </div>
                                         </div>
 

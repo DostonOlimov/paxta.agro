@@ -58,6 +58,8 @@ return [
     'Viloyatlar' => 'Viloyatlar',
     'Shaxar va tumanlar' => 'Shaxar va tumanlar',
 
+    'Texnik chigit' => 'Texnik chigit',
+
     //tarjima qilish kerak boshi
     'Namlik dalolatnomasi' => 'Namlik dalolatnomasi',
     'Namlik natijalari' => 'Namlik natijalari',
