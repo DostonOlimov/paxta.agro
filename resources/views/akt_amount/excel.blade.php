@@ -184,7 +184,7 @@
                             inputField.value = amount;
                         }
 
-                        for ( let i = 1; i < (myRow-1); i++ ){
+                        for ( let i = 1; i < 5; i++ ){
                             toyNumber = row['№ toy _' + i];
                             amount = row["Toy og'irligi, kg_" + i];
                             inputField = document.getElementById('amount' + toyNumber);
