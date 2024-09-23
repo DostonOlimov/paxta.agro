@@ -161,7 +161,7 @@
                                         </div>
                                     </div>
                                     <input type="hidden" name="director_id" value="{{$director->id}}">
-                                    <input type="hidden" name="klassiyor_id" value="{{$klassiyor->klassiyor->id}}">
+                                    <input type="hidden" name="klassiyor_id" value="{{optional($klassiyor->klassiyor)->id}}">
                                     {{-- <div class="col-12 col-md-4">
                                         <div class="form-group">
                                             <label class="form-label"

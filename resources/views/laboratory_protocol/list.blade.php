@@ -22,6 +22,9 @@
                                 <label for="checkbox-10 colo_success"> {{ trans('app.Successfully Updated') }} </label>
                             @elseif(session('message') == 'Successfully Deleted')
                                 <label for="checkbox-10 colo_success"> {{ trans('app.Successfully Deleted') }} </label>
+                            @else
+                                <label for="checkbox-10 colo_danger"> {{ session('message') }} </label>
+
                             @endif
                         </div>
                     </div>

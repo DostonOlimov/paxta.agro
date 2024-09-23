@@ -63,6 +63,9 @@ class LaboratoryProtocolController extends Controller
         }
         $operators=$operators->get();
         $klassiyor=ClampData::with('klassiyor')->where('dalolatnoma_id',$id)->first();
+        if(!$klassiyor->klassiyor){
+            return redirect('/laboratory-protocol/list')->with('message', $klassiyor->classer_id . ' kodli Klassiyor topilmadi');
+        }
 
         $director=User::where('role','=',User::LABORATORY_DIRECTOR)
             ->where('state_id', $apps->test_program->application->decision->laboratory->city->state_id)

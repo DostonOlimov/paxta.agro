@@ -412,13 +412,13 @@
                                                     </tr>
                                                     <tr>
                                                         @php
-                                                            $strength = round($result->dalolatnoma->laboratory_result->strength,1);
-                                                            $m_strength = round($result->strength,1);
+                                                            $strength = $result->dalolatnoma->laboratory_result->strength;
+                                                            $m_strength = $result->strength;
                                                             $dif_strength = (33 - ($strength+$m_strength)) - (($strength-$m_strength) - 23)
                                                         @endphp
                                                         <td>Kuch gf/tex</td>
-                                                        <td>{{ $strength }}</td>
-                                                        <td>{{ $m_strength }}</td>
+                                                        <td>{{ round($strength, 1) }}</td>
+                                                        <td>{{ round($m_strength, 1) }}</td>
                                                         <td>O‘zDSt 604 Tahrir 1, 4-jadval</td>
                                                         <td>23 ± 33 va undan yuqori</td>
                                                         <td>
@@ -458,14 +458,14 @@
                                                                                 <div class="my_svg" style="@if($dif_strength >= 0) top:10px;@else bottom:2px; @endif"></div>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="div2">{{ $strength + $m_strength }}</div>
-                                                                        <div class="div3">{{ $strength + $m_strength }}</div>
+                                                                        <div class="div2">{{ round($strength + $m_strength,1) }}</div>
+                                                                        <div class="div3">{{ round($strength + $m_strength,1) }}</div>
 
-                                                                        <div class="div6">{{ $strength }}</div>
-                                                                        <div class="div7">{{ $strength }}</div>
+                                                                        <div class="div6">{{ round($strength,1) }}</div>
+                                                                        <div class="div7">{{ round($strength,1) }}</div>
 
-                                                                        <div class="div10">{{ $strength - $m_strength }}</div>
-                                                                        <div class="div11">{{ $strength - $m_strength }}</div>
+                                                                        <div class="div10">{{ round($strength - $m_strength,1) }}</div>
+                                                                        <div class="div11">{{ round($strength - $m_strength,1) }}</div>
                                                                     </div>
                                                                     <div class="layout-right-bottom">23</div>
                                                                 </div>
@@ -473,7 +473,7 @@
                                                         </td>
                                                         <td>
                                                             <div class="centered-div">
-                                                                @if($strength + $m_strength <= 33 and $strength - $m_strength >= 23)
+                                                                @if($strength + $m_strength <= 34 and $strength - $m_strength >= 23)
                                                                     {{"muvofiq"}} @else <span class="text-danger"> {{"nomuvofiq"}} </span> @endif
                                                             </div>
                                                         </td>
