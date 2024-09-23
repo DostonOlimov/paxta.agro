@@ -64,6 +64,7 @@ class FinalResultsController extends Controller
         $tests = ClampData::where('dalolatnoma_id',$id)->count();
         $data_count = FinalResult::where('dalolatnoma_id',$id)->count();
 
+
         if($data_count == 0){
             $counts = ClampData::select('sort', 'class',
                 DB::raw('count(*) as count'),
@@ -94,7 +95,7 @@ class FinalResultsController extends Controller
                 $result->staple = $count->staple;
                 $result->strength = $count->strength;
                 $result->uniform = $count->uniform;
-                $result->humidity = $count->humidity;
+                $result->humidity = optional($dalolatnoma->laboratory_result)->humidity;
                 $result->save();
             }
         }
@@ -144,7 +145,7 @@ class FinalResultsController extends Controller
                 $result->staple = $count->staple;
                 $result->strength = $count->strength;
                 $result->uniform = $count->uniform;
-                $result->humidity = $count->humidity;
+                $result->humidity = optional($dalolatnoma->laboratory_result)->humidity;
                 $result->save();
             }
         }
@@ -261,7 +262,7 @@ class FinalResultsController extends Controller
                 $result->staple = $count->staple;
                 $result->strength = $count->strength;
                 $result->uniform = $count->uniform;
-                $result->humidity = $count->humidity;
+                $result->humidity = optional(optional($result->dalolatnoma)->laboratory_result)->humidity;
                 $result->save();
             }
         }
