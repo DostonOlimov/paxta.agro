@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Filters\V1\DalolatnomaFilter;
-use App\Http\Controllers\Traits\DalolatnomaTrait;
-use App\Models\AktAmount;
 use App\Models\Application;
 use App\Models\ClampData;
 use App\Models\Dalolatnoma;

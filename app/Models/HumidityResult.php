@@ -44,7 +44,9 @@ class HumidityResult  extends Model
         $value1 = 100 * ($this->m0 - $this->mk0) / $this->mk0 - 0.4;
         $value2 = 100 * ($this->m1 - $this->mk1) / $this->mk1 - 0.4;
 
-        return ($value1 + $value2) / 2;
+        $value = ($value1 + $value2) / 2;
+
+        return $value;
     }
     public function calculateMistake()
     {
