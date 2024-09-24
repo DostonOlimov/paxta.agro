@@ -156,9 +156,9 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
                 <th style="font-weight: bold; font-size: 20px;" rowspan="1"> 1а,1б,1, 2,3,4, 5,6,7</th>
                 <th style="font-weight: bold; font-size: 20px;" rowspan="1"> Nav</th>
                 <th style="font-weight: bold; font-size: 20px;" rowspan="1"> sinf</th>
-                <th style="font-weight: bold; font-size: 20px;" rowspan="1"> 32-43</th>
+                <th style="font-weight: bold; font-size: 20px;" rowspan="1"> {{ number_format($test->laboratory_result->tip->staple_min, 1, ',', '.') }} - {{ number_format($test->laboratory_result->tip->staple_max, 1, ',', '.') }}</th>
                 <th style="font-weight: bold; font-size: 20px;" rowspan="1"> 3,5-4,9</th>
-                <th style="font-weight: bold; font-size: 20px;" rowspan="1"> 23,0-33,0</th>
+                <th style="font-weight: bold; font-size: 20px;" rowspan="1"> {{ number_format($test->laboratory_result->tip->strength_min, 1, ',', '.') }} - {{ number_format($test->laboratory_result->tip->strength_max, 1, ',', '.')}}</th>
                 <th style="font-weight: bold; font-size: 20px;" rowspan="1"> 77,0-86,0</th>
                 <th style="font-weight: bold; font-size: 20px;" rowspan="1"> 5,0-8,5</th>
                 <th style="font-weight: bold; font-size: 20px;" rowspan="1"> </th>
@@ -170,7 +170,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
                 <td>{{ $item->count }}</td>
                 <td>{{ $item->amount }}</td>
                 <td>{{ $item->dalolatnoma->selection_code }}</td>
-                <td></td> {{-- - Tip - --}}
+                <td>{{ optional($test->laboratory_result)->tip->name }}</td> {{-- - Tip - --}}
                 <td>{{ $item->sort }}</td>
                 <td>{{ $item->class }}</td>
                 <td>{{ round($item->staple) }}</td>

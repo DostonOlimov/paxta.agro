@@ -104,6 +104,7 @@ class LaboratoryProtocolController extends Controller
             ->with('test_program.application.prepared.region')
             ->find($id);
 
+
         $final_result=FinalResult::with('dalolatnoma.laboratory_result')->where('dalolatnoma_id', $id)->get();
         $measurement_mistake=MeasurementMistake::where('dalolatnoma_id', $id)->first();
 

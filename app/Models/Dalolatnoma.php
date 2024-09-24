@@ -84,6 +84,7 @@ class Dalolatnoma  extends Model
         return $this->belongsTo(LaboratoryResult::class, 'id', 'dalolatnoma_id');
     }
 
+
     /**
      * Calculate standard deviation for specified columns.
      *
