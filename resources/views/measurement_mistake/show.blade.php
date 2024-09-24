@@ -407,7 +407,7 @@
                                                         </td>
                                                         <td>
                                                             <div class="centered-div">
-                                                                @if($uniform + $m_uniform <= 86 and $uniform - $m_uniform >= 77)
+                                                                @if( $uniform - $m_uniform >= 77)
                                                                     {{"muvofiq"}} @else <span class="text-danger"> {{"nomuvofiq"}} </span> @endif
                                                             </div>
                                                         </td>
@@ -477,7 +477,7 @@
                                                         </td>
                                                         <td>
                                                             <div class="centered-div">
-                                                                @if($strength + $m_strength <= $max_strength and $strength - $m_strength >= $min_strength)
+                                                                @if( $strength - $m_strength >= $min_strength)
                                                                     {{"muvofiq"}} @else <span class="text-danger"> {{"nomuvofiq"}} </span> @endif
                                                             </div>
                                                         </td>
