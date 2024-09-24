@@ -271,8 +271,7 @@
                                                         </td>
                                                         <td>
                                                             <div class="centered-div">
-                                                                @if($length + $m_length <= $max_length and $length - $m_length >= $min_length)
-                                                                    {{"muvofiq"}} @else <span class="text-danger"> {{"nomuvofiq"}} </span>@endif
+                                                                    {{"muvofiq"}}
                                                             </div>
                                                         </td>
                                                     </tr>
