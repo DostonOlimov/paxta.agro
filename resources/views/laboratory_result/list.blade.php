@@ -8,7 +8,7 @@
             <div class="page-header">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
-                        <i class="fe fe-life-buoy mr-1"></i>&nbsp {{ trans('message.Sinov bayonnomalari') }}
+                        <i class="fe fe-life-buoy mr-1"></i>&nbsp {{ trans('message.Laboratoriya natijalari') }}
                     </li>
                 </ol>
             </div>
@@ -42,7 +42,7 @@
                                     <tr>
                                         <th class="border-bottom-0 border-top-0">#</th>
                                         <th class="border-bottom-0 border-top-0">
-                                            <a href="{{ route('laboratory_protocol.list', ['sort_by' => 'number', 'sort_order' => ($sort_by === 'number' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
+                                            <a href="{{ route('laboratory_result.list', ['sort_by' => 'number', 'sort_order' => ($sort_by === 'number' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
                                                 {{ trans('app.Dalolatnoma raqami') }}
                                                 @if($sort_by === 'number')
                                                     @if($sort_order === 'asc')
@@ -54,7 +54,7 @@
                                             </a>
                                         </th>
                                         <th class="border-bottom-0 border-top-0">
-                                            <a href="{{ route('laboratory_protocol.list', ['sort_by' => 'party_number', 'sort_order' => ($sort_by === 'party_number' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
+                                            <a href="{{ route('laboratory_result.list', ['sort_by' => 'party_number', 'sort_order' => ($sort_by === 'party_number' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
                                                 {{ trans('app.To\'da (partya) raqami') }}
                                                 @if($sort_by === 'party_number')
                                                     @if($sort_order === 'asc')
@@ -66,7 +66,7 @@
                                             </a>
                                         </th>
                                         <th class="border-bottom-0 border-top-0">
-                                            <a href="{{ route('laboratory_protocol.list', ['sort_by' => 'date', 'sort_order' => ($sort_by === 'date' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
+                                            <a href="{{ route('laboratory_result.list', ['sort_by' => 'date', 'sort_order' => ($sort_by === 'date' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
                                                 {{ trans('app.Dalolatnoma sanasi') }}
                                                 @if($sort_by === 'date')
                                                     @if($sort_order === 'asc')
@@ -79,7 +79,7 @@
                                         </th>
                                         <th class="border-bottom-0 border-top-0">{{trans('app.Viloyat nomi')}}</th>
                                         <th class="border-bottom-0 border-top-0">
-                                            <a href="{{ route('laboratory_protocol.list', ['sort_by' => 'organization', 'sort_order' => ($sort_by === 'organization' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
+                                            <a href="{{ route('laboratory_result.list', ['sort_by' => 'organization', 'sort_order' => ($sort_by === 'organization' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
                                                 {{trans('app.Buyurtmachi korxona yoki tashkilot nomi')}}
                                                 @if($sort_by === 'organization')
                                                     @if($sort_order === 'asc')
@@ -174,47 +174,20 @@
                                             <td><a href="#" class="company-link" data-id="{{ $app->test_program->application->organization_id }}">{{ optional($app->test_program->application->organization)->name }}</a></td>
                                             <td>{{ optional($app->test_program)->application->prepared->name }} - {{ optional($app->test_program)->application->prepared->kod }}</td>
                                             <td>{{ optional($app->test_program)->application->crops->name->name }}</td>
-                                            @if(optional($app->test_program)->application->crops->name->id == 1)
                                                 <td>
-                                                    @if (isset($app->measurement_mistake) && isset($app->laboratory_result) && !isset($app->laboratory_final_results))
-                                                        <a href="{!! url('laboratory-protocol/add/' . $app->id) !!}"> <button type="button"
-                                                            class="btn btn-round btn-warning "><i
+                                                    @if (!isset($app->laboratory_result))
+                                                        <a href="{!! url('laboratory_results/add/' . $app->id) !!}"> <button type="button"
+                                                            class="btn btn-round btn-success "><i
                                                                 class="fa fa-plus-circle"></i>
                                                             {{ trans('app.Qo\'shish') }}</button></a>
-                                                    @elseif (isset($app->measurement_mistake) && isset($app->laboratory_result) && isset($app->laboratory_final_results))
-                                                                <a href="{!! url('laboratory-protocol/view/' . $app->id) !!}"><button type="button"
-                                                                    class="btn btn-round btn-info">
-                                                                    {{ trans('app.View') }}</button></a>
-                                                            @if ($app->laboratory_final_results->status == 0)
-                                                                <a href="{!! url('laboratory-protocol/change/' . $app->id) !!}"><button type="button"
-                                                                        class="btn btn-round btn-success">{{ trans('app.Tasdiqlash') }}</button></a>
-                                                            @elseif ($app->laboratory_final_results->status == 1)
-                                                                <button type="button"
-                                                                    class="btn btn-round btn-danger">{{ trans('app.Tasdiqlangan') }}</button>
-                                                            @endif
+                                                    @else
+                                                        <a href="{!! url('laboratory_results/view/' . $app->id) !!}"><button type="button" class="btn btn-round btn-warning">
+                                                               <i class="fa fa-eye"></i> {{ trans('app.View') }}</button></a>
+                                                        <a href="{!! url('laboratory_results/edit/' . $app->id) !!}"><button type="button" class="btn btn-round btn-info">
+                                                              <i class="fa fa-pencil"></i>  {{ trans('app.Edit') }}</button></a>
+
                                                     @endif
                                                 </td>
-                                            @else
-                                                <td>
-                                                    @if (isset($app->laboratory_result) && !isset($app->laboratory_final_results))
-                                                        <a href="{!! url('laboratory-protocol/add/' . $app->id) !!}"> <button type="button"
-                                                                                                                              class="btn btn-round btn-warning "><i
-                                                                    class="fa fa-plus-circle"></i>
-                                                                {{ trans('app.Qo\'shish') }}</button></a>
-                                                    @elseif ( isset($app->laboratory_result) && isset($app->laboratory_final_results))
-                                                        <a href="{!! url('laboratory-protocol/view/' . $app->id) !!}"><button type="button"
-                                                                                                                              class="btn btn-round btn-info">
-                                                                {{ trans('app.View') }}</button></a>
-                                                        @if ($app->laboratory_final_results->status == 0)
-                                                            <a href="{!! url('laboratory-protocol/change/' . $app->id) !!}"><button type="button"
-                                                                                                                                    class="btn btn-round btn-success">{{ trans('app.Tasdiqlash') }}</button></a>
-                                                        @elseif ($app->laboratory_final_results->status == 1)
-                                                            <button type="button"
-                                                                    class="btn btn-round btn-danger">{{ trans('app.Tasdiqlangan') }}</button>
-                                                        @endif
-                                                    @endif
-                                                </td>
-                                            @endif
                                             </tr>
                                         @endforeach
                                     </tbody>

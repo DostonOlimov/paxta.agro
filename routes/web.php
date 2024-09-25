@@ -376,6 +376,17 @@ Route::group(['prefix' => 'measurement_mistake', 'middleware' => 'auth'], functi
     Route::get('/view/{id}', '\App\Http\Controllers\MeasurementMistakeController@view');
     Route::post('/store', '\App\Http\Controllers\MeasurementMistakeController@store');
 });
+//laboratory result
+Route::group(['prefix' => 'laboratory_results', 'middleware' => 'auth'], function () {
+    Route::get('/search', '\App\Http\Controllers\LaboratoryResultController@search')->name('laboratory_result.list');
+    Route::get('/add/{id}', '\App\Http\Controllers\LaboratoryResultController@add');
+    Route::get('/list', '\App\Http\Controllers\LaboratoryResultController@list');
+    Route::get('/list/delete/{id}', '\App\Http\Controllers\LaboratoryResultController@destory');
+    Route::get('/edit/{id}', '\App\Http\Controllers\LaboratoryResultController@edit');
+    Route::post('/update', '\App\Http\Controllers\LaboratoryResultController@update');
+    Route::get('/view/{id}', '\App\Http\Controllers\LaboratoryResultController@view');
+    Route::post('/store', '\App\Http\Controllers\LaboratoryResultController@store');
+});
 //measurement mistake
 Route::group(['prefix' => 'laboratory_protocol', 'middleware' => 'auth'], function () {
     Route::get('/search', '\App\Http\Controllers\LaboratoryProtocolController@search');

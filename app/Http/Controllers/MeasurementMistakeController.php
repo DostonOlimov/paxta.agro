@@ -196,7 +196,7 @@ class MeasurementMistakeController extends Controller
     {
         $result = new LaboratoryResult();
         $result->dalolatnoma_id = $dalolatnoma_id;
-        $result->tip_id = optional($tip)->id;
+        $result->tip_id = optional($tip)->id ?? 4;
         $result->mic = $clamp_data->mic;
         $result->staple = $clamp_data->staple;
         $result->strength = $clamp_data->strength;
@@ -280,7 +280,7 @@ class MeasurementMistakeController extends Controller
 
     private function updateLaboratoryResult($result, $tip, $clampData, $humidity_result)
     {
-        $result->tip_id = optional($tip)->id;
+        $result->tip_id = optional($tip)->id ?? 4;
         $result->mic = $clampData->mic;
         $result->staple = $clampData->staple;
         $result->strength = $clampData->strength;

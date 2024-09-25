@@ -15,7 +15,6 @@
                     <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-list"></use>
                 </svg>{{trans('message.Umumiy ro\'yxat')}}</a></li> --}}
 {{-- start --}}
-        @if(auth()->user()->role != \App\Models\User::STATE_EMPLOYEE)
             <li class="nav-group">
                 <a class="nav-link nav-group-toggle">
                     <svg class="nav-icon">
@@ -40,8 +39,8 @@
                         </svg>{{trans("message.Ishlab chiqaruvchi zavodlar kesimda ma'lumot")}}</a></li>
                 </ul>
             </li>
-        @endif
 {{-- end --}}
+        @if(auth()->user()->crop_branch != \App\Models\User::CROP_BRANCH_CHIGIT)
         <li class="nav-title">{{trans('message.Sertifikatsiya')}}</li>
 
 
@@ -80,6 +79,30 @@
         <li class="nav-item"><a class="nav-link" href="{!! url('/laboratory-protocol/list') !!}"> <svg class="nav-icon">
                     <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-list"></use>
                 </svg>{{trans('message.Sinov bayonnomalari')}}</a></li>
+
+        @else
+            <li class="nav-title">{{trans('message.Texnik chigit')}}</li>
+
+            <li class="nav-item"><a class="nav-link" href="{!! url('/application/list') !!}"> <svg class="nav-icon">
+                        <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-cursor"></use>
+                    </svg>{{trans('message.Arizalar')}}</a></li>
+            <li class="nav-item"><a class="nav-link" href="{!! url('/decision/search') !!}"> <svg class="nav-icon">
+                        <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-folder-open"></use>
+                    </svg><?php echo nl2br(trans('message.Qaror va Sinov dasturlari')); ?></a></li>
+
+            <li class="nav-item"><a class="nav-link" href="{!! url('/dalolatnoma/search') !!}"> <svg class="nav-icon">
+                        <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-inbox"></use>
+                    </svg><?php echo nl2br(trans('message.Na\'muna olish dalolatnomalari')); ?></a></li>
+            <li class="nav-item"><a class="nav-link" href="{!! url('/laboratory_results/search') !!}"> <svg class="nav-icon">
+                        <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-bar-chart"></use>
+                    </svg>{{trans('message.Laboratoriya natijalari')}}</a></li>
+            <li class="nav-item"><a class="nav-link" href="{!! url('/laboratory-protocol/list') !!}"> <svg class="nav-icon">
+                        <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-list"></use>
+                    </svg>{{trans('message.Sinov bayonnomalari')}}</a></li>
+            <li class="nav-item"><a class="nav-link" href="{!! url('/final_results/search') !!}"> <svg class="nav-icon">
+                        <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-bar-chart"></use>
+                    </svg>{{trans('message.Yakuniy natijalar')}}</a></li>
+        @endif
 
 
         <li class="nav-title">{{trans('message.Tizim sozlamalari')}}</li>

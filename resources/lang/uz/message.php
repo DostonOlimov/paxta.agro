@@ -57,6 +57,7 @@ return [
     'Hududlar' => 'Hududlar',
     'Viloyatlar' => 'Viloyatlar',
     'Shaxar va tumanlar' => 'Shaxar va tumanlar',
+    'Laboratoriya natijalari' => 'Laboratoriya natijalari',
 
     'Texnik chigit' => 'Texnik chigit',
 
