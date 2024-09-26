@@ -181,7 +181,9 @@
                         var inputField = document.getElementById('amount' + toyNumber);
 
                         if (inputField) {
-                            inputField.value = amount;
+                            if(amount){
+                                inputField.value = amount;
+                            }
                         }
 
                         for ( let i = 1; i < 5; i++ ){
@@ -189,7 +191,9 @@
                             amount = row["Toy og'irligi, kg_" + i];
                             inputField = document.getElementById('amount' + toyNumber);
                             if (inputField) {
-                                inputField.value = amount;
+                                if(amount){
+                                    inputField.value = amount;
+                                }
                             }
                         }
                     });
