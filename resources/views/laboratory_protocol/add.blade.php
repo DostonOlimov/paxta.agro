@@ -138,13 +138,14 @@
                                             </select>
                                         </div>
                                     </div> --}}
+                                    @if($apps->test_program->application->crops->name_id ==1)
                                     <div class="col-12 col-md-4">
                                         <div class="form-group">
                                             <label class="form-label"
                                                    for="first-name">{{ trans('app.Operator nomi')}} <label
                                                     class="text-danger">*</label>
                                             </label>
-                                            <select name="operator_id" class="form-control">
+                                            <select name="operator_id" class="form-control" required>
                                                     <option value="">{{ trans('app.Operatorni tanlang')}}</option>
                                                     @foreach($operators as $operator)
                                                         <option
@@ -153,7 +154,10 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <input type="hidden" name="director_id" value="{{$director->id}}">
+                                    @else
+                                        <input type="hidden" name="operator_id" value="{{$apps->test_program->application->decision->laboratory->director_id}}">
+                                    @endif
+                                    <input type="hidden" name="director_id" value="{{$apps->test_program->application->decision->laboratory->director_id}}">
                                     <input type="hidden" name="klassiyor_id" value="{{optional(optional($klassiyor)->klassiyor)->id}}">
 
                                 </div>

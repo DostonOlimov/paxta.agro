@@ -169,10 +169,11 @@
                 });
 
                 function populateInputs(data) {
+
                     data.forEach((row, rowIndex) => {
                         // Assuming that '№ toy' is the identifier and "Toy og'irligi, kg" is the amount
-                        var toyNumber = row['№ toy '];
-                        var amount = row["Toy og'irligi, kg"];
+                        var toyNumber = row['№ toy '] ?? row['№ toy'];
+                        var amount = row["Toy og'irligi, kg"] ?? row["Toy og`irligi,kg"];
 
 
                         let myRow = Math.floor(Object.keys(row).length / 2);
@@ -187,8 +188,8 @@
                         }
 
                         for ( let i = 1; i < 5; i++ ){
-                            toyNumber = row['№ toy _' + i];
-                            amount = row["Toy og'irligi, kg_" + i];
+                            toyNumber = row['№ toy _' + i] ??  row['№ toy_' + i];
+                            amount = row["Toy og'irligi, kg_" + i] ?? row["Toy og`irligi,kg_" + i];
                             inputField = document.getElementById('amount' + toyNumber);
                             if (inputField) {
                                 if(amount){

@@ -24,7 +24,11 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card p-4">
+                        @if($test->test_program->application->crops->name_id == 1)
                             @include('laboratory_protocol._cheque')
+                        @elseif($test->test_program->application->crops->name_id == 2)
+                            @include('laboratory_protocol._cheque_chigit')
+                        @endif
 
                             {{-- @if ($test->laboratory_results->quality == 1)
                                 @include('laboratory_protocol._cheque')

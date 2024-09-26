@@ -64,11 +64,7 @@ class LaboratoryProtocolController extends Controller
             return redirect('/laboratory-protocol/list')->with('message', $klassiyor->classer_id . ' kodli Klassiyor topilmadi');
         }
 
-        $director=User::where('role','=',User::LABORATORY_DIRECTOR)
-            ->where('state_id', $apps->test_program->application->decision->laboratory->city->state_id)
-            ->first();
-
-        return view('laboratory_protocol.add', compact('apps','director','klassiyor','operators'));
+        return view('laboratory_protocol.add', compact('apps','klassiyor','operators'));
     }
 
     public function store(Request $request)
@@ -76,6 +72,8 @@ class LaboratoryProtocolController extends Controller
         $userA = Auth::user();
         $this->authorize('create', Application::class);
         $data=$request->all();
+        $data['klassiyor_id'] = $data['klassiyor_id'] ?? $userA->id;
+
 
         $parsedDate = Carbon::createFromFormat('d-m-Y', $request->input('date'));
         $reformattedDate = $parsedDate->format('Y-m-d');
