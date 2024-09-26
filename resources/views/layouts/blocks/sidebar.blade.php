@@ -44,7 +44,7 @@
         <li class="nav-title">{{trans('message.Sertifikatsiya')}}</li>
 
 
-        <li class="nav-item {{ \Illuminate\Support\Facades\Request::is('application/*') ? 'active' : ''}}"><a class="nav-link" href="{!! url('/application/list') !!}"> <svg class="nav-icon">
+        <li class="nav-item "><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('application/*') ? 'active' : ''}}" href="{!! url('/application/list') !!}"> <svg class="nav-icon">
                     <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-cursor"></use>
                 </svg>{{trans('message.Arizalar')}}</a></li>
         <li class="nav-item"><a class="nav-link" href="{!! url('/decision/search') !!}"> <svg class="nav-icon">
