@@ -987,7 +987,7 @@
     </script>
 
 
-    // {{-- <div class="scores welcome">
+    <!-- // {{-- <div class="scores welcome">
 //         <div class="my-title">
 //             <h2>@php  echo date('d-m-Y ') @endphp</h2>
 //         </div>
@@ -1016,10 +1016,8 @@
 //             <div class="circle_persentages__statistics">
 //                 <div class="circle-persentages__circle">
 //                     <svg viewBox="0 0 4.5 4.5" xmlns="http://www.w3.org/2000/svg">
-//                         <!-- Lower circle -->
 //                         <circle cx="2.25" cy="2.25" r="2" fill="transparent" stroke="#494a4e"
 //                             stroke-width="0.35" />
-//                         <!-- Actual circle -->
 //                         <circle cx="2.25" cy="2.25" r="2" fill="transparent" stroke="#4fe4ff" stroke-width="0.35"
 //                             stroke-dasharray="13 100" stroke-linecap="round" transform="rotate(-90 2.25 2.25)" />
 //                     </svg>
@@ -1041,10 +1039,8 @@
 //             <div class="circle_persentages__statistics">
 //                 <div class="circle-persentages__circle">
 //                     <svg viewBox="0 0 4.5 4.5" xmlns="http://www.w3.org/2000/svg">
-//                         <!-- Lower circle -->
 //                         <circle cx="2.25" cy="2.25" r="2" fill="transparent" stroke="#353941"
 //                             stroke-width="0.40" />
-//                         <!-- Actual circle -->
 //                         <circle cx="2.25" cy="2.25" r="2" fill="transparent" stroke="#c50fb4" stroke-width="0.40"
 //                             stroke-dasharray="11 100" stroke-linecap="round" transform="rotate(-90 2.25 2.25)" />
 //                     </svg>
@@ -1069,10 +1065,8 @@
 //             <div class="circle_persentages__statistics">
 //                 <div class="circle-persentages__circle">
 //                     <svg viewBox="0 0 4.5 4.5" xmlns="http://www.w3.org/2000/svg">
-//                         <!-- Lower circle -->
 //                         <circle cx="2.25" cy="2.25" r="2" fill="transparent" stroke="#353941"
 //                             stroke-width="0.35" />
-//                         <!-- Actual circle -->
 //                         <circle cx="2.25" cy="2.25" r="2" fill="transparent" stroke="#009dd4" stroke-width="0.35"
 //                             stroke-dasharray="1 100" stroke-linecap="round" transform="rotate(-90 2.25 2.25)" />
 //                     </svg>
@@ -1265,6 +1259,5 @@
 //                 </div>
 //             @endforeach
 //         </div>
-//     </div> --}}
-    //
+//     </div> --}} -->
 @endsection

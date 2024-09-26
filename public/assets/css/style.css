@@ -8498,7 +8498,7 @@ html:not([dir=rtl]) .sidebar-close {
     transition: none;
   }
 }
-.sidebar-nav .nav-link.active {
+.sidebar-nav .nav-link.active1 {
   color: var(--cui-sidebar-nav-link-active-color);
   background: var(--cui-sidebar-nav-link-active-bg) !important;
 }

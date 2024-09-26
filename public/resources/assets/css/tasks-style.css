@@ -21101,7 +21101,7 @@ div.conv-form-wrapper div#messages div.message.from {
 #sidebar ul li ul li:last-child{
 	border-bottom:0;
 }
-#sidebar li a[aria-expanded="true"], #sidebar li a.active{
+#sidebar li a[aria-expanded="true"], #sidebar li a.active1{
 	background:#0052cc;
 	color:#fff;
 }
