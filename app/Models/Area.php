@@ -20,6 +20,10 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
  */
 class Area extends Model
 {
+    protected $fillable = [
+        'id',
+        'name',
+    ];
     protected $table = 'tbl_cities';
 
     public function region()

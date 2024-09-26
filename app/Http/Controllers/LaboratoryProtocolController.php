@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\V1\DalolatnomaFilter;
 use App\Http\Controllers\Traits\DalolatnomaTrait;
 use App\Models\Application;
 use App\Models\ClampData;
@@ -11,6 +12,7 @@ use App\Models\LaboratoryFinalResults;
 use App\Models\LaboratoryOperator;
 use App\Models\MeasurementMistake;
 use App\Models\User;
+use App\Services\SearchService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,37 +20,49 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class LaboratoryProtocolController extends Controller
 {
-    use DalolatnomaTrait;
-
-    // Search
-    public function list(Request $request)
+    //search
+    public function list(Request $request, DalolatnomaFilter $filter,SearchService $service)
     {
-        $city = $request->input('city');
-        $crop = $request->input('crop');
-        $from = $request->input('from');
-        $till = $request->input('till');
-        $sort_by = $request->get('sort_by', 'id');
-        $sort_order = $request->get('sort_order', 'desc');
+        try {
+            $names = getCropsNames();
+            $states = getRegions();
+            $years = getCropYears();
 
-        $apps = $this->buildQuery($request);
+            return $service->search(
+                $request,
+                $filter,
+                Dalolatnoma::class,
+                [
+                    'test_program',
+                    'test_program.application',
+                    'test_program.application.decision',
+                    'test_program.application.organization',
+                    'test_program.application.prepared',
+                ],
+                compact('names', 'states', 'years'),
+                'laboratory_protocol.list',
+                [],
+                false
+            );
 
-        $tests = $apps->withSum('akt_amount', 'amount')
-            ->paginate(50)
-            ->appends($request->except('page'));
-
-        return view('laboratory_protocol.list', compact('tests', 'from', 'till', 'city', 'crop', 'sort_by', 'sort_order'));
+        } catch (\Throwable $e) {
+            // Log the error for debugging
+            \Log::error($e);
+            return $this->errorResponse('An unexpected error occurred', [], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
+
 
     public function add($id)
     {
         $user=Auth::user();
         $apps= Dalolatnoma::with('test_program.application.decision.laboratory.city')->find($id);
-        $operators=LaboratoryOperator::query();
-        if($user->branch_id==2){
-            $operators=$operators->where('laboratory_id', $apps->test_program->application->decision->laboratory_id);
-        }
-        $operators=$operators->get();
+        $operators = LaboratoryOperator::where('laboratory_id', $apps->test_program->application->decision->laboratory_id)->get();
+
         $klassiyor=ClampData::with('klassiyor')->where('dalolatnoma_id',$id)->first();
+        if($klassiyor && !$klassiyor->klassiyor){
+            return redirect('/laboratory-protocol/list')->with('message', $klassiyor->classer_id . ' kodli Klassiyor topilmadi');
+        }
 
         $director=User::where('role','=',User::LABORATORY_DIRECTOR)
             ->where('state_id', $apps->test_program->application->decision->laboratory->city->state_id)
@@ -86,6 +100,7 @@ class LaboratoryProtocolController extends Controller
             ->with('test_program.application.organization.city')
             ->with('test_program.application.prepared.region')
             ->find($id);
+
 
         $final_result=FinalResult::with('dalolatnoma.laboratory_result')->where('dalolatnoma_id', $id)->get();
         $measurement_mistake=MeasurementMistake::where('dalolatnoma_id', $id)->first();

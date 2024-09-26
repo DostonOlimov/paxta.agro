@@ -22,16 +22,17 @@ class Decision extends Model
     const STATUS_DELETED = 0;
     const STATUS_NEW = 1;
     const STATUS_ACCEPTED = 2;
+
     protected $table = 'decisions';
 
     protected $fillable = [
         'director_id',
         'app_id',
+        'number',
+        'date',
         'laboratory_id',
         'status',
-        'requirement',
         'created_by',
-        'updated_by',
     ];
 
     public function application(): BelongsTo

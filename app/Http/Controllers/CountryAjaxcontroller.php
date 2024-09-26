@@ -12,10 +12,6 @@ use Illuminate\Support\Facades\Validator;
 
 class CountryAjaxcontroller extends Controller
 {
-    public function __construct(){
-        $this->middleware('auth');
-    }
-
     //get state
     public function getstate(Request $request)
     {

@@ -63,16 +63,18 @@ class HomeController extends Controller
                     ->whereDate('date', '<=', $tillTime);
             });
         }
-
+        $year =  session('year') ?  session('year') : 2024;
         $app_states = Region::select('tbl_states.id', 'tbl_states.name', DB::raw('COUNT(applications.id) as application_count'))
             ->leftJoin('tbl_cities', 'tbl_states.id', '=', 'tbl_cities.state_id')
             ->leftJoin('organization_companies', 'tbl_cities.id', '=', 'organization_companies.city_id')
             ->join('applications', 'organization_companies.id', '=', 'applications.organization_id')
             ->join('test_programs', 'applications.id', '=', 'test_programs.app_id')
-            ->join('dalolatnoma', 'test_programs.id', '=', 'dalolatnoma.test_program_id');
+            ->join('dalolatnoma', 'test_programs.id', '=', 'dalolatnoma.test_program_id')
+            ->leftJoin('crop_data', 'applications.crop_data_id', '=', 'crop_data.id')
+            ->where('crop_data.year',$year);
+
         if ($crop) {
-            $app_states = $app_states->leftJoin('crop_data', 'applications.crop_data_id', '=', 'crop_data.id')
-                ->where('crop_data.name_id', '=', $crop);
+            $app_states = $app_states->where('crop_data.name_id', '=', $crop);
         }
         if ($from && $till) {
             $fromTime = join('-', array_reverse(explode('-', $from)));

@@ -33,6 +33,15 @@
                     {{ trans('message.Paxta tolasini sertifikatlashtirish avtomatlashtirilgan axborot tizimi') }}
                 </h1>
             </div>
+            <div>
+                <div class="dropdown">
+                    <div id="currentYear" class="menu-year">@php echo session('year') ?  session('year') : date('Y'); @endphp </div>
+                    <div class="my-dropdown-year">
+                        <a href="#" onclick="changeYear('2023')"><b>2023</b></a>
+                        <a href="#" onclick="changeYear('2024')"><b>2024</b></a>
+                    </div>
+                </div>
+            </div>
         </div>
         <ul class=" ms-3">
             <li class="nav-item dropdown"><a class="nav-link py-0" data-coreui-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">

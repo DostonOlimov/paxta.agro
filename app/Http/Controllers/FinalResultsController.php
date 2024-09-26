@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\V1\DalolatnomaFilter;
 use App\Http\Controllers\Traits\DalolatnomaTrait;
 use App\Models\Application;
 use App\Models\ClampData;
@@ -11,14 +12,13 @@ use App\Models\FinalResult;
 use App\Models\Nds;
 use App\Models\Sertificate;
 use App\Services\AttachmentService;
+use App\Services\SearchService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class FinalResultsController extends Controller
 {
-    use DalolatnomaTrait;
-
     private $attachmentService;
 
     public function __construct(AttachmentService $attachmentService)
@@ -26,23 +26,36 @@ class FinalResultsController extends Controller
         $this->attachmentService = $attachmentService;
     }
 
-    // Search
-    public function search(Request $request)
+    //search
+    public function search(Request $request, DalolatnomaFilter $filter,SearchService $service)
     {
-        $city = $request->input('city');
-        $crop = $request->input('crop');
-        $from = $request->input('from');
-        $till = $request->input('till');
-        $sort_by = $request->get('sort_by', 'id');
-        $sort_order = $request->get('sort_order', 'desc');
+        try {
+            $names = getCropsNames();
+            $states = getRegions();
+            $years = getCropYears();
 
-        $apps = $this->buildQuery($request);
+            return $service->search(
+                $request,
+                $filter,
+                Dalolatnoma::class,
+                [
+                    'test_program',
+                    'test_program.application',
+                    'test_program.application.decision',
+                    'test_program.application.organization',
+                    'test_program.application.prepared',
+                ],
+                compact('names', 'states', 'years'),
+                'final_results.search',
+                [],
+                false
+            );
 
-        $tests = $apps->withSum('akt_amount', 'amount')
-            ->paginate(50)
-            ->appends($request->except('page'));
-
-        return view('final_results.search', compact('tests', 'from', 'till', 'city', 'crop', 'sort_by', 'sort_order'));
+        } catch (\Throwable $e) {
+            // Log the error for debugging
+            \Log::error($e);
+            return $this->errorResponse('An unexpected error occurred', [], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
     //index
     public function add($id)
@@ -50,6 +63,7 @@ class FinalResultsController extends Controller
         $dalolatnoma = Dalolatnoma::find($id);
         $tests = ClampData::where('dalolatnoma_id',$id)->count();
         $data_count = FinalResult::where('dalolatnoma_id',$id)->count();
+
 
         if($data_count == 0){
             $counts = ClampData::select('sort', 'class',
@@ -81,7 +95,7 @@ class FinalResultsController extends Controller
                 $result->staple = $count->staple;
                 $result->strength = $count->strength;
                 $result->uniform = $count->uniform;
-                $result->humidity = $count->humidity;
+                $result->humidity = optional($dalolatnoma->laboratory_result)->humidity;
                 $result->save();
             }
         }
@@ -131,7 +145,7 @@ class FinalResultsController extends Controller
                 $result->staple = $count->staple;
                 $result->strength = $count->strength;
                 $result->uniform = $count->uniform;
-                $result->humidity = $count->humidity;
+                $result->humidity = optional($dalolatnoma->laboratory_result)->humidity;
                 $result->save();
             }
         }
@@ -248,7 +262,7 @@ class FinalResultsController extends Controller
                 $result->staple = $count->staple;
                 $result->strength = $count->strength;
                 $result->uniform = $count->uniform;
-                $result->humidity = $count->humidity;
+                $result->humidity = optional(optional($result->dalolatnoma)->laboratory_result)->humidity;
                 $result->save();
             }
         }

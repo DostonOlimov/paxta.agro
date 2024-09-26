@@ -27,9 +27,6 @@
                     </div>
                 </div>
             @endif
-        <!-- filter component -->
-            <x-filter :crop="$crop" :city="$city" :from="$from" :till="$till"  />
-            <!--filter component -->
 
             <div class="row">
                 <div class="col-md-12">
@@ -42,7 +39,7 @@
                                         <th class="border-bottom-0 border-top-0">#</th>
                                         <th class="border-bottom-0 border-top-0">
                                             <a href="{{ route('humidity_result.search', ['sort_by' => 'number', 'sort_order' => ($sort_by === 'number' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
-                                                {{ trans('app.Sinov dasturi raqami') }}
+                                                {{ trans('app.Dalolatnoma raqami') }}
                                                 @if($sort_by === 'number')
                                                     @if($sort_order === 'asc')
                                                         <i class="fa fa-arrow-up"></i>
@@ -76,10 +73,11 @@
                                                 @endif
                                             </a>
                                         </th>
+                                        <th class="border-bottom-0 border-top-0">{{trans('app.Viloyat nomi')}}</th>
                                         <th class="border-bottom-0 border-top-0">
-                                            <a href="{{ route('humidity_result.search', ['sort_by' => 'prepared', 'sort_order' => ($sort_by === 'prepared' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
-                                                {{ trans('app.Zavod nomi va kodi') }}
-                                                @if($sort_by === 'prepared')
+                                            <a href="{{ route('humidity_result.search', ['sort_by' => 'organization', 'sort_order' => ($sort_by === 'organization' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
+                                                {{trans('app.Buyurtmachi korxona yoki tashkilot nomi')}}
+                                                @if($sort_by === 'organization')
                                                     @if($sort_order === 'asc')
                                                         <i class="fa fa-arrow-up"></i>
                                                     @else
@@ -88,30 +86,97 @@
                                                 @endif
                                             </a>
                                         </th>
+                                        <th class="border-bottom-0 border-top-0">
+                                            {{ trans('app.Zavod nomi va kodi') }}
+                                        </th>
                                         <th>{{trans('app.Sertifikatlanuvchi mahsulot')}}</th>
                                         <th>{{trans('app.Action')}}</th>
                                     </tr>
-
                                     </thead>
                                     <tbody>
+                                    <tr style="background-color: #90aec6 !important;">
+                                    <td></td>
+                                    <td>
+                                        <form class="d-flex">
+                                            <input type="text" name="number[eq]" class="search-input form-control"
+                                                   value="{{ isset($filterValues['number']) ? $filterValues['number'] : '' }}">
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <form class="d-flex">
+                                            <input type="text" name="partyNumber[lk]" class="search-input form-control"
+                                                   value="{{ isset($filterValues['partyNumber']) ? $filterValues['partyNumber'] : '' }}">
+                                        </form>
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                        <select class="w-100 form-control name_of_corn custom-select" name="stateId"
+                                                id="stateId">
+                                            <option value="" selected>Viloyat nomini tanlang</option>
+                                            @if (!empty($states))
+                                                @foreach ($states as $name)
+                                                    <option value="{{ $name->id }}"
+                                                            @if (isset($filterValues['stateId']) && $filterValues['stateId'] == $name->id)
+                                                            selected
+                                                        @endif>
+                                                        {{ $name->name }} </option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select id="organization" class="form-control owner_search" name="organization">
+                                            @if (!empty($organization))
+                                                <option selected value="{{ $organization->id }}">
+                                                    {{ $organization->name }}</option>
+                                            @endif
+                                        </select>
+                                        @if ($organization)
+                                            <i class="fa fa-trash" style="color:red"
+                                               onclick="changeDisplay('companyId[eq]')"></i>
+                                        @endif
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                        <select class="w-100 form-control name_of_corn custom-select" name="name"
+                                                id="crops_name">
+                                            @if (count($names))
+                                                <option value="" selected>
+                                                    Mahsulot turini tanlang</option>
+                                            @endif
+                                            @if (!empty($names))
+                                                @foreach ($names as $name)
+                                                    <option value="{{ $name->id }}"
+                                                            @if (isset($filterValues['nameId']) && $filterValues['nameId'] == $name->id)
+                                                            selected
+                                                        @endif>
+                                                        {{ $name->name }} </option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                    </td>
+                                        <td></td>
+                                    </tr>
                                     @php
                                         $offset = (request()->get('page', 1) - 1) * 50;
                                     @endphp
-                                    @foreach($tests as $test)
+                                    @foreach($apps as $app)
                                         <tr>
                                             <td>{{$offset + $loop->iteration}}</td>
-                                            <td>{{ optional(optional($test->test_program->application)->decision)->number }}</td>
-                                            <td> {{ optional($test->test_program->application->crops)->party_number }}</td>
-                                            <td>{{$test->date }}</td>
-                                            <td>{{ $test->test_program->application->prepared->name }} - {{ $test->test_program->application->prepared->kod }}</td>
-                                            <td>{{ $test->test_program->application->crops->name->name }}</td>
+                                            <td>{{ $app->number }}</td>
+                                            <td> {{ optional($app->test_program->application->crops)->party_number }}</td>
+                                            <td> {{ $app->date }}</td>
+                                            <td> {{ optional(optional(optional($app->test_program->application->organization)->area)->region)->name }}</td>
+                                            <td><a href="#" class="company-link" data-id="{{ $app->test_program->application->organization_id }}">{{ optional($app->test_program->application->organization)->name }}</a></td>
+                                            <td>{{ optional($app->test_program)->application->prepared->name }} - {{ optional($app->test_program)->application->prepared->kod }}</td>
+                                            <td>{{ optional($app->test_program)->application->crops->name->name }}</td>
                                             <td>
-                                            @if($test->humidity)
-                                                @if($result = $test->humidity_result)
+                                            @if($app->humidity)
+                                                @if($result = $app->humidity_result)
                                                     <a href="{!! url('/humidity_result/view/'. $result->id) !!}"><button type="button" class="btn btn-round btn-info">{{ trans('app.View')}}</button></a>
                                                     <a href="{!! url('/humidity_result/edit/'. $result->id) !!}"><button type="button" class="btn btn-round btn-warning">{{ trans('app.Edit')}}</button></a>
                                                 @else
-                                                    <a href="{!! url('/humidity_result/add/'. $test->id) !!}"><button type="button" class="btn btn-round btn-success">&nbsp;Dalolatnomani kiritish &nbsp;</button></a>
+                                                    <a href="{!! url('/humidity_result/add/'. $app->id) !!}"><button type="button" class="btn btn-round btn-success">&nbsp;Dalolatnomani kiritish &nbsp;</button></a>
                                                 @endif
                                             @endif
                                             </td>
@@ -119,7 +184,7 @@
                                     @endforeach
                                     </tbody>
                                 </table>
-                                {{$tests->links()}}
+                                {{$apps->links()}}
                             </div>
                         </div>
                     </div>
@@ -135,30 +200,27 @@
             </div>
         </div>
     @endcan
-    <!-- /page content -->
-    <script src="{{ URL::asset('vendors/jquery/dist/jquery.min.js') }}"></script>
-
+@endsection
+@section('scripts')
     <script>
-        $('body').on('click', '.sa-warning', function() {
+        var translations = {
+            inputTooShort: '{{ trans('app.Korxona (nomi), STIR ini kiritib izlang') }}',
+            searching: '{{ trans('app.Izlanmoqda...') }}',
+            noResults: '{{ trans('app.Natija topilmadi') }}',
+            errorLoading: '{{ trans('app.Natija topilmadi') }}',
+            placeholder: '{{ trans('app.Korxona nomini kiriting') }}'
+        };
 
-            var url =$(this).attr('url');
-
-
-            swal({
-                title: "O'chirishni istaysizmi?",
-                text: "O'chirilgan ma'lumotlar qayta tiklanmaydi!",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#297FCA",
-                confirmButtonText: "Ha, o'chirish!",
-                cancelButtonText: "O'chirishni bekor qilish",
-                closeOnConfirm: false
-            }).then((result) => {
-                window.location.href = url;
-
-            });
-        });
-
+        const labels = {
+            inn: @json(trans('app.Tashkilot STIRi')),
+            owner: @json(trans('app.Tashkilot rahbari')),
+            phone: @json(trans('app.Telefon raqami')),
+            address: @json(trans('app.Address')),
+            state: @json(trans('app.Viloyat nomi')),
+            city: @json(trans('app.Tuman nomi'))
+        };
     </script>
-
+    <script src="{{ asset('js/my_js_files/filter.js') }}"></script>
+    <script src="{{ asset('js/my_js_files/get_company.js') }}"></script>
+    <script src="{{ asset('js/my_js_files/view_company.js') }}"></script>
 @endsection

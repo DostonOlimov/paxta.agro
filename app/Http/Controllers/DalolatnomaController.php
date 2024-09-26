@@ -2,139 +2,71 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\V1\ApplicationFilter;
 use App\Models\AktAmount;
 use App\Models\Application;
-use App\Models\CropData;
 use App\Models\CropsSelection;
-use App\Models\Decision;
 use App\Models\Dalolatnoma;
 use App\Models\GinBalles;
-use App\Models\Indicator;
-use App\Models\Laboratories;
-use App\Models\Nds;
+use App\Models\Humidity;
 use App\Models\Sertificate;
 use App\Models\TestPrograms;
 use App\Models\DefaultModels\tbl_activities;
-use App\Models\User;
 use App\Rules\DifferentsShtrixKod;
 use App\Rules\EqualToyCount;
+use App\Services\SearchService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Response;
 
 class DalolatnomaController extends Controller
 {
-    //search
-    public function search(Request $request)
+    public function search(Request $request, ApplicationFilter $filter,SearchService $service)
     {
-        $user = Auth::user();
-        $city = $request->input('city');
-        $crop = $request->input('crop');
-        $from = $request->input('from');
-        $till = $request->input('till');
-        $sort_by = $request->get('sort_by', 'id'); // default sorting by 'id'
-        $sort_order = $request->get('sort_order', 'desc'); // default order is ascending
+        try {
+            $names = getCropsNames();
+            $states = getRegions();
+            $years = getCropYears();
+            $all_status = getAppStatus();
 
-        // Validate the sort_by column to prevent SQL injection
-        $columns = ['id', 'party_number', 'date','organization','year']; // Add your table columns here
-        if (!in_array($sort_by, $columns)) {
-            $sort_by = 'id';
-        }
+            return $service->search(
+                $request,
+                $filter,
+                Application::class,
+                [
+                    'crops',
+                    'organization',
+                    'prepared'
+                ],
+                compact('names', 'states', 'years','all_status'),
+                'dalolatnoma.search',
+                [Application::STATUS_ACCEPTED, Application::STATUS_FINISHED],
+                true
+            );
 
-        $apps= TestPrograms::with('application')
-            ->with('application.crops.name')
-            ->with('application.crops.type')
-            ->with('application.organization');
-        if ($user->branch_id == User::BRANCH_STATE ) {
-            $user_city = $user->state_id;
-            $apps = $apps->whereHas('application.organization', function ($query) use ($user_city) {
-                $query->whereHas('city', function ($query) use ($user_city) {
-                    $query->where('state_id', '=', $user_city);
-                });
-            });
+        } catch (\Throwable $e) {
+            // Log the error for debugging
+            \Log::error($e);
+            return $this->errorResponse('An unexpected error occurred', [], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-        if ($from && $till) {
-            $fromTime = join('-', array_reverse(explode('-', $from)));
-            $tillTime = join('-', array_reverse(explode('-', $till)));
-            $apps->whereHas('application', function ($query) use ($fromTime,$tillTime) {
-                $apps = $query->whereDate('date', '>=', $fromTime)
-                    ->whereDate('date', '<=', $tillTime);
-            });
-        }
-        if ($city) {
-            $apps = $apps->whereHas('application.organization', function ($query) use ($city) {
-                $query->whereHas('city', function ($query) use ($city) {
-                    $query->where('state_id', '=', $city);
-                });
-            });
-        }
-        if ($crop) {
-            $apps = $apps->whereHas('application.crops', function ($query) use ($crop) {
-                $query->where('name_id', '=', $crop);
-            });
-        }
-        $apps->when($request->input('s'), function ($query, $searchQuery) {
-            $query->where(function ($query) use ($searchQuery) {
-                if (is_numeric($searchQuery)) {
-                    $query->whereHas('application', function ($query) use ($searchQuery) {
-                        $query->where('app_number', $searchQuery);
-                    });
-                } else {
-                    $query->whereHas('application.crops.name', function ($query) use ($searchQuery) {
-                        $query->where('name', 'like', '%' . addslashes($searchQuery) . '%');
-                    })->orWhereHas('application.crops.type', function ($query) use ($searchQuery) {
-                        $query->where('name', 'like', '%' . addslashes($searchQuery) . '%');
-                    })->orWhereHas('application.crops.generation', function ($query) use ($searchQuery) {
-                        $query->where('name', 'like', '%' . addslashes($searchQuery) . '%');
-                    });
-
-                }
-            });
-        });
-        if ($sort_by == 'organization') {
-            $apps->join('applications', 'test_programs.app_id', '=', 'applications.id')
-                ->join('organization_companies', 'applications.organization_id', '=', 'organization_companies.id')
-                ->orderBy('organization_companies.name', $sort_order);
-        } elseif ($sort_by == 'party_number') {
-            $apps->join('applications', 'test_programs.app_id', '=', 'applications.id')
-                ->join('crop_data', 'applications.crop_data_id', '=', 'crop_data.id')
-                ->orderBy('crop_data.party_number', $sort_order);
-        }elseif ($sort_by == 'date') {
-            $apps->join('applications', 'test_programs.app_id', '=', 'applications.id')
-                ->orderBy('applications.date', $sort_order);
-        }
-        else{
-            $apps->orderBy($sort_by, $sort_order);
-        }
-        $tests = $apps->paginate(50)
-            ->appends(['s' => $request->input('s')])
-            ->appends(['till' => $request->input('till')])
-            ->appends(['from' => $request->input('from')])
-            ->appends(['city' => $request->input('city')])
-            ->appends(['crop' => $request->input('crop')])
-            ->appends(['sort_by' => $sort_by, 'sort_order' => $sort_order]);
-        return view('dalolatnoma.search', compact('tests','from','till','city','crop','sort_by','sort_order'));
     }
-    //index
+
+    //add
     public function add($id)
     {
-        $test = TestPrograms::find($id);
+        $test = TestPrograms::findOrFail($id);
+        $crop_id = $test->application->crops->name_id;
         $selection = CropsSelection::get();
         $tara = optional(optional($test->application)->prepared)->tara;
 
+        if($crop_id == 2){
+            return view('dalolatnoma.add2', compact('test', 'selection','tara'));
+        }
+
         return view('dalolatnoma.add', compact('test', 'selection','tara'));
     }
-
-    //list
-    public function list()
-    {
-        $title = 'Normativ hujjatlar';
-        $testss = Nds::with('crops')->orderBy('id')->get();
-        return view('dalolatnoma.list', compact('decisions','title'));
-    }
-
-    //  store
     public function store(Request $request)
     {
         $kod_toy = $request->input('kod_toy');
@@ -146,89 +78,119 @@ class DalolatnomaController extends Controller
             'kod_toy.*.3' => ['required', 'numeric', new EqualToyCount()],
         ]);
 
-        $userA = Auth::user();
         $this->authorize('create', Application::class);
-        $test_id = $request->input('test_id');
-        $number = $request->input('number');
-        $selection_code = $request->input('selection_code');
-        $toy_count = $request->input('toy_count');
-        $amount = $request->input('amount');
-        $party_number = $request->input('party_number');
-        $nav = $request->input('nav');
-        $sinf = $request->input('sinf');
-        $tara = $request->input('tara');
 
-        $test = new Dalolatnoma();
-        $test->test_program_id = $test_id;
-        $test->number = $number;
-        $test->date = join('-', array_reverse(explode('-', $request->input('date'))));
-        $test->selection_code = $selection_code;
-        $test->toy_count = $toy_count;
-        $test->amount = $amount;
-        $test->party = $party_number;
-        $test->nav = $nav;
-        $test->sinf = $sinf;
-        $test->tara = $tara;
-        $test->save();
+        $data = $request->only([
+            'test_id', 'number', 'selection_code', 'toy_count', 'amount', 'party_number', 'nav', 'sinf', 'tara', 'date'
+        ]);
 
-        $balls = [];
-        for ($i = 0; $i < count($kod_toy); $i++) {
-            if ($kod_toy[$i][0] && $kod_toy[$i][1] && $kod_toy[$i][2] && $kod_toy[$i][3]) {
-                $balls[] = [
-                    'dalolatnoma_id' => $test->id,
-                    'from_number' => $kod_toy[$i][0],
-                    'to_number' => $kod_toy[$i][1],
-                    'from_toy' => $kod_toy[$i][2],
-                    'to_toy' => $kod_toy[$i][3],
-                ];
-            }
-        }
-        DB::transaction(function () use ($balls) {
+        $date = $this->formatDate($data['date']);
+
+        DB::transaction(function () use ($data, $date, $kod_toy) {
+            // Create Dalolatnoma
+            $dal = Dalolatnoma::create([
+                'test_program_id' => $data['test_id'],
+                'number' => $data['number'],
+                'date' => $date,
+                'selection_code' => $data['selection_code'],
+                'toy_count' => $data['toy_count'],
+                'amount' => $data['amount'],
+                'party' => $data['party_number'],
+                'nav' => $data['nav'],
+                'sinf' => $data['sinf'],
+                'tara' => $data['tara'],
+            ]);
+
+            // Create Humidity
+            Humidity::create([
+                'dalolatnoma_id' => $dal->id,
+                'number' => $data['number'],
+                'date' => $date,
+                'selection_code' => $data['selection_code'],
+                'toy_count' => $data['toy_count'],
+                'toy_amount' => ceil($data['toy_count'] / 10),
+                'party_number' => $data['party_number'],
+                'nav' => $data['nav'],
+                'sinf' => $data['sinf'],
+            ]);
+
+            // Process GinBalles and AktAmount
+            $balls = $this->prepareGinBalles($dal->id, $kod_toy);
+            $amounts = $this->prepareAktAmount($dal->id, $kod_toy);
+
+            // Insert GinBalles and AktAmount in batches
             GinBalles::insert($balls);
-        });
-        $amounts = [];
-
-        for ($i = 0; $i < count($kod_toy); $i++) {
-            $from_kod = $kod_toy[$i][0];
-            $to_kod = $kod_toy[$i][1];
-            for ($j = $from_kod; $j <= $to_kod; $j++) {
-                $amounts[] = [
-                    'dalolatnoma_id' => $test->id,
-                    'shtrix_kod' => $j,
-                ];
-            }
-        }
-        DB::transaction(function () use ($amounts) {
             AktAmount::insert($amounts);
-        });
 
-        $active = new tbl_activities;
-        $active->ip_adress = $_SERVER['REMOTE_ADDR'];
-        $active->user_id = $userA->id;
-        $active->action_id = $test->id;
-        $active->action_type = 'new_dalolatnoma';
-        $active->action = "Dalolatnoma qo'shildi";
-        $active->time = date('Y-m-d H:i:s');
-        $active->save();
+            // Log user activity
+            $this->logActivity($dal->id, Auth::user()->id);
+        });
 
         return redirect('/akt_amount/search');
     }
+    public function store2(Request $request)
+    {
+        $data = $request->only([
+            'test_id', 'number', 'selection_code', 'toy_count', 'amount', 'amount2','party_number', 'nav', 'sinf', 'tara', 'date'
+        ]);
 
+        $date = $this->formatDate($data['date']);
+
+        $dal = Dalolatnoma::create([
+            'test_program_id' => $data['test_id'],
+            'number' => $data['number'],
+            'date' => $date,
+            'selection_code' => $data['selection_code'],
+            'toy_count' => $data['toy_count'],
+            'amount' => $data['amount2'],
+            'amount2' => $data['amount'],
+            'party' => $data['party_number'],
+            'nav' => 1,
+            'sinf' => 1,
+            'tara' => 1,
+        ]);
+
+        return redirect('/dalolatnoma/search')->with('message', 'Successfully Created');
+    }
+
+
+    //update
     public function edit($id)
     {
-        $userA = Auth::user();
         $result = Dalolatnoma::find($id);
         $test = TestPrograms::find($result->test_program_id);
         $certificate =  Sertificate::where('final_result_id', '=', $result->id)->first();
         $gin_balles = GinBalles::where('dalolatnoma_id', $id)->get();
         $selection = CropsSelection::get();
 
+        $crop_id = $test->application->crops->name_id;
+        if($crop_id == 2){
+            return view('dalolatnoma.edit2',  compact('test', 'result', 'certificate', 'gin_balles','selection'));
+        }
+
         return view('dalolatnoma.edit', compact('test', 'result', 'certificate', 'gin_balles','selection'));
     }
+    public function update2($id,Request $request)
+    {
+        $dalolatnoma = Dalolatnoma::findOrFail($id);
+
+        $dalolatnoma->number = $request->input('number');
+
+        if ($dalolatnoma->date != $request->input('date')) {
+            $dalolatnoma->date = $this->formatDate($request->input('date'));
+        }
+
+        $dalolatnoma->selection_code = $request->input('selection_code');
+        $dalolatnoma->toy_count = $request->input('toy_count');
+        $dalolatnoma->amount = $request->input('amount');
+        $dalolatnoma->party = $request->input('party_number');
+        $dalolatnoma->amount2 = $request->input('amount2');
+        $dalolatnoma->save();
 
 
+        return redirect('/dalolatnoma/search')->with('message', 'Successfully Created');
+    }
     // application update
-
     public function update($id, Request $request)
     {
         $kod_toy = $request->input('kod_toy');
@@ -240,75 +202,34 @@ class DalolatnomaController extends Controller
             'kod_toy.*.4' => ['required', 'numeric', new EqualToyCount()],
         ]);
 
-        $userA = Auth::user();
-        $result = Dalolatnoma::find($id);
-        $result->number = $request->input('number');
-        if ($result->date != $request->input('date')) {
-            $result->date = join('-', array_reverse(explode('-', $request->input('date'))));
-        }
-        $result->selection_code = $request->input('selection_code');
-        $result->toy_count = $request->input('toy_count');
-        $result->amount = $request->input('amount');
-        $result->party = $request->input('party_number');
-        $result->nav = $request->input('nav');
-        $result->sinf = $request->input('sinf');
-        $result->tara = $request->input('tara');
-        $result->save();
-        $akt_amount = AktAmount::where('dalolatnoma_id', $id)->sum('amount');
+        $user = Auth::user();
+        $dalolatnoma = Dalolatnoma::findOrFail($id);
 
-        if ($akt_amount = 0) {
-        foreach ($kod_toy as $item) {
-            $conditions = ['id' => $item[0]];
-            $data = [
-                'dalolatnoma_id' => $id,
-                'from_number' => $item[1],
-                'to_number' => $item[2],
-                'from_toy' => $item[3],
-                'to_toy' => $item[4],
-            ];
+        // Update Dalolatnoma fields if needed
+        $this->updateDalolatnoma($dalolatnoma, $request);
 
+        // Check if AktAmount needs to be updated
+        $aktAmount = AktAmount::where('dalolatnoma_id', $id)->sum('amount');
 
-        }
-            dd($data);
-            GinBalles::updateOrCreate($conditions, $data);
-        AktAmount::where('dalolatnoma_id', $id)->delete();
-        $amount = new AktAmount();
+        if ($aktAmount == 0) {
+            // Handle GinBalles update
+            $this->updateGinBalles($id, $kod_toy);
 
-        $amounts = [];
-        for ($i = 0; $i < count($kod_toy); $i++) {
-            $from_kod = $kod_toy[$i][0];
-            $to_kod = $kod_toy[$i][1];
-            for ($j = $from_kod; $j <= $to_kod; $j++) {
-                $amounts[] = [
-                    'dalolatnoma_id' => $id,
-                    'shtrix_kod' => $j,
-                ];
-            }
+            // Delete existing AktAmount and insert new amounts
+            AktAmount::where('dalolatnoma_id', $id)->delete();
+            $amounts = $this->prepareAktAmount($id, $kod_toy,true);
+
+            DB::transaction(function () use ($amounts) {
+                AktAmount::insert($amounts);
+            });
         }
 
-        DB::transaction(function () use ($amounts) {
-            AktAmount::insert($amounts);
-        });
-    }
+        // Log the user activity
+        $this->logActivity($dalolatnoma->id, $user->id);
 
-        $active = new tbl_activities;
-        $active->ip_adress = $_SERVER['REMOTE_ADDR'];
-        $active->user_id = $userA->id;
-        $active->action_id = $result->id;
-        $active->action_type = 'edit_dalolatnoma';
-        $active->action = "Dalolatnoma o'zgartirildi";
-        $active->time = date('Y-m-d H:i:s');
-        $active->save();
         return redirect('/dalolatnoma/search')->with('message', 'Successfully Updated');
-
     }
 
-
-    public function destory($id)
-    {
-        Decision::destroy($id);
-        return redirect('dalolatnoma/search')->with('message', 'Successfully Deleted');
-    }
     public function view($id)
     {
         $tests = Dalolatnoma::find($id);
@@ -331,6 +252,13 @@ class DalolatnomaController extends Controller
         ];
 
         $my_date = $date->isoFormat("D") . ' - ' . $uzbekMonthNames[$date->isoFormat("MM")] . ' '. $date->isoFormat("Y") ;
+        $crop_id = $tests->test_program->application->crops->name_id;
+        if($crop_id == 2){
+            return view('dalolatnoma.show2', [
+                'result' => $tests,
+                'date' => $my_date
+            ]);
+        }
         return view('dalolatnoma.show', [
             'result' => $tests,
             'date' => $my_date
@@ -371,5 +299,98 @@ class DalolatnomaController extends Controller
 
         return redirect('/akt_amount/search')->with('message', 'Successfully Updated');
 
+    }
+
+    private function formatDate(string $date): string
+    {
+        return join('-', array_reverse(explode('-', $date)));
+    }
+
+    private function prepareGinBalles(int $dalolatnomaId, array $kod_toy): array
+    {
+        $balls = [];
+        foreach ($kod_toy as $toy) {
+            if ($toy[0] && $toy[1] && $toy[2] && $toy[3]) {
+                $balls[] = [
+                    'dalolatnoma_id' => $dalolatnomaId,
+                    'from_number' => $toy[0],
+                    'to_number' => $toy[1],
+                    'from_toy' => $toy[2],
+                    'to_toy' => $toy[3],
+                ];
+            }
+        }
+        return $balls;
+    }
+
+    private function prepareAktAmount(int $dalolatnomaId, array $kod_toy, bool $updated = false): array
+    {
+        $amounts = [];
+        foreach ($kod_toy as $toy) {
+            if($updated){
+                for ($j = $toy[1]; $j <= $toy[2]; $j++) {
+                    $amounts[] = [
+                        'dalolatnoma_id' => $dalolatnomaId,
+                        'shtrix_kod' => $j,
+                    ];
+                }
+            }else{
+                for ($j = $toy[0]; $j <= $toy[1]; $j++) {
+                    $amounts[] = [
+                        'dalolatnoma_id' => $dalolatnomaId,
+                        'shtrix_kod' => $j,
+                    ];
+                }
+            }
+
+        }
+        return $amounts;
+    }
+
+    private function updateDalolatnoma(Dalolatnoma $dalolatnoma, Request $request)
+    {
+        $dalolatnoma->number = $request->input('number');
+
+        if ($dalolatnoma->date != $request->input('date')) {
+            $dalolatnoma->date = $this->formatDate($request->input('date'));
+        }
+
+        $dalolatnoma->selection_code = $request->input('selection_code');
+        $dalolatnoma->toy_count = $request->input('toy_count');
+        $dalolatnoma->amount = $request->input('amount');
+        $dalolatnoma->party = $request->input('party_number');
+        $dalolatnoma->nav = $request->input('nav');
+        $dalolatnoma->sinf = $request->input('sinf');
+        $dalolatnoma->tara = $request->input('tara');
+        $dalolatnoma->save();
+    }
+
+    private function updateGinBalles(int $dalolatnomaId, array $kod_toy)
+    {
+        foreach ($kod_toy as $item) {
+            $conditions = ['id' => $item[0]];
+            $data = [
+                'dalolatnoma_id' => $dalolatnomaId,
+                'from_number' => $item[1],
+                'to_number' => $item[2],
+                'from_toy' => $item[3],
+                'to_toy' => $item[4],
+            ];
+
+            GinBalles::updateOrCreate($conditions, $data);
+        }
+    }
+
+
+    private function logActivity(int $dalolatnomaId, int $userId): void
+    {
+        tbl_activities::create([
+            'ip_adress' => $_SERVER['REMOTE_ADDR'],
+            'user_id' => $userId,
+            'action_id' => $dalolatnomaId,
+            'action_type' => 'new_dalolatnoma',
+            'action' => "Dalolatnoma qo'shildi",
+            'time' => now(),
+        ]);
     }
 }

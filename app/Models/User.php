@@ -2,13 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\Area;
-use App\Models\Level;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Str;
-use Laravel\Passport\HasApiTokens;
+use Laravel\Sanctum\HasApiTokens;
 
 /**
  * Class User
@@ -24,11 +21,15 @@ use Laravel\Passport\HasApiTokens;
 class User extends Authenticatable
 {
     use HasApiTokens, Notifiable;
+
     const STATUS_ACTIVE = 1;
     const STATUS_INACTIVE = 0;
 
     const BRANCH_MAIN = 1;
     const BRANCH_STATE = 2;
+
+    const CROP_BRANCH_TOLA = 1;
+    const CROP_BRANCH_CHIGIT = 2;
 
     const ROLE_CUSTOMER = 30;
     const STATE_EMPLOYEE = 45;

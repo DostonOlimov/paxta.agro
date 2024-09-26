@@ -2,35 +2,49 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Traits\DalolatnomaTrait;
+use App\Filters\V1\DalolatnomaFilter;
 use App\Models\AktAmount;
 use App\Models\Dalolatnoma;
 use App\Models\GinBalles;
 use App\Models\TestPrograms;
+use App\Services\SearchService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class AktAmountController extends Controller
 {
-    use DalolatnomaTrait;
-
-    // Search
-    public function search(Request $request)
+    //search
+    public function search(Request $request, DalolatnomaFilter $filter,SearchService $service)
     {
-        $city = $request->input('city');
-        $crop = $request->input('crop');
-        $from = $request->input('from');
-        $till = $request->input('till');
-        $sort_by = $request->get('sort_by', 'id');
-        $sort_order = $request->get('sort_order', 'desc');
+        try {
+            $names = getCropsNames();
+            $states = getRegions();
+            $years = getCropYears();
 
-        $apps = $this->buildQuery($request);
+            return $service->search(
+                $request,
+                $filter,
+                Dalolatnoma::class,
+                [
+                    'test_program',
+                    'test_program.application',
+                    'test_program.application.decision',
+                    'test_program.application.organization',
+                    'test_program.application.prepared',
+                ],
+                compact('names', 'states', 'years'),
+                'akt_amount.search',
+                [],
+                false,
+                'akt_amount', // Related model for withSum
+                'amount'      // Column to sum
+            );
 
-        $tests = $apps->withSum('akt_amount', 'amount')
-            ->paginate(50)
-            ->appends($request->except('page'));
-
-        return view('akt_amount.search', compact('tests', 'from', 'till', 'city', 'crop', 'sort_by', 'sort_order'));
+        } catch (\Throwable $e) {
+            // Log the error for debugging
+            \Log::error($e);
+            return $this->errorResponse('An unexpected error occurred', [], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     // Add
@@ -116,4 +130,52 @@ class AktAmountController extends Controller
             }
         }
     }
+
+    // Edit
+    public function excel($id)
+    {
+        $tests = AktAmount::where('dalolatnoma_id', $id)->get()->toArray();
+        $balls = GinBalles::where('dalolatnoma_id', $id)->get();
+
+        if (empty($tests)) {
+            $amounts = $this->generateAmounts($id, $balls);
+            DB::transaction(function () use ($amounts) {
+                AktAmount::insert($amounts);
+            });
+
+            $tests = AktAmount::where('dalolatnoma_id', $id)->get()->toArray();
+        }
+
+        $this->populateCreatedAt($tests, $balls);
+
+        $data1 = array_chunk($tests, 50);
+
+        return view('akt_amount.excel', compact('data1', 'id', 'balls'));
+    }
+
+    public function store(Request $request)
+    {
+        $id = $request->input('id');
+        $dal = Dalolatnoma::findOrFail($id);
+
+        // Sanitize and filter only relevant inputs (those that start with 'amount')
+        $amounts = $request->only(array_filter($request->keys(), fn($key) => str_starts_with($key, 'amount')));
+
+        // Early return if no amount data is found
+        if (empty($amounts)) {
+            return redirect('/akt_amount/search')->with('error', 'No amounts provided.');
+        }
+
+        foreach ($dal->akt_amount as $index => $akt) {
+            // Match amount keys dynamically (amount1, amount2, etc.)
+            $amountKey = 'amount' . ($index + 1);
+
+            if (isset($amounts[$amountKey])) {
+                $akt->update(['amount' => $amounts[$amountKey]]);
+            }
+        }
+
+        return redirect('/akt_amount/search')->with('message', 'Successfully saved');
+    }
+
 }

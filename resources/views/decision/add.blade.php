@@ -52,16 +52,16 @@
                                     <input type="text" readonly name="app_number" value="{{ $app->date}}" class="form-control">
                                 </div>
                                 <div class="col-md-4 form-group has-feedback {{ $errors->has('number') ? ' has-error' : '' }}">
-                                    <label for="middle-name" class="form-label">Buyruq raqami <label class="text-danger">*</label></label>
+                                    <label for="middle-name" class="form-label">Qaror raqami <label class="text-danger">*</label></label>
                                     <input type="text" class="form-control" maxlength="25" value="{{ old('number')}}"  name="number">
                                     @if ($errors->has('number'))
                                         <span class="help-block">
-											 <strong>Buyruq raqami noto'g'ri shaklda kiritilgan</strong>
+											 <strong>Qaror raqami noto'g'ri shaklda kiritilgan</strong>
 										   </span>
                                     @endif
                                 </div>
                                 <div class="col-md-4 form-group {{ $errors->has('dob') ? ' has-error' : '' }}">
-                                    <label class="form-label">Buyruq sanasi sanasi <label class="text-danger">*</label></label>
+                                    <label class="form-label">Qaror sanasi <label class="text-danger">*</label></label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">
@@ -75,7 +75,7 @@
                                     </div>
                                     @if ($errors->has('dob'))
                                         <span class="help-block">
-											<strong style="margin-left:27%;">Buyruq sanasi noto'g'ti shaklda kiritilgan</strong>
+											<strong style="margin-left:27%;">Qaror sanasi noto'g'ti shaklda kiritilgan</strong>
 										</span>
                                     @endif
                                 </div>

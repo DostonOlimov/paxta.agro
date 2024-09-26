@@ -20,7 +20,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
             {{-- <span style="display: block" class="text-center"><b>1/1</b></span> --}}
             <h2 class="text-center" style="font-size: 27px">
                 <b> «T A S D I Q L A Y M A N»<br>
-                    Markaziy laboratoriya boshlig‘i
+                    {{ $test->test_program->application->decision->laboratory->name }} boshlig‘i
                     <span style="padding: 5px; display: block">
                         {{ $test->laboratory_final_results->director->lastname . '. ' . substr($test->laboratory_final_results->director->name, 0, 1) }}</span>
                     <span style="padding: 5px;" id="application-date"></span> yil
@@ -34,7 +34,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
             nazorat qilish Inspektsiyasi qoshidagi<br> --}}
                 “Qishloq xoʻjaligi mahsulotlari sifatini baholash markazi” davlat muassasasining.<br>
                 {{ $test->test_program->application->decision->laboratory->name }} <br>
-                <span style="font-size: 23px !important">Davlat reestri raqami {{ $test->test_program->application->decision->laboratory->certificate . ' ' . $test->test_program->application->decision->laboratory->address }}</span>
+                <span style="font-size: 23px !important">Davlat reestri raqami {{ $test->test_program->application->decision->laboratory->certificate . ' ' . $test->test_program->application->decision->laboratory->full_address }}</span>
             </b>
         </h2>
         <div style="display: flex; justify-content: end; padding-right: 12%;">
@@ -156,9 +156,9 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
                 <th style="font-weight: bold; font-size: 20px;" rowspan="1"> 1а,1б,1, 2,3,4, 5,6,7</th>
                 <th style="font-weight: bold; font-size: 20px;" rowspan="1"> Nav</th>
                 <th style="font-weight: bold; font-size: 20px;" rowspan="1"> sinf</th>
-                <th style="font-weight: bold; font-size: 20px;" rowspan="1"> 32-43</th>
+                <th style="font-weight: bold; font-size: 20px;" rowspan="1"> {{ $test->laboratory_result->tip->staple_min }} - {{ $test->laboratory_result->tip->staple_max}}</th>
                 <th style="font-weight: bold; font-size: 20px;" rowspan="1"> 3,5-4,9</th>
-                <th style="font-weight: bold; font-size: 20px;" rowspan="1"> 23,0-33,0</th>
+                <th style="font-weight: bold; font-size: 20px;" rowspan="1"> {{ number_format($test->laboratory_result->tip->strength_min, 1, ',', '.') }} - {{ number_format($test->laboratory_result->tip->strength_max, 1, ',', '.')}}</th>
                 <th style="font-weight: bold; font-size: 20px;" rowspan="1"> 77,0-86,0</th>
                 <th style="font-weight: bold; font-size: 20px;" rowspan="1"> 5,0-8,5</th>
                 <th style="font-weight: bold; font-size: 20px;" rowspan="1"> </th>
@@ -169,15 +169,15 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
                 <td>{{ $item->dalolatnoma->number }}</td>
                 <td>{{ $item->count }}</td>
                 <td>{{ $item->amount }}</td>
-                <td>{{ $item->dalolatnoma->selection_code }}</td>
-                <td></td> {{-- - Tip - --}}
+                <td>{{ $item->dalolatnoma->selection->kod }}</td>
+                <td>{{ optional($test->laboratory_result)->tip->name }}</td> {{-- - Tip - --}}
                 <td>{{ $item->sort }}</td>
                 <td>{{ $item->class }}</td>
-                <td>{{ round($item->staple) }}</td>
+                <td>{{  optional($test->laboratory_result)->tip->staple }}</td>
                 <td>{{ round($item->mic,1) }}</td>
                 <td>{{ round($item->strength,1) }}</td>
                 <td>{{ round($item->uniform,1) }}</td>
-                <td>{{ round($item->humidity/10,1) }}</td>
+                <td>{{ round($item->humidity,1) }}</td>
                 <td>{{ round($item->dalolatnoma->laboratory_result->fiblength/100,2) }}</td>
             </tr>
             @endforeach
@@ -201,18 +201,18 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
                 <td>
                     @if ($final_result[0]->class < 5) muvofiq @else nomuvofiq @endif </td>
                 <td>
-                    @if (20 < $final_result[0]->staple && $final_result[0]->staple < 40) muvofiq @else nomuvofiq @endif </td>
+                    @if (32 < $final_result[0]->staple && $final_result[0]->staple < 43) muvofiq @else nomuvofiq @endif </td>
                 <td>
                     @if (3.5 < $final_result[0]->mic && $final_result[0]->mic < 4.9) muvofiq @else nomuvofiq @endif </td>
                 <td>
-                    @if (23 < $final_result[0]->strength && $final_result[0]->strength < 33) muvofiq @else nomuvofiq @endif </td>
+                    @if (23 < $final_result[0]->strength ) muvofiq @else nomuvofiq @endif </td>
                 <td>
-                    @if (77 < $final_result[0]->uniform && $final_result[0]->uniform < 86) muvofiq @else nomuvofiq @endif </td>
+                    @if (77 < $final_result[0]->uniform ) muvofiq @else nomuvofiq @endif </td>
                 <td>
-                    @if (5.0 < ($final_result[0]->humidity/10) && ($final_result[0]->humidity/10) < 8.5) muvofiq @else nomuvofiq @endif </td>
+                    @if (5.0 < ($final_result[0]->humidity) && ($final_result[0]->humidity) < 8.5) muvofiq @else nomuvofiq @endif </td>
                 <td>
-                    @if (1.08 < ($final_result[0]->dalolatnoma->laboratory_result->fiblength/100) &&
-                        ($final_result[0]->dalolatnoma->laboratory_result->fiblength/100) < 1.17) muvofiq @else nomuvofiq @endif </td>
+                    @if (0.99 < ($final_result[0]->dalolatnoma->laboratory_result->fiblength/100) &&
+                        ($final_result[0]->dalolatnoma->laboratory_result->fiblength/100) < 1.35) muvofiq @else nomuvofiq @endif </td>
             </tr>
         </table>
 

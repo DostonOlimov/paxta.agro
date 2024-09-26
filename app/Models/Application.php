@@ -19,7 +19,15 @@ class Application extends Model
     const STATUS_FINISHED = 4;
     const STATUS_DELETED = 5;
 
-    protected $table = 'applications';
+    const PROGRESS_INITIAL = 1;
+    const PROGRESS_ANSWERED = 2;
+    const PROGRESS_DECISION = 3;
+    const PROGRESS_EXAMPLE = 4;
+    const PROGRESS_LABORATORY = 5;
+    const PROGRESS_CONCLUSION = 6;
+    const PROGRESS_FINISHED = 7;
+
+    public $table = 'applications';
 
     protected $fillable = [
         'crop_data_id',
@@ -58,6 +66,10 @@ class Application extends Model
     public function decision()
     {
         return $this->belongsTo(Decision::class, 'id','app_id');
+    }
+    public function comment()
+    {
+        return $this->belongsTo(AppStatusChanges::class, 'id','app_id');
     }
     public function files()
     {
@@ -119,11 +131,49 @@ class Application extends Model
 
     protected static function boot()
     {
-        static::addGlobalScope(function ($query) {
-            $query->where('status','!=', self::STATUS_DELETED);
+        $year =  session('year') ?  session('year') : 2024;
+
+        parent::boot(); // Always call the parent boot first
+
+        // Ensure the user is authenticated
+        $user = auth()->user();
+
+        if ($user) {
+            // Add global scope for filtering by user's state
+            if ($user->branch_id == User::BRANCH_STATE) {
+                $user_city = $user->state_id;
+
+                static::addGlobalScope('cityStateScope', function ($query) use ($user_city) {
+                    $query->whereHas('organization', function ($query) use ($user_city) {
+                        $query->whereHas('city', function ($query) use ($user_city) {
+                            $query->where('state_id', '=', $user_city);
+                        });
+                    });
+                });
+            }
+            if ($user->crop_branch == User::CROP_BRANCH_CHIGIT) {
+                // Add global scope for filtering by chigit's apps
+                static::addGlobalScope('chigitAppScope', function ($query) {
+                    $query->whereHas('crops', function ($query) {
+                        $query->where('name_id', '=', 2);
+                    });
+                });
+            } elseif ($user->crop_branch == User::CROP_BRANCH_TOLA) {
+                // Add global scope for filtering by chigit's apps
+                static::addGlobalScope('chigitAppScope', function ($query) {
+                    $query->whereHas('crops', function ($query) {
+                        $query->where('name_id', '=', 1);
+                    });
+                });
+            }
+        }
+
+        // Add global scope to exclude deleted status
+        static::addGlobalScope('nonDeletedStatusScope', function ($query) use ($year) {
+            $query->where('status', '!=', self::STATUS_DELETED)
+                ->whereHas('crops', function ($query) use ($year) {
+                    $query->where('year', '=', $year);
+            });
         });
-
-        parent::boot();
     }
-
 }

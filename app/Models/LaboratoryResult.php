@@ -26,15 +26,22 @@ class LaboratoryResult  extends Model
 
     protected $fillable = [
         'dalolatnoma_id',
+        'tip_id',
         'mic',
         'staple',
         'strength',
         'uniform',
+        'humidity',
+        'fiblength'
     ];
 
     public function dalolatnoma(): BelongsTo
     {
         return $this->belongsTo(Dalolatnoma::class, 'dalolatnoma_id', 'id');
+    }
+    public function tip()
+    {
+        return $this->belongsTo(Tips::class, 'tip_id', 'id');
     }
 
 }

@@ -36,7 +36,7 @@
         $(document).ready(function () {
             function fillCheque() {
                 $('#director-name').text((currentdecision.application.decision.director.name.charAt(0)).concat(".",currentdecision.application.decision.director.lastname))
-                $('#application-date').text(moment(currentdecision.date).format('DD.MM.YYYY'))
+                $('#application-date').text(moment(currentdecision.application.decision.date).format('DD.MM.YYYY'))
                 $('#application-year').text(moment(currentdecision.date).format('YYYY'))
                 $('#application-month').text(moment(currentdecision.date).format('MM'))
                 $('#application-day').text(moment(currentdecision.date).format('DD'))

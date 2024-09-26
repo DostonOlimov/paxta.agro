@@ -196,6 +196,15 @@
 										   </span>
                                         @endif
                                     </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group overflow-hidden">
+                                            <label class="form-label">Sertifikatlashtirish sxemasini tanlang<label class="text-danger">*</label></label>
+                                            <select class="w-100 form-control" name="sxeme_number">
+                                                <option value="7" @if( $app->crops->sxeme_number == 7) selected @endif> 7</option>
+                                                <option value="3" @if( $app->crops->sxeme_number == 3) selected @endif> 3</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                     <div class="col-md-8 form-group has-feedback">
                                         <label class="form-label" for="data">{{trans('app.Qo\'shimcha ma\'lumotlar')}}<label class="text-danger">*</label></label>
                                         <div class="">

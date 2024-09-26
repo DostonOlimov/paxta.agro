@@ -96,7 +96,7 @@
                                                             $value1 = 100 * ($result->m0-$result->mk0)/$result->mk0 - 0.4;
                                                             $value2 = 100 * ($result->m1-$result->mk1)/$result->mk1 - 0.4;
                                                         @endphp
-                                                        <td>{{$result->dalolatnoma->humidity->party}}</td>
+                                                        <td>{{$result->dalolatnoma->test_program->application->crops->party_number}}</td>
                                                         <td>5.0 - 8.5</td>
                                                         <td>{{round(($value1 + $value2) / 2 , 2) }}</td>
                                                     </tr>

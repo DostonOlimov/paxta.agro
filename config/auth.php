@@ -40,10 +40,11 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        
+
         'api' => [
-            'driver' => 'passport',
+            'driver' => 'sanctum',
             'provider' => 'users',
+            'hash' => false,
         ],
     ],
 
@@ -70,10 +71,10 @@ return [
             'model' => App\Models\User::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'tokens' => [
+            'driver' => 'sanctum',
+            'table' => 'personal_access_tokens',
+        ],
     ],
 
     /*

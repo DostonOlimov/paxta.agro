@@ -10,117 +10,6 @@
             padding: 5px 5px ;!important;
             font-size: 16px;
         }
-
-        .container-layout {
-            padding: 4px 5px 4px 1px;
-            max-width: 212px;
-            border-top: 2px solid black;
-            border-bottom: 2px solid black;
-            display: flex;
-            align-items: center;
-            column-gap: 6px;
-            margin: 0 auto;
-        }
-
-        .layout-left {
-            width: 50%;
-            height: 70px;
-            display: flex;
-            justify-content: center;
-            flex-direction: column;
-            padding-right: 8px;
-            border-right: 2px solid #969696;
-        }
-
-        .layout-right {
-            border-bottom: 2px solid #3f51b5;
-            border-top: 2px solid #3f51b5;
-            width: 100%;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-template-rows: repeat(5, 1fr);
-            grid-column-gap: 0px;
-            grid-row-gap: 0px;
-        }
-        .layout-right-top{
-            text-align: right;
-        }
-        .layout-right-bottom{
-            text-align: right;
-        }
-
-        .layout-right > div {
-            display: grid;
-            place-items: center;
-        }
-        .div1 {
-            grid-area: 1 / 2 / 6 / 3;
-        }
-
-        .div2 {
-            grid-area: 1 / 1 / 2 / 2;
-        }
-        .div3 {
-            grid-area: 1 / 3 / 2 / 4;
-        }
-        .div4 {
-            grid-area: 2 / 1 / 3 / 2;
-        }
-        .div5 {
-            grid-area: 2 / 3 / 3 / 4;
-        }
-        .div6 {
-            grid-area: 3 / 1 / 4 / 2;
-        }
-        .div7 {
-            grid-area: 3 / 3 / 4 / 4;
-        }
-        .div8 {
-            grid-area: 4 / 1 / 5 / 2;
-        }
-        .div9 {
-            grid-area: 4 / 3 / 5 / 4;
-        }
-        .div10 {
-            grid-area: 5 / 1 / 6 / 2;
-        }
-        .div11 {
-            grid-area: 5 / 3 / 6 / 4;
-        }
-
-        .layout__arrow {
-            width: auto;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-
-        .layout__arrow svg {
-            width: 15px;
-            height: 50px;
-        }
-
-        .layout__arrow-up {
-            margin-top: -45px;
-        }
-
-        .layout__arrow-down {
-            margin-bottom: -55px;
-            transform: rotate(180deg);
-        }
-
-        .my_svg {
-            position: absolute;
-            z-index: 2;
-            top: 1px;
-            width: 8px;
-            height: 15px;
-            border-radius: 25px;
-            background-color: #3f51b5;
-        }
-
     </style>
 @endsection
 @section('content')
@@ -128,7 +17,7 @@
         <div class="page-header">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <i class="fe fe-life-buoy mr-1"></i>&nbsp Muvofiqlik bo'yicha xulosa
+                    <i class="fe fe-life-buoy mr-1"></i>&nbsp Na'muna olish dalolatnomasi
                 </li>
             </ol>
         </div>

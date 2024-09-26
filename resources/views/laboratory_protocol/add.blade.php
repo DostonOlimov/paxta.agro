@@ -41,11 +41,7 @@
 
                                     <div class="col-md-4 form-group has-feedback {{ $errors->has('number') ? ' has-error' : '' }}">
                                         <label for="number" class="form-label certificate">{{trans('app.Sinov bayonnoma raqami')}}<label class="text-danger">*</label></label>
-                                        {{-- @if($test->laboratory_results->quality == 1)
-                                            <label for="number" class="form-label certificate">Sinov bayonnoma raqami <label class="text-danger">*</label></label>
-                                        @else
-                                            <label for="number" class="form-label nocertificate">Taxlil natija raqami <label class="text-danger">*</label></label>
-                                        @endif --}}
+
                                         <input type="number" class="form-control" maxlength="10" value="{{ old('number')}}"  name="number" required>
                                         @if ($errors->has('number'))
                                             <span class="help-block">
@@ -55,11 +51,6 @@
                                     </div>
                                     <div class="col-md-4 form-group {{ $errors->has('date') ? ' has-error' : '' }}">
                                         <label class="form-label certificate">{{trans("app.Bayonnoma sanasi")}} <label class="text-danger">*</label></label>
-                                        {{-- @if($test->laboratory_results->quality == 1)
-                                            <label class="form-label certificate">Bayonnoma sanasi <label class="text-danger">*</label></label>
-                                        @else
-                                            <label class="form-label nocertificate"> Tahlil natija sanasi<label class="text-danger">*</label></label>
-                                        @endif --}}
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">
@@ -74,6 +65,7 @@
 										</span>
                                         @endif
                                     </div>
+                                    @if($apps->test_program->application->crops->name_id ==1)
                                     <div class="col-md-4 form-group has-feedback {{ $errors->has('from') ? ' has-error' : '' }}">
                                         <label for="from" class="form-label certificate">{{trans("app.Namuna tanlab olish joyi")}}<label class="text-danger">*</label></label>
                                         <select name="from" class="form-control" required>
@@ -100,6 +92,7 @@
 										   </span>
                                         @endif
                                     </div>
+                                    @endif
                                     <div class="col-md-4 form-group has-feedback {{ $errors->has('harorat') ? ' has-error' : '' }}">
                                         <label for="number" class="form-label ">{{trans("app.Xona harorati")}} °C<label class="text-danger">*</label></label>
                                         <input type="number" step="any" class="form-control" id="harorat" value="{{ old('harorat')}}"  name="harorat" required >
@@ -161,22 +154,8 @@
                                         </div>
                                     </div>
                                     <input type="hidden" name="director_id" value="{{$director->id}}">
-                                    <input type="hidden" name="klassiyor_id" value="{{$klassiyor->klassiyor->id}}">
-                                    {{-- <div class="col-12 col-md-4">
-                                        <div class="form-group">
-                                            <label class="form-label"
-                                                   for="first-name">{{ trans('app.Laboratoriya director nomi')}} <label
-                                                    class="text-danger">*</label>
-                                            </label>
-                                            <select name="director_id" class="form-control">
-                                                    <option value="">{{ trans('app.Laboratoriya directorni tanlang')}}</option>
-                                                    @foreach($director as $item)
-                                                        <option
-                                                            value="{{ $item->id }}">{{ $item->lastname.' '.$item->name }}</option>
-                                                    @endforeach
-                                            </select>
-                                        </div>
-                                    </div> --}}
+                                    <input type="hidden" name="klassiyor_id" value="{{optional(optional($klassiyor)->klassiyor)->id}}">
+
                                 </div>
                                     <div class="col-md-6 col-sm-6">
                                         <a class="btn btn-primary" href="{{ URL::previous() }}">{{ trans('app.Cancel')}}</a>
