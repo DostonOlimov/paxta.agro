@@ -55,8 +55,8 @@ class HumidityResult  extends Model
         $f1 = (50 * $this->m0) / ($this->mk0 * $this->mk0);
         $f2 = (50 * $this->m1) / ($this->mk1 * $this->mk1);
         $h = $this->kalibrovka / 2;
-        $i = sqrt( $e1**2 * $h**2 + $f1**2 * $h**2 + $e2**2 * $h**2 + $f2**2 * $h**2 );
+        $i = sqrt( $e1**2 + $f1**2  + $e2**2  + $f2**2 );
 
-        return 2*$i ;
+        return 2*$i*$h ;
     }
 }
