@@ -95,7 +95,7 @@
                                                                     @endif
                                                                 </td>
                                                                 <td> {{ $count->count}}</td>
-                                                                <td> {{ $count->amount}}</td>
+                                                                <td> {{ $count->amount ? $count->amount - $count->count * $dalolatnoma->tara : 0}}</td>
                                                                 <td> {{ $count->sort}}</td>
                                                                 <td> {{ optional(\App\Models\CropsGeneration::where('kod','=',$count->class)->first())->name}}</td>
 

@@ -47,7 +47,7 @@ class HomeController extends Controller
         }
         $state_count = $dalolatnoma->count();
 //        sum of products
-        $sum_amount = AktAmount::with('dalolatnoma');
+        $sum_amount = AktAmount::join('dalolatnoma', 'akt_amount.dalolatnoma_id', '=', 'dalolatnoma.id');
         if($city){
             $sum_amount = $sum_amount->whereHas('dalolatnoma.test_program.application.organization', function ($query) use ($city) {
                 $query->whereHas('city', function ($query) use ($city) {
@@ -84,7 +84,7 @@ class HomeController extends Controller
                 ->whereDate('dalolatnoma.date', '<=', $tillTime);
         }
         //        sum of final result
-        $sum_final_result = FinalResult::with('dalolatnoma');
+        $sum_final_result = FinalResult::join('dalolatnoma', 'final_results.dalolatnoma_id', '=', 'dalolatnoma.id');
         if($city){
             $sum_final_result = $sum_final_result->whereHas('dalolatnoma.test_program.application.organization', function ($query) use ($city) {
                 $query->whereHas('city', function ($query) use ($city) {
@@ -100,14 +100,16 @@ class HomeController extends Controller
                     ->whereDate('date', '<=', $tillTime);
             });
         }
-        $sum_final_result = $sum_final_result->sum('amount');
+        $sum_final_result = $sum_final_result->selectRaw('SUM(final_results.amount - (final_results.count * dalolatnoma.tara)) as total')
+            ->value('total');
 
         $app_states = $app_states->groupBy('tbl_states.id', 'tbl_states.name')
             ->orderBy('application_count', 'desc')
             ->get();
 
-        $count_amount = $sum_amount->count('id');
-        $sum_amount = $sum_amount->sum('amount');
+        $count_amount = $sum_amount->sum('dalolatnoma.toy_count');
+        $sum_amount = $sum_amount ->selectRaw('SUM(akt_amount.amount - dalolatnoma.tara) as total')
+            ->value('total');;
 
         $states = DB::table('tbl_states')->where('country_id', '=', 234)->get()->toArray();
         $crop_names = DB::table('crops_name')->get()->toArray();

@@ -168,7 +168,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
             <tr>
                 <td>{{ $item->dalolatnoma->number }}</td>
                 <td>{{ $item->count }}</td>
-                <td>{{ $item->amount }}</td>
+                <td>{{ $item->amount ? $item->amount - $item->count * $item->dalolatnoma->tara : 0}}</td>
                 <td>{{ $item->dalolatnoma->selection->kod }}</td>
                 <td>{{ optional($test->laboratory_result)->tip->name }}</td> {{-- - Tip - --}}
                 <td>{{ $item->sort }}</td>

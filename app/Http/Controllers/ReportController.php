@@ -202,7 +202,7 @@ class ReportController extends Controller
             ->join('prepared_companies AS pc', 'app.prepared_id', '=', 'pc.id')
             ->join('crop_data','app.crop_data_id','=','crop_data.id')
             ->where('crop_data.year', $year)
-            ->select('oc.id', 'pc.kod', 'oc.name', DB::raw('count(akt.shtrix_kod) as kip'), DB::raw('sum(akt.amount) as netto'))
+            ->select('oc.id', 'pc.kod', 'oc.name', DB::raw('count(akt.shtrix_kod) as kip'), DB::raw('sum(akt.amount - d.tara) as netto'))
             ->groupBy('oc.id', 'pc.kod', 'oc.name');
 
         if ($user->branch_id == \App\Models\User::BRANCH_STATE) {
