@@ -376,4 +376,9 @@ return[
     'Mahsulot navi' => 'Mahsulot navi',
     'Mahsulot avlodi' => 'Mahsulot avlodi',
     'Mahsulot turini tanlang' => 'Mahsulot turi tanlang',
+
+    'Mahsulot ma\'lumotlari' => 'Mahsulot ma\'lumotlari',
+    'Yuk ma\'lumotlari' => 'Yuk ma\'lumotlari',
+    'Sifat ko\'rsatkichlari' => 'Sifat ko\'rsatkichlari',
+
 ];

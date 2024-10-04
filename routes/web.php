@@ -39,11 +39,7 @@ Route::get('/excel_prepared','\App\Http\Controllers\ReportController@excel_prepa
 Route::get('/organization-company-report', '\App\Http\Controllers\ReportController@company_report')->name('report.company_report');
 Route::get('/prepared-company-report', '\App\Http\Controllers\ReportController@prepared_report')->name('report.prepared_report');
 
-//    Route::group(['prefix' => 'user', 'middleware' => 'auth'], function () {
-//        Route::get('/list', 'Usercontroller@userslist');
-//        Route::get('/list/{id}', 'Usercontroller@usershow');
-//        Route::get('/get', 'Usercontroller@get_users');
-//    });
+
 //employee modulea
 Route::get('/attachments/{id}/download', '\App\Http\Controllers\AttachmentsController@download')->name('attachment.download');
 
@@ -109,6 +105,9 @@ Route::group(['prefix' => 'employee'], function () {
     Route::get('/list/edit/{id}', '\App\Http\Controllers\OrganizationCompaniesController@edit');
     Route::post('/list/edit/update/{id}', '\App\Http\Controllers\OrganizationCompaniesController@update');
     Route::get('/search_by_name', '\App\Http\Controllers\OrganizationCompaniesController@search');
+
+    Route::get('/my-organization-add', '\App\Http\Controllers\OrganizationCompaniesController@myorganizationadd')->name('myorganizationadd');
+    Route::post('/my-organization-store', '\App\Http\Controllers\OrganizationCompaniesController@myorganizationstore')->name('myorganizationstore');
     });
     //Prepared Companies
     Route::group(['prefix' => 'prepared', 'middleware' => 'auth'], function () {
@@ -210,29 +209,29 @@ Route::group(['prefix' => 'employee'], function () {
     //applications
     Route::group(['prefix' => 'application'], function () {
     Route::get('/list', ['as' => 'listapplication', 'uses' => '\App\Http\Controllers\ApplicationController@applicationlist']);
-    Route::get('/my-applications', ['as' => 'myapplications', 'uses' => '\App\Http\Controllers\ApplicationController@myapplications']);
-
     Route::get('/add', ['as' => 'addapplication', 'uses' => '\App\Http\Controllers\ApplicationController@addapplication']);
-    Route::get('/my-application-add', ['as' => 'myapplicationadd', 'uses' => '\App\Http\Controllers\ApplicationController@myapplicationadd']);
-
     Route::post('/store', ['as' => 'storeapplication', 'uses' => '\App\Http\Controllers\ApplicationController@store']);
-    Route::post('/my-application-store', ['as' => 'myapplicationstore', 'uses' => '\App\Http\Controllers\ApplicationController@myapplicationstore']);
-
     Route::get('/edit/{id}', ['as' => 'editapplication', 'uses' => '\App\Http\Controllers\ApplicationController@edit']);
-    Route::get('/my-application-edit/{id}', ['as' => 'myapplicationedit', 'uses' => '\App\Http\Controllers\ApplicationController@myapplicationedit']);
-
     Route::patch('/edit/update/{id}', '\App\Http\Controllers\ApplicationController@update');
-    Route::patch('/my-application-edit/update/{id}', '\App\Http\Controllers\ApplicationController@myapplicationupdate');
-
     Route::get('/view/{id}', '\App\Http\Controllers\ApplicationController@showapplication');
-
     Route::get('/list/delete/{id}', ['as' => '/application/list/delete/{id}', 'uses' => '\App\Http\Controllers\ApplicationController@destory']);
-
-    Route::get('/my-application-delete/{id}', ['as' => '/application/myapplicationdelete', 'uses' => '\App\Http\Controllers\ApplicationController@myapplications_delete']);
     Route::get('/accept/{id}', ['as' => '/application/accept', 'uses' => '\App\Http\Controllers\ApplicationController@accept']);
     Route::get('/reject/{id}', ['as' => '/application/reject', 'uses' => '\App\Http\Controllers\ApplicationController@reject']);
     Route::post('/reject/store', ['as' => '/application/rejectstore', 'uses' => '\App\Http\Controllers\ApplicationController@reject_store']);
     });
+//applications
+Route::group(['prefix' => 'sifat-sertificates'], function () {
+    Route::get('/list', ['as'=>'/sifat-sertificates/list', 'uses' => '\App\Http\Controllers\SifatSertificateController@applicationlist']);
+    Route::get('/add/{id}', ['as'=>'sifat-sertificates.add', 'uses' => '\App\Http\Controllers\SifatSertificateController@addapplication']);
+    Route::post('/store', ['uses' => '\App\Http\Controllers\SifatSertificateController@store']);
+    Route::get('/edit/{id}', [ 'uses' => '\App\Http\Controllers\SifatSertificateController@edit']);
+    Route::patch('/edit/update/{id}', '\App\Http\Controllers\SifatSertificateController@update');
+    Route::get('/view/{id}', '\App\Http\Controllers\SifatSertificateController@showapplication');
+    Route::get('/list/delete/{id}', ['as' => '/sifat-sertificates/list/delete/{id}', 'uses' => '\App\Http\Controllers\SifatSertificateController@destory']);
+    Route::get('/accept/{id}', ['as' => '/sifat-sertificates/accept', 'uses' => '\App\Http\Controllers\SifatSertificateController@accept']);
+    Route::get('/reject/{id}', ['as' => '/sifat-sertificates/reject', 'uses' => '\App\Http\Controllers\SifatSertificateController@reject']);
+    Route::post('/reject/store', ['as' => '/sifat-sertificates/rejectstore', 'uses' => '\App\Http\Controllers\SifatSertificateController@reject_store']);
+});
 //Decision
     Route::group(['prefix' => 'decision', 'middleware' => 'auth'], function () {
     Route::get('search','App\Http\Controllers\DecisionController@search')->name('decision.search');

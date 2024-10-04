@@ -4,15 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Application;
 use App\Models\Area;
-use App\Models\Region;
+use App\Models\DefaultModels\tbl_activities;
 use App\Models\OrganizationCompanies;
-use App\tbl_states;
-use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use App\tbl_activities;
 
 class OrganizationCompaniesController extends Controller
 {
@@ -172,53 +168,54 @@ class OrganizationCompaniesController extends Controller
         }
     }
 
-    public function myorganizationadd()
+    public function myorganizationadd(Request $request)
     {
-        $title = 'Buyurtmachi korxona qo\'shish';
+        $user = Auth::user();
+
         $states = DB::table('tbl_states')->where('country_id', '=', 234)->get()->toArray();
         $cities = '';
+        $company = null;
 
-        $model = new OrganizationCompanies();
-        return view('front.organization.add', compact('title','states','cities','model'));
+        return view('front.organization.add', compact( 'states', 'cities', 'company','user'));
     }
 
     public function myorganizationstore(Request $request)
     {
-        $userA = Auth::user();
-        $name = $request->input('name');
+        $user = Auth::user();
         $inn = $request->input('inn');
-        $city = $request->input('city');
-        $mobile = $request->input('mobile');
-        $address = $request->input('address');
-        $owner_name = $request->input('owner_name');
 
-        $count = DB::table('organization_companies')
-            ->where('inn','=',$inn)
-            ->first();
-        if (!$count) {
-            $compy = new OrganizationCompanies();
-            $compy->name = $name;
-            $compy->city_id = $city;
-            $compy->phone_number = $mobile;
-            $compy->address = $address;
-            $compy->owner_name = $owner_name;
-            $compy->inn = $inn;
-            $compy->save();
+        // Check if organization already exists
+        $company = OrganizationCompanies::where('inn', $inn)->first();
 
-            $active = new tbl_activities;
-            $active->ip_adress = $_SERVER['REMOTE_ADDR'];
-            $active->user_id = $userA->id;
-            $active->action_id = $compy->id;
-            $active->action_type = 'organization_add';
-            $active->action = "Korxona  qo'shildi";
-            $active->time = date('Y-m-d H:i:s');
-            $active->save();
+        if (!$company) {
+            // Create a new organization
+            $company = OrganizationCompanies::create([
+                'name' => $request->input('name'),
+                'city_id' => $request->input('city'),
+                'phone_number' => $request->input('mobile'),
+                'address' => $request->input('address'),
+                'owner_name' => $request->input('owner_name'),
+                'inn' => $inn,
+            ]);
 
-            return redirect('prepared/my-prepared-add/'.$compy->id)->with('message', 'Successfully Submitted');
-        } else {
-            return redirect('prepared/my-prepared-add/'.$count->id)->with('message', 'Successfully Submitted');
+            // Log the activity
+            tbl_activities::create([
+                'ip_adress' => $request->ip(),
+                'user_id' => $user->id,
+                'action_id' => $company->id,
+                'action_type' => 'organization_add',
+                'action' => "Korxona qo'shildi",
+                'time' => now(),
+            ]);
+
+            return redirect()->route('sifat-sertificates.add', $company->id)
+                ->with('message', 'Successfully Submitted');
         }
+
+        return redirect()->route('sifat-sertificates.add', $company->id)
+            ->with('message', 'Successfully Submitted');
     }
+
     public function myorganizationview ($id)
     {
         $states = DB::table('tbl_states')->where('country_id', '=', 234)->get()->toArray();
