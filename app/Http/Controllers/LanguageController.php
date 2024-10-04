@@ -24,7 +24,10 @@ class LanguageController extends Controller
     {
         $year = $request->input('crop');
 
-        session(['crop'=>$year]);
+        if(auth()->user()->crop_branch == 3){
+            session(['crop'=>$year]);
+        }
+
         return response()->json(['success' => true]);
     }
 }
