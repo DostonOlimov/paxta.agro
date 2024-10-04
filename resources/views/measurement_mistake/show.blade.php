@@ -186,9 +186,11 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
+                                                    @foreach($result->dalolatnoma->result as $f_result1)
+                                                    @endforeach
                                                     <tr>
                                                         <td>Tashqi ko'rinishi va rangi</td>
-                                                        <td>2</td>
+                                                        <td>{{$f_result1->sort}}</td>
                                                         <td>-</td>
                                                         <td>O'zDSt 604 3-jadval</td>
                                                         <td>-</td>

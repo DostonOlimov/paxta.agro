@@ -8,7 +8,6 @@
     <meta name="author" content="Doston Olimov">
     <title>Paxta tolasini sertifikatlashtirish tizimi</title>
     <link rel="icon" type="image/png" sizes="252x252" href="{{ asset('/resources/assets/images/paxta_logo.png') }}">
-
     <!-- Vendors styles-->
      <link rel="stylesheet" href="{{ asset('/assets/vendors/simplebar/css/simplebar.css') }}">
     <link rel="stylesheet" href="{{ asset('/assets/css/vendors/simplebar.css') }}">
@@ -173,6 +172,19 @@ $settings = settings();
             type: 'POST',
             url: '/change-year',
             data: { year: year, _token: "{{ csrf_token() }}" },
+            success: function () {
+                location.reload();
+            },
+            error: function (error) {
+                console.error('Error changing year', error);
+            }
+        });
+    }
+    function changeCrop(year) {
+        $.ajax({
+            type: 'POST',
+            url: '/change-crop',
+            data: { crop: year, _token: "{{ csrf_token() }}" },
             success: function () {
                 location.reload();
             },

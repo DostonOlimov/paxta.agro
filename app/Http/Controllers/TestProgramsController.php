@@ -3,13 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Application;
-use App\Models\CropData;
 use App\Models\Decision;
 use App\Models\Indicator;
 use App\Models\Nds;
 use App\Models\TestPrograms;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class TestProgramsController extends Controller

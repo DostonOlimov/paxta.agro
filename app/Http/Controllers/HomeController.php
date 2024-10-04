@@ -107,7 +107,7 @@ class HomeController extends Controller
             ->orderBy('application_count', 'desc')
             ->get();
 
-        $count_amount = $sum_amount->sum('dalolatnoma.toy_count');
+        $count_amount = $sum_amount->count('akt_amount.id');
         $sum_amount = $sum_amount ->selectRaw('SUM(akt_amount.amount - dalolatnoma.tara) as total')
             ->value('total');;
 

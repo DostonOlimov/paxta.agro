@@ -135,12 +135,12 @@ class Dalolatnoma  extends Model
 
     protected static function boot()
     {
-        $year =  session('year') ?  session('year') : 2024;
-
         parent::boot(); // Always call the parent boot first
 
         // Ensure the user is authenticated
         $user = auth()->user();
+        $year = session('year', 2024);
+        $crop = session('crop', 1);
 
         if ($user) {
             // Add global scope for filtering by user's state
@@ -159,38 +159,16 @@ class Dalolatnoma  extends Model
                     });
                 });
             }
-            if ($user->crop_branch == User::CROP_BRANCH_CHIGIT) {
-                // Add global scope for filtering by chigit's apps
-                static::addGlobalScope('chigitAppScope', function ($query) {
-                    $query->whereHas('test_program', function ($query) {
-                        $query->whereHas('application', function ($query) {
-                            $query->whereHas('crops', function ($query) {
-                                $query->where('name_id', '=', 2);
-                            });
-                        });
-                    });
-                });
-            } elseif ($user->crop_branch == User::CROP_BRANCH_TOLA) {
-                // Add global scope for filtering by chigit's apps
-                static::addGlobalScope('chigitAppScope', function ($query) {
-                    $query->whereHas('test_program', function ($query) {
-                        $query->whereHas('application', function ($query) {
-                            $query->whereHas('crops', function ($query) {
-                                $query->where('name_id', '=', 1);
-                            });
-                        });
-                    });
-                });
-            }
         }
 
         // Add global scope to exclude deleted status
-        static::addGlobalScope('nonDeletedStatusScope', function ($query) use ($year) {
-            $query->whereHas('test_program', function ($query) use($year) {
-                $query->whereHas('application', function ($query) use ($year) {
+        static::addGlobalScope('nonDeletedStatusScope', function ($query) use ($year,$crop) {
+            $query->whereHas('test_program', function ($query) use($year,$crop) {
+                $query->whereHas('application', function ($query) use ($year,$crop) {
                     $query->where('status', '!=', Application::STATUS_DELETED)
-                        ->whereHas('crops', function ($query) use ($year) {
-                            $query->where('year', '=', $year);
+                        ->whereHas('crops', function ($query) use ($year,$crop) {
+                            $query->where('year', '=', $year)
+                                ->where('name_id', $crop == 1 ? '=' : '!=', 1);
                         });
                 });
             });

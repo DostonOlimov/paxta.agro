@@ -20,4 +20,11 @@ class LanguageController extends Controller
         session(['year'=>$year]);
         return response()->json(['success' => true]);
     }
+    public function changeCrop(Request $request)
+    {
+        $year = $request->input('crop');
+
+        session(['crop'=>$year]);
+        return response()->json(['success' => true]);
+    }
 }

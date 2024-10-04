@@ -2,8 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\App;
-use App\Http\Controllers\Customercontroller;
+use Telegram\Bot\Laravel\Facades\Telegram;
 use App\Http\Controllers\LaboratoryOperatorController;
 
 /*
@@ -18,6 +17,10 @@ use App\Http\Controllers\LaboratoryOperatorController;
 */
 Auth::routes();
 
+Route::post('/telegram/webhook', function () {
+    return response()->json(['message' => 'Webhook is working']);
+})->name('telegram.webhook');
+
 //Dashboard
 Route::get('/home', ['middleware' => 'auth', 'uses' => '\App\Http\Controllers\HomeController@dashboard']);
 Route::get('/home2', ['middleware' => 'auth', 'uses' => '\App\Http\Controllers\HomeController@dashboard']);
@@ -25,6 +28,7 @@ Route::get('/home2', ['middleware' => 'auth', 'uses' => '\App\Http\Controllers\H
 Route::get('/', ['middleware' => 'auth', 'uses' => '\App\Http\Controllers\HomeController@dashboard']);
 Route::post('/change-language', [\App\Http\Controllers\LanguageController::class, 'changeLanguage']);
 Route::post('/change-year', [\App\Http\Controllers\LanguageController::class, 'changeYear']);
+Route::post('/change-crop', [\App\Http\Controllers\LanguageController::class, 'changeCrop']);
 
 //profile
 Route::get('/full-report', '\App\Http\Controllers\ReportController@report')->name('report.full_report');
@@ -421,3 +425,4 @@ Route::middleware(['auth'])->group(function() {
 
     Route::delete('/laboratory_operators/{laboratoryOperator}', [LaboratoryOperatorController::class, 'destroy'])->name('laboratory_operators.destroy');
 });
+

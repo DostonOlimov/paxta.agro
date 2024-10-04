@@ -12,6 +12,7 @@
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "hisamu/php-xbase": "^2.1",
+        "irazasyed/telegram-bot-sdk": "^3.9",
         "korridor/laravel-model-validation-rules": "^2.1",
         "laravel/framework": "^8.75",
         "laravel/passport": "^10.4",
