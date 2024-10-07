@@ -64,7 +64,7 @@
                                         <th class="border-bottom-0 border-top-0">{{trans('app.Kiritilgan sanasi')}}</th>
 										<th class="border-bottom-0 border-top-0">{{trans('app.Viloyat')}}</th>
 										<th class="border-bottom-0 border-top-0">{{trans('app.Xodim')}}</th>
-										<th class="border-bottom-0 border-top-0">{{trans('app.Status')}}</th>
+										<th class="border-bottom-0 border-top-0">Status</th>
                                         <th class="border-bottom-0 border-top-0">{{trans('app.Action')}}</th>
 									</tr>
 								</thead>

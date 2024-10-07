@@ -62,7 +62,7 @@
                                     <a class="btn btn-success" style="width: 100%" href="{!! url('/in_xaus/view2/2/'.$user->id)!!}">{{ "Strength"}}</a>
                                 </div>
                                 <div class="col-md-3 has-feedback">
-                                    <a class="btn btn-info" style="width: 100%" href="{!! url('/in_xaus/view2/3/'.$user->id)!!}">{{ "Iniformity"}}</a>
+                                    <a class="btn btn-info" style="width: 100%" href="{!! url('/in_xaus/view2/3/'.$user->id)!!}">{{ "Uniformity"}}</a>
                                 </div>
                                 <div class="col-md-3 has-feedback">
                                     <a class="btn btn-warning" style="width: 100%" href="{!! url('/in_xaus/view2/4/'.$user->id)!!}">{{ "Length"}}</a>
