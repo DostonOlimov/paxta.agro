@@ -155,6 +155,7 @@ class AktAmountController extends Controller
 
     public function store(Request $request)
     {
+
         $id = $request->input('id');
         $dal = Dalolatnoma::findOrFail($id);
 
@@ -165,6 +166,7 @@ class AktAmountController extends Controller
         if (empty($amounts)) {
             return redirect('/akt_amount/search')->with('error', 'No amounts provided.');
         }
+
 
         foreach ($dal->akt_amount as $index => $akt) {
             // Match amount keys dynamically (amount1, amount2, etc.)

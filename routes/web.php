@@ -234,8 +234,11 @@ Route::group(['prefix' => 'sifat-sertificates'], function () {
     Route::get('/list', ['as'=>'/sifat-sertificates/list', 'uses' => '\App\Http\Controllers\SifatSertificateController@applicationlist']);
     Route::get('/add/{id}', ['as'=>'sifat-sertificates.add', 'uses' => '\App\Http\Controllers\SifatSertificateController@addapplication']);
     Route::post('/store', ['uses' => '\App\Http\Controllers\SifatSertificateController@store']);
+    Route::get('/add_result/{id}', ['as'=>'sifat-sertificates.add_result', 'uses' => '\App\Http\Controllers\SifatSertificateController@addResult']);
+    Route::post('/result_store', ['uses' => '\App\Http\Controllers\SifatSertificateController@ResultStore']);
     Route::get('/add_client/{id}', ['as'=>'sifat-sertificates.add_client', 'uses' => '\App\Http\Controllers\SifatSertificateController@addClientData']);
     Route::post('/client_store', ['uses' => '\App\Http\Controllers\SifatSertificateController@ClientDataStore']);
+
     Route::get('/edit/{id}', [ 'uses' => '\App\Http\Controllers\SifatSertificateController@edit']);
     Route::patch('/edit/update/{id}', '\App\Http\Controllers\SifatSertificateController@update');
     Route::get('/view/{id}', '\App\Http\Controllers\SifatSertificateController@showapplication');

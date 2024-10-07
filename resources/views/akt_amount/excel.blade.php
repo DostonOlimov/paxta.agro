@@ -124,7 +124,7 @@
                                                                     @if(isset($data[$i]))
                                                                         <div class="input-container">
                                                                             <input type="text" step="0.1" class="form-control" name="amount{{ 50 * ($loop->iteration - 1) + $i +1 }}" id="amount{{ 50 * ($loop->iteration - 1) + $i +1 }}"
-                                                                                 value="{{$data[$i]['amount']}}" @if($data[$i]['amount']) {{'disabled'}} @endif>
+                                                                                 value="{{$data[$i]['amount']}}" @if($data[$i]['amount']) {{'readonly'}} @endif>
                                                                             @if($data[$i]['amount']) <i class="fa fa-pencil pencil" onclick="changeDisplay(this,{{$data[$i]['id']}})"></i> @endif
                                                                         </div>
                                                                     @endif

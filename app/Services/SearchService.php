@@ -16,7 +16,8 @@ class SearchService
         $status = [],
         $hasTestPrograms = false, // Add flag for whereHas condition
         $sumRelation = null,      // Related model for withSum
-        $sumColumn = null         // Column to sum
+        $sumColumn = null,      // Column to sum
+        $whereColumn = []
     ) {
         // Default sorting by 'id' and order by 'desc'
         $sort_by = $request->get('sort_by', 'id');
@@ -34,6 +35,10 @@ class SearchService
 
         // Start building the query
         $query = $modelClass::query()->select("{$table}.id as model_id", "{$table}.*");
+
+        if(!empty($whereColumn)){
+            $query = $query->where($whereColumn[0],$whereColumn[1],$whereColumn[2]);
+        }
 
         // Apply whereIn condition for dalolatnoma status if provided
         if (!empty($status)) {
