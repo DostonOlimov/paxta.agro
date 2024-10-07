@@ -6,7 +6,9 @@ namespace App\Http\Controllers;
 use App\Filters\V1\ApplicationFilter;
 use App\Models\Application;
 use App\Models\AppStatusChanges;
+use App\Models\ClientData;
 use App\Models\CropData;
+use App\Models\CropsSelection;
 use App\Models\OrganizationCompanies;
 use App\Services\SearchService;
 use Illuminate\Support\Facades\Auth;
@@ -51,12 +53,13 @@ class SifatSertificateController extends Controller
 
     public function addapplication($organization)
     {
-        $names = DB::table('crops_name')->get()->toArray();
+        $names = DB::table('crops_name')->where('id','!=',1)->get()->toArray();
         $countries = DB::table('tbl_countries')->get()->toArray();
         $measure_types = CropData::getMeasureType();
         $year = CropData::getYear();
+        $selection = CropsSelection::get();
 
-        return view('sifat_sertificate.add',compact('organization','names', 'countries','measure_types','year'));
+        return view('sifat_sertificate.add',compact('organization','selection','names', 'countries','measure_types','year'));
 
     }
 
@@ -71,22 +74,23 @@ class SifatSertificateController extends Controller
 
         $crop = CropData::create([
             'name_id'       => $request->input('name'),
-            'country_id'    => $request->input('country'),
+            'country_id'    => 234,
             'kodtnved'      => $request->input('tnved'),
             'party_number'  => $request->input('party_number'),
+            'party2'  => $request->input('party_number2'),
             'measure_type'  => $request->input('measure_type'),
             'amount'        => $request->input('amount'),
-            'year'          => $request->input('year'),
-            'toy_count'     => $request->input('toy_count'),
-            'sxeme_number'  => $request->input('sxeme_number'),
+            'year'          => 2024,
+            'toy_count'     => 1,
+            'sxeme_number'  => 7,
         ]);
 
         $application = Application::create([
             'crop_data_id'     => $crop->id,
             'organization_id'  => $request->input('organization'),
-            'prepared_id'      => $request->input('prepared'),
+            'prepared_id'      => $user->zavod_id,
             'type'             => Application::TYPE_1,
-            'date'             => $request->input('dob') ? date('Y-m-d', strtotime($request->input('dob'))) : null,
+            'date'             => date('Y-m-d'),
             'status'           => Application::STATUS_FINISHED,
             'data'             => $request->input('data'),
             'created_by'       => $user->id,
@@ -101,10 +105,31 @@ class SifatSertificateController extends Controller
             'time'        => now(),
         ]);
 
-        return redirect()->route('listapplication')->with('message', 'Successfully Submitted');
+        return redirect()->route('sifat-sertificates.add_client',$application->id)->with('message', 'Successfully Submitted');
     }
 
-    // application edit
+    public function addClientData($id)
+    {
+        $clients = DB::table('clients')->get()->toArray();
+
+        return view('sifat_sertificate.client_data_add',compact('clients','id'));
+
+    }
+    public function ClientDataStore(Request $request)
+    {
+
+        $user = Auth::user();
+
+        $crop = ClientData::create([
+            'app_id'       => $request->input('id'),
+            'client_id'    => $request->input('client'),
+            'vagon_number'      => $request->input('number'),
+            'yuk_xati'  => $request->input('yuk_xati'),
+        ]);
+
+
+        return redirect()->route('sifat-sertificates.add_result',$request->input('id'))->with('message', 'Successfully Submitted');
+    }
 
     public function edit($id)
     {

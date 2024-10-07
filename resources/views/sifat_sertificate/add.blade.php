@@ -29,7 +29,7 @@
 				<div class="card">
 					<div class="card-body">
 
-						<form method="post" action="{!! url('application/my-application-store') !!}" enctype="multipart/form-data"  class="form-horizontal upperform">
+						<form method="post" action="{!! url('sifat-sertificates/store') !!}" enctype="multipart/form-data"  class="form-horizontal upperform">
 							<div class="row" >
 
 								<input type="hidden" name="_token" value="{{csrf_token()}}">
@@ -79,6 +79,22 @@
                                         <span class="help-block">
 											 <strong>Dublikat raqami noto'g'ri shaklda kiritilgan</strong>
 										   </span>
+                                    @endif
+                                </div>
+                                <div class="col-md-4 form-group has-feedback {{ $errors->has('selection_code') ? ' has-error' : '' }}">
+                                    <label for="number" class="form-label ">Seleksion navining kodi<label class="text-danger">*</label> </label>
+                                    <select id="selection_code" class="form-control owner_search" name="selection_code" required>
+                                        @if(!empty($selection))
+                                            @foreach ($selection as $select)
+                                                <option selected  value="{{ $select->id }}">{{$select->name}}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                    @if ($errors->has('selection_code'))
+                                        <span class="help-block">
+                                                <strong>
+                                                    Seleksiya kodi noto'g'ri shaklda kiritilgan</strong>
+                                            </span>
                                     @endif
                                 </div>
                                 <div class="col-md-6 form-group has-feedback {{ $errors->has('amount') ? ' has-error' : '' }}">
@@ -153,7 +169,7 @@
     $(document).ready(function () {
         $('select.owner_search').select2({
             ajax: {
-                url: '/organization/search_by_name',
+                url: '/crops_selection/search_by_name',
                 delay: 300,
                 dataType: 'json',
                 data: function (params) {
@@ -165,7 +181,7 @@
                     data = data.map((name, index) => {
                         return {
                             id: name.id,
-                            text: capitalize(name.name + (name.name ? ' - STiR:' + name.inn : ''))
+                            text: capitalize(name.name + (name.name ? ' - Kod:' + name.kod : ''))
                         }
                     });
                     return {
@@ -175,7 +191,7 @@
             },
             language: {
                 inputTooShort: function () {
-                    return 'Korxona (nomi), STIR ini kiritib izlang';
+                    return 'Seleksion navining kodni kiritib izlang';
                 },
                 searching: function () {
                     return 'Izlanmoqda...';
@@ -187,48 +203,10 @@
                     return "Natija topilmadi"
                 }
             },
-            placeholder: 'Korxona nomini kiriting',
-            minimumInputLength: 2
+            placeholder: 'Seleksion navini kiriting',
+            minimumInputLength: 1
         })
-        $('select.owner_search2').select2({
-            ajax: {
-                url: '/prepared/search_by_name',
-                delay: 300,
-                dataType: 'json',
-                data: function (params) {
-                    return {
-                        search: params.term
-                    }
-                },
-                processResults: function (data) {
-                    data = data.map((name, index) => {
-                        return {
-                            id: name.id,
-                            text: capitalize(name.name )
-                        }
-                    });
-                    return {
-                        results: data
-                    }
-                }
-            },
-            language: {
-                inputTooShort: function () {
-                    return 'Korxona nomini kiritib izlang';
-                },
-                searching: function () {
-                    return 'Izlanmoqda...';
-                },
-                noResults: function () {
-                    return "Natija topilmadi"
-                },
-                errorLoading: function () {
-                    return "Natija topilmadi"
-                }
-            },
-            placeholder: 'Korxona nomini kiriting',
-            minimumInputLength: 2
-        })
+
         function capitalize(text) {
             var words = text.split(' ');
             for (var i = 0; i < words.length; i++) {
@@ -306,24 +284,6 @@
             .then(data => kodtnved.value = data.code);
     });
 
-
-    //chigit uchun radio button qo'shish
-    function getPreName(th) {
-
-         corn_id = th.val();
-        if (corn_id == 21) {
-            document.getElementById("pre_name").style.display = "block";
-        }
-        else{
-            document.getElementById("pre_name").style.display = "none";
-        }
-
-    }
-
-    $('select.name_of_corn').on('change', function () {
-        getPreName($(this));
-    });
-
     $('select.name_of_corn').on('change', function () {
         getTypeOfCorn($(this));
     });
@@ -335,43 +295,5 @@
         getTypeOfCorn($('select.name_of_corn'));
     }
 
-</script>
-<script>
-    $(document).ready(function(){
-        $('select.crop_production').select2({
-            placeholder: 'Ishlab chiqarish turini tanlang',
-            minimumResultsForSearch: Infinity,
-            language:{
-                inputTooShort:function(){
-                    return 'Ma\'lumot kiritib izlang';
-                },
-                searching:function(){
-                    return 'Izlanmoqda...';
-                },
-                noResults:function(){
-                    return "Natija topilmadi"
-                }
-            }
-        });
-        $('body').on('change','.crop_production',function(){
-            corn_id = $(this).val();
-            var url = $(this).attr('stateurl');
-        });
-        $('select.requirements').select2({
-            placeholder: 'Ilovani tanlang',
-            minimumResultsForSearch: Infinity,
-            language:{
-                inputTooShort:function(){
-                    return 'Ma\'lumot kiritib izlang';
-                },
-                searching:function(){
-                    return 'Izlanmoqda...';
-                },
-                noResults:function(){
-                    return "Natija topilmadi"
-                }
-            }
-        });
-    });
 </script>
   @endsection

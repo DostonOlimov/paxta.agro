@@ -17,7 +17,10 @@
     <link rel="icon" href="{{ asset('img/logoNEW.png') }}" type="image/x-icon" />
 
     {{--    <!-- My style files --> --}}
-
+    <link href="{{ asset('resources/assets/plugins/sweetalert2/sweetalert2.min.css') }}"
+          rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css"
+          href="{{ asset('resources/assets/plugins/select2/dist/css/select2.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('resources/assets/css/style.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('resources/assets/css/color-style.css') }}">
 
