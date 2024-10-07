@@ -28,4 +28,8 @@ class OrganizationCompanies extends Model
     {
         return $this->hasMany(Application::class, 'organization_id');
     }
+    public function getFullAddressAttribute(){
+        $city = str_word_count(optional($this->city)->name) == 1 ? optional($this->city)->name.' tuman' : optional($this->city)->name;
+        return optional($this->city->region)->name.','.$city.','.$this->address;
+    }
 }

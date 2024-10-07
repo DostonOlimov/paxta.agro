@@ -55,18 +55,6 @@
 								<thead>
 									<tr>
                                         <th>#</th>
-                                        <th class="border-bottom-0 border-top-0">
-                                            <a href="{{ route('/sifat-sertificates/list', ['sort_by' => 'status', 'sort_order' => ($sort_by === 'status' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
-                                                {{ trans('app.Ariza statusi') }}
-                                                @if($sort_by === 'status')
-                                                    @if($sort_order === 'asc')
-                                                        <i class="fa fa-arrow-up"></i>
-                                                    @else
-                                                        <i class="fa fa-arrow-down"></i>
-                                                    @endif
-                                                @endif
-                                            </a>
-                                        </th>
 										<th class="border-bottom-0 border-top-0">
                                             <a href="{{ route('/sifat-sertificates/list', ['sort_by' => 'id', 'sort_order' => ($sort_by === 'id' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
                                                 {{trans('app.Ariza raqami')}}
@@ -135,21 +123,7 @@
 								<tbody>
                                 <tr style="background-color: #90aec6 !important;">
                                     <td> </td>
-                                    <td>
-                                        <select class="w-100 form-control" name="status[eq]" id="status">
-                                            @if (count($all_status))
-                                                <option value="" selected>Barchasi</option>
-                                            @endif
-                                            @foreach ($all_status as $key => $name)
-                                                <option value="{{ $key }}"
-                                                        @if (isset($filterValues['status']) && $filterValues['status'] == $key)
-                                                        selected
-                                                    @endif>
-                                                    {{ $name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </td>
+
                                     <td>
                                         <form class="d-flex">
                                             <input type="text" name="id[eq]" class="search-input form-control"
@@ -219,9 +193,7 @@
 									@foreach($apps as $app)
 									<tr>
                                         <td>{{$offset + $loop->iteration}}</td>
-                                        <td><a href="{!! url('/sifat-sertificates/view/' . $app->id) !!}"><button type="button"
-                                            class="btn btn-round btn-{{ $app->status_color }}">{{ $app->status_name }}</button></a>
-                                        </td>
+
                                         <td> <a href="{!! url('/sifat-sertificates/view/'.$app->id) !!}">{{ $app->id }}</a></td>
                                         <td>{{ optional($app->crops)->party_number }}</td>
                                         <td> <a href="{!! url('/sifat-sertificates/view/'.$app->id) !!}">{{ $app->date }}</a></td>
