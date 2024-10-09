@@ -277,4 +277,6 @@ return[
 
     "Bo'lak partiya"=>"Piece party",
     "Sertifikat sanasi"=>"Date of certificate",
+
+    'copyright_text' => 'All rights reserved by the Agricultural Crop Seed Certification System',
 ];

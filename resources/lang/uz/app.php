@@ -96,6 +96,7 @@ return[
 
 
 
+    'copyright_text' => 'Qishloq xo‘jalik ekinlari urug‘larini sertifikatlashtirish tizimi tomonidan barcha huquqlar himoyalangan',
 
 
 
