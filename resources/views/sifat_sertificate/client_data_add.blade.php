@@ -30,12 +30,12 @@
                         <div class="card-body">
 
                             <form method="post" action="{!! url('sifat-sertificates/client_store') !!}" enctype="multipart/form-data"  class="form-horizontal upperform">
-                                <div class="row" >
+                                <div class="row" style="column-gap: 0;">
 
                                     <input type="hidden" name="_token" value="{{csrf_token()}}">
                                     <input type="hidden" name="id" value="{{$id}}">
 
-                                    <div class="col-md-4 form-group has-feedback {{ $errors->has('client') ? ' has-error' : '' }}">
+                                    <div class="col-md-6 form-group has-feedback {{ $errors->has('client') ? ' has-error' : '' }}">
                                         <label for="number" class="form-label ">Xaridor nomini kiriting<label class="text-danger">*</label> </label>
                                         <select id="client" class="form-control owner_search" name="client" required>
                                             @if(!empty($clients))
