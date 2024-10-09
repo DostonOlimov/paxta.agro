@@ -241,7 +241,7 @@ Route::group(['prefix' => 'sifat-sertificates'], function () {
 
     Route::get('/edit/{id}', [ 'uses' => '\App\Http\Controllers\SifatSertificateController@edit']);
     Route::patch('/edit/update/{id}', '\App\Http\Controllers\SifatSertificateController@update');
-    Route::get('/view/{id}', '\App\Http\Controllers\SifatSertificateController@showapplication');
+    Route::get('/view/{id}', '\App\Http\Controllers\SifatSertificateController@showapplication')->name('sifat_sertificate.view');
     Route::get('/list/delete/{id}', ['as' => '/sifat-sertificates/list/delete/{id}', 'uses' => '\App\Http\Controllers\SifatSertificateController@destory']);
     Route::get('/accept/{id}', ['as' => '/sifat-sertificates/accept', 'uses' => '\App\Http\Controllers\SifatSertificateController@accept']);
     Route::get('/reject/{id}', ['as' => '/sifat-sertificates/reject', 'uses' => '\App\Http\Controllers\SifatSertificateController@reject']);

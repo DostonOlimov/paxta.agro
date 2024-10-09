@@ -75,6 +75,14 @@ class Application extends Model
     {
         return $this->belongsTo(Files::class, 'id','app_id');
     }
+    public function client_data()
+    {
+        return $this->belongsTo(ClientData::class,'id','app_id');
+    }
+    public function chigit_result()
+    {
+        return $this->hasMany(ChigitResult::class,'app_id','id');
+    }
     public static function getType($type = null)
     {
         $arr = [

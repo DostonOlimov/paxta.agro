@@ -25,6 +25,7 @@ class CropData extends Model
         'sxeme_number',
         'toy_count',
         'country_id',
+        'selection_code'
     ];
 
     public function name()
@@ -43,6 +44,10 @@ class CropData extends Model
     public function country()
     {
         return $this->belongsTo(Country::class, 'country_id');
+    }
+    public function selection()
+    {
+        return $this->belongsTo(CropsSelection::class, 'selection_code');
     }
     public function application()
     {

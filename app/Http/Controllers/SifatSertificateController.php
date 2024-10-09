@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\DefaultModels\tbl_activities;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Symfony\Component\HttpFoundation\Response;
 
 class SifatSertificateController extends Controller
@@ -89,6 +90,7 @@ class SifatSertificateController extends Controller
             'party2'  => $request->input('party_number2'),
             'measure_type'  => $request->input('measure_type'),
             'amount'        => $request->input('amount'),
+            'selection_code' => $request->input('selection_code'),
             'year'          => 2024,
             'toy_count'     => 1,
             'sxeme_number'  => 7,
@@ -174,8 +176,11 @@ class SifatSertificateController extends Controller
         $test = Application::findOrFail($id);
         $company = OrganizationCompanies::with('city')->findOrFail($test->organization_id);
         $qrCode = null;
+        $url = route('sifat_sertificate.view', $id);
+        $qrCode = QrCode::size(100)->generate($url);
+        $user = \auth()->user();
 
-        return view('sifat_sertificate.show', compact('test', 'company','qrCode'));
+        return view('sifat_sertificate.show', compact('test', 'user','company','qrCode'));
     }
 
     //accept online applications

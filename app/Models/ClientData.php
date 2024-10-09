@@ -17,4 +17,9 @@ class ClientData extends Model
         'yuk_xati',
     ];
 
+    public function client()
+    {
+       return $this->belongsTo(Clients::class, 'client_id','id');
+    }
+
 }
