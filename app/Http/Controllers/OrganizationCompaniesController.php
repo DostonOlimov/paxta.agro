@@ -191,7 +191,7 @@ class OrganizationCompaniesController extends Controller
             // Create a new organization
             $company = OrganizationCompanies::create([
                 'name' => $request->input('name'),
-                'city_id' => $request->input('city'),
+                'city_id' => $request->input('city_id'),
                 'phone_number' => $request->input('mobile'),
                 'address' => $request->input('address'),
                 'owner_name' => $request->input('owner_name'),

@@ -11,8 +11,8 @@
     <meta name="author" content="Doston Olimov">
     <title>Paxta tolasini sertifikatlashtirish tizimi</title>
 
-    <link rel="stylesheet" href="{{ URL::asset('front/css/owl.carousel.min.css') }}" type="text/css">
-    <link rel="stylesheet" href="{{ URL::asset('front/css/main.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('front/css/owl.carousel.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('front/css/main.css') }}" type="text/css">
 
     <link rel="icon" href="{{ asset('img/logoNEW.png') }}" type="image/x-icon" />
 
@@ -21,13 +21,13 @@
           rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css"
           href="{{ asset('resources/assets/plugins/select2/dist/css/select2.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ URL::asset('resources/assets/css/style.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ URL::asset('resources/assets/css/color-style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('resources/assets/css/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('resources/assets/css/color-style.css') }}">
 
-    <link href="{{ URL::asset('resources/assets/plugins/tabs/tabs.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('resources/assets/plugins/tabs/tabs.css') }}" rel="stylesheet"/>
 
-    <link rel="stylesheet" href="{{ URL::asset('resources/assets/fonts/fonts/font-awesome.min.css') }}"/>
-    <link rel="stylesheet" href="{{ URL::asset('resources/assets/css/myStyle.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('resources/assets/fonts/fonts/font-awesome.min.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('resources/assets/css/myStyle.css') }}"/>
 
     @yield('styles')
 </head>
@@ -48,41 +48,41 @@
 <!-- JQUERY SCRIPTS JS-->
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
 
-<script src="{{ URL::asset('resources/assets/plugins/hyperform/dist/hyperform.js') }}"></script>
+<script src="{{ asset('resources/assets/plugins/hyperform/dist/hyperform.js') }}"></script>
 <script>
     hyperform(window)
 </script>
-<script src="{{ URL::asset('resources/assets/js/vendors/jquery-3.2.1.min.js') }}"></script>
-<script src="{{ URL::asset('resources/assets/plugins/date-picker/jquery-ui.js') }}"></script>
-<script src="{{ URL::asset('resources/assets/plugins/waves/js/popper.min.js') }}"></script>
+<script src="{{ asset('resources/assets/js/vendors/jquery-3.2.1.min.js') }}"></script>
+<script src="{{ asset('resources/assets/plugins/date-picker/jquery-ui.js') }}"></script>
+<script src="{{ asset('resources/assets/plugins/waves/js/popper.min.js') }}"></script>
 
 
 
 
-<script src="{{ URL::asset('resources/assets/plugins/right-sidebar/right-sidebar.js') }}"></script>
+<script src="{{ asset('resources/assets/plugins/right-sidebar/right-sidebar.js') }}"></script>
 
-<script src="{{ URL::asset('resources/assets/plugins/select2/dist/js/select2.min.js') }}"></script>
-<script src="{{ URL::asset('resources/assets/plugins/date-picker/date-picker.js') }}"></script>
-<script src="{{ URL::asset('resources/assets/js/vendors/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset('resources/assets/plugins/select2/dist/js/select2.min.js') }}"></script>
+<script src="{{ asset('resources/assets/plugins/date-picker/date-picker.js') }}"></script>
+<script src="{{ asset('resources/assets/js/vendors/bootstrap.bundle.min.js') }}"></script>
 
-<script src="{{ URL::asset('vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') }}"></script>
+<script src="{{ asset('vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') }}"></script>
 
 {{--    <!-- FILE UPLOADES JS -->--}}
 
-<script sync type="text/javascript" src="{{ URL::asset('resources/assets/plugins/table-export/file-saver.min.js') }}">
+<script sync type="text/javascript" src="{{ asset('resources/assets/plugins/table-export/file-saver.min.js') }}">
 </script>
-<script sync type="text/javascript" src="{{ URL::asset('resources/assets/plugins/table-export/blob.min.js') }}">
+<script sync type="text/javascript" src="{{ asset('resources/assets/plugins/table-export/blob.min.js') }}">
 </script>
-<script src="{{ URL::asset('resources/assets/plugins/stickyTable/jquery.stickytable.js') }}"></script>
-<script src="{{ URL::asset('resources/assets/js/moment.js') }}"></script>
-<script src="{{ URL::asset('resources/assets/js/uz-latn.js') }}"></script>
-<script src="{{ URL::asset('vendors/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+<script src="{{ asset('resources/assets/plugins/stickyTable/jquery.stickytable.js') }}"></script>
+<script src="{{ asset('resources/assets/js/moment.js') }}"></script>
+<script src="{{ asset('resources/assets/js/uz-latn.js') }}"></script>
+<script src="{{ asset('vendors/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
 
 <script src="/js/num.js"></script>
-<script src="{{ URL::asset('resources/assets/plugins/print/dist/jQuery.print.min.js') }}"></script>
-<script src="{{ URL::asset('resources/assets/plugins/cropper/cropper.min.js') }}"></script>
-<script src="{{ URL::asset('build/js/control.js') }}"></script>
-<script src="{{ URL::asset('resources/assets/js/custom.js') }}"></script>
+<script src="{{ asset('resources/assets/plugins/print/dist/jQuery.print.min.js') }}"></script>
+<script src="{{ asset('resources/assets/plugins/cropper/cropper.min.js') }}"></script>
+<script src="{{ asset('build/js/control.js') }}"></script>
+<script src="{{ asset('resources/assets/js/custom.js') }}"></script>
 
 
 @yield('scripts')
