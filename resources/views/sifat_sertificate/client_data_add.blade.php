@@ -53,7 +53,7 @@
                                     </div>
                                     <div class="col-md-6 form-group has-feedback {{ $errors->has('number') ? ' has-error' : '' }}">
                                         <label for="middle-name" class="form-label">{{trans('app.Avtotransport/vagon raqami')}} <label class="text-danger">*</label></label>
-                                        <input type="text" class="form-control" maxlength="25"  name="number" value="{{ old('number')}}">
+                                        <input id="car_number" type="text" class="form-control"  name="number" value="{{ old('number')}}">
                                         @if ($errors->has('number'))
                                             <span class="help-block">
 											 <strong>Avtotransport/vagon raqami noto'g'ri shaklda kiritilgan</strong>
@@ -62,7 +62,7 @@
                                     </div>
                                     <div class="col-md-6 form-group has-feedback {{ $errors->has('yuk_xati') ? ' has-error' : '' }}">
                                         <label for="middle-name" class="form-label">{{trans('app.Yuk xati raqami')}} <label class="text-danger">*</label></label>
-                                        <input type="text" class="form-control" maxlength="25"  name="yuk_xati" value="{{ old('yuk_xati')}}">
+                                        <input type="text" class="form-control" maxlength="10"  name="yuk_xati" value="{{ old('yuk_xati')}}">
                                         @if ($errors->has('yuk_xati'))
                                             <span class="help-block">
 											 <strong>Yuk xati raqami noto'g'ri shaklda kiritilgan</strong>
@@ -94,9 +94,9 @@
         </div>
     @endif
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="{{ URL::asset('vendors/moment/min/moment.min.js') }}"></script>
-    <script src="{{ URL::asset('vendors/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
-    <script src="{{ URL::asset('vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') }}"></script>
+    <script src="{{ asset('vendors/moment/min/moment.min.js') }}"></script>
+    <script src="{{ asset('vendors/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+    <script src="{{ asset('vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') }}"></script>
     <script type="text/javascript">
         function disableButton() {
             var button = document.getElementById('submitter');
@@ -107,6 +107,46 @@
                 button.innerText = 'Saqlash'; // Restore the button text
             }, 1000);
         }
+    </script>
+    <script>
+        document.getElementById('car_number').addEventListener('input', function (e) {
+            let value = e.target.value.toUpperCase();
+
+            // Remove non-alphanumeric characters except spaces
+            value = value.replace(/[^A-Z0-9\s]/g, '');
+
+            // Format: either "01 A123AA" or "01 123AAA"
+            if (value.length <= 2) {
+                // First two characters are region code
+                value = value.replace(/(\d{0,2})/, '$1');
+            } else if (value.length === 3) {
+                // After region code, ensure a space
+                value = value.replace(/(\d{2})([A-Z0-9])/, '$1 $2');
+            } else if (value.length <= 6) {
+                // After the space, 3 digits or letter + 3 digits
+                if (/^[A-Z]/.test(value[3])) {
+                    // Format: "01 A123"
+                    value = value.replace(/(\d{2})\s([A-Z])(\d{0,3})/, '$1 $2$3');
+                } else {
+                    // Format: "01 123"
+                    value = value.replace(/(\d{2})\s(\d{0,3})/, '$1 $2');
+                }
+            } else {
+                // Final formatting for either "01 A123AA" or "01 123AAA"
+                if (/^[A-Z]/.test(value[3])) {
+                    // Format: "01 A123AA"
+                    value = value.replace(/(\d{2})\s([A-Z])(\d{3})([A-Z]{0,2})/, '$1 $2$3$4');
+                } else {
+                    // Format: "01 123AAA"
+                    value = value.replace(/(\d{2})\s(\d{3})([A-Z]{0,3})/, '$1 $2$3');
+                }
+            }
+
+            // Enforce length limit of 8 characters
+            value = value.slice(0, 9);
+
+            e.target.value = value;
+        });
     </script>
     <script>
         $(document).ready(function () {

@@ -97,7 +97,7 @@
                                 @endif
                             </div>
                             <div class="col-md-6 form-group has-feedback {{ $errors->has('amount') ? ' has-error' : '' }}">
-                                <label for="middle-name" class="form-label">{{trans('app.amount')}} <label class="text-danger">*</label></label>
+                                <label for="middle-name" class="form-label">{{trans('app.amount2')}} <label class="text-danger">*</label></label>
                                 <input type="number" step="0.01" class="form-control" maxlength="25" value="{{ old('amount')}}" name="amount">
                                 @if ($errors->has('amount'))
                                 <span class="help-block">
@@ -105,19 +105,7 @@
                                 </span>
                                 @endif
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group overflow-hidden">
-                                    <label class="form-label">{{trans('app.O\'lchov turi')}} <label class="text-danger">*</label></label>
-                                    <select class="w-100 form-control" name="measure_type">
-                                        @if(count($measure_types))
-                                        <option value="">{{trans('app.O\'lchov turini tanlang')}}</option>
-                                        @endif
-                                        @foreach($measure_types as $key=>$name)
-                                        <option value="{{ $key }}" @if($key==old('measure_type') or $key==2) selected @endif> {{$name}} </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
+                            <input name="measure_type" type="hidden" value="2">
 
                             <div class="form-group col-md-12 col-sm-12">
                                 <div class="col-md-12 col-sm-12 text-center">

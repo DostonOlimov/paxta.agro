@@ -13,12 +13,13 @@
         }
         table, th, td{
             border: 1px solid black ;
+            font-size: 20px !important;
         }
         td{
             font-weight: normal ;
         }
     </style>
-    @can('view', \App\Models\User::class)
+    @if($tip)
         <div class="section" style="margin-top: 140px;">
         <div class=" content-area ">
             <div class="page-header">

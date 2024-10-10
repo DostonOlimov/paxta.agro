@@ -28,7 +28,11 @@
 
     <link rel="stylesheet" href="{{ asset('resources/assets/fonts/fonts/font-awesome.min.css') }}"/>
     <link rel="stylesheet" href="{{ asset('resources/assets/css/myStyle.css') }}"/>
-
+    <style>
+        .hf-warning{
+            color:red !important;
+        }
+    </style>
     @yield('styles')
 </head>
 

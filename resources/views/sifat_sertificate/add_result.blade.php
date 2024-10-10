@@ -40,7 +40,6 @@
                                         <tr>
                                             <th colspan="2">Ko‘rsatkichlar nomi (talablar)</th>
                                             <th>Sinash usullari MX</th>
-                                            <th>Me’yoriy hujjat bo‘yicha me’yoriy ko‘rsatkichlar</th>
                                             <th>Xaqiqiy ko‘rsatkichlar</th>
                                         </tr>
                                         </thead>
@@ -56,21 +55,10 @@
                                                 <td>
                                                     {{ $indicator->nd_name }}
                                                 </td>
-                                                <td>
-                                                    @if($indicator->comment)
-                                                        {{$indicator->comment}}
-                                                    @else
-                                                        @if($indicator->value != 0)
-                                                            @if($indicator->measure_type == 1) ko'pi bilan, @else kamida @endif
-                                                            {{ $indicator->value }}
-                                                        @else
-                                                            ruxsat etilmaydi
-                                                        @endif
-                                                    @endif
-                                                </td>
+
                                                 <td>
                                                     @if($indicator->nd_name)
-                                                        <input class="form-control" step="0.001" value=0  name="value{{$indicator->id}}" required>
+                                                        <input class="form-control" step="0.001"  name="value{{$indicator->id}}" required>
                                                     @endif
                                                 </td>
 

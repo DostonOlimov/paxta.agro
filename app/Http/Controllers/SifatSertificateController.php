@@ -7,6 +7,7 @@ use App\Filters\V1\ApplicationFilter;
 use App\Models\Application;
 use App\Models\AppStatusChanges;
 use App\Models\ChigitResult;
+use App\Models\ChigitTips;
 use App\Models\ClientData;
 use App\Models\CropData;
 use App\Models\CropsSelection;
@@ -180,7 +181,17 @@ class SifatSertificateController extends Controller
         $qrCode = QrCode::size(100)->generate($url);
         $user = \auth()->user();
 
-        return view('sifat_sertificate.show', compact('test', 'user','company','qrCode'));
+        $nuqsondorlik = optional($test->chigit_result()->where('indicator_id','=',9)->first())->value;
+        $tukdorlik = optional($test->chigit_result()->where('indicator_id','=',12)->first())->value;
+        $namlik = optional($test->chigit_result()->where('indicator_id','=',11)->first())->value;
+        $zararkunanda = optional($test->chigit_result()->where('indicator_id','=',10)->first())->value;
+
+        $tip = ChigitTips::where('nuqsondorlik', '>=', $nuqsondorlik )
+            ->where('tukdorlik', '>=', $tukdorlik )
+            ->where('crop_id', $test->crops->name_id)
+            ->first();
+
+        return view('sifat_sertificate.show', compact('test','tip', 'user','company','qrCode','nuqsondorlik','zararkunanda','namlik','tukdorlik'));
     }
 
     public function edit($id)

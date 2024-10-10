@@ -16,12 +16,18 @@ return[
     'Ishlab chiqargan davlat'=>'Ishlab chiqarilgan davlat',
     'Toʼda (partiya) raqami'=>'Toʼda (partiya) raqami',
     'amount'=>'Miqdori',
+    'Dublikat raqami' => 'Dublikat raqami',
     'Hosil yili'=>'Hosil yili',
     'Sinov bayonnoma raqami'=>'Sinov bayonnoma raqami',
     'Sertifikat'=>'Sertifikat',
     'Name'=>'Nomi',
     'Qaror fayllari'=>'Qaror fayllari',
     'Sinov bayonnoma fayllari'=>'Sinov bayonnoma fayllari',
+
+    //must be translated
+    'Yuk xati raqami' => 'Yuk xati raqami',
+    'Avtotransport/vagon raqami' => 'Avtotransport/vagon raqami ',
+    'amount2'=>'Miqdori(kg)',
 
     //applications
     'Arizalar ro\'yxati'=>'Arizalar ro\'yxati',
