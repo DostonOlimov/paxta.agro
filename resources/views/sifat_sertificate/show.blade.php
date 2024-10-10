@@ -1,6 +1,10 @@
 @extends('layouts.front')
-@section('styles')
+@section('content')
     <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: #f4f6f9;
+        }
         .first-table td {
             width: 20%;
             text-align: center;
@@ -14,9 +18,8 @@
             font-weight: normal ;
         }
     </style>
-@endsection
-@section('content')
     @can('view', \App\Models\User::class)
+        <div class="section" style="margin-top: 140px;">
         <div class=" content-area ">
             <div class="page-header">
                 <h4 class="page-title mb-0" style="color:white">Sifat sertifikati</h4>
@@ -32,6 +35,7 @@
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     @else
         <div class="section" role="main">

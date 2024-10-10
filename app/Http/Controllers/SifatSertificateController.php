@@ -183,6 +183,18 @@ class SifatSertificateController extends Controller
         return view('sifat_sertificate.show', compact('test', 'user','company','qrCode'));
     }
 
+    public function edit($id)
+    {
+        $data = Application::findOrFail($id);
+        $company = OrganizationCompanies::with('city')->findOrFail($data->organization_id);
+        $qrCode = null;
+        $url = route('sifat_sertificate.view', $id);
+        $qrCode = QrCode::size(100)->generate($url);
+        $user = \auth()->user();
+
+        return view('sifat_sertificate.edit', compact('data', 'user','company','qrCode'));
+    }
+
     //accept online applications
     public function accept($id)
     {
