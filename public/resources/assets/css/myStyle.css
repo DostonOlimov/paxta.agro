@@ -832,6 +832,8 @@ th span.vert-header{
 .current-item .progress-count {
     color: #21d4fd;
 }
+
+@media screen and (max-width: 768px) {}
 /*cdn css codes*/
 /**
  * prism.js default theme for JavaScript, CSS and HTML

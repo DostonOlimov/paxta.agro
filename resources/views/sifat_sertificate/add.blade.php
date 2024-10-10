@@ -2,6 +2,29 @@
 @section('content')
 
 @if(Auth::user()->zavod_id)
+<style>
+    @media screen and (max-width: 768px) {
+        .my_header .navbar {
+            padding: 10px 0;
+            align-items: center;
+        }
+
+        .my_header .nav-logo {
+            margin-right: 0px;
+        }
+
+        .right-side-header {
+            column-gap: 13px;
+        }
+
+        h4 {
+            max-width: 220px;
+            font-size: 13px;
+        }
+
+
+    }
+</style>
 <link href="{{ asset('assets/css/formApplications.css') }}" rel="stylesheet">
 <ul class="step-wizard-list">
     <li class="step-wizard-item ">
