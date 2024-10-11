@@ -833,7 +833,17 @@ th span.vert-header{
     color: #21d4fd;
 }
 
-@media screen and (max-width: 768px) {}
+@media screen and (max-width: 768px) {
+  .step-wizard-item {
+    padding: 0px 5px;
+    min-width: 0;
+}
+  .progress-label {
+    font-size: 10px;
+    font-weight: 600;
+    margin-top: 8px;
+}
+}
 /*cdn css codes*/
 /**
  * prism.js default theme for JavaScript, CSS and HTML
