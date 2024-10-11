@@ -86,12 +86,15 @@
     </table>
     <h3> Izoh: To‘da quyidagi ko‘rsatkichlari bo‘yicha O’z DSt 596 talablariga muvofiq keladi.</h3>
     <div class="row">
-        <div class="col-sm-4" style="display:block; font-size: 20px">
+        <div class="col-sm-6" style="display:block; font-size: 20px">
                     <span style="padding: 5px; display: block">
-                        {{ $user->lastname . ' ' . ($user->name) }}</span>
+                        {{ optional($test->user->zavod)->region->name }}<br>
+                        {{ optional(optional($test->user->zavod)->chigit_laboratory)->name }}<br>
+                        guruh rahbari
+                        {{ $test->user->lastname . ' ' . ($test->user->name) }}</span>
 
         </div>
-        <div class="col-sm-4"></div>
+        <div class="col-sm-2"></div>
         <div class="col-sm-4" style="display: flex; flex-direction: column; justify-content: end;">
             <div class="text-center"> {!! $qrCode !!}</div>
         </div>

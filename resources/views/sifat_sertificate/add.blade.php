@@ -108,7 +108,7 @@
                                 <select id="selection_code" class="form-control owner_search" name="selection_code" required>
                                     @if(!empty($selection))
                                     @foreach ($selection as $select)
-                                    <option selected value="{{ $select->id }}">{{$select->name}}</option>
+                                    <option value="{{ $select->id }}">{{$select->name}}</option>
                                     @endforeach
                                     @endif
                                 </select>

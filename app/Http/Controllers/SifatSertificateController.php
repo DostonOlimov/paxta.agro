@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SifatSertificateController extends Controller
 {
-    public function applicationlist(Request $request, ApplicationFilter $filter,SearchService $service)
+    public function applicationList(Request $request, ApplicationFilter $filter,SearchService $service)
     {
         try {
             session(['crop'=>2]);
@@ -62,21 +62,17 @@ class SifatSertificateController extends Controller
 
     // application addform
 
-    public function addapplication($organization)
+    public function addApplication($organization)
     {
         $names = DB::table('crops_name')->where('id','!=',1)->get()->toArray();
-        $countries = DB::table('tbl_countries')->get()->toArray();
-        $measure_types = CropData::getMeasureType();
-        $year = CropData::getYear();
         $selection = CropsSelection::get();
 
-        return view('sifat_sertificate.add',compact('organization','selection','names', 'countries','measure_types','year'));
+        return view('sifat_sertificate.add',compact('organization','selection','names'));
 
     }
 
 
     // application store
-
     public function store(Request $request)
     {
         $this->authorize('create', Application::class);
@@ -176,34 +172,68 @@ class SifatSertificateController extends Controller
     {
         $test = Application::findOrFail($id);
         $company = OrganizationCompanies::with('city')->findOrFail($test->organization_id);
-        $qrCode = null;
+
+        // Generate QR code
         $url = route('sifat_sertificate.view', $id);
         $qrCode = QrCode::size(100)->generate($url);
-        $user = \auth()->user();
 
-        $nuqsondorlik = optional($test->chigit_result()->where('indicator_id','=',9)->first())->value;
-        $tukdorlik = optional($test->chigit_result()->where('indicator_id','=',12)->first())->value;
-        $namlik = optional($test->chigit_result()->where('indicator_id','=',11)->first())->value;
-        $zararkunanda = optional($test->chigit_result()->where('indicator_id','=',10)->first())->value;
+        // Fetch values and tip
+        $chigitValues = $this->getChigitValuesAndTip($test);
 
-        $tip = ChigitTips::where('nuqsondorlik', '>=', $nuqsondorlik )
-            ->where('tukdorlik', '>=', $tukdorlik )
-            ->where('crop_id', $test->crops->name_id)
-            ->first();
-
-        return view('sifat_sertificate.show', compact('test','tip', 'user','company','qrCode','nuqsondorlik','zararkunanda','namlik','tukdorlik'));
+        return view('sifat_sertificate.show', compact('test', 'company', 'qrCode') + $chigitValues);
     }
 
     public function edit($id)
     {
         $data = Application::findOrFail($id);
         $company = OrganizationCompanies::with('city')->findOrFail($data->organization_id);
-        $qrCode = null;
-        $url = route('sifat_sertificate.view', $id);
-        $qrCode = QrCode::size(100)->generate($url);
-        $user = \auth()->user();
 
-        return view('sifat_sertificate.edit', compact('data', 'user','company','qrCode'));
+        // Fetch values and tip
+        $chigitValues = $this->getChigitValuesAndTip($data);
+
+        return view('sifat_sertificate.edit', compact('data', 'company') + $chigitValues);
+    }
+
+    public function editData($id)
+    {
+        $data = Application::findOrFail($id);
+
+        $names = DB::table('crops_name')->where('id','!=',1)->get()->toArray();
+        $selection = CropsSelection::get();
+
+        return view('sifat_sertificate.edit_data', compact('data','names','selection'));
+    }
+
+    public function update(Request $request)
+    {
+        $id = $request->input('id');
+
+        // Validate incoming request data
+        $validatedData = $request->validate([
+            'name' => 'required|string',
+            'tnved' => 'nullable|string',
+            'party_number' => 'nullable|string',
+            'party_number2' => 'nullable|string',
+            'amount' => 'required|numeric',
+            'selection_code' => 'nullable|string',
+        ]);
+
+        // Find the application and related crop data
+        $app = Application::findOrFail($id);
+        $crop_data = $app->crops;
+
+        // Update the crop data with validated input
+        $crop_data->update([
+            'name_id' => $validatedData['name'],
+            'kodtnved' => $validatedData['tnved'],
+            'party_number' => $validatedData['party_number'],
+            'party2' => $validatedData['party_number2'],
+            'amount' => $validatedData['amount'],
+            'selection_code' => $validatedData['selection_code'],
+        ]);
+
+        // Redirect with success message
+        return redirect()->route('sifat_sertificate.edit', $id)->with('message', 'Successfully Submitted');
     }
 
     //accept online applications
@@ -222,32 +252,26 @@ class SifatSertificateController extends Controller
         return redirect()->route('listapplication')->with('message', 'Successfully Accepted');
     }
 
-    //reject online applications
-    public function reject($id)
+// Private method to avoid code duplication
+    private function getChigitValuesAndTip($application)
     {
-        $app = Application::findOrFail($id);
+        $nuqsondorlik = optional($application->chigit_result()->where('indicator_id', 9)->first())->value ?? 0;
+        $tukdorlik = optional($application->chigit_result()->where('indicator_id', 12)->first())->value ?? 0;
+        $namlik = optional($application->chigit_result()->where('indicator_id', 11)->first())->value ?? 0;
+        $zararkunanda = optional($application->chigit_result()->where('indicator_id', 10)->first())->value ?? 0;
 
-        return view('application.reject', compact('app'));
+        $tip = ChigitTips::where('nuqsondorlik', '>=', $nuqsondorlik)
+            ->where('tukdorlik', '>=', $tukdorlik)
+            ->where('crop_id', $application->crops->name_id)
+            ->first();
+
+        return [
+            'nuqsondorlik' => $nuqsondorlik,
+            'tukdorlik' => $tukdorlik,
+            'namlik' => $namlik,
+            'zararkunanda' => $zararkunanda,
+            'tip' => $tip,
+        ];
     }
-
-    public function reject_store(Request $request)
-    {
-        $app = Application::findOrFail($request->input('app_id'));
-        $this->authorize('accept', $app);
-
-        $app->update([
-            'status' => Application::STATUS_REJECTED,
-        ]);
-
-        AppStatusChanges::create([
-            'app_id'  => $app->id,
-            'status'  => Application::STATUS_REJECTED,
-            'comment' => $request->input('reason'),
-            'user_id' => Auth::id(),
-        ]);
-
-        return redirect()->route('listapplication')->with('message', 'Application Rejected Successfully');
-    }
-
 }
 

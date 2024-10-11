@@ -20,4 +20,8 @@ class PreparedCompanies extends Model
     {
         return $this->belongsTo(Region::class, 'state_id');
     }
+    public function chigit_laboratory()
+    {
+        return $this->belongsTo(ChigitLaboratories::class, 'kod','zavod_kod');
+    }
 }

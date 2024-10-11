@@ -40,7 +40,7 @@
                                         <select id="client" class="form-control owner_search" name="client" required>
                                             @if(!empty($clients))
                                                 @foreach ($clients as $select)
-                                                    <option selected  value="{{ $select->id }}">{{$select->name}}</option>
+                                                    <option value="{{ $select->id }}">{{$select->name}}</option>
                                                 @endforeach
                                             @endif
                                         </select>

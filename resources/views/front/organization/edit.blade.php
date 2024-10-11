@@ -1,13 +1,8 @@
 @extends('layouts.front')
 @section('content')
-    <style>
-        .checkbox-success {
-            background-color: #cad0cc !important;
-            color: red;
-        }
-    </style>
+
     <?php $userid = Auth::user()->id; ?>
-    @can('update', $company)
+    @if(1 == 0)
 
             <div class="section">
                 <div class="page-header">

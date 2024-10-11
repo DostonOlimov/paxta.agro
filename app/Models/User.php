@@ -65,6 +65,10 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Region::class, 'state_id');
     }
+    public function zavod(): BelongsTo
+    {
+        return $this->belongsTo(PreparedCompanies::class, 'zavod_id');
+    }
 
     public function getRegionIdsAttribute()
     {
