@@ -129,7 +129,7 @@
 
     @media screen and (max-width: 768px) {
         .container {
-            max-width: 100vw;
+            max-width: 100%;
         }
 
         .my_header .navbar {
