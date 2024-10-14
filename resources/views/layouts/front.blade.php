@@ -60,7 +60,7 @@
 <script src="{{ asset('resources/assets/plugins/waves/js/popper.min.js') }}"></script>
 
 
-
+<script src="{{ asset('resources/assets/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
 
 <script src="{{ asset('resources/assets/plugins/right-sidebar/right-sidebar.js') }}"></script>
 

@@ -217,19 +217,6 @@
                                     <th>#</th>
                                     <th class="border-bottom-0 border-top-0">
                                         <a
-                                            href="{{ route('/sifat-sertificates/list', ['sort_by' => 'id', 'sort_order' => $sort_by === 'id' && $sort_order === 'asc' ? 'desc' : 'asc']) }}">
-                                            {{ trans('app.Ariza raqami') }}
-                                            @if ($sort_by === 'id')
-                                            @if ($sort_order === 'asc')
-                                            <i class="fa fa-arrow-up"></i>
-                                            @else
-                                            <i class="fa fa-arrow-down"></i>
-                                            @endif
-                                            @endif
-                                        </a>
-                                    </th>
-                                    <th class="border-bottom-0 border-top-0">
-                                        <a
                                             href="{{ route('/sifat-sertificates/list', ['sort_by' => 'party_number', 'sort_order' => $sort_by === 'party_number' && $sort_order === 'asc' ? 'desc' : 'asc']) }}">
                                             {{ trans('app.Toʼda (partiya) raqami') }}
                                             @if ($sort_by === 'party_number')
@@ -241,10 +228,11 @@
                                             @endif
                                         </a>
                                     </th>
+                                    <th>Dublikat raqami</th>
                                     <th class="border-bottom-0 border-top-0">
                                         <a
                                             href="{{ route('/sifat-sertificates/list', ['sort_by' => 'date', 'sort_order' => $sort_by === 'date' && $sort_order === 'asc' ? 'desc' : 'asc']) }}">
-                                            {{ trans('app.Ariza sanasi') }}
+                                            Sana
                                             @if ($sort_by === 'date')
                                             @if ($sort_order === 'asc')
                                             <i class="fa fa-arrow-up"></i>
@@ -254,7 +242,6 @@
                                             @endif
                                         </a>
                                     </th>
-                                    <th class="border-bottom-0 border-top-0">{{ trans('app.Viloyat nomi') }}</th>
                                     <th class="border-bottom-0 border-top-0">
                                         <a
                                             href="{{ route('/sifat-sertificates/list', ['sort_by' => 'organization', 'sort_order' => $sort_by === 'organization' && $sort_order === 'asc' ? 'desc' : 'asc']) }}">
@@ -293,32 +280,13 @@
                                     <td> </td>
                                     <td>
                                         <form class="d-flex">
-                                            <input type="text" name="id[eq]" class="search-input form-control"
-                                                value="{{ isset($filterValues['id']) ? $filterValues['id'] : '' }}">
-                                        </form>
-                                    </td>
-                                    <td>
-                                        <form class="d-flex">
                                             <input type="text" name="partyNumber[lk]"
                                                 class="search-input form-control"
                                                 value="{{ isset($filterValues['partyNumber']) ? $filterValues['partyNumber'] : '' }}">
                                         </form>
                                     </td>
                                     <td></td>
-                                    <td>
-                                        <select class="w-100 form-control name_of_corn custom-select" name="stateId"
-                                            id="stateId">
-                                            <option value="" selected>Viloyat nomini tanlang</option>
-                                            @if (!empty($states))
-                                            @foreach ($states as $name)
-                                            <option value="{{ $name->id }}"
-                                                @if (isset($filterValues['stateId']) && $filterValues['stateId']==$name->id) selected @endif>
-                                                {{ $name->name }}
-                                            </option>
-                                            @endforeach
-                                            @endif
-                                        </select>
-                                    </td>
+                                    <td></td>
                                     <td>
                                         <select id="organization" class="form-control owner_search" name="organization">
                                             @if (!empty($organization))
@@ -360,11 +328,9 @@
                                 @foreach ($apps as $app)
                                 <tr>
                                     <td>{{ $offset + $loop->iteration }}</td>
-                                    <td> <a href="{!! url('/sifat-sertificates/view/' . $app->id) !!}">{{ $app->id }}</a></td>
                                     <td>{{ optional($app->crops)->party_number }}</td>
+                                    <td>{{ optional($app->crops)->party2 }}</td>
                                     <td> <a href="{!! url('/sifat-sertificates/view/' . $app->id) !!}">{{ $app->date }}</a></td>
-                                    <td> {{ optional(optional(optional($app->organization)->area)->region)->name }}
-                                    </td>
                                     <td><a href="#" class="company-link"
                                             data-id="{{ $app->organization_id }}">{{ optional($app->organization)->name }}</a>
                                     </td>

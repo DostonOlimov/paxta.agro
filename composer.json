@@ -9,6 +9,7 @@
         "ext-json": "*",
         "awobaz/compoships": "^2.2",
         "barryvdh/laravel-debugbar": "^3.7",
+        "barryvdh/laravel-dompdf": "^2.2",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "hisamu/php-xbase": "^2.1",

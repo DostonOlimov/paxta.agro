@@ -4,32 +4,19 @@
     .invoice-cheque {
         width: 100% !important;
         margin: 0 auto;
-        font-size: 14px;
+        font-size: 16px;
     }
 
     .small_notes{
-        font-size: 10px;
+        font-size: 12px;
         display: block;
         padding: 0 !important;
         margin: 0 !important;
     }
-
-    .header__tasdiqlayman {
-        position: absolute;
-        top: 0;
-        right: 0;
-        text-align: center;
-        width: 40% !important;
-    }
-
-    .header__tasdiqlayman h2 {
-        font-size: 14px;
-        font-weight: bold;
-    }
-
     .header__title {
+        font-size: 18px;
         text-align: center;
-        margin-top: 100px;
+        margin-top: 10px;
         text-transform: uppercase;
     }
 
@@ -38,16 +25,21 @@
         justify-content: center;
         margin: 0 auto;
         text-align: center;
-        font-size: 13px;
+        font-size: 16px;
         max-width: 90%;
         line-height: 1.2;
     }
+    .header__tasdiqlayman h2 {
+        font-size: 16px;
+        font-weight: bold;
+    }
+
     .main__intro {
         display: flex;
         justify-content: center;
         margin: 0 auto;
         text-align: left;
-        font-size: 14px;
+        font-size: 16px;
         max-width: 100%;
         line-height: 1.2;
     }
@@ -55,7 +47,7 @@
     h1 {
         line-height: 1;
         text-align: center;
-        font-size: 14px;
+        font-size: 16px;
         font-weight: bold;
     }
 
@@ -82,9 +74,56 @@
     }
 
     table td {
-        font-size: 10px;
+        font-size: 14px;
     }
 
+    .container {
+        display: flex;
+        justify-content: center; /* Horizontal centering */
+        align-items: center;     /* Vertical centering */
+        height: 100vh;           /* Full viewport height or adjust accordingly */
+    }
+
+    img {
+        max-width: 100%;         /* Optional: To make sure the image is responsive */
+        height: auto;
+    }
+    .row {
+        display: flex;
+        justify-content: space-between; /* Ensure even spacing between columns */
+        align-items: flex-start; /* Align the content at the top */
+        margin-bottom: 20px; /* Add space between rows */
+    }
+
+    .col-sm-6, .col-sm-2, .col-sm-4 {
+        padding: 10px; /* Add padding to columns */
+    }
+
+    .col-sm-6 {
+        font-size: 16px;
+        line-height: 1.5; /* Ensure good readability */
+    }
+
+    .col-sm-4 {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end; /* Align content at the bottom */
+        align-items: center; /* Center the QR code */
+        padding: 10px;
+    }
+
+    .text-center img {
+        max-width: 100px; /* Restrict QR code width */
+        margin-top: auto; /* Push the QR code to the bottom of the div */
+    }
+
+    @media (max-width: 768px) {
+        .col-md-6 {
+            flex: 0 0 100%;
+            max-width: 100%;
+            text-align: center; /* Align text to center on small screens */
+        }
+    }
     /* QR code styling */
     /* .qr-code {
         text-align: center;
@@ -123,212 +162,109 @@
 </style>
 @endsection
 @section('content')
+    @php
+        use SimpleSoftwareIO\QrCode\Facades\QrCode;
+    @endphp
 <body>
+<div id="invoice-cheque" class="py-4 col-12 invoice-cheque ">
+    <div class="container">
+        <img  height="200" src="{{ asset('/img/dashboard/gerb.png') }}" alt="image">
+    </div>
+    <h2 class="header__title">O’zbekiston Respublikasi Qishloq xo’jaligi vazirligi huzuridagi Agrosanoat majmui ustidan nazorat qilish<br>
+        Inspeksiyasi  qoshidagi “Qishloq xo‘jaligi mahsulotlari sifatini baholash markazi” davlat muassasasi</h2>
 
-    <div class="invoice-cheque">
-        <div class="header_right">
-            <div class="col-sm-4"></div>
-            <div class="col-sm-4" style="display: flex; flex-direction: column; justify-content: end;">
-                <div> {!! $qrCode !!}</div>
+    <h1  class="header__intro" style="font-weight: bold;">SIFAT SERTIFIKATI</h1>
+    <h2 class="header__intro" style="font-weight: bold;">Reestr raqami: 01024001</h2>
+    <h2 class="main__intro">Sertifikatlanuvchi mahsulot nom(kod tnved)i : {{$test->crops->name->name}} - {{$test->crops->name->kodtnved}}</h2>
+
+    <h2 class="main__intro">Berilgan sana : {{ $formattedDate }}</h2>
+
+    <h2 class="main__intro text-left">Ishlab chiqaruvchi: {{ $test->organization->name }}</h2>
+    <h2 class="main__intro text-left">Ishlab chiqaruvchi manzili: {{ $test->organization->full_address }}</h2>
+
+    <div style="display: flex !important; justify-content: space-between !important;">
+        <h2 class="header__intro" style="display: inline;">To'da raqami - {{$test->crops->party_number}}</h2>
+        <h2 class="header__intro" style="display: inline;">Dublikat raqami - {{$test->crops->party2}}</h2>
+    </div>
+    <h2 class="main__intro text-left">Ishlab chiqaruvchi (etkazib
+        beruvchi) nomi va kodi:  &nbsp;&nbsp; {{$test->prepared->name}} - {{$test->prepared->kod}}&nbsp;&nbsp;&nbsp;&nbsp; paxta tozalash korxonasi </h2>
+    <h2 class="main__intro text-left"> Xaridor nomi:&nbsp;&nbsp;  {{$test->client_data->client->name}} &nbsp; yog‘-moy korxonasi </h2>
+    <div style="display: flex !important;  justify-content: space-between !important;">
+        <h2 class="header__intro" style="display: inline;">Avtotransport/ vagon raqami:  {{$test->client_data->vagon_number}}</h2>
+        <h2 class="header__intro" style="display: inline;">Yuk xati: {{ $test->client_data->yuk_xati }}</h2>
+    </div>
+
+    <h3 class="header__intro text-center" style="margin-top: 15px;"> ISHLAB CHIQARUVCHI (ETKAZIB BERUVCHI) NING MA’LUMOTLARI</h3>
+    <table class="table table-bordered" >
+        <thead>
+        <tr>
+            <th>Texnik chigit turi (jinlangan/linterlangan)</th>
+            <th>Seleksiya navi</th>
+            <th>Netto massasi (kg)</th>
+            <th>Konditsion massasi (kg)</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{ $test->crops->name->name }}</td>
+            <td>{{ optional($test->crops->selection)->name }}</td>
+            <td>{{ $test->crops->amount }}</td>
+            <td>{{ round ($test->crops->amount * (100 - $namlik - $zararkunanda) / (100 - 10 - 0.5)) }}</td>
+        </tr>
+        </tbody>
+    </table>
+    <h3 class="header__intro text-center" style="margin-top: 15px;"> IJROCHINING MA’LUMOTLARI</h3>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th rowspan="2">Navi/ sinfi</th>
+            <th colspan="2">O’zDSt 597:2008 Nuqsonli chigitning massaviy ulushi (%)</th>
+            <th colspan="2">O’zDSt 599:2008 Mineral va organik aralashmalarning massaviy ulushi (%)</th>
+            <th colspan="2">O’zDSt 601:2008 Tukdorlikning massaviy  ulushi (%)</th>
+            <th colspan="2">O’zDSt 600:2008 Namlikning massaviy  ulushi (%)</th>
+        </tr>
+        <tr>
+            <th>Me'yorda</th>
+            <th>Amalda</th>
+            <th>Me'yorda</th>
+            <th>Amalda</th>
+            <th>Me'yorda</th>
+            <th>Amalda</th>
+            <th>Me'yorda</th>
+            <th>Amalda</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{ $tip->nav }} / {{ $tip->sinf }}</td>
+            <td>{{ number_format( $tip->nuqsondorlik, 1, '.', '.') }}</td>
+            <td>{{ number_format( $nuqsondorlik, 1, '.', '.') }}</td>
+            <td> - </td>
+            <td>{{ number_format( $zararkunanda, 1, '.', '.') }}</td>
+            <td>{{ number_format( $tip->tukdorlik, 1, '.', '.') }}</td>
+            <td>{{ number_format( $tukdorlik, 1, '.', '.') }}</td>
+            <td>{{ number_format( $tip->namlik, 1, '.', '.') }}</td>
+            <td>{{ number_format( $namlik, 1, '.', '.') }}</td>
+        </tr>
+        </tbody>
+    </table>
+    <h3 class="small_notes"> Izoh: To‘da quyidagi ko‘rsatkichlari bo‘yicha O’z DSt 596 talablariga muvofiq keladi.</h3>
+    <div class="row">
+        <div class="col-sm-6">
+        <span style="padding: 5px; display: block;">
+            {{ optional($test->user->zavod)->region->name }}<br>
+            {{ optional(optional($test->user->zavod)->chigit_laboratory)->name }}<br>
+            guruh rahbari
+            {{ $test->user->lastname . ' ' . ($test->user->name) }}
+        </span>
+        </div>
+        <div class="col-sm-4">
+            <div class="text-center">
+                <img src="data:image/png;base64,{{ $qrCode }}" alt="QR Code">
             </div>
-
-            <div class="header__tasdiqlayman">
-                <span class="small_notes">ПСК 04:2024 1/1</span>
-                @php $director = $test->laboratory_results->result_users->where('status', 1)->first(); @endphp
-                <h2>
-                     «T A S D I Q L A Y M A N»<br> “Qishloq xo‘jaligi ekinlari urug‘lari va ko‘chatlarining ekinbopligini, GMO va
-                        havfsizligini aniqlash markaziy
-                        laboratoriyasi” boshlig‘i
-                        <span style="padding: 3px; display: block">
-                            @if ($director)
-                                {{ substr($director->users->name, 0, 1) }}. {{ $director->users->lastname }}.
-                            @else
-                                U.Xasanov.
-                            @endif
-                             {{ $formattedDate }} yil
-                        </span>
-                </h2>
-            </div>
-        </div><br>
-
-        <h1 style="padding-top: 30px" class="header__title">EKILADIGAN URUG‘LARNI SIFAT KO‘RSATKICHLARI TO‘G‘RISIDA</h1>
-        <h1 style="line-height: 0.8; margin-top: -2px; margin-bottom: 3px;">{{ optional($test->laboratory_results)->number }} - sonli SINOV BAYONNOMA</h1>
-        <div>
-            <h2 class="header__intro" style="font-weight: bold;">
-              “Qishloq xo'jaligi mahsulotlari sifatini baholash markazi” davlat muassasasi.<br>
-                "Qishloq xo‘jaligi ekinlari urug‘lari va
-                ko‘chatlarining ekinbopligini, GMO va
-                xavfsizligini aniqlash markaziy
-                laboratoriyasi".<br>
-                Toshkent viloyati, Qibray tumani,Bobur MFY, Bobur ko‘chasi 1-uy. tel: (91) 111-49-93.
-                urugsert@agroxizmat.uz Akkreditatsiya guvohnomasi O'ZAK.SL.0271.
-            </h2>
-            <h2 class="main__intro">Namunalar Markaziy laboratoriyaga Sertifikatlashtirish idorasi tomonidan {{ $start_date }} yilda <br>
-                <span style="text-decoration: underline;"> № {{ $test->number }}/1 @if ($test->count > 1) - {{ $test->number }}/{{ $test->count }}
-                @endif </span> -sonli raqamlar bilan kodlangan holda urug'lik
-                {{ $test->application->crops->name->name }} namunalari taqdim etilgan.
-            </h2>
-            <h2 class="main__intro">Urug'lik me'yoriy hujjati: <span
-                    style="text-decoration: underline; ">{{ $nds_type }}
-                    {{ $test->application->crops->name->nds->number }}&nbsp;{{ $test->application->crops->name->nds->name }}.</span>
-            </h2>
-            <h2 class="main__intro"> Namuna ro'yxatga oligan raqam(lar):
-                <span  style="text-decoration: underline; ">
-                {{ $test->laboratory_numbers->first()->number }} @if ($test->count > 1)
-                    - {{ $test->laboratory_numbers->last()->number }}
-                @endif. Namuna og'irligi :
-                {{ number_format($test->count * $test->weight, 1, '.', '.') }}
-                {{ \App\Models\CropData::getMeasureType($test->measure_type) }}.
-                </span>
-            </h2>
-            <h2 class="main__intro">Mahsulot to'g'risida ma'lumot :
-                <span style="text-decoration: underline;">
-                     @if ($test->application->crops->pre_name == 'tuksiz')
-                        tuksizlantirilgan
-                    @else
-                        {{ $test->application->crops->pre_name }}
-                    @endif urug'lik {{ $test->application->crops->name->name }}
-                    {{ $test->application->crops->year }} - hosilidan tayyorlangan.
-                </span>
-            </h2>
-            <h2 class="main__intro">Sinov o'tkazish maqsadi: sertifikatlash. Subpodryad
-                bo'yicha
-                o'tkazilgan sinovlar :   <span style="text-decoration: underline;"> yo'q.</span></h2>
-            <h2 class="main__intro">Sinov o'tkazish sharoiti :  harorati -   <span style="text-decoration: underline;">
-                    {{ $test->laboratory_results->harorat }} °C </span> va nisbiy namligi -   <span style="text-decoration: underline;">
-                    {{ $test->laboratory_results->namlik }} %.</span>
-            </h2>
-            <h1>{{ $nds_type }} {{ $test->application->crops->name->nds->number }} bo'yicha SINOV NATIJALARI:</h1>
-            @php $t = 1; @endphp
-            <table class="align-middle " style="border: 1px solid black; text-align: center;">
-                <tr style=" height: 40px;">
-                    <th style="font-weight: bold; font-size: 10px; width: 15px;">T\r</th>
-                    <th style="font-weight: bold; font-size: 10px;">Ekish sifat ko'rsatkichlari</th>
-                    <th style="font-weight: bold; font-size: 10px; width: 90px;">Sinov usullarining me'yoriy hujjatlari</th>
-                    <th style="font-weight: bold; font-size: 10px; width: 120px;">MH bo'yicha me'yorlar</th>
-                    <th style="font-weight: bold; font-size: 10px;">Sinov natijasi /U</th>
-                    <th style="font-weight: bold; font-size: 10px;">Ko'rsatkichlar muvofiqligi</th>
-                </tr>
-                @foreach ($indicators as $k => $indicator)
-                    <tr>
-                        <td style="font-weight: bold">
-                            @if (!$indicator->indicator->parent_id)
-                                {{ $t }}
-                            @endif
-                        </td>
-                        <td style="text-align: left;font-weight: bold;">
-                            {{ $indicator->indicator->name }}
-                        </td>
-                        <td>{!! nl2br($indicator->indicator->nd_name) !!}</td>
-                        <td>
-                            @if ($indicator->indicator->nd_name)
-                                @php
-                                    if (
-                                    $indicator->indicator->id == 75 and
-                                    $test->application->crops->pre_name == 'tuksiz'
-                                    ) {
-                                    $default = 0.3;
-                                    } else {
-                                    $addition_value = $indicator->indicator
-                                    ->default_value()
-                                    ->where('generation_id', $test->application->crops->generation_id)
-                                    ->first();
-                                    if ($addition_value) {
-                                    $default = $addition_value->value;
-                                    } else {
-                                    $default = $indicator->indicator->default_value;
-                                    }
-                                    }
-                                @endphp
-                                @if ($default != 0)
-                                    @if ($indicator->indicator->measure_type == 1)
-                                        kamida,
-                                    @elseif ($indicator->indicator->measure_type == 2)
-                                        ko'pi bilan,
-                                    @elseif ($indicator->indicator->measure_type == 3)
-                                    @endif
-                                @endif
-
-                                @if (!is_string($default))
-                                    {{ number_format((float) $default, $indicator->indicator->round_type, ',', '.') }}
-                                @else
-                                    {{ $default }}
-                                @endif
-                            @endif
-                        </td>
-                        <td>
-
-                            @if ($indicator->indicator->nd_name)
-                                @if ($indicator->result != 0)
-                                    {{ number_format($indicator->result, $indicator->indicator->round_type, ',', '.') }}
-                                @else
-                                    {{ 'uchramadi' }}
-                                @endif
-                            @endif
-                        </td>
-                        <td>
-                            @if ($indicator->indicator->nd_name)
-                                {{ $indicator->type == 1 ? 'Muvofiq' : 'Nomuvofiq' }}
-                            @endif
-                        </td>
-                    </tr>
-                    @if (!$indicator->indicator->parent_id)
-                        @php $t=$t+1; @endphp
-                    @endif
-                @endforeach
-            </table>
-            <h2 class="header__intro" style="padding-top: 1px; font-size: 11px;"><span style="font-weight: 700">Sinov o'tkazilgan muddat :</span>
-                {{ $start_date }} dan {{ $end_date }} gacha
-            </h2>
-            <h2 class="header__intro" style="text-align: start !important; font-size: 11px; margin-top: 6px;"><span style="font-weight: 700">Qo'shimcha ma'lumotlar: </span>Mazkur
-                urug'lik {{ $test->application->crops->name->name }} partiyasining avlodi sinov dasturiga
-                muvofiq {{ $test->application->crops->generation->name }} reproduksiyaga mansub.<br>
-
-            </h2>
-            <h2 class="header__intro" style="margin-top: 6px;">Ushbu urug'lik {{ $test->application->crops->name->name }}
-                {{ $test->application->crops->pre_name }} @if ($test->application->crops->pre_name)
-                    holda
-                @endif
-                @foreach ($production_type as $type)
-                    @if ($type->type_id == 8)
-                        {{ optional($type->type)->name }}.
-                    @endif
-                @endforeach
-                @if ($amount_nds)
-                    1000 dona vazni o'rtacha ({{ $amount_nds->nd_name }}) <span
-                        style="font-weight: 700">{{ $test->indicators->first()->result }} gr</span>. ni tashkil
-                    etadi.
-            </h2>
-            @endif
-            <h2 class="header__intro" style="margin-bottom: 6px;">Sinov natijalari bo'yicha qaror qabul qilish uchun asos Muvofiqlik xulosasi
-                №{{ optional($test->laboratory_results)->number }}, o'lchovlarning noaniqligi (U)
-                buyurtmachining talabiga asosan ko'rsatiladi.</h2>
-            <h2 class="header__intro" style="font-weight: 700; font-size: 11px;">Xulosa : <span style="text-decoration: underline;">{{ $test->laboratory_results->data }}</span></h2>
-            <h4 class="header__intro" style="font-weight: normal;">Natijalar sinovdan o'tkazilgan na'munalarga tegishli.</h4>
-            <div style="display: flex !important; margin: 55px 0; justify-content: space-between !important;">
-                @php $muhandis = $test->laboratory_results->result_users->where('status', 2)->first(); @endphp
-                @if ($muhandis)
-                    <h2 class="header__intro" style="font-weight: bold; font-size: 12px !important; display: inline;">Sinov muxandisi: {{ substr($muhandis->users->name, 0, 1) }}.
-                        {{ $muhandis->users->lastname }} {!! QrCode::size(50)->generate(route('show.user', $muhandis->users->id)) !!}
-                    </h2>
-                @else
-                    <h2 class="header__intro" style="font-weight: bold; font-size: 12px !important; display: inline;"> Sinov muxandisi: U.Quziyev{!! QrCode::size(50)->generate(route('show.user', 55)) !!}</h2>
-                @endif
-                <h2 class="header__intro" style="font-weight: bold; font-size: 12px !important; display: inline; float: right;">Bosh mutaxassis
-                    {{ substr($test->laboratory_results->users->name, 1, 1) == 'h' ? substr(optional($test->laboratory_results->users)->name, 0, 2) : substr(optional($test->laboratory_results->users)->name, 0, 1) }}.
-                    {{ optional($test->laboratory_results->users)->lastname }} {!! QrCode::size(50)->generate(route('show.user', $test->laboratory_results->users->id)) !!}
-                </h2>
-            </div>
-            <h2 class="header__intro">Sinov mutaxassislar: </h2>
-            <div style="display: flex;">
-                @foreach ($test->laboratory_results->result_users->where('status', 3) as $key => $result_user)
-                    <h2 style="margin-right: 2%; display:inline-block">{{ ++$key }}.
-                            {{ substr($result_user->users->name, 1, 1) == 'h' ? substr($result_user->users->name, 0, 2) : substr($result_user->users->name, 0, 1) }}.
-                            {{ optional($result_user->users)->lastname }} {!! QrCode::size(50)->generate(route('show.user', $result_user->users->id)) !!}</h2>
-                @endforeach
-            </div>
-            <h4 style="text-align: center; margin-top: 10px;">Sinov bayonnomasi yakuni.</h4>
         </div>
     </div>
+</div>
+
 </body>
 @endsection

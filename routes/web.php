@@ -247,6 +247,11 @@ Route::group(['prefix' => 'sifat-sertificates'], function () {
     Route::get('/view/{id}', '\App\Http\Controllers\SifatSertificateController@showapplication')->name('sifat_sertificate.view');
     Route::get('/list/delete/{id}', ['as' => '/sifat-sertificates/list/delete/{id}', 'uses' => '\App\Http\Controllers\SifatSertificateController@destory']);
     Route::get('/accept/{id}', ['as' => '/sifat-sertificates/accept', 'uses' => '\App\Http\Controllers\SifatSertificateController@accept']);
+
+    Route::get('/client-edit/{id}', [ 'uses' => '\App\Http\Controllers\SifatSertificateController@clientEdit']);
+    Route::post('/client-update', '\App\Http\Controllers\SifatSertificateController@clientUpdate')->name('sifat_sertificate/client_update');
+    Route::get('/result-edit/{id}', [ 'uses' => '\App\Http\Controllers\SifatSertificateController@resultEdit']);
+    Route::post('/result-update', '\App\Http\Controllers\SifatSertificateController@resultUpdate')->name('sifat_sertificate/result_update');
 });
 //Decision
     Route::group(['prefix' => 'decision', 'middleware' => 'auth'], function () {

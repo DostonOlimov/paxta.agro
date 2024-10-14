@@ -11,9 +11,9 @@
 
     <h1 class="text-center"><b>SIFAT SERTIFIKATI</b></h1>
     <h2 class="text-center">Reestr raqami: 01024001</h2>
-    <h2 class="text-center">{{$test->crops->name->name}} - {{$test->crops->name->kodtnved}}</h2>
+    <h2 class="text-left">Sertifikatlanuvchi mahsulot nom(kod tnved)i : {{$test->crops->name->name}} - {{$test->crops->name->kodtnved}}</h2>
 
-    <h2 class="text-left">Berilgan sana : <span style="padding: 5px;" id="application-date"></span> yil</h2>
+    <h2 class="text-left">Berilgan sana : {{ $formattedDate }} yil</h2>
 
     <h2 class="text-left">Ishlab chiqaruvchi: {{ $test->organization->name }}</h2>
     <h2 class="text-left">Ishlab chiqaruvchi manzili: {{ $test->organization->full_address }}</h2>

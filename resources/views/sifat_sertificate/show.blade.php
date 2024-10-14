@@ -25,14 +25,37 @@
             <div class="page-header">
                 <h4 class="page-title mb-0" style="color:white">Sifat sertifikati</h4>
             </div>
+
+            <div class="panel panel-primary">
+                <div class="tab_wrapper page-tab">
+                    <ul class="tab_list">
+                        <li class="btn-warning">
+                            <a class="text-light" href="{{  url()->previous() }}">
+                                <span class="visible-xs"></span>
+                                <i class="fa fa-arrow-left">&nbsp;</i> {{trans('app.Orqaga')}}
+                            </a>
+                        </li>
+                        <li class="btn-primary">
+                            <a class="text-light" href="{!! url('/sifat-sertificates/edit/'.$test->id)!!}">
+                                <span class="visible-xs"></span>
+                                <i class="fa fa-edit fa-lg">&nbsp;</i> {{ trans('app.Edit')}}
+                            </a>
+                        </li>
+                            <li class="btn-success">
+                                <a class="text-light sa-warning" url="{!! url('/sifat-sertificates/accept/'.$test->id)!!}">
+                                    <span class="visible-xs"></span>
+                                    <i class="fa fa-check fa-lg">&nbsp;</i> Tasdiqlash
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-12">
                     <div class="card p-4">
+
                         @include('sifat_sertificate._cheque')
-                        <div class="py-3">
-                            <a href="{{ url()->previous() }}" class="btn btn-primary">ortga</a>
-                            <button class="btn btn-primary" id="print-invoice-btn">Chop etish</button>
-                        </div>
+
                     </div>
                 </div>
             </div>
@@ -51,6 +74,29 @@
 @endsection
 
 @section('scripts')
+    <script src="{{ URL::asset('vendors/jquery/dist/jquery.min.js') }}"></script>
+    <script>
+        $('body').on('click', '.sa-warning', function() {
+
+            var url =$(this).attr('url');
+
+
+            swal({
+                title: "Haqiqatdan ham tasdiqlashni xohlaysizmi?",
+                text: "Tasdiqlangandan so'ng ma'lumotlarni o'zgartirib bo'lmaydi!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#297FCA",
+                confirmButtonText: "Tasdiqlash!",
+                cancelButtonText: "Bekor qilish",
+                closeOnConfirm: false
+            }).then((result) => {
+                window.location.href = url;
+
+            });
+        });
+
+    </script>
     <script>
         $(document).ready(function() {
             function fillCheque() {
