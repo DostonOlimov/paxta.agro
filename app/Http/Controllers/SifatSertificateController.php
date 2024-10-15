@@ -314,7 +314,9 @@ class SifatSertificateController extends Controller
 
 //        test->sifat_sertificate->zavod->region->series
         // Generate QR code
-        $qrCode = base64_encode(QrCode::format('png')->size(100)->generate(route('sifat_sertificate.download', $id)));
+        // $qrCode = base64_encode(QrCode::format('png')->size(100)->generate(route('sifat_sertificate.download', $id)));
+        $qrCode = null;
+
 
         // Fetch values and tip
         $chigitValues = $this->getChigitValuesAndTip($test);
