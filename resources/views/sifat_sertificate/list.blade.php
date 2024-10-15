@@ -337,10 +337,16 @@
                                     <td>{{ optional($app->crops->name)->name }}</td>
                                     <td>{{ optional($app->crops)->amount_name }}</td>
                                     <td style="display: flex; flex-wrap: nowrap;">
-                                        <a href="{!! url('/sifat-sertificates/view/' . $app->id) !!}"><button type="button"
-                                                class="btn btn-round btn-info">{{ trans('app.View') }}</button></a>
-                                        <a href="{!! url('/sifat-sertificates/edit/' . $app->id) !!}"><button type="button"
-                                                class="btn btn-round btn-success">{{ trans('app.Edit') }}</button></a>
+                                        @if(!$app->sifat_sertificate)
+                                            <a href="{!! url('/sifat-sertificates/view/' . $app->id) !!}"><button type="button"
+                                                    class="btn btn-round btn-info">{{ trans('app.View') }}</button></a>
+                                            <a href="{!! url('/sifat-sertificates/edit/' . $app->id) !!}"><button type="button"
+                                                    class="btn btn-round btn-success">{{ trans('app.Edit') }}</button></a>
+                                        @else
+                                            <a href="{{route('sertificate.download', ['id' => $app->sifat_sertificate->id])}}" class="text-azure">
+                                                <i class="fa fa-download"></i> Sertifikat fayli
+                                            </a>
+                                        @endif
                                     </td>
                                 </tr>
                                 @endforeach

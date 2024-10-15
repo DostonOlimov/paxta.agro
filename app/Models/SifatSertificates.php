@@ -26,7 +26,7 @@ class SifatSertificates  extends Model
 
     public function application(): BelongsTo
     {
-        return $this->belongsTo(FinalResult::class, 'app_id', 'id');
+        return $this->belongsTo(Application::class, 'app_id', 'id');
     }
 
 }

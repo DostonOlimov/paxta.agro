@@ -172,7 +172,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
                 <td>{{ $item->dalolatnoma->selection->kod }}</td>
                 <td>{{ optional($test->laboratory_result)->tip->name }}</td> {{-- - Tip - --}}
                 <td>{{ $item->sort }}</td>
-                <td>{{ $item->class }}</td>
+                <td>{{ optional(\App\Models\CropsGeneration::where('kod','=',$item->class)->first())->name  }}</td>
                 <td>{{  optional($test->laboratory_result)->tip->staple }}</td>
                 <td>{{ round($item->mic,1) }}</td>
                 <td>{{ round($item->strength,1) }}</td>

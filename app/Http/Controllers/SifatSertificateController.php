@@ -331,7 +331,12 @@ class SifatSertificateController extends Controller
         return redirect()->route('/sifat-sertificates/list')->with('message', 'Certificate generated and saved successfully.');
     }
 
+    public function download($id)
+    {
+        $attachment = SifatSertificates::findOrFail($id);
 
+        return response()->download(storage_path('app\sifat_setificates\certificate_' . $attachment->application->id));
+    }
 
 
 // Private method to avoid code duplication
