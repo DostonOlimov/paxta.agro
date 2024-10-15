@@ -253,7 +253,7 @@ Route::group(['prefix' => 'sifat-sertificates'], function () {
     Route::get('/result-edit/{id}', [ 'uses' => '\App\Http\Controllers\SifatSertificateController@resultEdit']);
     Route::post('/result-update', '\App\Http\Controllers\SifatSertificateController@resultUpdate')->name('sifat_sertificate/result_update');
 
-    Route::get('/sertificate/{id}/download', '\App\Http\Controllers\SifatSertificateController@download')->name('sertificate.download');
+    Route::get('/sertificate/{id}/download', '\App\Http\Controllers\SifatSertificateController@download')->name('sifat_sertificate.download');
 
 });
 //Decision

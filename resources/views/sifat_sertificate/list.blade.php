@@ -180,6 +180,15 @@
                 <label for="checkbox-10 colo_success"> {{ trans('app.Successfully Updated') }} </label>
                 @elseif(session('message') == 'Successfully Deleted')
                 <label for="checkbox-10 colo_success"> {{ trans('app.Successfully Deleted') }} </label>
+                @elseif(session('message') == 'Certificate saved!')
+                    <label for="checkbox-10 colo_success"> Sertifikat fayli saqlandi! Yuklab olishingiz mumkin. </label>
+                    <script>
+                        @php $generatedAppId = $_GET['from'] ?? 1; @endphp
+                        // Automatically trigger download after the page loads
+                        window.onload = function() {
+                            window.location.href = "{{ route('sifat_sertificate.download', $generatedAppId) }}";
+                        };
+                    </script>
                 @endif
             </div>
         </div>
@@ -343,8 +352,10 @@
                                             <a href="{!! url('/sifat-sertificates/edit/' . $app->id) !!}"><button type="button"
                                                     class="btn btn-round btn-success">{{ trans('app.Edit') }}</button></a>
                                         @else
-                                            <a href="{{route('sertificate.download', ['id' => $app->sifat_sertificate->id])}}" class="text-azure">
-                                                <i class="fa fa-download"></i> Sertifikat fayli
+                                            <a href="{{ route('sifat_sertificate.download', $app->id) }}" class="text-azure">
+                                                <button type="button"
+                                                        class="btn btn-round btn-info"> <i class="fa fa-download"></i> Sertifikat fayli</button>
+
                                             </a>
                                         @endif
                                     </td>

@@ -29,4 +29,9 @@ class SifatSertificates  extends Model
         return $this->belongsTo(Application::class, 'app_id', 'id');
     }
 
+    public function zavod(): BelongsTo
+    {
+        return $this->belongsTo(PreparedCompanies::class, 'zavod_id', 'id');
+    }
+
 }

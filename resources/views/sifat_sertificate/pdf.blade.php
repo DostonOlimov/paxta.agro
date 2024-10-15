@@ -8,7 +8,7 @@
     }
 
     .small_notes{
-        font-size: 12px;
+        font-size: 14px;
         display: block;
         padding: 0 !important;
         margin: 0 !important;
@@ -86,7 +86,7 @@
 
     img {
         max-width: 100%;         /* Optional: To make sure the image is responsive */
-        height: auto;
+        height: 150px;
     }
     .row {
         display: flex;
@@ -168,30 +168,28 @@
 <body>
 <div id="invoice-cheque" class="py-4 col-12 invoice-cheque ">
     <div class="container">
-        <img  height="200" src="{{ asset('/img/dashboard/gerb.png') }}" alt="image">
+        <img src="{{ asset('/img/dashboard/gerb.png') }}" alt="image">
     </div>
-    <h2 class="header__title">O’zbekiston Respublikasi Qishloq xo’jaligi vazirligi huzuridagi Agrosanoat majmui ustidan nazorat qilish<br>
-        Inspeksiyasi  qoshidagi “Qishloq xo‘jaligi mahsulotlari sifatini baholash markazi” davlat muassasasi</h2>
+    <h2 class="header__title">O’zbekiston Respublikasi Qishloq xo’jaligi vazirligi huzuridagi <br> Agrosanoat majmui ustidan nazorat qilish
+        Inspeksiyasi  qoshidagi <br> “Qishloq xo‘jaligi mahsulotlari sifatini baholash markazi” <br> davlat muassasasi</h2>
 
     <h1  class="header__intro" style="font-weight: bold;">SIFAT SERTIFIKATI</h1>
-    <h2 class="header__intro" style="font-weight: bold;">Reestr raqami: 01024001</h2>
-    <h2 class="main__intro">Sertifikatlanuvchi mahsulot nom(kod tnved)i : {{$test->crops->name->name}} - {{$test->crops->name->kodtnved}}</h2>
+    <h2 class="header__intro" style="font-weight: bold;">Reestr raqami:  {{ $sert_number }}</h2>
+    <h2 class="main__intro"><b>Sertifikatlanuvchi mahsulot nomi :</b> {{$test->crops->name->name}} </h2>
+    <h2 class="main__intro"><b>KOD TN VED :</b> {{$test->crops->name->kodtnved}}</h2>
 
-    <h2 class="main__intro">Berilgan sana : {{ $formattedDate }}</h2>
+    <h2 class="main__intro"><b>Berilgan sana :</b> {{ $formattedDate }} - yil</h2>
 
-    <h2 class="main__intro text-left">Ishlab chiqaruvchi: {{ $test->organization->name }}</h2>
-    <h2 class="main__intro text-left">Ishlab chiqaruvchi manzili: {{ $test->organization->full_address }}</h2>
+    <h2 class="main__intro text-left"><b>Ishlab chiqaruvchi (yetkazib beruvchi)  nomi : </b> {{ $test->organization->name }}</h2>
+    <h2 class="main__intro text-left"><b>Ishlab chiqaruvchi (yetkazib beruvchi) manzili : </b>  {{ $test->organization->full_address }}</h2>
 
-    <div style="display: flex !important; justify-content: space-between !important;">
-        <h2 class="header__intro" style="display: inline;">To'da raqami - {{$test->crops->party_number}}</h2>
-        <h2 class="header__intro" style="display: inline;">Dublikat raqami - {{$test->crops->party2}}</h2>
-    </div>
-    <h2 class="main__intro text-left">Ishlab chiqaruvchi (etkazib
-        beruvchi) nomi va kodi:  &nbsp;&nbsp; {{$test->prepared->name}} - {{$test->prepared->kod}}&nbsp;&nbsp;&nbsp;&nbsp; paxta tozalash korxonasi </h2>
-    <h2 class="main__intro text-left"> Xaridor nomi:&nbsp;&nbsp;  {{$test->client_data->client->name}} &nbsp; yog‘-moy korxonasi </h2>
+    <h2 class="header__intro" style="display: inline;"><b>Texnik chigit to'da raqami : </b> {{$test->crops->party_number}}</h2>
+
+
+    <h2 class="main__intro text-left"> <b>Xaridor (yog‘-moy korxonasi) nomi:&nbsp;</b>&nbsp;  {{$test->client_data->client->name}} &nbsp;  </h2>
     <div style="display: flex !important;  justify-content: space-between !important;">
-        <h2 class="header__intro" style="display: inline;">Avtotransport/ vagon raqami:  {{$test->client_data->vagon_number}}</h2>
-        <h2 class="header__intro" style="display: inline;">Yuk xati: {{ $test->client_data->yuk_xati }}</h2>
+        <h2 class="header__intro" style="display: inline;"><b>Avtotransport/ vagon raqami: </b> {{$test->client_data->vagon_number}}</h2>
+        <h2 class="header__intro" style="display: inline;"><b> Yuk xati raqami : </b>{{ $test->client_data->yuk_xati }}</h2>
     </div>
 
     <h3 class="header__intro text-center" style="margin-top: 15px;"> ISHLAB CHIQARUVCHI (ETKAZIB BERUVCHI) NING MA’LUMOTLARI</h3>
@@ -218,20 +216,20 @@
         <thead>
         <tr>
             <th rowspan="2">Navi/ sinfi</th>
-            <th colspan="2">O’zDSt 597:2008 Nuqsonli chigitning massaviy ulushi (%)</th>
-            <th colspan="2">O’zDSt 599:2008 Mineral va organik aralashmalarning massaviy ulushi (%)</th>
-            <th colspan="2">O’zDSt 601:2008 Tukdorlikning massaviy  ulushi (%)</th>
-            <th colspan="2">O’zDSt 600:2008 Namlikning massaviy  ulushi (%)</th>
+            <th colspan="2">O’zDSt 597 Nuqsonli chigitning massaviy ulushi (%)</th>
+            <th colspan="2">O’zDSt 599 Mineral va organik aralashmalarning massaviy ulushi (%)</th>
+            <th colspan="2">O’zDSt 601 Tukdorlikning massaviy  ulushi (%)</th>
+            <th colspan="2">O’zDSt 600 Namlikning massaviy  ulushi (%)</th>
         </tr>
         <tr>
-            <th>Me'yorda</th>
-            <th>Amalda</th>
-            <th>Me'yorda</th>
-            <th>Amalda</th>
-            <th>Me'yorda</th>
-            <th>Amalda</th>
-            <th>Me'yorda</th>
-            <th>Amalda</th>
+            <td>Me'yor</td>
+            <td>Amalda</td>
+            <td>Me'yor</td>
+            <td>Amalda</td>
+            <td>Me'yor</td>
+            <td>Amalda</td>
+            <td>Me'yor</td>
+            <td>Amalda</td>
         </tr>
         </thead>
         <tbody>
@@ -248,14 +246,15 @@
         </tr>
         </tbody>
     </table>
-    <h3 class="small_notes"> Izoh: To‘da quyidagi ko‘rsatkichlari bo‘yicha O’z DSt 596 talablariga muvofiq keladi.</h3>
+    <h3 class="small_notes"> To‘da yuqoridagi ko‘rsatkichlari bo‘yicha O’z DSt 596 standartining 4.1, 4.2 bandlariga muvofiq.</h3>
     <div class="row">
         <div class="col-sm-6">
-        <span style="padding: 5px; display: block;">
-            {{ optional($test->user->zavod)->region->name }}<br>
+            <span style="padding: 5px; display: block;"><b>Ijrochi :</b>
+            {{ optional($test->user->zavod)->region->name }} filialining<br>
             {{ optional(optional($test->user->zavod)->chigit_laboratory)->name }}<br>
-            guruh rahbari
+            mudiri-guruh rahbari :
             {{ $test->user->lastname . ' ' . ($test->user->name) }}
+
         </span>
         </div>
         <div class="col-sm-4">

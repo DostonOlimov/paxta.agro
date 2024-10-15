@@ -286,25 +286,22 @@ class SifatSertificateController extends Controller
     }
 
     //accept online applications
-//accept online applications
     public function accept($id)
     {
         $test = Application::findOrFail($id);
         $company = OrganizationCompanies::with('city')->findOrFail($test->organization_id);
-        //date format
+
+        // date format
         $formattedDate = formatUzbekDateInLatin($test->date);
         $currentYear = date('Y');
-
-        //create sifat sertificate
+        $sert_number = 0;
+        // create sifat certificate
         if (!$test->sifat_sertificate) {
-            //get zavod id from app created_by
             $zavod_id = $test->user->zavod_id;
-            // find last maximum number of sertificate
             $number = SifatSertificates::where('zavod_id', $zavod_id)
                 ->where('year', $currentYear)
                 ->max('number');
 
-            //save sertificate data
             $sertificate = new SifatSertificates();
             $sertificate->app_id = $id;
             $sertificate->number = $number ? $number + 1 : 1;
@@ -312,32 +309,39 @@ class SifatSertificateController extends Controller
             $sertificate->year = $currentYear;
             $sertificate->created_by = \auth()->user()->id;
             $sertificate->save();
+            $sert_number = ($sertificate->year - 2000) * 1000000 + ($sertificate->zavod->kod)*1000 + $sertificate->number;
         }
 
+//        test->sifat_sertificate->zavod->region->series
         // Generate QR code
-        $qrCode = base64_encode(QrCode::format('png')->size(100)->generate(route('sifat_sertificate.view', $id)));
+        $qrCode = base64_encode(QrCode::format('png')->size(100)->generate(route('sifat_sertificate.download', $id)));
 
         // Fetch values and tip
         $chigitValues = $this->getChigitValuesAndTip($test);
 
         // Load the view and pass data to it
-        $pdf = Pdf::loadView('sifat_sertificate.pdf', compact('test', 'formattedDate', 'company', 'qrCode') + $chigitValues);
-
-        // Option 1: Save the PDF to a file in 'public' or 'storage'
+        $pdf = Pdf::loadView('sifat_sertificate.pdf', compact('test', 'sert_number','formattedDate', 'company', 'qrCode') + $chigitValues);
+        return $pdf->stream('certificate_' . $id . '.pdf');
+        // Save the PDF file
         $filePath = storage_path('app/public/sifat_sertificates/certificate_' . $id . '.pdf');
         $pdf->save($filePath);
 
-        // Option 2: Redirect the user to the list page
-        return redirect()->route('/sifat-sertificates/list')->with('message', 'Certificate generated and saved successfully.');
+        // Redirect to list page with success message
+        return redirect()->route('/sifat-sertificates/list', ['generatedAppId' => $id])
+            ->with('message', 'Certificate saved!');
     }
+
 
     public function download($id)
     {
-        $attachment = SifatSertificates::findOrFail($id);
+        $filePath = storage_path('app/public/sifat_sertificates/certificate_' . $id . '.pdf');
 
-        return response()->download(storage_path('app\sifat_setificates\certificate_' . $attachment->application->id));
+        if (file_exists($filePath)) {
+            return response()->download($filePath);
+        } else {
+            return redirect()->back()->with('error', 'File not found.');
+        }
     }
-
 
 // Private method to avoid code duplication
     private function getChigitValuesAndTip($application)

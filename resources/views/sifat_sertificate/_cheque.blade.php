@@ -10,7 +10,7 @@
             Inspeksiyasi  qoshidagi “Qishloq xo‘jaligi mahsulotlari sifatini baholash markazi” davlat muassasasi</h2>
 
     <h1 class="text-center"><b>SIFAT SERTIFIKATI</b></h1>
-    <h2 class="text-center">Reestr raqami: 01024001</h2>
+    <h2 class="text-center">Reestr raqami: </h2>
     <h2 class="text-left">Sertifikatlanuvchi mahsulot nom(kod tnved)i : {{$test->crops->name->name}} - {{$test->crops->name->kodtnved}}</h2>
 
     <h2 class="text-left">Berilgan sana : {{ $formattedDate }} yil</h2>
@@ -54,19 +54,19 @@
         <thead>
         <tr>
             <th rowspan="2">Navi/ sinfi</th>
-            <th colspan="2">O’zDSt 597:2008 Nuqsonli chigitning massaviy ulushi (%)</th>
-            <th colspan="2">O’zDSt 599:2008 Mineral va organik aralashmalarning massaviy ulushi (%)</th>
-            <th colspan="2">O’zDSt 601:2008 Tukdorlikning massaviy  ulushi (%)</th>
-            <th colspan="2">O’zDSt 600:2008 Namlikning massaviy  ulushi (%)</th>
+            <th colspan="2">O’zDSt 597 Nuqsonli chigitning massaviy ulushi (%)</th>
+            <th colspan="2">O’zDSt 599 Mineral va organik aralashmalarning massaviy ulushi (%)</th>
+            <th colspan="2">O’zDSt 601 Tukdorlikning massaviy  ulushi (%)</th>
+            <th colspan="2">O’zDSt 600 Namlikning massaviy  ulushi (%)</th>
         </tr>
         <tr>
             <th>Me'yorda</th>
             <th>Amalda</th>
-            <th>Me'yorda</th>
+            <th>Me'yor</th>
             <th>Amalda</th>
-            <th>Me'yorda</th>
+            <th>Me'yor</th>
             <th>Amalda</th>
-            <th>Me'yorda</th>
+            <th>Me'yor</th>
             <th>Amalda</th>
         </tr>
         </thead>
@@ -95,9 +95,9 @@
 
         </div>
         <div class="col-sm-2"></div>
-        <div class="col-sm-4" style="display: flex; flex-direction: column; justify-content: end;">
-            <div class="text-center"> {!! $qrCode !!}</div>
-        </div>
+{{--        <div class="col-sm-4" style="display: flex; flex-direction: column; justify-content: end;">--}}
+{{--            <div class="text-center"> {!! $qrCode !!}</div>--}}
+{{--        </div>--}}
     </div>
     </div>
 
