@@ -118,17 +118,6 @@
                                 </div>
                                 <div class="table_row row">
                                     <div class="col-md-5 col-sm-12 table_td">
-                                        <b>Dublikat raqami</b>
-                                    </div>
-                                    <div class="col-md-7 col-sm-12 table_td">
-                                        <span class="txt_color">
-                                                {{ optional($data->crops)->party2 }}
-
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="table_row row">
-                                    <div class="col-md-5 col-sm-12 table_td">
                                         <b>Miqdori</b>
                                     </div>
                                     <div class="col-md-7 col-sm-12 table_td">

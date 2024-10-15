@@ -87,6 +87,7 @@
     img {
         max-width: 100%;         /* Optional: To make sure the image is responsive */
         height: 150px;
+        padding-left:120px;
     }
     .row {
         display: flex;
@@ -168,13 +169,13 @@
 <body>
 <div id="invoice-cheque" class="py-4 col-12 invoice-cheque ">
     <div class="container">
-        <img src="{{ asset('/img/dashboard/gerb.png') }}" alt="image">
+        <img src="{{ asset('/img/dashboard/t1.png') }}" alt="image">
     </div>
     <h2 class="header__title">O’zbekiston Respublikasi Qishloq xo’jaligi vazirligi huzuridagi <br> Agrosanoat majmui ustidan nazorat qilish
         Inspeksiyasi  qoshidagi <br> “Qishloq xo‘jaligi mahsulotlari sifatini baholash markazi” <br> davlat muassasasi</h2>
 
     <h1  class="header__intro" style="font-weight: bold;">SIFAT SERTIFIKATI</h1>
-    <h2 class="header__intro" style="font-weight: bold;">Reestr raqami:  {{ $sert_number }}</h2>
+    <h2 class="header__intro" style="font-weight: bold;">Reestr raqami: {{ $test->prepared->region->series }}{{ $sert_number }}</h2>
     <h2 class="main__intro"><b>Sertifikatlanuvchi mahsulot nomi :</b> {{$test->crops->name->name}} </h2>
     <h2 class="main__intro"><b>KOD TN VED :</b> {{$test->crops->name->kodtnved}}</h2>
 

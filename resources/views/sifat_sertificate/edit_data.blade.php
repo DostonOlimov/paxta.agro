@@ -91,15 +91,7 @@
                                 </span>
                                         @endif
                                     </div>
-                                    <div class="col-md-6 form-group has-feedback {{ $errors->has('party_number2') ? ' has-error' : '' }}">
-                                        <label for="middle-name" class="form-label">{{trans('app.Dublikat raqami')}} <label class="text-danger">*</label></label>
-                                        <input type="text" class="form-control" maxlength="25" name="party_number2" value="{{ $data->crops->party2 }}">
-                                        @if ($errors->has('party_number2'))
-                                            <span class="help-block">
-                                    <strong>Dublikat raqami noto'g'ri shaklda kiritilgan</strong>
-                                </span>
-                                        @endif
-                                    </div>
+
                                     <div class="col-md-6 form-group has-feedback {{ $errors->has('selection_code') ? ' has-error' : '' }}">
                                         <label for="number" class="form-label ">Seleksion navining kodi<label class="text-danger">*</label> </label>
                                         <select id="selection_code" class="form-control owner_search" name="selection_code" required>
@@ -116,7 +108,7 @@
                                 </span>
                                         @endif
                                     </div>
-                                    <div class="col-md-6 form-group has-feedback {{ $errors->has('amount') ? ' has-error' : '' }}">
+                                    <div class="col-md-12 form-group has-feedback {{ $errors->has('amount') ? ' has-error' : '' }}">
                                         <label for="middle-name" class="form-label">{{trans('app.amount2')}} <label class="text-danger">*</label></label>
                                         <input type="number" step="0.01" class="form-control" maxlength="25" value="{{ $data->crops->amount }}" name="amount">
                                         @if ($errors->has('amount'))

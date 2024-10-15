@@ -86,7 +86,6 @@ class SifatSertificateController extends Controller
             'country_id'    => 234,
             'kodtnved'      => $request->input('tnved'),
             'party_number'  => $request->input('party_number'),
-            'party2'  => $request->input('party_number2'),
             'measure_type'  => $request->input('measure_type'),
             'amount'        => $request->input('amount'),
             'selection_code' => $request->input('selection_code'),
@@ -216,7 +215,6 @@ class SifatSertificateController extends Controller
             'name' => 'required|string',
             'tnved' => 'nullable|string',
             'party_number' => 'nullable|string',
-            'party_number2' => 'nullable|string',
             'amount' => 'required|numeric',
             'selection_code' => 'nullable|string',
         ]);
@@ -230,7 +228,6 @@ class SifatSertificateController extends Controller
             'name_id' => $validatedData['name'],
             'kodtnved' => $validatedData['tnved'],
             'party_number' => $validatedData['party_number'],
-            'party2' => $validatedData['party_number2'],
             'amount' => $validatedData['amount'],
             'selection_code' => $validatedData['selection_code'],
         ]);
@@ -294,14 +291,12 @@ class SifatSertificateController extends Controller
         // date format
         $formattedDate = formatUzbekDateInLatin($test->date);
         $currentYear = date('Y');
-        $sert_number = 0;
+        $zavod_id = $test->user->zavod_id;
+        $number = SifatSertificates::where('zavod_id', $zavod_id)
+            ->where('year', $currentYear)
+            ->max('number');
         // create sifat certificate
         if (!$test->sifat_sertificate) {
-            $zavod_id = $test->user->zavod_id;
-            $number = SifatSertificates::where('zavod_id', $zavod_id)
-                ->where('year', $currentYear)
-                ->max('number');
-
             $sertificate = new SifatSertificates();
             $sertificate->app_id = $id;
             $sertificate->number = $number ? $number + 1 : 1;
@@ -309,8 +304,9 @@ class SifatSertificateController extends Controller
             $sertificate->year = $currentYear;
             $sertificate->created_by = \auth()->user()->id;
             $sertificate->save();
-            $sert_number = ($sertificate->year - 2000) * 1000000 + ($sertificate->zavod->kod)*1000 + $sertificate->number;
         }
+
+        $sert_number = ($currentYear - 2000) * 1000000 + ($test->prepared->kod)*1000 + $number;
 
 //        test->sifat_sertificate->zavod->region->series
         // Generate QR code
@@ -343,6 +339,50 @@ class SifatSertificateController extends Controller
         }
     }
 
+    //accept online applications
+    public function reject($id)
+    {
+        $test = Application::findOrFail($id);
+        $company = OrganizationCompanies::with('city')->findOrFail($test->organization_id);
+
+        // date format
+        $formattedDate = formatUzbekDateInLatin($test->date);
+        $currentYear = date('Y');
+        $zavod_id = $test->user->zavod_id;
+        $number = SifatSertificates::where('zavod_id', $zavod_id)
+            ->where('year', $currentYear)
+            ->max('number');
+        // create sifat certificate
+        if (!$test->sifat_sertificate) {
+            $sertificate = new SifatSertificates();
+            $sertificate->app_id = $id;
+            $sertificate->number = $number ? $number + 1 : 1;
+            $sertificate->zavod_id = $zavod_id;
+            $sertificate->year = $currentYear;
+            $sertificate->created_by = \auth()->user()->id;
+            $sertificate->save();
+        }
+
+        $sert_number = ($currentYear - 2000) * 1000000 + ($test->prepared->kod)*1000 + $number;
+
+//        test->sifat_sertificate->zavod->region->series
+        // Generate QR code
+        $qrCode = base64_encode(QrCode::format('png')->size(100)->generate(route('sifat_sertificate.download', $id)));
+
+        // Fetch values and tip
+        $chigitValues = $this->getChigitValuesAndTip($test);
+
+        // Load the view and pass data to it
+        $pdf = Pdf::loadView('sifat_sertificate.pdf2', compact('test', 'sert_number','formattedDate', 'company', 'qrCode') + $chigitValues);
+        return $pdf->stream('certificate_' . $id . '.pdf');
+        // Save the PDF file
+        $filePath = storage_path('app/public/sifat_sertificates/certificate_' . $id . '.pdf');
+        $pdf->save($filePath);
+
+        // Redirect to list page with success message
+        return redirect()->route('/sifat-sertificates/list', ['generatedAppId' => $id])
+            ->with('message', 'Certificate saved!');
+    }
 // Private method to avoid code duplication
     private function getChigitValuesAndTip($application)
     {
