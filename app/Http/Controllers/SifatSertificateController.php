@@ -308,7 +308,6 @@ class SifatSertificateController extends Controller
 
         $sert_number = ($currentYear - 2000) * 1000000 + ($test->prepared->kod)*1000 + $number;
 
-//        test->sifat_sertificate->zavod->region->series
         // Generate QR code
         $qrCode = base64_encode(QrCode::format('png')->size(100)->generate(route('sifat_sertificate.download', $id)));
 

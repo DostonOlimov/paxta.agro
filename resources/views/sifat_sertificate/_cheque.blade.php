@@ -94,9 +94,9 @@
         </span>
         </div>
         <div class="col-sm-2"></div>
-{{--        <div class="col-sm-4" style="display: flex; flex-direction: column; justify-content: end;">--}}
+<!-- {{--        <div class="col-sm-4" style="display: flex; flex-direction: column; justify-content: end;">--}}
 {{--            <div class="text-center"> {!! $qrCode !!}</div>--}}
-{{--        </div>--}}
+{{--        </div>--}} -->
     </div>
     </div>
 
