@@ -67,6 +67,25 @@ if (!function_exists('formatUzbekDate')) {
         return $date->isoFormat("D") . ' - ' . $uzbekMonthNames[$date->isoFormat("MM")] . ' ' . $date->isoFormat("Y");
     }
 }
+if (!function_exists('formatUzbekDateInLatin')) {
+    function formatUzbekDateInLatin($date)
+    {
+        $formattedDate = \Carbon\Carbon::parse($date)
+            ->setTimezone('Asia/Tashkent') // Set your desired timezone (e.g., Tashkent for Uzbekistan)
+            ->locale('uz')
+            ->translatedFormat('j F, Y');
+
+    // Replace Cyrillic month and period names with Latin equivalents
+        $formattedDate = str_replace(
+            ['январ', 'феврал', 'март', 'апрел', 'май', 'июн', 'июл', 'август', 'сентябр', 'октябр', 'ноябр', 'декабр', 'эрталаб', 'тушдан кейин'],
+            ['yanvar', 'fevral', 'mart', 'aprel', 'may', 'iyun', 'iyul', 'avgust', 'sentabr', 'oktabr', 'noyabr', 'dekabr', 'ertalab', 'tushdan keyin'],
+            $formattedDate
+        );
+
+       return $formattedDate;
+    }
+}
+
 
 if (!function_exists('isSmsablePhone')) {
     function isSmsablePhone($val): bool

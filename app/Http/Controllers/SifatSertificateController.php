@@ -8,10 +8,12 @@ use App\Models\Application;
 use App\Models\ChigitResult;
 use App\Models\ChigitTips;
 use App\Models\ClientData;
+use App\Models\Clients;
 use App\Models\CropData;
 use App\Models\CropsSelection;
 use App\Models\Indicator;
 use App\Models\OrganizationCompanies;
+use App\Models\SifatSertificates;
 use App\Services\SearchService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -172,17 +174,7 @@ class SifatSertificateController extends Controller
     {
         $test = Application::findOrFail($id);
         $company = OrganizationCompanies::with('city')->findOrFail($test->organization_id);
-        $formattedDate = \Carbon\Carbon::parse($test->date)
-            ->setTimezone('Asia/Tashkent') // Set your desired timezone (e.g., Tashkent for Uzbekistan)
-            ->locale('uz')
-            ->translatedFormat('j F, Y');
-
-        // Replace Cyrillic month and period names with Latin equivalents
-        $formattedDate2 = str_replace(
-            ['январ', 'феврал', 'март', 'апрел', 'май', 'июн', 'июл', 'август', 'сентябр', 'октябр', 'ноябр', 'декабр', 'эрталаб', 'тушдан кейин'],
-            ['yanvar', 'fevral', 'mart', 'aprel', 'may', 'iyun', 'iyul', 'avgust', 'sentabr', 'oktabr', 'noyabr', 'dekabr', 'ertalab', 'tushdan keyin'],
-            $formattedDate
-        );
+        $formattedDate = formatUzbekDateInLatin($test->date);
 
         // Generate QR code
         $url = route('sifat_sertificate.view', $id);
@@ -247,36 +239,98 @@ class SifatSertificateController extends Controller
         return redirect()->route('sifat_sertificate.edit', $id)->with('message', 'Successfully Submitted');
     }
 
+    //edit client data
+    public function clientEdit($id)
+    {
+        $data = ClientData::findOrFail($id);
+
+        $clients = Clients::get();
+
+        return view('sifat_sertificate.client_edit', compact('data','clients'));
+    }
+
+    public function clientUpdate (Request $request)
+    {
+
+        $id = $request->input('id');
+        $client = ClientData::findOrFail($id);
+        $client->client_id = $request->input('client');
+        $client->vagon_number = $request->input('number');
+        $client->yuk_xati = $request->input('yuk_xati');
+        $client->save();
+
+        return redirect()->route('sifat_sertificate.edit',$client->app_id)->with('message', 'Successfully Submitted');
+    }
+
+    //edit result data
+    public function resultEdit ($id)
+    {
+        $data = Application::findOrFail($id);
+
+        $chigitValues = $this->getChigitValuesAndTip($data);
+
+        return view('sifat_sertificate.result_edit', compact('data')+$chigitValues);
+    }
+
+    public function resultUpdate(Request $request)
+    {
+
+        $id = $request->input('id');
+        $client = Application::findOrFail($id);
+        foreach ($client->chigit_result as $result){
+            $result->value = $request->input('value'. $result->id);
+            $result->save();
+        }
+
+        return redirect()->route('sifat_sertificate.edit',$id)->with('message', 'Successfully Submitted');
+    }
+
     //accept online applications
+//accept online applications
     public function accept($id)
     {
         $test = Application::findOrFail($id);
         $company = OrganizationCompanies::with('city')->findOrFail($test->organization_id);
-        $formattedDate = \Carbon\Carbon::parse($test->date)
-            ->setTimezone('Asia/Tashkent') // Set your desired timezone (e.g., Tashkent for Uzbekistan)
-            ->locale('uz')
-            ->translatedFormat('j F, Y');
+        //date format
+        $formattedDate = formatUzbekDateInLatin($test->date);
+        $currentYear = date('Y');
 
-        // Replace Cyrillic month and period names with Latin equivalents
-        $formattedDate = str_replace(
-            ['январ', 'феврал', 'март', 'апрел', 'май', 'июн', 'июл', 'август', 'сентябр', 'октябр', 'ноябр', 'декабр', 'эрталаб', 'тушдан кейин'],
-            ['yanvar', 'fevral', 'mart', 'aprel', 'may', 'iyun', 'iyul', 'avgust', 'sentabr', 'oktabr', 'noyabr', 'dekabr', 'ertalab', 'tushdan keyin'],
-            $formattedDate
-        );
+        //create sifat sertificate
+        if (!$test->sifat_sertificate) {
+            //get zavod id from app created_by
+            $zavod_id = $test->user->zavod_id;
+            // find last maximum number of sertificate
+            $number = SifatSertificates::where('zavod_id', $zavod_id)
+                ->where('year', $currentYear)
+                ->max('number');
+
+            //save sertificate data
+            $sertificate = new SifatSertificates();
+            $sertificate->app_id = $id;
+            $sertificate->number = $number ? $number + 1 : 1;
+            $sertificate->zavod_id = $zavod_id;
+            $sertificate->year = $currentYear;
+            $sertificate->created_by = \auth()->user()->id;
+            $sertificate->save();
+        }
 
         // Generate QR code
         $qrCode = base64_encode(QrCode::format('png')->size(100)->generate(route('sifat_sertificate.view', $id)));
-
 
         // Fetch values and tip
         $chigitValues = $this->getChigitValuesAndTip($test);
 
         // Load the view and pass data to it
-        $pdf = Pdf::loadView('sifat_sertificate.pdf',compact('test', 'formattedDate','company', 'qrCode') + $chigitValues);
+        $pdf = Pdf::loadView('sifat_sertificate.pdf', compact('test', 'formattedDate', 'company', 'qrCode') + $chigitValues);
 
-        // Option 1: Download the PDF
-        return $pdf->stream('certificate_' . $id . '.pdf');
+        // Option 1: Save the PDF to a file in 'public' or 'storage'
+        $filePath = storage_path('app/public/sifat_sertificates/certificate_' . $id . '.pdf');
+        $pdf->save($filePath);
+
+        // Option 2: Redirect the user to the list page
+        return redirect()->route('/sifat-sertificates/list')->with('message', 'Certificate generated and saved successfully.');
     }
+
 
 
 

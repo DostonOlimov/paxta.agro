@@ -171,8 +171,10 @@
                                             <td>{{ optional($app->test_program)->application->prepared->name }} - {{ optional($app->test_program)->application->prepared->kod }}</td>
                                             <td>{{ optional($app->test_program)->application->crops->name->name }}</td>
                                             <td>
-                                                <a href="{!! url('/final_results/add/'. $app->id) !!}"><button type="button" class="btn btn-round btn-success">{{ trans('app.Qo\'shish')}}</button></a>
-                                                <a href="{!! url('/final_results/add/view/'. $app->id) !!}"><button type="button" class="btn btn-round btn-info">{{ trans('app.View')}}</button></a>
+                                                @if( isset($app->laboratory_result))
+                                                    <a href="{!! url('/final_results/add/'. $app->id) !!}"><button type="button" class="btn btn-round btn-success">{{ trans('app.Qo\'shish')}}</button></a>
+                                                    <a href="{!! url('/final_results/add/view/'. $app->id) !!}"><button type="button" class="btn btn-round btn-info">{{ trans('app.View')}}</button></a>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach

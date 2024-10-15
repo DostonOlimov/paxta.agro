@@ -546,7 +546,7 @@
                                                         </td>
                                                         <td class="text-center">
                                                             <div class="centered-div">
-                                                                @if($humidity + $m_humidity <= 8.5 and $humidity - $m_humidity >= 5.0)
+                                                                @if($humidity + $m_humidity <= 8.5 and $humidity >= 5.0)
                                                                    {{"muvofiq"}} @else <span class="text-danger"> {{"nomuvofiq"}} </span> @endif
                                                             </div>
                                                         </td>

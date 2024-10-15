@@ -83,6 +83,11 @@ class Application extends Model
     {
         return $this->hasMany(ChigitResult::class,'app_id','id');
     }
+    public function sifat_sertificate()
+    {
+        return $this->belongsTo(SifatSertificates::class,'id','app_id');
+    }
+
     public static function getType($type = null)
     {
         $arr = [
