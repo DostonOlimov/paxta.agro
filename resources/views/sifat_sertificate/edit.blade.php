@@ -203,9 +203,15 @@
                                 <div class="panel panel-primary">
                                     <ul class="tab_list">
                                         <li class="tab_item">
-                                            <a class="tab_link" href="{!! url('/sifat-sertificates/client-edit/' . optional($data->client_data)->id) !!}">
-                                                <i class="fas fa-edit"></i> {{ trans('app.Edit') }}
-                                            </a>
+                                            @if($data->client_data)
+                                                <a class="tab_link" href="{!! url('/sifat-sertificates/client-edit/' . optional($data->client_data)->id) !!}">
+                                                    <i class="fas fa-edit"></i> {{ trans('app.Edit') }}
+                                                </a>
+                                            @else
+                                                <a class="tab_link" href="{!! url('/sifat-sertificates/add_client/' . $data->id) !!}">
+                                                    <i class="fas fa-edit"></i> {{ trans('app.Edit') }}
+                                                </a>
+                                            @endif
                                         </li>
                                         <h5>Xaridor to'g'risida ma'lumotlari</h5>
                                     </ul>
@@ -254,9 +260,15 @@
                                 <div class="panel panel-primary">
                                     <ul class="tab_list">
                                         <li class="tab_item">
-                                            <a class="tab_link" href="{!! url('/sifat-sertificates/result-edit/' . $data->id) !!}">
-                                                <i class="fas fa-edit"></i> {{ trans('app.Edit') }}
-                                            </a>
+                                            @if($data->chigit_result->count())
+                                                <a class="tab_link" href="{!! url('/sifat-sertificates/result-edit/' . $data->id) !!}">
+                                                    <i class="fas fa-edit"></i> {{ trans('app.Edit') }}
+                                                </a>
+                                            @else
+                                                <a class="tab_link" href="{!! url('/sifat-sertificates/add_result/' . $data->id) !!}">
+                                                    <i class="fas fa-edit"></i> {{ trans('app.Edit') }}
+                                                </a>
+                                            @endif
                                         </li>
                                         <h5>Sinov ko'rsatkichlari</h5>
                                     </ul>
@@ -285,14 +297,14 @@
                                             </thead>
                                             <tbody>
                                             <tr>
-                                                <td>{{ $tip->nav }} / {{ $tip->sinf }}</td>
-                                                <td>{{ number_format( $tip->nuqsondorlik, 1, '.', '.') }}</td>
+                                                <td>{{ optional($tip)->nav }} / {{ optional($tip)->sinf }}</td>
+                                                <td>{{ number_format( optional($tip)->nuqsondorlik, 1, '.', '.') }}</td>
                                                 <td>{{ number_format( $nuqsondorlik, 1, '.', '.') }}</td>
                                                 <td> - </td>
                                                 <td>{{ number_format( $zararkunanda, 1, '.', '.') }}</td>
-                                                <td>{{ number_format( $tip->tukdorlik, 1, '.', '.') }}</td>
+                                                <td>{{ number_format( optional($tip)->tukdorlik, 1, '.', '.') }}</td>
                                                 <td>{{ number_format( $tukdorlik, 1, '.', '.') }}</td>
-                                                <td>{{ number_format( $tip->namlik, 1, '.', '.') }}</td>
+                                                <td>{{ number_format( optional($tip)->namlik, 1, '.', '.') }}</td>
                                                 <td>{{ number_format( $namlik, 1, '.', '.') }}</td>
                                             </tr>
                                             </tbody>

@@ -2,7 +2,7 @@
 
 return [
     'enabled' => true,
-    'users' => env('DEBUGBAR_ENABLED_USERS', ''),
+    'users' => env('DEBUGBAR_ENABLED_USERS', 'admin@uzteh'),
 
     'except' => [
         //

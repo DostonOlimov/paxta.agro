@@ -54,10 +54,9 @@
 </head>
 <body class="app">
 <?php
-$userid = Auth::User()->id;
 $settings = settings();
 ?>
-@if(Auth::User()->role != \App\Models\User::ROLE_CUSTOMER)
+@if(!Auth::User()->zavod_id)
 <!-- partial:partials/_sidebar.php -->
 @include('layouts.blocks.sidebar')
 <!-- partial -->

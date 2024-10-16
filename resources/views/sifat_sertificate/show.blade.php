@@ -19,7 +19,7 @@
             font-weight: normal ;
         }
     </style>
-    @if($tip)
+
         <div class="section" style="margin-top: 140px;">
         <div class=" content-area ">
             <div class="page-header">
@@ -61,16 +61,7 @@
             </div>
         </div>
         </div>
-    @else
-        <div class="section" role="main">
-            <div class="card">
-                <div class="card-body text-center">
-                    <span class="titleup text-danger"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp
-                        {{ trans('app.You Are Not Authorize This page.') }}</span>
-                </div>
-            </div>
-        </div>
-    @endcan
+
 @endsection
 
 @section('scripts')

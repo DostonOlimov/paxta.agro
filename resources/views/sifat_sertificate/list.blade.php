@@ -183,10 +183,13 @@
                 @elseif(session('message') == 'Certificate saved!')
                     <label for="checkbox-10 colo_success"> Sertifikat fayli saqlandi! Yuklab olishingiz mumkin. </label>
                     <script>
-                        @php $generatedAppId = $_GET['from'] ?? 1; @endphp
+                        @php
+                            $generatedAppId = $_GET['generatedAppId'] ?? 1;
+                            $downloadUrl = route('sifat_sertificate.download', $generatedAppId);
+                        @endphp
                         // Automatically trigger download after the page loads
                         window.onload = function() {
-                            window.location.href = "{{ route('sifat_sertificate.download', $generatedAppId) }}";
+                            window.location.href = "{{ $downloadUrl }}";
                         };
                     </script>
                 @endif
@@ -371,24 +374,9 @@
         </div>
     </div>
 </div>
-
 @endsection
 @section('scripts')
 <script>
-    var translations = {
-        inputTooShort: '{{ trans('
-        app.Korxona(nomi),
-        STIR ini kiritib izlang ') }}',
-        searching: '{{ trans('
-        app.Izlanmoqda...') }}',
-        noResults: '{{ trans('
-        app.Natija topilmadi ') }}',
-        errorLoading: '{{ trans('
-        app.Natija topilmadi ') }}',
-        placeholder: '{{ trans('
-        app.Korxona nomini kiriting ') }}'
-    };
-
     const labels = {
         inn: @json(trans('app.Tashkilot STIRi')),
         owner: @json(trans('app.Tashkilot rahbari')),
@@ -399,6 +387,5 @@
     };
 </script>
 <script src="{{ asset('js/my_js_files/filter.js') }}"></script>
-<script src="{{ asset('js/my_js_files/get_company.js') }}"></script>
 <script src="{{ asset('js/my_js_files/view_company.js') }}"></script>
 @endsection

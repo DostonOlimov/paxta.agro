@@ -18,11 +18,17 @@ class HomeController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
+        parent::__construct();
     }
 
     public function dashboard(Request $request)
     {
+        $user = auth()->user(); // Get the authenticated user
+
+        if ($user->zavod_id) {
+            return redirect('/sifat-sertificates/list'); // Redirect other users to their respective page
+        }
+
         $app_type_selector = $request->input('app_type_selector');
         $city = $request->input('city');
         $crop = $request->input('crop');

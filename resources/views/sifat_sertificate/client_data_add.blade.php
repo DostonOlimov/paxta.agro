@@ -66,13 +66,7 @@
                                         <label for="number" class="form-label ">Xaridor nomini kiriting<label
                                                 class="text-danger">*</label> </label>
                                         <select id="client" class="form-control owner_search" name="client" required>
-                                            @if (!empty($clients))
-                                                @foreach ($clients as $select)
-                                     <option  value="{{ $select->id }}">{{ $select->name }}
-                                                    </option>
 
-                                                @endforeach
-                                            @endif
                                         </select>
                                         @if ($errors->has('client'))
                                             <span class="help-block">
@@ -86,7 +80,7 @@
                                         <label for="middle-name"
                                             class="form-label">{{ trans('app.Avtotransport/vagon raqami') }} <label
                                                 class="text-danger">*</label></label>
-                                        <input id="car_number" type="text" class="form-control" name="number"
+                                        <input id="car_number" type="text" class="form-control" name="number" required
                                             value="{{ old('number') }}">
                                         @if ($errors->has('number'))
                                             <span class="help-block">
@@ -98,7 +92,7 @@
                                         class="col-md-6 form-group has-feedback {{ $errors->has('yuk_xati') ? ' has-error' : '' }}">
                                         <label for="middle-name" class="form-label">{{ trans('app.Yuk xati raqami') }}
                                             <label class="text-danger">*</label></label>
-                                        <input type="text" class="form-control" maxlength="10" name="yuk_xati"
+                                        <input type="text" class="form-control" maxlength="10" name="yuk_xati" required
                                             value="{{ old('yuk_xati') }}">
                                         @if ($errors->has('yuk_xati'))
                                             <span class="help-block">
@@ -227,7 +221,7 @@
                         return "Natija topilmadi"
                     }
                 },
-                placeholder: 'Seleksion navini kiriting',
+                placeholder: 'Xaridor nomini kiriting',
                 minimumInputLength: 1
             })
 

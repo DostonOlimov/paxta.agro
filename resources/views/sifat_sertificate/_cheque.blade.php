@@ -3,14 +3,21 @@
 @endphp
 
 <div id="invoice-cheque" class="py-4 col-12 {{ $classes ?? '' }}" style=" font-family: Times New Roman;">
+    @if($quality)
         <div class="text-center">
             <img  height="300" src="{{ asset('/img/dashboard/gerb.png') }}">
         </div>
+    @endif
         <h2 style="text-align: center">O’zbekiston Respublikasi Qishloq xo’jaligi vazirligi huzuridagi <br> Agrosanoat majmui ustidan nazorat qilish
             Inspeksiyasi  qoshidagi <br> “Qishloq xo‘jaligi mahsulotlari sifatini baholash markazi” <br> davlat muassasasi</h2>
 
-    <h1 class="text-center"><b>SIFAT SERTIFIKATI</b></h1>
-    <h2 class="text-center">Reestr raqami: </h2>
+    @if($quality)
+        <h1 class="text-center"><b>SIFAT SERTIFIKATI</b></h1>
+            <h2 class="text-center">Reestr raqami: </h2>
+    @else
+        <h1 class="text-center"><b>Nomuvofiqlik bayonnomasi</b></h1>
+    @endif
+
     <h2 class="text-left"><b>Sertifikatlanuvchi mahsulot nomi :</b> {{$test->crops->name->name}} </h2>
     <h2 class="text-left"><b>KOD TN VED :</b> {{$test->crops->name->kodtnved}}</h2>
 
@@ -22,10 +29,10 @@
     <h2 class="text-left" style="display: inline;"><b>Texnik chigit to'da raqami : </b> {{$test->crops->party_number}}</h2>
 
 
-    <h2 class="text-left"> <b>Xaridor (yog‘-moy korxonasi) nomi:&nbsp;</b>&nbsp;  {{$test->client_data->client->name}} &nbsp;  </h2>
+    <h2 class="text-left"> <b>Xaridor (yog‘-moy korxonasi) nomi:&nbsp;</b>&nbsp;  {{ optional(optional($test->client_data)->client)->name}} &nbsp;  </h2>
     <div class="row">
-        <div class="col-md-6" style="font-size: 28px"><b>Avtotransport/ vagon raqami: </b> {{$test->client_data->vagon_number}}</div>
-        <div class="col-md-6" style="font-size: 28px"><b>Yuk xati:</b> {{ $test->client_data->yuk_xati }}</div>
+        <div class="col-md-6" style="font-size: 28px"><b>Avtotransport/ vagon raqami: </b> {{ optional($test->client_data)->vagon_number}}</div>
+        <div class="col-md-6" style="font-size: 28px"><b>Yuk xati:</b> {{ optional($test->client_data)->yuk_xati }}</div>
     </div>
 
     <h3 class="text-center"> ISHLAB CHIQARUVCHI (ETKAZIB BERUVCHI) NING MA’LUMOTLARI</h3>
@@ -69,21 +76,25 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td>{{ $tip->nav }} / {{ $tip->sinf }}</td>
-            <td>{{ number_format( $tip->nuqsondorlik, 1, '.', '.') }}</td>
-            <td>{{ number_format( $nuqsondorlik, 1, '.', '.') }}</td>
-            <td> - </td>
-            <td>{{ number_format( $zararkunanda, 1, '.', '.') }}</td>
-            <td>{{ number_format( $tip->tukdorlik, 1, '.', '.') }}</td>
-            <td>{{ number_format( $tukdorlik, 1, '.', '.') }}</td>
-            <td>{{ number_format( $tip->namlik, 1, '.', '.') }}</td>
-            <td>{{ number_format( $namlik, 1, '.', '.') }}</td>
-        </tr>
+            <tr>
+                <td>{{ optional($tip)->nav }} / {{ optional($tip)->sinf ?? '-' }}</td>
+                <td>{{ number_format( optional($tip)->nuqsondorlik, 1, '.', '.') }}</td>
+                <td @if($nuqsondorlik > optional($tip)->nuqsondorlik) style="color:red" @endif>{{ number_format( $nuqsondorlik, 1, '.', '.') }}</td>
+                <td> - </td>
+                <td>{{ number_format( $zararkunanda, 1, '.', '.') }}</td>
+                <td>@if(optional($tip)->tukdorlik_min)  {{ number_format( optional($tip)->tukdorlik_min, 1, '.', '.')}} - @endif{{ number_format( optional($tip)->tukdorlik, 1, '.', '.') }}</td>
+                <td @if($tukdorlik > optional($tip)->tukdorlik) style="color:red" @endif>{{ number_format( $tukdorlik, 1, '.', '.') }}</td>
+                <td>{{ number_format( optional($tip)->namlik, 1, '.', '.') }}</td>
+                <td @if($namlik > optional($tip)->namlik) style="color:red" @endif>{{ number_format( $namlik, 1, '.', '.') }}</td>
+            </tr>
         </tbody>
     </table>
-    <h3 class="small_notes"> To‘da yuqoridagi ko‘rsatkichlari bo‘yicha O’z DSt 596 standartining 4.1, 4.2 bandlariga muvofiq.</h3>
-    <div class="row">
+        @if($quality)
+            <h3 class="main__intro"> To‘da yuqoridagi ko‘rsatkichlari bo‘yicha O’z DSt 596 standartining 4.1, 4.2 bandlariga muvofiq.</h3>
+        @else
+            <h3 class="main__intro" style="color:red"> To‘da yuqoridagi ko‘rsatkichlari bo‘yicha O’z DSt 596 standartining bandlariga nomuvofiq.</h3>
+        @endif
+            <div class="row">
         <div class="col-sm-6">
             <span style="padding: 5px; display: block;"><b>Ijrochi :</b>
             {{ optional($test->user->zavod)->region->name }} filialining<br>

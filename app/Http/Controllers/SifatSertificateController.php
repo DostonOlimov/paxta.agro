@@ -25,6 +25,12 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class SifatSertificateController extends Controller
 {
+    public function __construct()
+    {
+        parent::__construct();
+        $this->middleware('auth')->except('download');
+    }
+
     public function applicationList(Request $request, ApplicationFilter $filter,SearchService $service)
     {
         try {
@@ -287,19 +293,25 @@ class SifatSertificateController extends Controller
     {
         $test = Application::findOrFail($id);
         $company = OrganizationCompanies::with('city')->findOrFail($test->organization_id);
+        // Fetch values and tip
+        $chigitValues = $this->getChigitValuesAndTip($test);
 
         // date format
         $formattedDate = formatUzbekDateInLatin($test->date);
         $currentYear = date('Y');
         $zavod_id = $test->user->zavod_id;
-        $number = SifatSertificates::where('zavod_id', $zavod_id)
-            ->where('year', $currentYear)
-            ->max('number');
+        $number = 0;
+        if($chigitValues['quality']){
+            $number = SifatSertificates::where('zavod_id', $zavod_id)
+                ->where('year', $currentYear)
+                ->max('number');
+        }
+
         // create sifat certificate
         if (!$test->sifat_sertificate) {
             $sertificate = new SifatSertificates();
             $sertificate->app_id = $id;
-            $sertificate->number = $number ? $number + 1 : 1;
+            $sertificate->number = $chigitValues['quality'] ? ($number ? $number + 1 : 1) : null;
             $sertificate->zavod_id = $zavod_id;
             $sertificate->year = $currentYear;
             $sertificate->created_by = \auth()->user()->id;
@@ -311,12 +323,9 @@ class SifatSertificateController extends Controller
         // Generate QR code
         $qrCode = base64_encode(QrCode::format('png')->size(100)->generate(route('sifat_sertificate.download', $id)));
 
-        // Fetch values and tip
-        $chigitValues = $this->getChigitValuesAndTip($test);
-
         // Load the view and pass data to it
         $pdf = Pdf::loadView('sifat_sertificate.pdf', compact('test', 'sert_number','formattedDate', 'company', 'qrCode') + $chigitValues);
-        return $pdf->stream('certificate_' . $id . '.pdf');
+
         // Save the PDF file
         $filePath = storage_path('app/public/sifat_sertificates/certificate_' . $id . '.pdf');
         $pdf->save($filePath);
@@ -338,62 +347,27 @@ class SifatSertificateController extends Controller
         }
     }
 
-    //accept online applications
-    public function reject($id)
-    {
-        $test = Application::findOrFail($id);
-        $company = OrganizationCompanies::with('city')->findOrFail($test->organization_id);
-
-        // date format
-        $formattedDate = formatUzbekDateInLatin($test->date);
-        $currentYear = date('Y');
-        $zavod_id = $test->user->zavod_id;
-        $number = SifatSertificates::where('zavod_id', $zavod_id)
-            ->where('year', $currentYear)
-            ->max('number');
-        // create sifat certificate
-        if (!$test->sifat_sertificate) {
-            $sertificate = new SifatSertificates();
-            $sertificate->app_id = $id;
-            $sertificate->number = $number ? $number + 1 : 1;
-            $sertificate->zavod_id = $zavod_id;
-            $sertificate->year = $currentYear;
-            $sertificate->created_by = \auth()->user()->id;
-            $sertificate->save();
-        }
-
-        $sert_number = ($currentYear - 2000) * 1000000 + ($test->prepared->kod)*1000 + $number;
-
-//        test->sifat_sertificate->zavod->region->series
-        // Generate QR code
-        $qrCode = base64_encode(QrCode::format('png')->size(100)->generate(route('sifat_sertificate.download', $id)));
-
-        // Fetch values and tip
-        $chigitValues = $this->getChigitValuesAndTip($test);
-
-        // Load the view and pass data to it
-        $pdf = Pdf::loadView('sifat_sertificate.pdf2', compact('test', 'sert_number','formattedDate', 'company', 'qrCode') + $chigitValues);
-        return $pdf->stream('certificate_' . $id . '.pdf');
-        // Save the PDF file
-        $filePath = storage_path('app/public/sifat_sertificates/certificate_' . $id . '.pdf');
-        $pdf->save($filePath);
-
-        // Redirect to list page with success message
-        return redirect()->route('/sifat-sertificates/list', ['generatedAppId' => $id])
-            ->with('message', 'Certificate saved!');
-    }
 // Private method to avoid code duplication
     private function getChigitValuesAndTip($application)
     {
-        $nuqsondorlik = optional($application->chigit_result()->where('indicator_id', 9)->first())->value ?? 0;
-        $tukdorlik = optional($application->chigit_result()->where('indicator_id', 12)->first())->value ?? 0;
-        $namlik = optional($application->chigit_result()->where('indicator_id', 11)->first())->value ?? 0;
-        $zararkunanda = optional($application->chigit_result()->where('indicator_id', 10)->first())->value ?? 0;
+        $nuqsondorlik = optional($application->chigit_result()->where('indicator_id', 9)->first())->value;
+        $tukdorlik = optional($application->chigit_result()->where('indicator_id', 12)->first())->value;
+        $namlik = optional($application->chigit_result()->where('indicator_id', 11)->first())->value;
+        $zararkunanda = optional($application->chigit_result()->where('indicator_id', 10)->first())->value;
 
-        $tip = ChigitTips::where('nuqsondorlik', '>=', $nuqsondorlik)
-            ->where('tukdorlik', '>=', $tukdorlik)
-            ->where('crop_id', $application->crops->name_id)
-            ->first();
+        $tip = null;
+        if($nuqsondorlik and $tukdorlik){
+            $tip = ChigitTips::where('nuqsondorlik', '>=', $nuqsondorlik)
+                ->where('tukdorlik', '>=', $tukdorlik)
+                ->where('tukdorlik_min', '<=', $tukdorlik)
+                ->where('crop_id', $application->crops->name_id)
+                ->first();
+        }
+
+        $quality = false;
+        if($tip && $namlik <= $tip->namlik){
+            $quality = true;
+        }
 
         return [
             'nuqsondorlik' => $nuqsondorlik,
@@ -401,6 +375,7 @@ class SifatSertificateController extends Controller
             'namlik' => $namlik,
             'zararkunanda' => $zararkunanda,
             'tip' => $tip,
+            'quality' => $quality
         ];
     }
 }

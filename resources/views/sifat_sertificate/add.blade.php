@@ -65,7 +65,7 @@
                                         <div class="form-group overflow-hidden">
                                             <label class="form-label">{{ trans('app.Sertifikatlanuvchi mahsulot') }}<label
                                                     class="text-danger">*</label></label>
-                                            <select class="w-100 form-control name_of_corn custom-select" name="name"
+                                            <select class="w-100 form-control name_of_corn custom-select" name="name" required
                                                 id="crops_name" url="{!! url('/gettypefromname') !!}">
                                                 @if (count($names))
                                                     <option value="">
@@ -96,7 +96,7 @@
                                         <label for="middle-name"
                                             class="form-label">{{ trans('app.Toʼda (partiya) raqami') }} <label
                                                 class="text-danger">*</label></label>
-                                        <input type="text" class="form-control" maxlength="25" name="party_number"
+                                        <input type="text" class="form-control" maxlength="25" name="party_number" required
                                             value="{{ old('party_number') }}">
                                         @if ($errors->has('party_number'))
                                             <span class="help-block">
@@ -110,12 +110,6 @@
                                                 class="text-danger">*</label> </label>
                                         <select id="selection_code" class="form-control owner_search" name="selection_code"
                                             required>
-                                            @if (!empty($selection))
-                                                @foreach ($selection as $select)
-                                                    <option selected value="{{ $select->id }}">{{ $select->name }}
-                                                    </option>
-                                                @endforeach
-                                            @endif
                                         </select>
                                         @if ($errors->has('selection_code'))
                                             <span class="help-block">
@@ -129,7 +123,7 @@
                                         <label for="middle-name" class="form-label">{{ trans('app.amount2') }} <label
                                                 class="text-danger">*</label></label>
                                         <input type="number" step="0.01" class="form-control" maxlength="25"
-                                            value="{{ old('amount') }}" name="amount">
+                                            value="{{ old('amount') }}" name="amount" required>
                                         @if ($errors->has('amount'))
                                             <span class="help-block">
                                                 <strong>Sertifikatlanuvchi mahsulot miqdori noto'g'ri shaklda
