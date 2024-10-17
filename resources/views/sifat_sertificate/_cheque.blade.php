@@ -83,7 +83,7 @@
                 <td> - </td>
                 <td>{{ number_format( $zararkunanda, 1, '.', '.') }}</td>
                 <td>@if(optional($tip)->tukdorlik_min)  {{ number_format( optional($tip)->tukdorlik_min, 1, '.', '.')}} - @endif{{ number_format( optional($tip)->tukdorlik, 1, '.', '.') }}</td>
-                <td @if($tukdorlik > optional($tip)->tukdorlik) style="color:red" @endif>{{ number_format( $tukdorlik, 1, '.', '.') }}</td>
+                <td @if(optional($tip)->tukdorlik_min  > $tukdorlik or $tukdorlik > optional($tip)->tukdorlik) style="color:red" @endif>{{ number_format( $tukdorlik, 1, '.', '.') }}</td>
                 <td>{{ number_format( optional($tip)->namlik, 1, '.', '.') }}</td>
                 <td @if($namlik > optional($tip)->namlik) style="color:red" @endif>{{ number_format( $namlik, 1, '.', '.') }}</td>
             </tr>

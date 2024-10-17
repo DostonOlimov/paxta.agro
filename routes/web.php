@@ -51,9 +51,9 @@ Route::group(['prefix' => 'employee'], function () {
     Route::patch('/edit/update/{id}', '\App\Http\Controllers\employeecontroller@update');
     Route::get('/view/{id}', '\App\Http\Controllers\employeecontroller@showemployer');
     Route::get('/list/delete/{id}', ['as' => '/employee/list/delete/{id}', 'uses' => '\App\Http\Controllers\employeecontroller@destory']);
-    Route::get('/free_service', ['as' => '/employee/free_service', 'uses' => '\App\Http\Controllers\employeecontroller@free_service']);
-    Route::get('/paid_service', ['as' => '/employee/paid_service', 'uses' => '\App\Http\Controllers\employeecontroller@paid_service']);
-    Route::get('/repeat_service', ['as' => '/employee/repeat_service', 'uses' => '\App\Http\Controllers\employeecontroller@repeat_service']);
+
+    Route::get('/add_users', ['uses' => '\App\Http\Controllers\employeecontroller@add_users']);
+    Route::post('/add_store', [ 'uses' => '\App\Http\Controllers\employeecontroller@add_store']);
 });
 
 //Country City State ajax

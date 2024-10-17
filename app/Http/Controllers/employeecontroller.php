@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\URL;
 use App\Models\DefaultModels\tbl_activities;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Mail\Mailer;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class employeecontroller extends Controller
 {
@@ -236,6 +237,58 @@ class employeecontroller extends Controller
         $user->delete();
 
         return redirect('employee/list')->with('message', 'Successfully Deleted');
+    }
+
+    public function add_users()
+    {
+        $states = DB::table('tbl_states')->get()->toArray();
+
+        return view('employee.add_users', compact( 'states'));
+
+    }
+
+
+    // employee store
+
+    public function add_store(Request $request)
+    {
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+        }
+        try {
+            // Load the Excel file
+            $spreadsheet = IOFactory::load($file);
+            $worksheet = $spreadsheet->getActiveSheet();
+
+            // Iterate through rows and columns to read data
+            $excelData = [];
+            foreach ($worksheet->getRowIterator() as $row) {
+                $rowData = [];
+                foreach ($row->getCellIterator() as $cell) {
+                    $rowData[] = $cell->getValue();
+                }
+                $excelData[] = $rowData;
+            }
+
+            foreach ($excelData as $data){
+                $user = new User;
+                $user->name = $data[1];
+                $user->surname = $data[0];
+                $user->username = $data[3];
+                $user->password = bcrypt($data[4]);
+                $user->pinfl = $data[3];
+                $user->section_id = $request->input('section');
+                $user->state_id = $request->input('state');
+                $user->role = 'employer';
+                $user->status = 10;
+                $user->save();
+            }
+            return redirect('/employee/list')->with('message', 'Successfully Submitted');
+        } catch (\Exception $e) {
+            // Handle any exceptions that may occur during file reading
+            return "Error: " . $e->getMessage();
+        }
     }
 
 }

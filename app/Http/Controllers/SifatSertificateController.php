@@ -25,11 +25,6 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class SifatSertificateController extends Controller
 {
-    public function __construct()
-    {
-        parent::__construct();
-        $this->middleware('auth')->except('download');
-    }
 
     public function applicationList(Request $request, ApplicationFilter $filter,SearchService $service)
     {
@@ -306,12 +301,14 @@ class SifatSertificateController extends Controller
                 ->where('year', $currentYear)
                 ->max('number');
         }
+        $number = $number ? $number + 1 : 1;
 
         // create sifat certificate
         if (!$test->sifat_sertificate) {
+
             $sertificate = new SifatSertificates();
             $sertificate->app_id = $id;
-            $sertificate->number = $chigitValues['quality'] ? ($number ? $number + 1 : 1) : null;
+            $sertificate->number = $chigitValues['quality'] ? $number : null;
             $sertificate->zavod_id = $zavod_id;
             $sertificate->year = $currentYear;
             $sertificate->created_by = \auth()->user()->id;
@@ -357,15 +354,18 @@ class SifatSertificateController extends Controller
 
         $tip = null;
         if($nuqsondorlik and $tukdorlik){
-            $tip = ChigitTips::where('nuqsondorlik', '>=', $nuqsondorlik)
-                ->where('tukdorlik', '>=', $tukdorlik)
-                ->where('tukdorlik_min', '<=', $tukdorlik)
-                ->where('crop_id', $application->crops->name_id)
+            $tip = ChigitTips::where('nuqsondorlik', '>=', $nuqsondorlik);
+            if($application->crops->name_id == 2){
+                $tip = $tip->where('tukdorlik', '>=', $tukdorlik)
+                    ->where('tukdorlik_min', '<=', $tukdorlik);
+            }
+
+                $tip = $tip->where('crop_id', $application->crops->name_id)
                 ->first();
         }
 
         $quality = false;
-        if($tip && $namlik <= $tip->namlik){
+        if($tip && $namlik <= $tip->namlik && $tukdorlik <= $tip->tukdorlik and $tukdorlik >= $tip->tukdorlik_min){
             $quality = true;
         }
 

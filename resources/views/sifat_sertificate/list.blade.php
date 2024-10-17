@@ -1,165 +1,7 @@
 @extends('layouts.front')
 @section('content')
-<style>
-    body {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-        background-color: #f4f6f9;
-    }
+    <link rel="stylesheet" href="{{ asset('assets/css/sertificate.css') }}" type="text/css">
 
-    .nav-bg {
-        border: 0px !important;
-        background: var(--main-font-color) !important;
-    }
-
-    .btn-view-success-container {
-        display: flex;
-        justify-content: center;
-        flex-wrap: nowrap;
-        vertical-align: middle;
-    }
-
-    .table td {
-        vertical-align: middle;
-    }
-
-    table .btn {
-        padding: 5px 16px 8px 16px !important;
-    }
-
-    .my_header .navbar {
-        padding: 16px 0;
-        display: flex;
-        justify-content: space-between;
-        align-items: baseline;
-    }
-
-
-    .container {
-        max-width: 90vw;
-        margin: 0 auto;
-    }
-
-
-
-    .card {
-        background-color: #ffffff;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        padding: 20px;
-        margin-bottom: 120px;
-
-    }
-
-    .table-responsive {
-        overflow-x: auto;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 0;
-        overflow: hidden;
-    }
-
-    .table thead th {
-        vertical-align: middle;
-        background-color: #0052cc;
-        color: #ffffff !important;
-        border: 1px solid #dee2e6;
-    }
-
-    th a {
-        color: #ffffff !important;
-    }
-
-    th,
-    td {
-        padding: 12px 15px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-    }
-
-    th {
-        background-color: #90aec6;
-        color: white;
-    }
-
-    tr:nth-child(even) {
-        background-color: #f2f2f2;
-    }
-
-    .search-input {
-        width: 100%;
-        padding: 8px;
-        border: 1px solid #ddd;
-        margin: 0;
-    }
-
-    .btn-round {
-        border-radius: 20px;
-        padding: 8px 12px;
-        border: none;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-
-    .btn-info {
-        background-color: #17a2b8;
-        color: white;
-    }
-
-    .btn-success {
-        background-color: #0052cc !important;
-        color: white;
-    }
-
-    .btn-info:hover,
-    .btn-success:hover {
-        opacity: 0.9;
-    }
-
-    .filter-row {
-        background-color: #90aec6;
-    }
-
-    .filter-row select,
-    .filter-row input {
-        margin-bottom: 10px;
-    }
-
-    @media screen and (max-width: 768px) {
-        .container {
-            max-width: 100%;
-        }
-
-        .my_header .navbar {
-            padding: 10px 0;
-            align-items: center;
-        }
-
-        .my_header .nav-logo {
-            margin-right: 0px;
-        }
-
-        .right-side-header {
-            column-gap: 13px;
-        }
-
-        h4 {
-            max-width: 220px;
-            font-size: 13px;
-        }
-
-        .card {
-            padding: 0px;
-            margin-bottom: 60px;
-        }
-
-        .section {
-            margin-top: 101px !important;
-        }
-    }
-</style>
 <!-- page content -->
 <div class="section" style="margin-top: 140px;">
     <!-- PAGE-HEADER -->
@@ -240,7 +82,7 @@
                                             @endif
                                         </a>
                                     </th>
-                                    <th>Dublikat raqami</th>
+                                    <th>Sertifikat raqami</th>
                                     <th class="border-bottom-0 border-top-0">
                                         <a
                                             href="{{ route('/sifat-sertificates/list', ['sort_by' => 'date', 'sort_order' => $sort_by === 'date' && $sort_order === 'asc' ? 'desc' : 'asc']) }}">
@@ -341,7 +183,7 @@
                                 <tr>
                                     <td>{{ $offset + $loop->iteration }}</td>
                                     <td>{{ optional($app->crops)->party_number }}</td>
-                                    <td>{{ optional($app->crops)->party2 }}</td>
+                                    <td>@if(optional($app->sifat_sertificate)->number){{ substr(10000000 + 1000 * $app->prepared->kod + optional($app->sifat_sertificate)->number , 2)  }} @endif</td>
                                     <td> <a href="{!! url('/sifat-sertificates/view/' . $app->id) !!}">{{ $app->date }}</a></td>
                                     <td><a href="#" class="company-link"
                                             data-id="{{ $app->organization_id }}">{{ optional($app->organization)->name }}</a>

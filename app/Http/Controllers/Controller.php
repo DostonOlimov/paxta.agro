@@ -13,7 +13,7 @@ class Controller extends BaseController
 
     public function __construct()
     {
-        $this->middleware('auth')->except('my_view');
+        $this->middleware('auth')->except('download');
     }
 
     /**
