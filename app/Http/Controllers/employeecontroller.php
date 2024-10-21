@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\DefaultModels\User;
+use App\Models\PreparedCompanies;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\URL;
 use App\Models\DefaultModels\tbl_activities;
 use Illuminate\Support\Facades\Mail;
@@ -256,7 +258,7 @@ class employeecontroller extends Controller
         if ($request->hasFile('file')) {
             $file = $request->file('file');
         }
-        try {
+//        try {
             // Load the Excel file
             $spreadsheet = IOFactory::load($file);
             $worksheet = $spreadsheet->getActiveSheet();
@@ -271,24 +273,53 @@ class employeecontroller extends Controller
                 $excelData[] = $rowData;
             }
 
+            $userData = [];
+
+            // Fetch both 'id' and 'kod' columns in a single query
+            $factories = PreparedCompanies::orderBy('id')->get(['id', 'kod']);
+
             foreach ($excelData as $data){
-                $user = new User;
-                $user->name = $data[1];
-                $user->surname = $data[0];
-                $user->username = $data[3];
-                $user->password = bcrypt($data[4]);
-                $user->pinfl = $data[3];
-                $user->section_id = $request->input('section');
-                $user->state_id = $request->input('state');
-                $user->role = 'employer';
-                $user->status = 10;
-                $user->save();
+
+                $zavodId = null;
+
+                // Use firstWhere to find the matching 'kod' value
+                $matchingFactory = $factories->firstWhere('kod', $data[1]);
+
+                // If a match is found, assign the 'id' value to $zavodId
+                if ($matchingFactory) {
+                    $zavodId = $matchingFactory->id;
+                }
+                //split full name to array
+                $nameParts = explode(' ', $data[0]);
+                $firstPart = isset($nameParts[2] ) ? $nameParts[2] : ' ' ;
+                $secondPart = isset($nameParts[3]) ? $nameParts[3] : '' ;
+
+                //collecting user data
+                $userData[] = [
+                    'name' => $nameParts[0],
+                    'lastname' => $nameParts[1],
+                    'display_name' => $firstPart. ' '. $secondPart,
+                    'role' => \App\Models\User::ROLE_CITY_EMPLOYEE,
+                    'state_id' => $data[2],
+                    'branch_id' => 2,
+                    'crop_branch' => 2,
+                    'zavod_id' => $zavodId,
+                    'gender' => 6,
+                    'birth_date' => '1970-01-01',
+                    'email' => 'laboratoriya'. $data[1]. '@gmail.com',
+                    'password' => Hash::make($data[6]),
+                    'mobile_no' => $data[4],
+                    'status' => 1
+                ];
+            }
+            if($userData){
+                \App\Models\User::insert($userData);
             }
             return redirect('/employee/list')->with('message', 'Successfully Submitted');
-        } catch (\Exception $e) {
-            // Handle any exceptions that may occur during file reading
-            return "Error: " . $e->getMessage();
-        }
+//        } catch (\Exception $e) {
+//            // Handle any exceptions that may occur during file reading
+//            return "Error: " . $e->getMessage();
+//        }
     }
 
 }

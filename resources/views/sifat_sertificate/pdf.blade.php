@@ -110,11 +110,11 @@
     .background_image {
         position: absolute;
         top: 50%;
-        left: 35%;
+        left: 32%;
         transform: translate(-50%, -50%); /* Center the image */
         width: auto;
         height: auto;
-        opacity: 0.2; /* Adjust the opacity as needed */
+        opacity: 0.1; /* Adjust the opacity as needed */
         z-index: -1;
     }
     .content {
@@ -147,7 +147,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 @endphp
 
 <div id="invoice-cheque" class="py-4 col-12 invoice-cheque ">
-    <img class="background_image" src="{{ public_path('/img/dashboard/paxta_logo_2.png') }}" alt="Background Image">
+    <img class="background_image" src="{{ public_path('/img/dashboard/dm_logo.jpg') }}" alt="Background Image">
     <div class="content">
     @if($quality)
     <div class="container head_image" >
@@ -155,7 +155,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
     </div>
     @endif
 
-        <h2 class="header__title">O’zbekiston Respublikasi Qishloq xo’jaligi vazirligi huzuridagi <br> Agrosanoat majmui ustidan nazorat qilish
+        <h2 class="header__title">O‘zbekiston Respublikasi Qishloq xo‘jaligi vazirligi huzuridagi <br> Agrosanoat majmui ustidan nazorat qilish
             Inspeksiyasi qoshidagi <br> “Qishloq xo‘jaligi mahsulotlari sifatini baholash markazi” <br> davlat muassasasi</h2>
 
     @if($quality)
@@ -171,7 +171,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
         <h2 class="main__intro"><b>Berilgan sana :</b> {{ $formattedDate }} - yil</h2>
 
         <h2 class="main__intro text-left"><b>Ishlab chiqaruvchi (yetkazib beruvchi) nomi : </b> {{ $test->organization->name }}</h2>
-        <h2 class="main__intro text-left"><b>Ishlab chiqaruvchi (yetkazib beruvchi) manzili : Andijon viloyati,Andijon tumani,1 ko'cha</b> {{ $test->organization->full_address }}</h2>
+        <h2 class="main__intro text-left"><b>Ishlab chiqaruvchi (yetkazib beruvchi) manzili : </b> {{ $test->organization->full_address }}</h2>
 
         <h2 class="header__intro" style="display: inline;"><b>Texnik chigit to'da raqami : </b> {{$test->crops->party_number}}</h2>
 
@@ -206,19 +206,19 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
             <thead>
                 <tr>
                     <th rowspan="2">Navi/ sinfi</th>
-                    <th colspan="2">O’zDSt 597 Nuqsonli chigitning massaviy ulushi (%)</th>
-                    <th colspan="2">O’zDSt 599 Mineral va organik aralashmalarning massaviy ulushi (%)</th>
-                    <th colspan="2">O’zDSt 601 Tukdorlikning massaviy ulushi (%)</th>
-                    <th colspan="2">O’zDSt 600 Namlikning massaviy ulushi (%)</th>
+                    <th colspan="2">O‘zDSt 597 Nuqsonli chigitning massaviy ulushi (%)</th>
+                    <th colspan="2">O‘zDSt 599 Mineral va organik aralashmalarning massaviy ulushi (%)</th>
+                    <th colspan="2">O‘zDSt 601 Tukdorlikning massaviy ulushi (%)</th>
+                    <th colspan="2">O‘zDSt 600 Namlikning massaviy ulushi (%)</th>
                 </tr>
                 <tr>
-                    <td>Me'yor</td>
+                    <td>Me’yor</td>
                     <td>Amalda</td>
-                    <td>Me'yor</td>
+                    <td>Me’yor</td>
                     <td>Amalda</td>
-                    <td>Me'yor</td>
+                    <td>Me’yor</td>
                     <td>Amalda</td>
-                    <td>Me'yor</td>
+                    <td>Me’yor</td>
                     <td>Amalda</td>
                 </tr>
             </thead>
@@ -237,7 +237,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
             </tbody>
         </table>
         @if($quality)
-            <h3 class="main__intro"> To‘da yuqoridagi ko‘rsatkichlari bo‘yicha O’z DSt 596 standartining 4.1, 4.2 bandlariga muvofiq.</h3>
+            <h3 class="main__intro"> To‘da yuqoridagi ko‘rsatkichlari bo‘yicha O‘z DSt 596 standartining 4.1, 4.2 bandlariga muvofiq.</h3>
         @else
             <h3 class="main__intro" style="color:red"> To‘da yuqoridagi ko‘rsatkichlari bo‘yicha O’z DSt 596 standartining bandlariga nomuvofiq.</h3>
         @endif
@@ -249,7 +249,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
             mudiri-guruh rahbari : {{ $test->user->lastname . ' ' . ($test->user->name) }}
         </div>
 
-            <div style="width: 30%; padding-top:40px; text-align: center; display: inline-block;">
+            <div style="width: 30%; padding-top:30px; text-align: center; display: inline-block;">
                 <img src="data:image/png;base64,{{ $qrCode }}" style="height: 100px;" alt="QR Code"><br>
                 @if($quality)
                     <span style="display: block; margin-top: 10px;margin-left: 120px;">{{ substr($sert_number, 2) }}</span>

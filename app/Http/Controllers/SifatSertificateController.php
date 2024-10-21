@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Filters\V1\ApplicationFilter;
 use App\Models\Application;
+use App\Models\ChigitLaboratories;
 use App\Models\ChigitResult;
 use App\Models\ChigitTips;
 use App\Models\ClientData;
@@ -13,7 +14,9 @@ use App\Models\CropData;
 use App\Models\CropsSelection;
 use App\Models\Indicator;
 use App\Models\OrganizationCompanies;
+use App\Models\Region;
 use App\Models\SifatSertificates;
+use App\Models\User;
 use App\Services\SearchService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -28,6 +31,8 @@ class SifatSertificateController extends Controller
 
     public function applicationList(Request $request, ApplicationFilter $filter,SearchService $service)
     {
+        $user_id = Auth::user()->id;
+
         try {
             session(['crop'=>2]);
 
@@ -51,7 +56,7 @@ class SifatSertificateController extends Controller
                 false,
                 null,
                 null,
-                ['prepared_id', '=', \auth()->user()->zavod_id]
+                ['created_by', '=', $user_id]
             );
 
         } catch (\Throwable $e) {
@@ -321,9 +326,8 @@ class SifatSertificateController extends Controller
         $qrCode = base64_encode(QrCode::format('png')->size(100)->generate(route('sifat_sertificate.download', $id)));
 
         // Load the view and pass data to it
-        $pdf = Pdf::loadView('sifat_sertificate.pdf', compact('test', 'sert_number','formattedDate', 'company', 'qrCode') + $chigitValues);
+        $pdf = Pdf::loadView('sifat_sertificate.pdf', compact('test','sert_number','formattedDate', 'company', 'qrCode') + $chigitValues);
 
-        return $pdf->stream('sdf');
         // Save the PDF file
         $filePath = storage_path('app/public/sifat_sertificates/certificate_' . $id . '.pdf');
         $pdf->save($filePath);

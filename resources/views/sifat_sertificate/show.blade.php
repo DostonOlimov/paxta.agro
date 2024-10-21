@@ -42,7 +42,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('/img/dashboard/paxta_logo_2.png');
+            background-image: url('/img/dashboard/dm_logo.jpg');
             background-position: center;
             background-repeat: no-repeat;
             background-size: auto;
