@@ -2,7 +2,7 @@
     use SimpleSoftwareIO\QrCode\Facades\QrCode;
 @endphp
 
-<div id="invoice-cheque" class="py-4 col-12 {{ $classes ?? '' }}" style=" font-family: Times New Roman;">
+<div id="invoice-cheque" class="py-4 col-12 background-image">
     @if($quality)
         <div class="text-center">
             <img  height="300" src="{{ asset('/img/dashboard/gerb.png') }}">

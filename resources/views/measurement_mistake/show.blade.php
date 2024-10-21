@@ -163,7 +163,7 @@
                                         <div class="table-container">
                                             <div id="invoice-cheque" class="py-4 col-12" style=" font-family: Times New Roman;">
                                                 <h3 class="text-right">Ilova F1 PSK2-07-2021</h3>
-                                                <h2 class="text-center fw-bold">Muvofiqlik bo'yicha xulosalar № {{$result->id}} &nbsp; {{$date}}</h2>
+                                                <h2 class="text-center fw-bold">Muvofiqlik bo'yicha xulosalar № {{$result->number}} &nbsp; {{$date}}</h2>
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <h3 class="text-left">Buyurtmachi korxona {{ optional($result->dalolatnoma)->test_program->application->organization->name }}</h3>

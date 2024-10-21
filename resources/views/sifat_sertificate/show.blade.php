@@ -18,6 +18,30 @@
         td{
             font-weight: normal ;
         }
+
+        #invoice-cheque {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            z-index: 1; /* Ensures content stays on top */
+        }
+
+        #invoice-cheque::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('/img/dashboard/paxta_logo_2.png');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: auto;
+            opacity: 0.3; /* Apply opacity only to the background image */
+            z-index: -1; /* Place background behind content */
+            pointer-events: none; /* Ensures background is not interactive */
+        }
+
     </style>
 
         <div class="section" style="margin-top: 140px;">

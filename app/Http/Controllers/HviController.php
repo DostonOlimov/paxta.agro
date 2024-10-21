@@ -61,7 +61,7 @@ class HviController extends Controller
 
             $currentTime = now();
 
-            if (!$hvi || $hvi->updated_at->diffInMinutes($currentTime) > 60) {
+            if (!$hvi || $hvi->updated_at->diffInMinutes($currentTime) > 5) {
                 $filePath = $this->storeFile($file, $state_id);
                 $this->processGinBalles($gin_balles, $filePath, $count, $state_id);
                 $this->saveOrUpdateHvi($hvi, $filePath, $user->id, $count,$state_id);

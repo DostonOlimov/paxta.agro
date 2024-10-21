@@ -5,12 +5,14 @@
         width: 100% !important;
         margin: 0 auto;
         font-size: 16px;
+        height: 100vh; /* Ensure full height of the page */
+        overflow: hidden; /* Prevent content from spilling over */
     }
 
     .header__title {
         font-size: 16px;
         text-align: center;
-        margin-top: 3px;
+        margin-top: 1px;
         text-transform: uppercase;
     }
 
@@ -100,23 +102,25 @@
         }
     }
 
-    /* QR code styling */
-    /* .qr-code {
-        text-align: center;
-        margin: 20px 0;
+    #invoice-cheque {
+        position: relative;
+        width: 100%;
+        height: 100vh;
     }
-
-    .signature-section {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 40px;
+    .background_image {
+        position: absolute;
+        top: 50%;
+        left: 35%;
+        transform: translate(-50%, -50%); /* Center the image */
+        width: auto;
+        height: auto;
+        opacity: 0.2; /* Adjust the opacity as needed */
+        z-index: -1;
     }
-
-    .signature-section h2 {
-        font-size: 12px;
-        font-weight: bold;
-    } */
-
+    .content {
+        position: relative;
+        z-index: 1; /* Keeps content above the image */
+    }
     @media print {
         .invoice-cheque {
             width: 100%;
@@ -142,10 +146,11 @@
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 @endphp
 
-<body>
 <div id="invoice-cheque" class="py-4 col-12 invoice-cheque ">
+    <img class="background_image" src="{{ public_path('/img/dashboard/paxta_logo_2.png') }}" alt="Background Image">
+    <div class="content">
     @if($quality)
-    <div class="container" >
+    <div class="container head_image" >
         <img src="{{ asset('/img/dashboard/t1.png') }}" alt="image" >
     </div>
     @endif
@@ -166,7 +171,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
         <h2 class="main__intro"><b>Berilgan sana :</b> {{ $formattedDate }} - yil</h2>
 
         <h2 class="main__intro text-left"><b>Ishlab chiqaruvchi (yetkazib beruvchi) nomi : </b> {{ $test->organization->name }}</h2>
-        <h2 class="main__intro text-left"><b>Ishlab chiqaruvchi (yetkazib beruvchi) manzili : </b> {{ $test->organization->full_address }}</h2>
+        <h2 class="main__intro text-left"><b>Ishlab chiqaruvchi (yetkazib beruvchi) manzili : Andijon viloyati,Andijon tumani,1 ko'cha</b> {{ $test->organization->full_address }}</h2>
 
         <h2 class="header__intro" style="display: inline;"><b>Texnik chigit to'da raqami : </b> {{$test->crops->party_number}}</h2>
 
@@ -245,14 +250,12 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
         </div>
 
             <div style="width: 30%; padding-top:40px; text-align: center; display: inline-block;">
-                <img src="data:image/png;base64,{{ $qrCode }}" style="height: 120px;" alt="QR Code"><br>
+                <img src="data:image/png;base64,{{ $qrCode }}" style="height: 100px;" alt="QR Code"><br>
                 @if($quality)
                     <span style="display: block; margin-top: 10px;margin-left: 120px;">{{ substr($sert_number, 2) }}</span>
                 @endif
             </div>
         </div>
-
     </div>
-
-</body>
+    </div>
 @endsection

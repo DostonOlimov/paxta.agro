@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Filters\V1\DalolatnomaFilter;
-use App\Http\Controllers\Traits\DalolatnomaTrait;
+use App\Jobs\ProcessFile;
 use App\Models\Application;
 use App\Models\Decision;
 use App\Models\Dalolatnoma;
+use App\Models\GinBalles;
 use App\Models\HumidityResult;
+use App\Models\Region;
 use App\Services\SearchService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -58,6 +60,18 @@ class HumidityResultController extends Controller
     {
         $user = Auth::user();
         $this->authorize('create', Application::class);
+        $gin_balles = GinBalles::where('dalolatnoma_id',$request->input('dalolatnoma_id'))->get();
+
+        foreach ($gin_balles as $balles) {
+            $state = Region::find($user->state_id);
+            $gin_id = 1000 * $state->clamp_id + $balles->dalolatnoma->test_program->application->prepared->kod;
+            ProcessFile::dispatch([
+                'path' => $state->hvi_file->path,
+                'balles' => $balles,
+                'count' => 100,
+                'gin_id' => $gin_id,
+            ]);
+        }
 
         $data = $request->only([
             'dalolatnoma_id',
