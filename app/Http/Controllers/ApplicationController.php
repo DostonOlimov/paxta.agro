@@ -37,7 +37,12 @@ class ApplicationController extends Controller
                         'prepared'
                     ],
                     compact('names', 'states', 'years','all_status'),
-                    'application.list'
+                    'application.list',
+                    [],
+                    false,
+                    null,
+                    null,
+                    ['app_type', '=', 1]
                 );
 
         } catch (\Throwable $e) {

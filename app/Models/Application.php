@@ -37,6 +37,7 @@ class Application extends Model
         'date',
         'data',
         'status',
+        'app_type',
         'created_by',
     ];
 

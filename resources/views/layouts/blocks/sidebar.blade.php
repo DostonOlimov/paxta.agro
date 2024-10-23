@@ -47,6 +47,9 @@
             <li class="nav-title">{{trans('message.Sertifikatsiya')}}</li>
         @else
             <li class="nav-title">{{trans('message.Texnik chigit')}}</li>
+            <li class="nav-item "><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('sifat-sertificates2/*') ? 'active1' : ''}}" href="{!! url('/sifat-sertificates2/list') !!}"> <svg class="nav-icon">
+                        <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-cursor"></use>
+                    </svg>Sifat sertifikatlari</a></li>
         @endif
 
 
@@ -97,31 +100,33 @@
 
         <li class="nav-title">{{trans('message.Tizim sozlamalari')}}</li>
         @if(auth()->user()->role != \App\Models\User::ROLE_DIROCTOR)
-        <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
-                <svg class="nav-icon">
-                    <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-plant"></use>
-                </svg>{{trans('message.Paxta')}}</a>
-            <ul class="nav-group-items">
-                <li class="nav-item"><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('crops_name/*') ? 'active1' : ''}}"  href="{{ url('/crops_name/list') }}"><span class="nav-icon"></span>
+            @if(session('crop') != 2)
+                <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
                         <svg class="nav-icon">
-                            <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-list"></use>
-                        </svg>{{trans('message.Nomlar ro\'yxati')}}</a></li>
-                <li class="nav-item"><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('crops_type/*') ? 'active1' : ''}}"  href="{{ url('/crops_type/list') }}"><span class="nav-icon"></span>
-                        <svg class="nav-icon">
-                            <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-list"></use>
-                        </svg>{{trans('message.Navlar ro\'yxati')}}</a>
+                            <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-plant"></use>
+                        </svg>{{trans('message.Paxta')}}</a>
+                    <ul class="nav-group-items">
+                        <li class="nav-item"><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('crops_name/*') ? 'active1' : ''}}"  href="{{ url('/crops_name/list') }}"><span class="nav-icon"></span>
+                                <svg class="nav-icon">
+                                    <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-list"></use>
+                                </svg>{{trans('message.Nomlar ro\'yxati')}}</a></li>
+                        <li class="nav-item"><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('crops_type/*') ? 'active1' : ''}}"  href="{{ url('/crops_type/list') }}"><span class="nav-icon"></span>
+                                <svg class="nav-icon">
+                                    <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-list"></use>
+                                </svg>{{trans('message.Navlar ro\'yxati')}}</a>
+                        </li>
+                        <li class="nav-item"><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('crops_generation/*') ? 'active1' : ''}}"  href="{{ url('/crops_generation/list') }}"><span class="nav-icon"></span>
+                                <svg class="nav-icon">
+                                    <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-list"></use>
+                                </svg>{{trans('message.Sinflar ro\'yxatii')}}</a>
+                        <li class="nav-item"><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('crops_selection/*') ? 'active1' : ''}}"  href="{{ url('/crops_selection/list') }}"><span class="nav-icon"></span>
+                                <svg class="nav-icon">
+                                    <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-list"></use>
+                                </svg>{{trans('message.Seleksiya turlari')}}</a>
+                        </li>
+                    </ul>
                 </li>
-                <li class="nav-item"><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('crops_generation/*') ? 'active1' : ''}}"  href="{{ url('/crops_generation/list') }}"><span class="nav-icon"></span>
-                        <svg class="nav-icon">
-                            <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-list"></use>
-                        </svg>{{trans('message.Sinflar ro\'yxatii')}}</a>
-                <li class="nav-item"><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('crops_selection/*') ? 'active1' : ''}}"  href="{{ url('/crops_selection/list') }}"><span class="nav-icon"></span>
-                        <svg class="nav-icon">
-                            <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-list"></use>
-                        </svg>{{trans('message.Seleksiya turlari')}}</a>
-                </li>
-            </ul>
-        </li>
+            @endif
         @endif
         <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
                 <svg class="nav-icon">
@@ -139,6 +144,7 @@
                 </li>
             </ul>
         </li>
+        @if(session('crop') != 2)
             @if(auth()->user()->role != \App\Models\User::ROLE_DIROCTOR )
             <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
                     <svg class="nav-icon">
@@ -159,28 +165,27 @@
                             </svg>{{trans('message.Operatorlar')}}</a></li>
                 </ul>
             </li>
-        @if(auth()->user()->role != \App\Models\User::STATE_EMPLOYEE)
-        <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
-                <svg class="nav-icon">
-                    <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-command"></use>
-                </svg> {{trans('message.Normativ hujjatlar')}}</a>
-            <ul class="nav-group-items">
-                <li class="nav-item"><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('nds/*') ? 'active1' : ''}}"   href="{!! url('/nds/list') !!}"><span class="nav-icon"></span>
-                        <svg class="nav-icon">
-                            <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-file"></use>
-                        </svg> {{trans('message.Normativ hujjatlar')}}</a></li>
-                <li class="nav-item"><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('indicator/*') ? 'active1' : ''}}"   href="{!! url('/indicator/list') !!}"><span class="nav-icon"></span>
-                        <svg class="nav-icon">
-                            <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-paperclip"></use>
-                        </svg>{{trans('message.Sifat ko\'rsatkichlari')}}</a></li>
-            </ul>
-        </li>
-        <li class="nav-title">{{trans('message.Sozlamalar')}}</li>
-        @endif
+            @if(auth()->user()->role != \App\Models\User::STATE_EMPLOYEE)
+            <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
+                    <svg class="nav-icon">
+                        <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-command"></use>
+                    </svg> {{trans('message.Normativ hujjatlar')}}</a>
+                <ul class="nav-group-items">
+                    <li class="nav-item"><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('nds/*') ? 'active1' : ''}}"   href="{!! url('/nds/list') !!}"><span class="nav-icon"></span>
+                            <svg class="nav-icon">
+                                <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-file"></use>
+                            </svg> {{trans('message.Normativ hujjatlar')}}</a></li>
+                    <li class="nav-item"><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('indicator/*') ? 'active1' : ''}}"   href="{!! url('/indicator/list') !!}"><span class="nav-icon"></span>
+                            <svg class="nav-icon">
+                                <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-paperclip"></use>
+                            </svg>{{trans('message.Sifat ko\'rsatkichlari')}}</a></li>
+                </ul>
+            </li>
+                @endif
+            @endif
         @endif
     @if ( auth()->user()->role == 'admin')
-
-
+            <li class="nav-title">{{trans('message.Sozlamalar')}}</li>
         <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
                 <svg class="nav-icon">
                 <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-user"></use>

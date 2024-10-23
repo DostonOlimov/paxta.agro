@@ -231,7 +231,7 @@ Route::group(['prefix' => 'employee'], function () {
     Route::get('/reject/{id}', ['as' => '/application/reject', 'uses' => '\App\Http\Controllers\ApplicationController@reject']);
     Route::post('/reject/store', ['as' => '/application/rejectstore', 'uses' => '\App\Http\Controllers\ApplicationController@reject_store']);
     });
-//applications
+//sifat sertificates online
 Route::group(['prefix' => 'sifat-sertificates'], function () {
     Route::get('/list', ['as'=>'/sifat-sertificates/list', 'uses' => '\App\Http\Controllers\SifatSertificateController@applicationList']);
     Route::get('/add/{id}', ['as'=>'sifat-sertificates.add', 'uses' => '\App\Http\Controllers\SifatSertificateController@addApplication']);
@@ -257,6 +257,16 @@ Route::group(['prefix' => 'sifat-sertificates'], function () {
     Route::get('/sertificate/{id}/download', '\App\Http\Controllers\SifatSertificateController@download')->name('sifat_sertificate.download');
 
 });
+//applications
+Route::group(['prefix' => 'sifat-sertificates2'], function () {
+    Route::get('/list', ['as'=>'/sifat-sertificates2/list', 'uses' => '\App\Http\Controllers\SifatSertificate2Controller@applicationList']);
+    Route::get('/add/{id}', ['as'=>'sifat-sertificates2.add', 'uses' => '\App\Http\Controllers\SifatSertificate2Controller@addApplication']);
+    Route::post('/store', ['uses' => '\App\Http\Controllers\SifatSertificate2Controller@store']);
+
+    Route::get('/view/{id}', '\App\Http\Controllers\SifatSertificate2Controller@showapplication')->name('sifat_sertificate2.view');
+
+});
+
 //Decision
     Route::group(['prefix' => 'decision', 'middleware' => 'auth'], function () {
     Route::get('search','App\Http\Controllers\DecisionController@search')->name('decision.search');

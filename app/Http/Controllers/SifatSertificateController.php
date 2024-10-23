@@ -108,6 +108,7 @@ class SifatSertificateController extends Controller
             'date'             => date('Y-m-d'),
             'status'           => Application::STATUS_FINISHED,
             'data'             => $request->input('data'),
+            'app_type'         => 2,
             'created_by'       => $user->id,
         ]);
 

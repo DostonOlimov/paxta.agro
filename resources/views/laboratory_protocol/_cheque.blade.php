@@ -177,7 +177,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
                 <td>{{ round($item->mic,1) }}</td>
                 <td>{{ round($item->strength,1) }}</td>
                 <td>{{ round($item->uniform,1) }}</td>
-                <td>{{ round($item->humidity,1) }}</td>
+                <td>{{ round($item->humidity,2) }}</td>
                 <td>{{ round($item->dalolatnoma->laboratory_result->fiblength/100,2) }}</td>
             </tr>
             @endforeach
