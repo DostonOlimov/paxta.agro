@@ -175,10 +175,10 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
                 <td>{{ optional(\App\Models\CropsGeneration::where('kod','=',$item->class)->first())->name  }}</td>
                 <td>{{  optional($test->laboratory_result)->tip->staple }}</td>
                 <td>{{ round($item->mic,1) }}</td>
-                <td>{{ round($item->strength,1) }}</td>
-                <td>{{ round($item->uniform,1) }}</td>
-                <td>{{ round($item->humidity,2) }}</td>
-                <td>{{ round($item->dalolatnoma->laboratory_result->fiblength/100,2) }}</td>
+                <td>{{ number_format($item->strength, 1, '.', '.') }}</td>
+                <td>{{ number_format($item->uniform, 1, '.', '.') }}</td>
+                <td>{{ number_format($item->humidity, 2, '.', '.') }}</td>
+                <td>{{ number_format($item->dalolatnoma->laboratory_result->fiblength/100, 2, '.', '.') }}</td>
             </tr>
             @endforeach
             @endif
