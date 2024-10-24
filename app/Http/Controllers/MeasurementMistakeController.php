@@ -96,7 +96,7 @@ class MeasurementMistakeController extends Controller
             ->where('dalolatnoma_id', $id)
             ->first();
 
-        $fiblength = $clamp_data->fiblength / 100;
+        $fiblength = round($clamp_data->fiblength / 100,2);
         $tip = Tips::where('max', '>=', $fiblength)
             ->where('min', '<=', $fiblength)
             ->first();
