@@ -79,6 +79,11 @@
                                             placeholder="{{ trans('app.STIR') }}" minlength="9" data-mask="000000000"
                                             maxlength="9" required="required" title="9ta raqam kiriting!"
                                             data-pattern-mismatch="Noto'g'ri shakl" />
+                                        @if ($errors->has('inn'))
+                                            <span class="help-block">
+                                                <strong class="hf-warning">{{ $errors->first('inn') }}</strong>
+                                            </span>
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="form__organization__field">
@@ -89,6 +94,11 @@
                                         <input type="text" required="required" name="name" id="name"
                                             value=" @if ($company) {{ $company->name }} @elseif($user->inn) {{ $user->company_name }} @endif"
                                             class="form-control">
+                                        @if ($errors->has('name'))
+                                            <span class="help-block">
+                                                <strong class="hf-warning">{{ $errors->first('name') }}</strong>
+                                            </span>
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="form__organization__field">
@@ -100,6 +110,11 @@
                                         <input type="text" required="required" name="owner_name" id="owner_name"
                                             value="@if ($company) {{ $company->owner_name }} @elseif($user->inn) {{ $user->name . ' ' . $user->lastname . ' ' . $user->display_name }} @endif"
                                             class="form-control">
+                                        @if ($errors->has('owner_name'))
+                                            <span class="help-block">
+                                                <strong class="hf-warning">{{ $errors->first('owner_name') }}</strong>
+                                            </span>
+                                        @endif
                                     </div>
                                 </div>
 
@@ -115,7 +130,7 @@
 
                                         @if ($errors->has('phone_number'))
                                             <span class="help-block">
-                                                <strong>{{ $errors->first('phone_number') }}</strong>
+                                                <strong class="hf-warning">{{ $errors->first('phone_number') }}</strong>
                                             </span>
                                         @endif
                                     </div>
@@ -140,6 +155,11 @@
                                                 @endforeach
                                             @endif
                                         </select>
+                                        @if ($errors->has('state_id'))
+                                            <span class="help-block">
+                                                <strong class="hf-warning">{{ $errors->first('state_id') }}</strong>
+                                            </span>
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="form__organization__field form-group overflow-hidden">
@@ -160,12 +180,22 @@
                                                 @endforeach
                                             @endif
                                         </select>
+                                        @if ($errors->has('city_id'))
+                                            <span class="help-block">
+                                                <strong class="hf-warning">{{ $errors->first('city_id') }}</strong>
+                                            </span>
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="form__organization__field">
                                     <label class="form-label">{{ trans('app.Address') }}</label>
                                     <textarea class="form-control" id="address" name="address" maxlength="100" required="required" rows="3"
                                         placeholder="{{ trans('app.Enter Address') }}">{{ $company ? $company->address : '' }}</textarea>
+                                    @if ($errors->has('address'))
+                                        <span class="help-block">
+                                                <strong class="hf-warning">{{ $errors->first('address') }}</strong>
+                                            </span>
+                                    @endif
                                 </div>
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 <div class="form__organization__field text-center">

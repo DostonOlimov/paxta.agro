@@ -12,10 +12,10 @@
             Inspeksiyasi  qoshidagi <br> “Qishloq xo‘jaligi mahsulotlari sifatini baholash markazi” <br> davlat muassasasi</h2>
 
     @if($quality)
-        <h1 class="text-center"><b>SIFAT SERTIFIKATI</b></h1>
+        <h1 class="text-center" ><b>SIFAT SERTIFIKATI</b></h1>
             <h2 class="text-center">Reestr raqami: </h2>
     @else
-        <h1 class="text-center"><b>Nomuvofiqlik bayonnomasi</b></h1>
+        <h1 class="text-center " style="color:#f3775b"><b>Nomuvofiqlik bayonnomasi</b></h1>
     @endif
 
     <h2 class="text-left"><b>Sertifikatlanuvchi mahsulot nomi :</b> {{$test->crops->name->name}} </h2>
@@ -92,7 +92,7 @@
         @if($quality)
             <h3 class="main__intro"> To‘da yuqoridagi ko‘rsatkichlari bo‘yicha O’z DSt 596 standartining 4.1, 4.2 bandlariga muvofiq.</h3>
         @else
-            <h3 class="main__intro" style="color:red"> To‘da yuqoridagi ko‘rsatkichlari bo‘yicha O’z DSt 596 standartining bandlariga nomuvofiq.</h3>
+            <h3 class="main__intro" style="color:#f3775b"> To‘da yuqoridagi ko‘rsatkichlari bo‘yicha O’z DSt 596 standartining bandlariga nomuvofiq.</h3>
         @endif
             <div class="row">
         <div class="col-sm-6">

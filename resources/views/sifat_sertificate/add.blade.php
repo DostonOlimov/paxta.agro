@@ -78,6 +78,11 @@
                                                     @endforeach
                                                 @endif
                                             </select>
+                                            @if ($errors->has('name'))
+                                                <span class="help-block">
+                                                <strong class="hf-warning">{{ $errors->first('name') }}</strong>
+                                            </span>
+                                            @endif
                                         </div>
                                     </div>
                                     <div id="tin-container" class="col-md-6 legal-fields">
@@ -89,6 +94,11 @@
                                                 data-mask="0000000000" maxlength="10" required="required"
                                                 title="10ta raqam kiriting!" data-pattern-mismatch="Noto'g'ri shakl"
                                                 value="{{ old('tnved') }}" />
+                                            @if ($errors->has('tnved'))
+                                                <span class="help-block">
+                                                <strong class="hf-warning">{{ $errors->first('tnved') }}</strong>
+                                            </span>
+                                            @endif
                                         </div>
                                     </div>
                                     <div
@@ -100,7 +110,7 @@
                                             value="{{ old('party_number') }}">
                                         @if ($errors->has('party_number'))
                                             <span class="help-block">
-                                                <strong>Partiya raqami noto'g'ri shaklda kiritilgan</strong>
+                                                <strong class="hf-warning">{{ $errors->first('party_number') }}</strong>
                                             </span>
                                         @endif
                                     </div>
@@ -113,8 +123,7 @@
                                         </select>
                                         @if ($errors->has('selection_code'))
                                             <span class="help-block">
-                                                <strong>
-                                                    Seleksiya kodi noto'g'ri shaklda kiritilgan</strong>
+                                                <strong class="hf-warning">{{ $errors->first('selection_code') }}</strong>
                                             </span>
                                         @endif
                                     </div>
@@ -126,8 +135,7 @@
                                             value="{{ old('amount') }}" name="amount" required>
                                         @if ($errors->has('amount'))
                                             <span class="help-block">
-                                                <strong>Sertifikatlanuvchi mahsulot miqdori noto'g'ri shaklda
-                                                    kiritilgan</strong>
+                                                <strong class="hf-warning">{{ $errors->first('amount') }}</strong>
                                             </span>
                                         @endif
                                     </div>

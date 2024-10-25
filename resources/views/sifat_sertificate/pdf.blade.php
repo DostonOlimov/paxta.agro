@@ -83,7 +83,7 @@
         max-width: 100%;
         /* Optional: To make sure the image is responsive */
         height: 150px;
-        padding-left:120px;
+        padding-left: 125px;
     }
 
     .text-center img {
@@ -109,10 +109,10 @@
     }
     .background_image {
         position: absolute;
-        top: 50%;
+        top: 55%;
         left: 32%;
         transform: translate(-50%, -50%); /* Center the image */
-        width: auto;
+        width: 550px;
         height: auto;
         opacity: 0.1; /* Adjust the opacity as needed */
         z-index: -1;
@@ -147,22 +147,24 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 @endphp
 
 <div id="invoice-cheque" class="py-4 col-12 invoice-cheque ">
-    <img class="background_image" src="{{ public_path('/img/dashboard/dm_logo.jpg') }}" alt="Background Image">
-    <div class="content">
     @if($quality)
-    <div class="container head_image" >
-        <img src="{{ asset('/img/dashboard/t1.png') }}" alt="image" >
-    </div>
+        <img class="background_image" src="{{ public_path('/img/dashboard/dm_logo.jpg') }}" alt="Background Image">
     @endif
+    <div class="content">
+        @if($quality)
+            <div class="container head_image" >
+                <img src="{{ asset('/img/dashboard/t1.png') }}" alt="image" >
+            </div>
+        @endif
 
-        <h2 class="header__title">O‘zbekiston Respublikasi Qishloq xo‘jaligi vazirligi huzuridagi <br> Agrosanoat majmui ustidan nazorat qilish
+        <h2 class="header__title">Agrosanoat majmui ustidan nazorat qilish
             Inspeksiyasi qoshidagi <br> “Qishloq xo‘jaligi mahsulotlari sifatini baholash markazi” <br> davlat muassasasi</h2>
 
     @if($quality)
-        <h1  class="header__intro" style="font-weight: bold;">SIFAT SERTIFIKATI</h1>
+        <h1 style="font-weight: bold; color:#0a52de; font-size: 24px; margin:0">SIFAT SERTIFIKATI</h1>
         <h2 class="header__intro" style="font-weight: bold;">Reestr raqami: {{ $test->prepared->region->series }}{{ $sert_number }}</h2>
         @else
-            <h1 class="header__intro text-center"><b>Nomuvofiqlik bayonnomasi</b></h1>
+            <h1 class="header__intro text-center" style="color:#f3775b; font-size: 24px"><b>Nomuvofiqlik bayonnomasi</b></h1>
         @endif
     <h2 class="main__intro"><b>Sertifikatlanuvchi mahsulot nomi :</b> {{$test->crops->name->name}} </h2>
     <h2 class="main__intro"><b>KOD TN VED :</b> {{$test->crops->name->kodtnved}}</h2>
@@ -230,16 +232,16 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
                 <td> - </td>
                 <td>{{ number_format( $zararkunanda, 1, '.', '.') }}</td>
                 <td>@if(optional($tip)->tukdorlik_min)  {{ number_format( optional($tip)->tukdorlik_min, 1, '.', '.')}} - @endif{{ number_format( optional($tip)->tukdorlik, 1, '.', '.') }}</td>
-                <td @if($tukdorlik > optional($tip)->tukdorlik) style="color:red" @endif>{{ number_format( $tukdorlik, 1, '.', '.') }}</td>
+                <td @if(optional($tip)->tukdorlik_min  > $tukdorlik or $tukdorlik > optional($tip)->tukdorlik) style="color:red" @endif>{{ number_format( $tukdorlik, 1, '.', '.') }}</td>
                 <td>{{ number_format( optional($tip)->namlik, 1, '.', '.') }}</td>
                 <td @if($namlik > optional($tip)->namlik) style="color:red" @endif>{{ number_format( $namlik, 1, '.', '.') }}</td>
             </tr>
             </tbody>
         </table>
         @if($quality)
-            <h3 class="main__intro"> To‘da yuqoridagi ko‘rsatkichlari bo‘yicha O‘z DSt 596 standartining 4.1, 4.2 bandlariga muvofiq.</h3>
+            <h3 class="main__intro"> To‘da yuqoridagi ko‘rsatkichlari bo‘yicha O‘z DSt 596 standartining 4.1, 4.2 va 4.3 bandlariga muvofiq.</h3>
         @else
-            <h3 class="main__intro" style="color:red"> To‘da yuqoridagi ko‘rsatkichlari bo‘yicha O’z DSt 596 standartining bandlariga nomuvofiq.</h3>
+            <h3 class="main__intro" style="color:#f3775b"> To‘da yuqoridagi ko‘rsatkichlari bo‘yicha O’z DSt 596 standartining bandlariga nomuvofiq.</h3>
         @endif
     <div style="width: 100%; display: flex; justify-content: space-between;">
         <div style="width: 60%; display: inline-block; padding-bottom: 30px;">
@@ -249,11 +251,11 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
             mudiri-guruh rahbari : {{ $test->user->lastname . ' ' . ($test->user->name) }}
         </div>
 
-            <div style="width: 30%; padding-top:30px; text-align: center; display: inline-block;">
+            <div style="width: 30%; @if($quality) padding-top:30px; @else padding-top:60px; @endif text-align: center; display: inline-block;">
                 <img src="data:image/png;base64,{{ $qrCode }}" style="height: 100px;" alt="QR Code"><br>
-                @if($quality)
-                    <span style="display: block; margin-top: 10px;margin-left: 120px;">{{ substr($sert_number, 2) }}</span>
-                @endif
+
+                <span style="display: block; margin-top: 5px;margin-left: 120px;">{{ substr($sert_number, 2) }}</span>
+
             </div>
         </div>
     </div>

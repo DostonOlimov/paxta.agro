@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 
 use App\Filters\V1\ApplicationFilter;
 use App\Models\Application;
-use App\Models\ChigitLaboratories;
 use App\Models\ChigitResult;
 use App\Models\ChigitTips;
 use App\Models\ClientData;
@@ -14,9 +13,7 @@ use App\Models\CropData;
 use App\Models\CropsSelection;
 use App\Models\Indicator;
 use App\Models\OrganizationCompanies;
-use App\Models\Region;
 use App\Models\SifatSertificates;
-use App\Models\User;
 use App\Services\SearchService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -69,7 +66,6 @@ class SifatSertificateController extends Controller
 
 
     // application addform
-
     public function addApplication($organization)
     {
         $names = DB::table('crops_name')->where('id','!=',1)->get()->toArray();
@@ -83,9 +79,15 @@ class SifatSertificateController extends Controller
     // application store
     public function store(Request $request)
     {
-        $this->authorize('create', Application::class);
-
         $user = Auth::user();
+
+        // Define validation rules with camelCase attribute names
+        $validatedData = $request->validate([
+            'name' => 'required|int',
+            'party_number' => 'required|string|max:10',
+            'amount' => 'required',
+            'selection_code' => 'required|int',
+        ]);
 
         $crop = CropData::create([
             'name_id'       => $request->input('name'),
@@ -133,9 +135,12 @@ class SifatSertificateController extends Controller
     }
     public function ClientDataStore(Request $request)
     {
-
-        $user = Auth::user();
-
+        // Define validation rules with camelCase attribute names
+        $validatedData = $request->validate([
+            'client' => 'required|int',
+            'number' => 'required|string|max:15',
+            'yuk_xati' => 'required|string|max:15',
+        ]);
         $crop = ClientData::create([
             'app_id'       => $request->input('id'),
             'client_id'    => $request->input('client'),
@@ -314,7 +319,7 @@ class SifatSertificateController extends Controller
 
             $sertificate = new SifatSertificates();
             $sertificate->app_id = $id;
-            $sertificate->number = $chigitValues['quality'] ? $number : null;
+            $sertificate->number = $number;
             $sertificate->zavod_id = $zavod_id;
             $sertificate->year = $currentYear;
             $sertificate->created_by = \auth()->user()->id;
@@ -329,6 +334,7 @@ class SifatSertificateController extends Controller
         // Load the view and pass data to it
         $pdf = Pdf::loadView('sifat_sertificate.pdf', compact('test','sert_number','formattedDate', 'company', 'qrCode') + $chigitValues);
 
+        return $pdf->stream('sdf');
         // Save the PDF file
         $filePath = storage_path('app/public/sifat_sertificates/certificate_' . $id . '.pdf');
         $pdf->save($filePath);

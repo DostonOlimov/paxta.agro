@@ -9,6 +9,7 @@ use App\Models\OrganizationCompanies;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class OrganizationCompaniesController extends Controller
 {
@@ -184,6 +185,15 @@ class OrganizationCompaniesController extends Controller
         $user = Auth::user();
         $inn = $request->input('inn');
 
+        // Define validation rules with camelCase attribute names
+        $validatedData = $request->validate([
+            'inn' => 'required|int|digits:9',
+            'name' => 'required|string|max:100',
+            'address' => 'required|string|max:50',
+            'owner_name' => 'required|string|max:30',
+            'phone_number' => 'required|string|max:20',
+        ]);
+
         // Check if organization already exists
         $company = OrganizationCompanies::where('inn', $inn)->first();
 
@@ -192,7 +202,7 @@ class OrganizationCompaniesController extends Controller
             $company = OrganizationCompanies::create([
                 'name' => $request->input('name'),
                 'city_id' => $request->input('city_id'),
-                'phone_number' => $request->input('mobile'),
+                'phone_number' => $request->input('phone_number'),
                 'address' => $request->input('address'),
                 'owner_name' => $request->input('owner_name'),
                 'inn' => $inn,
