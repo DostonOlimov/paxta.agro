@@ -94,6 +94,7 @@
         @else
             <h3 class="main__intro" style="color:#f3775b"> To‘da yuqoridagi ko‘rsatkichlari bo‘yicha O’z DSt 596 standartining bandlariga nomuvofiq.</h3>
         @endif
+            <h4>Alohida yozuvlar: Shartnoma raqami - {{ optional($test->client_data)->contract_number }} </h4>
             <div class="row">
         <div class="col-sm-6">
             <span style="padding: 5px; display: block;"><b>Ijrochi :</b>

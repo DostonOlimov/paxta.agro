@@ -23,7 +23,7 @@
         text-align: center;
         font-size: 16px;
         max-width: 90%;
-        line-height: 1.5;
+        line-height: 1.3;
     }
 
     .main__intro {
@@ -172,8 +172,8 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
         <h2 class="main__intro"><b>Berilgan sana :</b> {{ $formattedDate }} - yil</h2>
 
-        <h2 class="main__intro text-left"><b>Ishlab chiqaruvchi (yetkazib beruvchi) nomi : </b> {{ $test->organization->name }}</h2>
-        <h2 class="main__intro text-left"><b>Ishlab chiqaruvchi (yetkazib beruvchi) manzili : </b> {{ $test->organization->full_address }}</h2>
+        <h2 class="main__intro text-left"><b>Ishlab chiqaruvchi (yetkazib beruvchi) nomi : </b>{{ $test->organization->name }}</h2>
+        <h2 class="main__intro text-left"><b>Ishlab chiqaruvchi (yetkazib beruvchi) manzili : </b>{{ $test->organization->full_address }}</h2>
 
         <h2 class="header__intro" style="display: inline;"><b>Texnik chigit to'da raqami : </b> {{$test->crops->party_number}}</h2>
 
@@ -239,10 +239,11 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
             </tbody>
         </table>
         @if($quality)
-            <h3 class="main__intro"> To‘da yuqoridagi ko‘rsatkichlari bo‘yicha O‘z DSt 596 standartining 4.1, 4.2 va 4.3 bandlariga muvofiq.</h3>
+            <h3 class="main__intro" style="margin:0;padding: 0;line-height:1.2;color:#0a52de;"> To‘da yuqoridagi ko‘rsatkichlari bo‘yicha O‘z DSt 596 standartining 4.1, 4.2 va 4.3 bandlariga muvofiq.</h3>
         @else
             <h3 class="main__intro" style="color:#f3775b"> To‘da yuqoridagi ko‘rsatkichlari bo‘yicha O’z DSt 596 standartining bandlariga nomuvofiq.</h3>
         @endif
+            <h4 style="margin-top: 0; padding-top: 2px">Alohida yozuvlar: Shartnoma raqami - {{ optional($test->client_data)->contract_number }} </h4>
     <div style="width: 100%; display: flex; justify-content: space-between;">
         <div style="width: 60%; display: inline-block; padding-bottom: 30px;">
             <b>Ijrochi :</b>
@@ -251,7 +252,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
             mudiri-guruh rahbari : {{ $test->user->lastname . ' ' . ($test->user->name) }}
         </div>
 
-            <div style="width: 30%; @if($quality) padding-top:30px; @else padding-top:60px; @endif text-align: center; display: inline-block;">
+            <div style="width: 30%; @if($quality) padding-top:0; @else padding-top:60px; @endif text-align: center; display: inline-block;">
                 <img src="data:image/png;base64,{{ $qrCode }}" style="height: 100px;" alt="QR Code"><br>
 
                 <span style="display: block; margin-top: 5px;margin-left: 120px;">{{ substr($sert_number, 2) }}</span>

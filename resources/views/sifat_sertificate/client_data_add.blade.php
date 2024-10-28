@@ -100,6 +100,18 @@
                                             </span>
                                         @endif
                                     </div>
+                                    <div
+                                        class="col-md-6 form-group has-feedback {{ $errors->has('contract_number') ? ' has-error' : '' }}">
+                                        <label for="middle-name" class="form-label">Shartnoma raqami
+                                            <label class="text-danger">*</label></label>
+                                        <input type="text" class="form-control" maxlength="15" name="contract_number" required
+                                               value="{{ old('contract_number') }}">
+                                        @if ($errors->has('contract_number'))
+                                            <span class="help-block">
+                                                <strong>Shartnoma raqami noto'g'ri shaklda kiritilgan</strong>
+                                            </span>
+                                        @endif
+                                    </div>
 
 
                                     <div class="form-group col-md-12 col-sm-12">
