@@ -56,13 +56,17 @@
 
                             <form method="post" action="{!! url('sifat-sertificates/client_store') !!}" enctype="multipart/form-data"
                                 class="form-horizontal upperform">
+                                <input class=" radio" type="radio" id="html" name="given_certificate" value="1" checked>
+                                <label for="html">Xaridor ma'lum</label><br>
+                                <input  class="radio" type="radio" id="css" name="given_certificate" value="0">
+                                <label for="css">Xaridor no'malum</label><br>
                                 <div class="row" style="column-gap: 0;">
 
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     <input type="hidden" name="id" value="{{ $id }}">
 
-                                    <div
-                                        class="col-md-6 form-group has-feedback {{ $errors->has('client') ? ' has-error' : '' }}">
+
+                                    <div class="col-md-6 form-group has-feedback certificate">
                                         <label for="number" class="form-label ">Xaridor nomini kiriting<label
                                                 class="text-danger">*</label> </label>
                                         <select id="client" class="form-control owner_search" name="client" required>
@@ -76,7 +80,7 @@
                                         @endif
                                     </div>
                                     <div
-                                        class="col-md-6 form-group has-feedback {{ $errors->has('number') ? ' has-error' : '' }}">
+                                        class="col-md-6 form-group has-feedback certificate">
                                         <label for="middle-name"
                                             class="form-label">{{ trans('app.Avtotransport/vagon raqami') }} <label
                                                 class="text-danger">*</label></label>
@@ -89,10 +93,10 @@
                                         @endif
                                     </div>
                                     <div
-                                        class="col-md-6 form-group has-feedback {{ $errors->has('yuk_xati') ? ' has-error' : '' }}">
+                                        class="col-md-6 form-group has-feedback certificate">
                                         <label for="middle-name" class="form-label">{{ trans('app.Yuk xati raqami') }}
                                             <label class="text-danger">*</label></label>
-                                        <input type="text" class="form-control" maxlength="10" name="yuk_xati" required
+                                        <input type="text" id="yuk_xati" class="form-control" maxlength="10" name="yuk_xati" required
                                             value="{{ old('yuk_xati') }}">
                                         @if ($errors->has('yuk_xati'))
                                             <span class="help-block">
@@ -143,6 +147,40 @@
     <script src="{{ asset('vendors/moment/min/moment.min.js') }}"></script>
     <script src="{{ asset('vendors/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
     <script src="{{ asset('vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') }}"></script>
+    <script>
+        //get sertificate type
+        $(document).ready(function() {
+            const certificate = document.getElementsByClassName("certificate");
+            // Attach event listener to radio button group
+            $('input[name="given_certificate"]').click(function() {
+                var selectedValue = $(this).val();
+
+                // Show the notes based on the selected value
+                if (selectedValue == 0) {
+                    for (let i = 0; i < certificate.length; i++) {
+                        certificate[i].style.display = 'none';
+                    }
+
+                    $('#client').prop('required', false);
+                    $('#car_number').prop('required', false);
+                    $('#yuk_xati').prop('required', false);
+                } else {
+                    var selectedValue = $(this).val();
+
+                    // Show the notes based on the selected value
+                    if (selectedValue == 1) {
+                        for (let i = 0; i < certificate.length; i++) {
+                            certificate[i].style.display = 'inline';
+                        }
+
+                        $('#client').prop('required', true);
+                        $('#car_number').prop('required', true);
+                        $('#yuk_xati').prop('required', true);
+                    }
+                }
+            });
+        });
+    </script>
     <script type="text/javascript">
         function disableButton() {
             var button = document.getElementById('submitter');

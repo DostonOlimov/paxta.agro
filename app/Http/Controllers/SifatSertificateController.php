@@ -135,15 +135,9 @@ class SifatSertificateController extends Controller
     }
     public function ClientDataStore(Request $request)
     {
-        // Define validation rules with camelCase attribute names
-        $validatedData = $request->validate([
-            'client' => 'required|int',
-            'number' => 'required|string|max:15',
-            'yuk_xati' => 'required|string|max:15',
-        ]);
         $crop = ClientData::create([
             'app_id'       => $request->input('id'),
-            'client_id'    => $request->input('client'),
+            'client_id'    => $request->input('client') ?? 0,
             'vagon_number'      => $request->input('number'),
             'yuk_xati'  => $request->input('yuk_xati'),
             'contract_number'  => $request->input('contract_number'),
@@ -335,6 +329,7 @@ class SifatSertificateController extends Controller
         // Load the view and pass data to it
         $pdf = Pdf::loadView('sifat_sertificate.pdf', compact('test','sert_number','formattedDate', 'company', 'qrCode') + $chigitValues);
 
+//        return $pdf->stream('sdf');
         // Save the PDF file
         $filePath = storage_path('app/public/sifat_sertificates/certificate_' . $id . '.pdf');
         $pdf->save($filePath);
