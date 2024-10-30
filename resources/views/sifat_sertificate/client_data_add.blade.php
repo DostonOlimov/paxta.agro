@@ -248,7 +248,7 @@
                         data = data.map((name, index) => {
                             return {
                                 id: name.id,
-                                text: capitalize(name.name + (name.name ? ' - Kod:' + name.kod :
+                                text: capitalize(name.name + (name.name ? ' - STRi:' + name.kod :
                                     ''))
                             }
                         });
@@ -259,7 +259,7 @@
                 },
                 language: {
                     inputTooShort: function() {
-                        return 'Xaridor nomini kiritib izlang..';
+                        return 'Xaridor nomini yoki STRini kiritib izlang ..';
                     },
                     searching: function() {
                         return 'Izlanmoqda...';

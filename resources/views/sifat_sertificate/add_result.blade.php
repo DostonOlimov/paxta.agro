@@ -86,7 +86,7 @@
 
                                                     <td>
                                                         @if ($indicator->nd_name)
-                                                            <input class="form-control" step="0.001"
+                                                            <input class="form-control" step="0.01"
                                                                 name="value{{ $indicator->id }}" required>
                                                         @endif
                                                     </td>
