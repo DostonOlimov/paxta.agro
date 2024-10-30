@@ -321,7 +321,6 @@ class SifatSertificateController extends Controller
             $sertificate->created_by = \auth()->user()->id;
             $sertificate->save();
         }
-        $data = OrganizationCompanies::get();
 
 
         $sert_number = ($currentYear - 2000) * 1000000 + ($test->prepared->kod)*1000 + $number;
@@ -330,9 +329,9 @@ class SifatSertificateController extends Controller
         $qrCode = base64_encode(QrCode::format('png')->size(100)->generate(route('sifat_sertificate.download', $id)));
 
         // Load the view and pass data to it
-        $pdf = Pdf::loadView('sifat_sertificate.pdf', compact('data','test','sert_number','formattedDate', 'company', 'qrCode') + $chigitValues);
+        $pdf = Pdf::loadView('sifat_sertificate.pdf', compact('test','sert_number','formattedDate', 'company', 'qrCode') + $chigitValues);
 
-        return $pdf->stream('sdf');
+//        return $pdf->stream('sdf');
         // Save the PDF file
         $filePath = storage_path('app/public/sifat_sertificates/certificate_' . $id . '.pdf');
         $pdf->save($filePath);

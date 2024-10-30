@@ -184,10 +184,6 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
                 <h2 class="header__intro" style="display: inline;"><b> Yuk xati raqami : </b>{{optional($test->client_data)->yuk_xati }}</h2>
             </div>
         @endif
-            @foreach($data as $d)
-                <h4>{{$d->name}}</h4>
-                <h4>{{$d->full_address}}</h4>
-            @endforeach
 
         <h1 class="header__intro" style="margin-top: 10px;"> ISHLAB CHIQARUVCHI (YETKAZIB BERUVCHI) NING MA’LUMOTLARI</h1>
         <table class="table table-bordered">
