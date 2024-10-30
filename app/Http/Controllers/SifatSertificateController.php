@@ -332,7 +332,7 @@ class SifatSertificateController extends Controller
         // Load the view and pass data to it
         $pdf = Pdf::loadView('sifat_sertificate.pdf', compact('data','test','sert_number','formattedDate', 'company', 'qrCode') + $chigitValues);
 
-//        return $pdf->stream('sdf');
+        return $pdf->stream('sdf');
         // Save the PDF file
         $filePath = storage_path('app/public/sifat_sertificates/certificate_' . $id . '.pdf');
         $pdf->save($filePath);
