@@ -114,8 +114,9 @@ class HomeController extends Controller
             ->get();
 
         $count_amount = $sum_amount->count('akt_amount.id');
-        $sum_amount = $sum_amount ->selectRaw('SUM(akt_amount.amount - dalolatnoma.tara) as total')
+        $sum_amount = $sum_amount->selectRaw('SUM(akt_amount.amount - dalolatnoma.tara) as total')
             ->value('total');;
+
 
         $states = DB::table('tbl_states')->where('country_id', '=', 234)->get()->toArray();
         $crop_names = DB::table('crops_name')->get()->toArray();

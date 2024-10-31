@@ -172,13 +172,13 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
         <h2 class="main__intro"><b>Berilgan sana :</b> {{ $formattedDate }} - yil</h2>
 
-        <h2 class="main__intro text-left"><b>Ishlab chiqaruvchi (yetkazib beruvchi) nomi : </b>{{ $test->organization->name }}</h2>
-        <h2 class="main__intro text-left"><b>Ishlab chiqaruvchi (yetkazib beruvchi) manzili : </b>{{ $test->organization->full_address }}</h2>
+        <h2 class="main__intro text-left"><b>Ishlab chiqaruvchi(yetkazib beruvchi) nomi : </b>{{ $test->organization->name }}</h2>
+        <h2 class="main__intro text-left"><b>Ishlab chiqaruvchi(yetkazib beruvchi) manzili : </b>{{ $test->organization->full_address }}</h2>
 
         <h2 class="header__intro" style="display: inline;"><b>Texnik chigit to'da raqami : </b> {{$test->crops->party_number}}</h2>
 
         @if(optional(optional($test->client_data)->client)->id != 0)
-            <h2 class="main__intro text-left"> <b>Xaridor (yog‘-moy korxonasi) nomi:&nbsp;</b>&nbsp; {{ optional(optional($test->client_data)->client)->name}} &nbsp; </h2>
+            <h2 class="main__intro text-left"> <b>Xaridor(yog‘-moy korxonasi) nomi:&nbsp;</b>&nbsp; {{ optional(optional($test->client_data)->client)->name}} &nbsp; </h2>
             <div style="display: flex !important;  justify-content: space-between !important;">
                 <h2 class="header__intro" style="display: inline;"><b>Avtotransport/ vagon raqami: </b> {{ optional($test->client_data)->vagon_number}}</h2>
                 <h2 class="header__intro" style="display: inline;"><b> Yuk xati raqami : </b>{{optional($test->client_data)->yuk_xati }}</h2>
@@ -251,7 +251,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
     <div style="width: 100%; display: flex; justify-content: space-between;">
         <div style="width: 60%; display: inline-block; padding-bottom: 30px;">
             <b>Ijrochi :</b>
-            {{ optional($test->user->zavod)->region->name }} filialining<br>
+            {{ optional($test->prepared)->region->name }} filialining<br>
             {{ optional(optional($test->user->zavod)->chigit_laboratory)->name }}<br>
             mudiri-guruh rahbari : {{ $test->user->lastname . ' ' . ($test->user->name) }}
         </div>

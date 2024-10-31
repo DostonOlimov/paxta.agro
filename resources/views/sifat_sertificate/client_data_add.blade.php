@@ -56,10 +56,12 @@
 
                             <form method="post" action="{!! url('sifat-sertificates/client_store') !!}" enctype="multipart/form-data"
                                 class="form-horizontal upperform">
-                                <input class=" radio" type="radio" id="html" name="given_certificate" value="1" checked>
-                                <label for="html">Xaridor ma'lum</label><br>
-                                <input  class="radio" type="radio" id="css" name="given_certificate" value="0">
-                                <label for="css">Xaridor no'malum</label><br>
+                                @if($user->branch_id == \App\Models\User::BRANCH_STATE)
+                                    <input class=" radio" type="radio" id="html" name="given_certificate" value="1" checked>
+                                    <label for="html">Xaridor ma'lum</label><br>
+                                    <input  class="radio" type="radio" id="css" name="given_certificate" value="0">
+                                    <label for="css">Xaridor no'malum</label><br>
+                                @endif
                                 <div class="row" style="column-gap: 0;">
 
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">

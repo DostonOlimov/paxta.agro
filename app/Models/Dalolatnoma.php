@@ -98,9 +98,9 @@ class Dalolatnoma  extends Model
 
         // Calculate standard deviation for each column
         $standardDeviations = [];
-        foreach ($selected_array as $select_item){
+        foreach ($selected_array as $key=>$select_item){
             $columnData = $valuesByType->pluck($select_item)->toArray();
-            $standardDeviations[$select_item] = self::calculateStandardDeviation($columnData);
+            $standardDeviations[$select_item] = self::calculateStandardDeviation($columnData,$key);
         }
 
         return $standardDeviations;
@@ -112,7 +112,7 @@ class Dalolatnoma  extends Model
      * @param  array  $columnData
      * @return float|null
      */
-    protected static function calculateStandardDeviation(array $columnData)
+    protected static function calculateStandardDeviation(array $columnData,int $key)
     {
         $n = count($columnData);
 
@@ -121,16 +121,16 @@ class Dalolatnoma  extends Model
         }
 
         // Calculate the average
-        $average = round(array_sum($columnData) / $n,3);
+        $average = round(array_sum($columnData) / $n,8);
+
 
         // Calculate the sum of squares of differences from the average
         $sumOfSquares = 0;
         foreach ($columnData as $value) {
-            $sumOfSquares += pow($value - $average, 2);
+            $sumOfSquares += ($value - $average)**2;
         }
-
         // Calculate the result
-        return sqrt(1 / ($n * ($n - 1)) * $sumOfSquares);
+        return sqrt(round($sumOfSquares,8) / ($n * ($n - 1)));
     }
 
     protected static function boot()

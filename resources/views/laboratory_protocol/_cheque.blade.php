@@ -161,7 +161,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
                 <th style="font-weight: bold; font-size: 20px;" rowspan="1"> {{ number_format($test->laboratory_result->tip->strength_min, 1, ',', '.') }} - {{ number_format($test->laboratory_result->tip->strength_max, 1, ',', '.')}}</th>
                 <th style="font-weight: bold; font-size: 20px;" rowspan="1"> 77,0-86,0</th>
                 <th style="font-weight: bold; font-size: 20px;" rowspan="1"> 5,0-8,5</th>
-                <th style="font-weight: bold; font-size: 20px;" rowspan="1"> </th>
+                <th style="font-weight: bold; font-size: 20px;" rowspan="1">{{ number_format($test->laboratory_result->tip->min, 2, ',', '.') }} - {{ number_format($test->laboratory_result->tip->max, 2, ',', '.')}} </th>
             </tr>
             @if ($final_result)
             @foreach ($final_result as $item)

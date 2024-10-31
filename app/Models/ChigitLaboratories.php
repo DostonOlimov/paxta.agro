@@ -10,6 +10,7 @@ class ChigitLaboratories extends Model
 
     public function zavod()
     {
-        return $this->belongsTo(PreparedCompanies::class, 'city_id');
+        return $this->belongsTo(PreparedCompanies::class, 'zavod_kod','kod');
     }
+
 }

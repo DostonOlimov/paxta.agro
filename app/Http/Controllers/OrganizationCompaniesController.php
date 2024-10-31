@@ -6,6 +6,7 @@ use App\Models\Application;
 use App\Models\Area;
 use App\Models\DefaultModels\tbl_activities;
 use App\Models\OrganizationCompanies;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -172,9 +173,16 @@ class OrganizationCompaniesController extends Controller
     public function myorganizationadd(Request $request)
     {
         $user = Auth::user();
+        $states = DB::table('tbl_states')->where('country_id', '=', 234);
+        if($user->branch_id == User::BRANCH_STATE){
+            $states = $states->where('id',$user->state_id);
+        }
 
-        $states = DB::table('tbl_states')->where('country_id', '=', 234)->get()->toArray();
+        $states = $states->get()->toArray();
         $cities = '';
+        if(count($states) == 1){
+            $cities = DB::table('tbl_cities')->where('state_id', '=', $states[0]->id)->get();
+        }
         $company = null;
 
         return view('front.organization.add', compact( 'states', 'cities', 'company','user'));
@@ -188,7 +196,7 @@ class OrganizationCompaniesController extends Controller
         // Define validation rules with camelCase attribute names
         $validatedData = $request->validate([
             'inn' => 'required|int|digits:9',
-            'name' => 'required|string|max:100',
+            'name' => 'required|string|max:50',
             'address' => 'required|string|max:50',
             'owner_name' => 'required|string|max:30',
             'phone_number' => 'required|string|max:20',

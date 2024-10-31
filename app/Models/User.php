@@ -27,6 +27,7 @@ class User extends Authenticatable
 
     const BRANCH_MAIN = 1;
     const BRANCH_STATE = 2;
+    const BRANCH_AREA = 3;
 
     const CROP_BRANCH_TOLA = 1;
     const CROP_BRANCH_CHIGIT = 2;

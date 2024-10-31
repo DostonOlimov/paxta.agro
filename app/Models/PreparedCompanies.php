@@ -24,4 +24,8 @@ class PreparedCompanies extends Model
     {
         return $this->belongsTo(ChigitLaboratories::class, 'kod','zavod_kod');
     }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id','zavod_id');
+    }
 }

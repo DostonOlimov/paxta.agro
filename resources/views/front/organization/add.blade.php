@@ -188,20 +188,26 @@
                                     </div>
                                 </div>
                                 <div class="form__organization__field">
-                                    <label class="form-label">{{ trans('app.Address') }}</label>
-                                    <textarea class="form-control" id="address" name="address" maxlength="100" required="required" rows="3"
-                                        placeholder="{{ trans('app.Enter Address') }}">{{ $company ? $company->address : '' }}</textarea>
+                                    <label class="form-label" for="address">{{ trans('app.Address') }}</label>
+                                    <textarea
+                                        class="form-control"
+                                        style=""
+                                        id="address"
+                                        name="address"
+                                        maxlength="100"
+                                        required
+                                        rows="2"
+                                        placeholder="{{ trans('app.Enter Address') }}"
+                                    >{{ old('address') }}</textarea>
+
                                     @if ($errors->has('address'))
                                         <span class="help-block">
-                                                <strong class="hf-warning">{{ $errors->first('address') }}</strong>
-                                            </span>
+                                            <strong class="hf-warning">{{ $errors->first('address') }}</strong>
+                                        </span>
                                     @endif
                                 </div>
-                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                <div class="form__organization__field text-center">
-                                    <label class="form-label" style="visibility: hidden;">label</label>
-                                </div>
                             </div>
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             <div class="form-group form-group-buttons">
                                 <a class="btn btn-primary" href="{{ URL::previous() }}">{{ trans('app.Cancel') }}</a>
                                 <button type="submit" class="btn btn-success">{{ trans('app.Submit') }}</button>
@@ -224,71 +230,54 @@
 @endsection
 @section('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/imask/7.4.0/imask.min.js"
-        integrity="sha512-8DS63sErg9A5zQEiT33fVNawEElUBRoBjCryGeufXJ82dLifenpXQDjbAM8MoTKm5NFZvtrB7DoVhOM8InOgkg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            integrity="sha512-8DS63sErg9A5zQEiT33fVNawEElUBRoBjCryGeufXJ82dLifenpXQDjbAM8MoTKm5NFZvtrB7DoVhOM8InOgkg=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <script src="{{ asset('vendors/jquery/dist/jquery.min.js') }}"></script>
+{{--    <script src="{{ asset('vendors/jquery/dist/jquery.min.js') }}"></script>--}}
+{{--    <script src="{{ asset('front/js/applications/organization.js') }}"></script>--}}
 
     <script type="text/javascript">
         $(document).ready(function() {
-            // get kod tn ved from corn's id crops_name
-            let stirInput = document.getElementById('stir');
+            const stirInput = $('#stir');
+            const stirUrl = "{!! url('/getcompany') !!}";
 
-            stirInput.addEventListener('change', () => {
-                let stir = stirInput.value;
-                let stirUrl = "{!! url('/getcompany') !!}";
+            stirInput.on('change', function() {
+                const stir = stirInput.val();
+
                 if (stir.length === 9) {
                     $.ajax({
                         type: 'GET',
                         url: stirUrl,
-                        data: {
-                            stir: stir,
-                        },
+                        data: { stir },
                         success: function(response) {
                             if (response) {
-                                document.getElementById('name').value = response.name;
-                                document.getElementById('owner_name').value = response
-                                    .owner_name;
-                                document.getElementById('phone_number').value = response
-                                    .phone_number;
-                                document.getElementById('address').value = response.address;
-                                document.getElementById('state').value = response.state;
-                                $('#city').empty();
-                                $('#city').append($('<option>', {
+                                $('#name').val(response.name).prop('readonly', true);
+                                $('#owner_name').val(response.owner_name).prop('readonly', true);
+                                $('#phone_number').val(response.phone_number).prop('readonly', true);
+                                $('#address').val(response.address).prop('readonly', true);
+                                $('#state').val(response.state).prop('disabled', true);
+
+                                $('#city').empty().append($('<option>', {
                                     value: response.city,
                                     text: response.cityName
-                                }));
-                                //make only read inputs
-                                $('#name').prop('readonly', true);
-                                $('#owner_name').prop('readonly', true);
-                                $('#phone_number').prop('readonly', true);
-                                $('#address').prop('readonly', true);
-                                $('#state').prop('disabled', true);
-                                $('#city').prop('disabled', true);
+                                })).prop('disabled', true);
                             } else {
-                                let stir = $('#stir').val();
+                                const stirValue = stirInput.val();
                                 $('#myForm')[0].reset();
-                                $('#name').val('');
-                                $('#owner_name').val('');
-                                $('#phone_number').val('');
-                                $('#address').val('');
-                                $('#state').val('1');
-                                $('#city').empty();
-                                $('#stir').val(stir);
-                                $('#name').prop('readonly', false);
-                                $('#owner_name').prop('readonly', false);
-                                $('#phone_number').prop('readonly', false);
-                                $('#address').prop('readonly', false);
-                                $('#state').prop('disabled', false);
-                                $('#city').prop('disabled', false);
-                            }
 
+                                $('#stir').val(stirValue);
+                                $('#name, #owner_name, #phone_number, #address').val('').prop('readonly', false);
+                                $('#state').val('1').prop('disabled', false);
+                                $('#city').empty().prop('disabled', false);
+                            }
+                        },
+                        error: function() {
+                            console.error("Failed to fetch data from server.");
                         }
                     });
                 }
-
             });
-        })
+        });
 
         function getCityFunction(url, stateid) {
             $.ajax({

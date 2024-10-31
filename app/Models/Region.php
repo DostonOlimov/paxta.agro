@@ -46,4 +46,5 @@ class Region extends Model
     {
         return $this->belongsTo(HviFiles::class, 'id','state_id');
     }
+
 }

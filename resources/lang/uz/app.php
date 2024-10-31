@@ -387,5 +387,6 @@ return[
     'Mahsulot ma\'lumotlari' => 'Mahsulot ma\'lumotlari',
     'Yuk ma\'lumotlari' => 'Yuk ma\'lumotlari',
     'Sifat ko\'rsatkichlari' => 'Sifat ko\'rsatkichlari',
+    'Laboratoriyani tanlang' => 'Sinov laboratoriyasini tanlang'
 
 ];

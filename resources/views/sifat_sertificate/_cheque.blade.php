@@ -35,7 +35,7 @@
         <div class="col-md-6" style="font-size: 28px"><b>Yuk xati:</b> {{ optional($test->client_data)->yuk_xati }}</div>
     </div>
 
-    <h3 class="text-center"> ISHLAB CHIQARUVCHI (ETKAZIB BERUVCHI) NING MA’LUMOTLARI</h3>
+    <h3 class="text-center"> ISHLAB CHIQARUVCHI (YETKAZIB BERUVCHI) NING MA’LUMOTLARI</h3>
     <table class="table table-bordered" >
         <thead>
             <tr>
@@ -94,12 +94,15 @@
         @else
             <h3 class="main__intro" style="color:#f3775b"> To‘da yuqoridagi ko‘rsatkichlari bo‘yicha O’z DSt 596 standartining bandlariga nomuvofiq.</h3>
         @endif
-            <h4>Alohida yozuvlar: Shartnoma raqami - {{ optional($test->client_data)->contract_number }} </h4>
+        <h5 style="margin-top: 10px; line-height: 1.2">
+            Alohida yozuvlar: Sifat sertifikati O'zDst 596 standartiga to'liq rioya qilinganda va QR-kod bilan tasdiqlanganda haqiqiy hisoblanadi.
+            Shartnoma raqami: <span style="font-style: normal">{{ optional($test->client_data)->contract_number }}</span>
+        </h5>
             <div class="row">
         <div class="col-sm-6">
             <span style="padding: 5px; display: block;"><b>Ijrochi :</b>
-            {{ optional($test->user->zavod)->region->name }} filialining<br>
-            {{ optional(optional($test->user->zavod)->chigit_laboratory)->name }}<br>
+            {{ optional($test->prepared)->region->name }} filialining<br>
+            {{ optional(optional($test->prepared)->chigit_laboratory)->name }}<br>
             mudiri-guruh rahbari :
             {{ $test->user->lastname . ' ' . ($test->user->name) }}
 

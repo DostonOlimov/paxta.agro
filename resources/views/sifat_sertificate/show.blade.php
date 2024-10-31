@@ -46,7 +46,7 @@
             background-position: center;
             background-repeat: no-repeat;
             background-size: auto;
-            opacity: 0.3; /* Apply opacity only to the background image */
+            opacity: 0.1; /* Apply opacity only to the background image */
             z-index: -1; /* Place background behind content */
             pointer-events: none; /* Ensures background is not interactive */
         }

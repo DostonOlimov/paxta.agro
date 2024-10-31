@@ -19,6 +19,7 @@
     {{--    <!-- My style files --> --}}
     <link href="{{ asset('resources/assets/plugins/sweetalert2/sweetalert2.min.css') }}"
           rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="{{ asset('build/css/bootstrap-datetimepicker.min.css') }}">
     <link rel="stylesheet" type="text/css"
           href="{{ asset('resources/assets/plugins/select2/dist/css/select2.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('resources/assets/css/style.css') }}">
@@ -81,6 +82,7 @@
 <script src="{{ asset('resources/assets/js/vendors/bootstrap.bundle.min.js') }}"></script>
 
 <script src="{{ asset('vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') }}"></script>
+
 
 <!-- FILE UPLOADES JS -->
 <script src="{{ asset('resources/assets/plugins/fileupload/js/fileupload.min.js') }}"></script>

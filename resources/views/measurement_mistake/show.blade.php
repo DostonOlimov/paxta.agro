@@ -554,7 +554,7 @@
                                                 </tbody>
                                             </table>
                                             </div>
-                                                <div>Klassiyor: {{$result->created_by}}</div>
+                                                <div>Ijrochi: ____________________________________________</div>
                                         </div>
                                     </div>
                                         <div class="py-3">

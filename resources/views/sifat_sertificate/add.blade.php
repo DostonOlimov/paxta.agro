@@ -60,7 +60,42 @@
 
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     <input type="hidden" name="organization" value="{{ $organization }}">
-
+                                    @if($user->branch_id == \App\Models\User::BRANCH_STATE)
+                                        <div class="col-md-6">
+                                            <div class="form-group overflow-hidden">
+                                                <label class="form-label">{{ trans('app.Laboratoriyani tanlang') }}<label
+                                                        class="text-danger">*</label></label>
+                                                <select class="w-100 form-control name_of_corn custom-select" name="laboratory" required>
+                                                    @if (count($laboratories))
+                                                        <option value="">
+                                                            {{ trans('app.Laboratoriyani tanlang') }}
+                                                        </option>
+                                                    @endif
+                                                    @if (!empty($laboratories))
+                                                        @foreach ($laboratories as $name)
+                                                            <option value="{{ $name->id }}"> {{ $name->name }} </option>
+                                                        @endforeach
+                                                    @endif
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 form-group {{ $errors->has('dob') ? ' has-error' : '' }}">
+                                            <label class="form-label">{{trans('app.Ariza sanasi')}} <label class="text-danger">*</label></label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">
+                                                        <i class="fa fa-calendar tx-16 lh-0 op-6"></i>
+                                                    </div>
+                                                </div>
+                                                <input type="text" id="date_of_birth" class="form-control dob" placeholder="<?php echo getDatepicker();?>" name="dob" value="{{ old('dob') }}" onkeypress="return false;" required />
+                                            </div>
+                                            @if ($errors->has('dob'))
+                                                <span class="help-block">
+                                                <strong style="margin-left:27%;">Ariza sanasi noto'g'ti shaklda kiritilgan</strong>
+                                            </span>
+                                            @endif
+                                        </div>
+                                    @endif
                                     <div class="col-md-6">
                                         <div class="form-group overflow-hidden">
                                             <label class="form-label">{{ trans('app.Sertifikatlanuvchi mahsulot') }}<label
