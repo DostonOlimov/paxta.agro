@@ -20,6 +20,10 @@ class OrganizationCompanies extends Model
     {
         return $this->belongsTo(Area::class, 'city_id');
     }
+    public function sifat_contract()
+    {
+        return $this->belongsTo(SifatContracts::class, 'id','organization_id');
+    }
     public function area()
     {
         return $this->belongsTo(Area::class, 'city_id');

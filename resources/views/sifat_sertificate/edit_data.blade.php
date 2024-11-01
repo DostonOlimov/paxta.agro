@@ -1,6 +1,5 @@
 @extends('layouts.front')
 @section('content')
-    @if(Auth::user()->zavod_id)
         <style>
             @media screen and (max-width: 768px) {
                 .my_header .navbar {
@@ -132,15 +131,7 @@
                 </div>
             </div>
         </div>
-    @else
-        <div class="section" role="main">
-            <div class="card">
-                <div class="card-body text-center">
-                    <span class="titleup text-danger"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp {{ trans('app.You Are Not Authorize This page.')}}</span>
-                </div>
-            </div>
-        </div>
-    @endif
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="{{ URL::asset('vendors/moment/min/moment.min.js') }}"></script>
     <script src="{{ URL::asset('vendors/bootstrap-daterangepicker/daterangepicker.js') }}"></script>

@@ -8,7 +8,7 @@
             <img  height="300" src="{{ asset('/img/dashboard/gerb.png') }}">
         </div>
     @endif
-        <h2 style="text-align: center">O’zbekiston Respublikasi Qishloq xo’jaligi vazirligi huzuridagi <br> Agrosanoat majmui ustidan nazorat qilish
+        <h2 style="text-align: center"> Agrosanoat majmui ustidan nazorat qilish
             Inspeksiyasi  qoshidagi <br> “Qishloq xo‘jaligi mahsulotlari sifatini baholash markazi” <br> davlat muassasasi</h2>
 
     @if($quality)
@@ -96,16 +96,19 @@
         @endif
         <h5 style="margin-top: 10px; line-height: 1.2">
             Alohida yozuvlar: Sifat sertifikati O'zDst 596 standartiga to'liq rioya qilinganda va QR-kod bilan tasdiqlanganda haqiqiy hisoblanadi.
-            Shartnoma raqami: <span style="font-style: normal">{{ optional($test->client_data)->contract_number }}</span>
+            Shartnoma raqami: <span style="font-style: normal">{{ optional(optional($test->organization)->sifat_contract)->number }}</span>
         </h5>
             <div class="row">
         <div class="col-sm-6">
             <span style="padding: 5px; display: block;"><b>Ijrochi :</b>
             {{ optional($test->prepared)->region->name }} filialining<br>
-            {{ optional(optional($test->prepared)->chigit_laboratory)->name }}<br>
-            mudiri-guruh rahbari :
+            @if(Auth::User()->role == \App\Models\User::ROLE_STATE_CHIGIT)
+                bosh mutaxassissi:
+            @else
+                {{ optional(optional($test->prepared)->chigit_laboratory)->name }}<br>
+                    mudiri-guruh rahbari :
+            @endif
             {{ $test->user->lastname . ' ' . ($test->user->name) }}
-
         </span>
         </div>
         <div class="col-sm-2"></div>

@@ -1,7 +1,6 @@
 @extends('layouts.front')
 @section('content')
 
-    @if (Auth::user()->zavod_id)
         <style>
             @media screen and (max-width: 768px) {
                 main {
@@ -60,7 +59,7 @@
 
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     <input type="hidden" name="organization" value="{{ $organization }}">
-                                    @if($user->branch_id == \App\Models\User::BRANCH_STATE)
+                                    @if($user->role == \App\Models\User::ROLE_STATE_CHIGIT)
                                         <div class="col-md-6">
                                             <div class="form-group overflow-hidden">
                                                 <label class="form-label">{{ trans('app.Laboratoriyani tanlang') }}<label
@@ -192,16 +191,6 @@
                 </div>
             </div>
         </div>
-    @else
-        <div class="section" role="main">
-            <div class="card">
-                <div class="card-body text-center">
-                    <span class="titleup text-danger"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp
-                        {{ trans('app.You Are Not Authorize This page.') }}</span>
-                </div>
-            </div>
-        </div>
-    @endif
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="{{ asset('vendors/moment/min/moment.min.js') }}"></script>
     <script src="{{ asset('vendors/bootstrap-daterangepicker/daterangepicker.js') }}"></script>

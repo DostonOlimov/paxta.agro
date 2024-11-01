@@ -444,6 +444,14 @@ Route::group(['prefix' => 'laboratory-protocol', 'middleware' => 'auth'], functi
     Route::post('/store', '\App\Http\Controllers\LaboratoryProtocolController@store');
     Route::get('/change/{id}', '\App\Http\Controllers\LaboratoryProtocolController@change_status');
 });
+//Laboratory results
+Route::group(['prefix' => 'sifat-contracts', 'middleware' => 'auth'], function () {
+    Route::get('/list', '\App\Http\Controllers\SifatContractsController@list')->name('sifat_contracts.list');
+    Route::get('/add', '\App\Http\Controllers\SifatContractsController@add')->name('sifat_contracts.add');
+    Route::get('/view/{id}', '\App\Http\Controllers\SifatContractsController@view');
+    Route::post('/store', '\App\Http\Controllers\SifatContractsController@store');
+    Route::get('/change/{id}', '\App\Http\Controllers\SifatContractsController@change_status');
+});
 
 //Operators
 Route::middleware(['auth'])->group(function() {

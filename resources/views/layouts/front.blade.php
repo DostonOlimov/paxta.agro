@@ -37,7 +37,7 @@
     @yield('styles')
 </head>
 
-@if(Auth::User()->zavod_id)
+@if(Auth::User()->role == \App\Models\User::ROLE_CITY_CHIGIT or Auth::User()->role == \App\Models\User::ROLE_STATE_CHIGIT)
 <body class="app">
 <!-- partial:partials/_sidebar.php -->
 <nav>
@@ -84,7 +84,7 @@
 <script src="{{ asset('vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') }}"></script>
 
 
-<!-- FILE UPLOADES JS -->
+{{--<!-- FILE UPLOADES JS -->--}}
 <script src="{{ asset('resources/assets/plugins/fileupload/js/fileupload.min.js') }}"></script>
 <script src="{{ asset('resources/assets/plugins/fileupload/js/file-upload.js') }}"></script>
 <script src="{{ asset('resources/assets/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
@@ -111,7 +111,7 @@
 <script src="{{ asset('resources/assets/js/uz-latn.js') }}"></script>
 <script src="{{ asset('vendors/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
 
-{{--<script src="/js/num.js"></script>--}}
+<script src="/js/num.js"></script>
 <script src="{{ asset('resources/assets/plugins/print/dist/jQuery.print.min.js') }}"></script>
 <script src="{{ asset('resources/assets/plugins/cropper/cropper.min.js') }}"></script>
 <script src="{{ asset('build/js/control.js') }}"></script>

@@ -43,7 +43,7 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user)
     {
-        if ($user->zavod_id ) {
+        if ($user->role == User::ROLE_CITY_CHIGIT or $user->role == User::ROLE_STATE_CHIGIT ) {
             return redirect('/sifat-sertificates/list');
         } else {
             return redirect($this->redirectTo);

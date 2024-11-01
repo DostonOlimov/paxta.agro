@@ -1,7 +1,6 @@
 @extends('layouts.front')
 @section('content')
 
-    @if (Auth::user()->zavod_id)
         <style>
             @media screen and (max-width: 768px) {
                 main {
@@ -106,18 +105,6 @@
                                             </span>
                                         @endif
                                     </div>
-                                    <div
-                                        class="col-md-6 form-group has-feedback {{ $errors->has('contract_number') ? ' has-error' : '' }}">
-                                        <label for="middle-name" class="form-label">Shartnoma raqami
-                                            <label class="text-danger">*</label></label>
-                                        <input type="text" class="form-control" maxlength="15" name="contract_number" required
-                                               value="{{ old('contract_number') }}">
-                                        @if ($errors->has('contract_number'))
-                                            <span class="help-block">
-                                                <strong>Shartnoma raqami noto'g'ri shaklda kiritilgan</strong>
-                                            </span>
-                                        @endif
-                                    </div>
 
 
                                     <div class="form-group col-md-12 col-sm-12">
@@ -135,16 +122,6 @@
                 </div>
             </div>
         </div>
-    @else
-        <div class="section" role="main">
-            <div class="card">
-                <div class="card-body text-center">
-                    <span class="titleup text-danger"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp
-                        {{ trans('app.You Are Not Authorize This page.') }}</span>
-                </div>
-            </div>
-        </div>
-    @endif
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="{{ asset('vendors/moment/min/moment.min.js') }}"></script>
     <script src="{{ asset('vendors/bootstrap-daterangepicker/daterangepicker.js') }}"></script>

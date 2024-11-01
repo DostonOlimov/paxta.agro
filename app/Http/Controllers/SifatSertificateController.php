@@ -152,7 +152,6 @@ class SifatSertificateController extends Controller
             'client_id'    => $request->input('client') ?? 0,
             'vagon_number'      => $request->input('number'),
             'yuk_xati'  => $request->input('yuk_xati'),
-            'contract_number'  => $request->input('contract_number'),
         ]);
 
 
@@ -316,7 +315,7 @@ class SifatSertificateController extends Controller
         // date format
         $formattedDate = formatUzbekDateInLatin($test->date);
         $currentYear = date('Y');
-        $zavod_id = $test->user->zavod_id;
+        $zavod_id = $test->prepared_id;
         $number = 0;
         if($chigitValues['quality']){
             $number = SifatSertificates::where('zavod_id', $zavod_id)

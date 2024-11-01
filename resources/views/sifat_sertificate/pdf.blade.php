@@ -246,14 +246,19 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
         @endif
             <h5 style="margin-top: 10px; line-height: 1.2">
                 Alohida yozuvlar: Sifat sertifikati O'zDst 596 standartiga to'liq rioya qilinganda va QR-kod bilan tasdiqlanganda haqiqiy hisoblanadi.
-                Shartnoma raqami: <span style="font-style: normal">{{ optional($test->client_data)->contract_number }}</span>
+                Shartnoma raqami: <span style="font-style: normal">{{ optional(optional($test->organization)->sifat_contract)->number }}</span>
             </h5>
     <div style="width: 100%; display: flex; justify-content: space-between;">
         <div style="width: 60%; display: inline-block; padding-bottom: 30px;">
-            <b>Ijrochi :</b>
+             <b>Ijrochi :</b>
             {{ optional($test->prepared)->region->name }} filialining<br>
-            {{ optional(optional($test->user->zavod)->chigit_laboratory)->name }}<br>
-            mudiri-guruh rahbari : {{ $test->user->lastname . ' ' . ($test->user->name) }}
+            @if(Auth::User()->role == \App\Models\User::ROLE_STATE_CHIGIT)
+                     bosh mutaxassissi:
+                 @else
+                     {{ optional(optional($test->prepared)->chigit_laboratory)->name }}<br>
+                     mudiri-guruh rahbari :
+                 @endif
+                 {{ $test->user->lastname . ' ' . ($test->user->name) }}
         </div>
 
             <div style="width: 30%; @if($quality) padding-top:0; @else padding-top:60px; @endif text-align: center; display: inline-block;">

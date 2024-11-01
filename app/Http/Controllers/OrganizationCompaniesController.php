@@ -226,12 +226,14 @@ class OrganizationCompaniesController extends Controller
                 'time' => now(),
             ]);
 
+        }
+        if($company->sifat_contract){
             return redirect()->route('sifat-sertificates.add', $company->id)
                 ->with('message', 'Successfully Submitted');
+        }else{
+            return redirect()->route('sifat_contracts.add', 'company_id='. $company->id)
+                ->with('message', 'Successfully Submitted');
         }
-
-        return redirect()->route('sifat-sertificates.add', $company->id)
-            ->with('message', 'Successfully Submitted');
     }
 
     public function myorganizationview ($id)

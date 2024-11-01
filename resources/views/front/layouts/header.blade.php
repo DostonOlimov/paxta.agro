@@ -74,6 +74,15 @@ $currentFlag = "/img/flags/united-kingdom.png";
             <nav class="navbar">
                 <a href="{{ url('/sifat-sertificates/list') }}" class="nav-logo js-anchor-link"><img  src="{{ asset('/resources/assets/images/paxta_logo.png') }}"
                         alt="Logo" /></a>
+                <div>
+                    <div class="dropdown">
+                        <div id="currentYear" class="menu-year" style="background-color: var(--main-font-color)"><i class="fa fa-list"></i> </div>
+                        <div class="my-dropdown-year">
+                            <a href="{!! url('/sifat-sertificates/list') !!}" ><b>Sifat sertifikatlari</b></a>
+                            <a href="{!! url('/sifat-contracts/list') !!}" ><b>Shartnomalar</b></a>
+                        </div>
+                    </div>
+                </div>
                 <h4 style="color: white;">PAXTA MAHSULOTLARINI SERTIFIKATLASHTIRISH AVTOMATLASHTIRILGAN TIZIMI</h4>
 
                 <div class="right-side-header">

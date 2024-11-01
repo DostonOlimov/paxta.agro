@@ -38,6 +38,8 @@ class User extends Authenticatable
     const ROLE_DIROCTOR = 60;
     const LABORATORY_DIRECTOR = 90;
     const LABORATORY_EMPLOYEE = 91;
+    const ROLE_STATE_CHIGIT = 100;
+    const ROLE_CITY_CHIGIT = 101;
     /**
      * The attributes that are mass assignable.
      *

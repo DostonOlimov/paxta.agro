@@ -1,8 +1,6 @@
 @extends('layouts.front')
 @section('content')
-
-    @if (Auth::user()->zavod_id)
-        <style>
+     <style>
             @media screen and (max-width: 768px) {
                 main {
                     margin: 100px 0 !important;
@@ -169,7 +167,7 @@
                                     </label>
                                     <div class="">
                                         <select class="form-control w-100 city_of_state custom-select" name="city_id"
-                                            id="city" required="">
+                                            id="city2" required="">
 
                                             @if (!empty($cities))
                                                 @foreach ($cities as $city)
@@ -217,67 +215,72 @@
                 </div>
             </div>
         </div>
-    @else
-        <div class="section" role="main">
-            <div class="card">
-                <div class="card-body text-center">
-                    <span class="titleup text-danger"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp
-                        {{ trans('app.You Are Not Authorize This page.') }}</span>
-                </div>
-            </div>
-        </div>
-    @endif
 @endsection
 @section('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/imask/7.4.0/imask.min.js"
             integrity="sha512-8DS63sErg9A5zQEiT33fVNawEElUBRoBjCryGeufXJ82dLifenpXQDjbAM8MoTKm5NFZvtrB7DoVhOM8InOgkg=="
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-{{--    <script src="{{ asset('vendors/jquery/dist/jquery.min.js') }}"></script>--}}
-{{--    <script src="{{ asset('front/js/applications/organization.js') }}"></script>--}}
-
     <script type="text/javascript">
         $(document).ready(function() {
-            const stirInput = $('#stir');
-            const stirUrl = "{!! url('/getcompany') !!}";
+            // get kod tn ved from corn's id crops_name
+            let stirInput = document.getElementById('stir');
 
-            stirInput.on('change', function() {
-                const stir = stirInput.val();
-
+            stirInput.addEventListener('change', () => {
+                let stir = stirInput.value;
+                let stirUrl = "{!! url('/getcompany') !!}";
                 if (stir.length === 9) {
                     $.ajax({
                         type: 'GET',
                         url: stirUrl,
-                        data: { stir },
+                        data: {
+                            stir: stir,
+                        },
                         success: function(response) {
                             if (response) {
-                                $('#name').val(response.name).prop('readonly', true);
-                                $('#owner_name').val(response.owner_name).prop('readonly', true);
-                                $('#phone_number').val(response.phone_number).prop('readonly', true);
-                                $('#address').val(response.address).prop('readonly', true);
-                                $('#state').val(response.state).prop('disabled', true);
-
-                                $('#city').empty().append($('<option>', {
+                                document.getElementById('name').value = response.name;
+                                document.getElementById('owner_name').value = response
+                                    .owner_name;
+                                document.getElementById('phone_number').value = response
+                                    .phone_number;
+                                document.getElementById('address').value = response.address;
+                                document.getElementById('state').value = response.state;
+                                $('#city2').empty();
+                                $('#city2').append($('<option>', {
                                     value: response.city,
                                     text: response.cityName
-                                })).prop('disabled', true);
+                                }));
+                                //make only read inputs
+                                $('#name').prop('readonly', true);
+                                $('#owner_name').prop('readonly', true);
+                                $('#phone_number').prop('readonly', true);
+                                $('#address').prop('readonly', true);
+                                $('#state').prop('disabled', true);
+                                $('#city2').prop('disabled', true);
                             } else {
-                                const stirValue = stirInput.val();
+                                let stir =  $('#stir').val();
                                 $('#myForm')[0].reset();
-
-                                $('#stir').val(stirValue);
-                                $('#name, #owner_name, #phone_number, #address').val('').prop('readonly', false);
-                                $('#state').val('1').prop('disabled', false);
-                                $('#city').empty().prop('disabled', false);
+                                $('#name').val('');
+                                $('#owner_name').val('');
+                                $('#phone_number').val('');
+                                $('#address').val('');
+                                $('#state').val('1');
+                                $('#city2').empty();
+                                $('#stir').val(stir);
+                                $('#name').prop('readonly', false);
+                                $('#owner_name').prop('readonly', false);
+                                $('#phone_number').prop('readonly', false);
+                                $('#address').prop('readonly', false);
+                                $('#state').prop('disabled', false);
+                                $('#city2').prop('disabled', false);
                             }
-                        },
-                        error: function() {
-                            console.error("Failed to fetch data from server.");
+
                         }
                     });
                 }
+
             });
-        });
+        })
 
         function getCityFunction(url, stateid) {
             $.ajax({

@@ -14,8 +14,7 @@ class ClientData extends Model
         'app_id',
         'client_id',
         'vagon_number',
-        'yuk_xati',
-        'contract_number'
+        'yuk_xati'
     ];
 
     public function client()
