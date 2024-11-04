@@ -108,7 +108,7 @@
                 {{ optional(optional($test->prepared)->chigit_laboratory)->name }}<br>
                     mudiri-guruh rahbari :
             @endif
-            {{ $test->user->lastname . ' ' . ($test->user->name) }}
+            {{ optional($test->user)->lastname . ' ' . (optional($test->user)->name) }}
         </span>
         </div>
         <div class="col-sm-2"></div>

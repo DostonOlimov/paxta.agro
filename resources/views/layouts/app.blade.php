@@ -56,7 +56,7 @@
 <?php
 $settings = settings();
 ?>
-@if(!Auth::User()->zavod_id)
+@if(!(Auth::User()->role == \App\Models\User::ROLE_CITY_CHIGIT or Auth::User()->role == \App\Models\User::ROLE_STATE_CHIGIT))
 <!-- partial:partials/_sidebar.php -->
 @include('layouts.blocks.sidebar')
 <!-- partial -->
