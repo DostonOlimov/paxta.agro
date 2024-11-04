@@ -65,6 +65,47 @@
         display: flex;
         align-items: center;
     }
+
+    .dropdown-pcScreen {
+        display: none;
+    }
+
+    @media (max-width: 768px) {
+        .my-dropdown-year {
+            right: 9px !important;
+        }
+        .menu-year {
+            width: 64px !important;
+            margin: 3px 0;
+        }
+        .dropdown-mobileScreen {
+            display: none;
+        }
+
+        .dropdown-pcScreen {
+            display: block;
+        }
+
+        .right-side-header {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            grid-column-gap: 0px;
+            grid-row-gap: 0px;
+        }
+
+        .dropdown {
+            grid-area: 1 / 1 / 2 / 2;
+        }
+
+        .tizimdan-chiqish {
+            grid-area: 1 / 2 / 2 / 3;
+        }
+
+        .dropdown-pcScreen {
+            grid-area: 2 / 1 / 3 / 3;
+        }
+    }
 </style>
 @php
 $currentFlag = "/img/flags/uzbekistan.png";
@@ -81,7 +122,7 @@ $currentFlag = "/img/flags/united-kingdom.png";
                 <div class="logo-left-container">
                     <a href="{{ url('/sifat-sertificates/list') }}" class="nav-logo js-anchor-link"><img src="{{ asset('/resources/assets/images/paxta_logo.png') }}"
                             alt="Logo" /></a>
-                    <div class="dropdown">
+                    <div class="dropdown dropdown-mobileScreen">
                         <div id="currentYear" class="menu-year" style="color: var(--main-font-color); background-color: white; cursor: pointer; padding-bottom: 33px !important;"><i class="fa fa-list"></i> </div>
                         <div class="my-dropdown-year">
                             <a href="{!! url('/sifat-sertificates/list') !!}"><b>Sifat sertifikatlari</b></a>
@@ -113,6 +154,14 @@ $currentFlag = "/img/flags/united-kingdom.png";
                             </form>
                         </a>
                         <div class="tizimdan-chiqish-text">{{trans('message.Tizimdan chiqish')}}</div>
+                    </div>
+
+                    <div class="dropdown dropdown-pcScreen">
+                        <div id="currentYear" class="menu-year" style="color: var(--main-font-color); background-color: white; cursor: pointer; padding-bottom: 33px !important;"><i class="fa fa-list"></i> </div>
+                        <div class="my-dropdown-year">
+                            <a href="{!! url('/sifat-sertificates/list') !!}"><b>Sifat sertifikatlari</b></a>
+                            <a href="{!! url('/sifat-contracts/list') !!}"><b>Shartnomalar</b></a>
+                        </div>
                     </div>
                 </div>
 
