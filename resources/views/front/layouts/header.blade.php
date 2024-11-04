@@ -54,10 +54,16 @@
         visibility: visible;
         opacity: 1;
     }
+
     h4 {
         margin-top: 5px;
         margin-bottom: 0 !important;
         padding: 0px !important;
+    }
+
+    .logo-left-container {
+        display: flex;
+        align-items: center;
     }
 </style>
 @php
@@ -72,14 +78,14 @@ $currentFlag = "/img/flags/united-kingdom.png";
     <div class="nav-bg">
         <div class="container">
             <nav class="navbar">
-                <a href="{{ url('/sifat-sertificates/list') }}" class="nav-logo js-anchor-link"><img  src="{{ asset('/resources/assets/images/paxta_logo.png') }}"
-                        alt="Logo" /></a>
-                <div>
+                <div class="logo-left-container">
+                    <a href="{{ url('/sifat-sertificates/list') }}" class="nav-logo js-anchor-link"><img src="{{ asset('/resources/assets/images/paxta_logo.png') }}"
+                            alt="Logo" /></a>
                     <div class="dropdown">
-                        <div id="currentYear" class="menu-year" style="background-color: var(--main-font-color)"><i class="fa fa-list"></i> </div>
+                        <div id="currentYear" class="menu-year" style="color: var(--main-font-color); background-color: white; cursor: pointer; padding-bottom: 33px !important;"><i class="fa fa-list"></i> </div>
                         <div class="my-dropdown-year">
-                            <a href="{!! url('/sifat-sertificates/list') !!}" ><b>Sifat sertifikatlari</b></a>
-                            <a href="{!! url('/sifat-contracts/list') !!}" ><b>Shartnomalar</b></a>
+                            <a href="{!! url('/sifat-sertificates/list') !!}"><b>Sifat sertifikatlari</b></a>
+                            <a href="{!! url('/sifat-contracts/list') !!}"><b>Shartnomalar</b></a>
                         </div>
                     </div>
                 </div>
@@ -96,15 +102,16 @@ $currentFlag = "/img/flags/united-kingdom.png";
                         </div>
                     </div>
                     <div class="tizimdan-chiqish">
-                        <a  href="#" title="Logout" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                        <svg width="20px" height="20px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-                            <path fill="none" d="M0 0h16v16H0z" />
-                            <path d="M14 14V2H8V0h8v16H8v-2zm-9.002-.998L0 8l5-5 1.416 1.416L3.828 7H12v2H3.828l2.586 2.586z" />
-                        </svg>
-                        <form id="logout-form" action="{{route('logout')}}" method="POST"
-                              style="display: none;">
-                            @csrf
-                        </form></a>
+                        <a href="#" title="Logout" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                            <svg width="20px" height="20px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="none" d="M0 0h16v16H0z" />
+                                <path d="M14 14V2H8V0h8v16H8v-2zm-9.002-.998L0 8l5-5 1.416 1.416L3.828 7H12v2H3.828l2.586 2.586z" />
+                            </svg>
+                            <form id="logout-form" action="{{route('logout')}}" method="POST"
+                                style="display: none;">
+                                @csrf
+                            </form>
+                        </a>
                         <div class="tizimdan-chiqish-text">{{trans('message.Tizimdan chiqish')}}</div>
                     </div>
                 </div>
