@@ -189,7 +189,7 @@ class SifatSertificateController extends Controller
 
     public function showapplication($id)
     {
-        $test = Application::findOrFail($id);
+        $test = Application::with('user')->findOrFail($id);
         $company = OrganizationCompanies::with('city')->findOrFail($test->organization_id);
         $formattedDate = formatUzbekDateInLatin($test->date);
 
@@ -317,12 +317,12 @@ class SifatSertificateController extends Controller
         $currentYear = date('Y');
         $zavod_id = $test->prepared_id;
         $number = 0;
-        if($chigitValues['quality']){
+//        if($chigitValues['quality']){
             $number = SifatSertificates::where('zavod_id', $zavod_id)
                 ->where('year', $currentYear)
                 ->where('type',$type)
                 ->max('number');
-        }
+//        }
         $number = $number ? $number + 1 : 1;
 
         // create sifat certificate

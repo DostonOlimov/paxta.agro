@@ -258,7 +258,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
                      {{ optional(optional($test->prepared)->chigit_laboratory)->name }}<br>
                      mudiri-guruh rahbari :
                  @endif
-                 {{ $test->user->lastname . ' ' . ($test->user->name) }}
+                 {{ optional($test->user)->lastname . ' ' . (optional($test->user)->name) }}
         </div>
 
             <div style="width: 30%; @if($quality) padding-top:0; @else padding-top:60px; @endif text-align: center; display: inline-block;">
