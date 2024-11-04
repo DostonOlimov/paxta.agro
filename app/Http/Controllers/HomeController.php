@@ -25,7 +25,7 @@ class HomeController extends Controller
     {
         $user = auth()->user(); // Get the authenticated user
 
-        if ($user->zavod_id) {
+        if ($user->role == \App\Models\User::ROLE_CITY_CHIGIT or $user->role == \App\Models\User::ROLE_STATE_CHIGIT) {
             return redirect('/sifat-sertificates/list'); // Redirect other users to their respective page
         }
 
