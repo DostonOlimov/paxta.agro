@@ -4,7 +4,7 @@
     }
 
     .my_header .nav-logo {
-        margin-right: 0;
+        margin-right: 51px;
     }
 
     .my-dropdown-content {
@@ -115,6 +115,10 @@
         h4 {
             max-width: 177px !important;
             font-size: 13px;
+        }
+
+        .my_header .nav-logo {
+            margin-right: 0;
         }
     }
 </style>
