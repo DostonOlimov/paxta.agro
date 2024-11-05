@@ -4,7 +4,7 @@
         <style>
             @media screen and (max-width: 768px) {
                 main {
-                    margin: 100px 0 !important;
+                    margin: 135px 0 !important;
                 }
 
                 .my_header .navbar {
@@ -21,7 +21,7 @@
                 }
 
                 h4 {
-                    max-width: 220px;
+                    max-width: 155px;
                     font-size: 14px;
                 }
             }

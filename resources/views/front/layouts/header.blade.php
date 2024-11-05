@@ -3,6 +3,10 @@
         position: absolute;
     }
 
+    .my_header .nav-logo {
+        margin-right: 0;
+    }
+
     .my-dropdown-content {
         right: 0px !important;
     }
@@ -74,10 +78,12 @@
         .my-dropdown-year {
             right: 9px !important;
         }
+
         .menu-year {
             width: 64px !important;
             margin: 3px 0;
         }
+
         .dropdown-mobileScreen {
             display: none;
         }
@@ -90,7 +96,7 @@
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             grid-template-rows: repeat(2, 1fr);
-            grid-column-gap: 0px;
+            grid-column-gap: 13px;
             grid-row-gap: 0px;
         }
 
@@ -104,6 +110,11 @@
 
         .dropdown-pcScreen {
             grid-area: 2 / 1 / 3 / 3;
+        }
+
+        h4 {
+            max-width: 177px !important;
+            font-size: 13px;
         }
     }
 </style>

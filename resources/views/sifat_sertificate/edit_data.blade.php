@@ -16,7 +16,7 @@
                 }
 
                 h4 {
-                    max-width: 220px;
+                    max-width: 155px;
                     font-size: 13px;
                 }
             }
