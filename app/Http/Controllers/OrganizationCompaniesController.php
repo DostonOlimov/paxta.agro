@@ -173,12 +173,12 @@ class OrganizationCompaniesController extends Controller
     public function myorganizationadd(Request $request)
     {
         $user = Auth::user();
-        $states = DB::table('tbl_states')->where('country_id', '=', 234);
-        if($user->branch_id == User::BRANCH_STATE){
-            $states = $states->where('id',$user->state_id);
-        }
-
-        $states = $states->get()->toArray();
+        $states = DB::table('tbl_states')->where('country_id', '=', 234)->get()->toArray();
+//        if($user->branch_id == User::BRANCH_STATE){
+//            $states = $states->where('id',$user->state_id);
+//        }
+//
+//        $states = $states->get()->toArray();
         $cities = '';
         if(count($states) == 1){
             $cities = DB::table('tbl_cities')->where('state_id', '=', $states[0]->id)->get();
