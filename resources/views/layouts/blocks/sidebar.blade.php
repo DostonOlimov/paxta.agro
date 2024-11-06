@@ -5,8 +5,8 @@
             <div class="dropdown">
                 @if(session('crop') != 2) <img style="width:55px; margin-top: 9px;" src="/resources/assets/images/paxta_logo.png"> @else <img style="width:55px; margin-top: 9px;" src="/resources/assets/images/chigit_logo.png"> @endif
                 <div class="my-dropdown-year">
-                    <a href="#" onclick="changeCrop('1')"><img style="width:55px; margin-top: 9px;" src="/resources/assets/images/paxta_logo.png"></a>
-                    <a href="#" onclick="changeCrop('2')"><img style="width:55px; margin-top: 9px;" src="/resources/assets/images/chigit_logo.png"></a>
+                    <a href="#" onclick="changeCrop('1')"><img style="width:55px; margin-top: 9px;" src="/resources/assets/images/paxta_logo.png"><span style="color:black"> Paxta</span> </a>
+                    <a href="#" onclick="changeCrop('2')"><img style="width:55px; margin-top: 9px;" src="/resources/assets/images/chigit_logo.png"><span style="color:black"> Chigit</span> </a>
                 </div>
             </div>
         </div>
