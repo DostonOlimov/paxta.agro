@@ -79,7 +79,7 @@ $settings = settings();
     </div>
 @endif
 <!-- JQUERY SCRIPTS JS-->
-<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+{{--<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>--}}
 
 <script src="{{ asset('resources/assets/plugins/hyperform/dist/hyperform.js') }}"></script>
 <script>hyperform(window)</script>
