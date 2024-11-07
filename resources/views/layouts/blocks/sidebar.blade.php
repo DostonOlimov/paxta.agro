@@ -43,10 +43,12 @@
                 </ul>
             </li>
 {{-- end --}}
+        @if(auth()->user()->role == "admin")
         <li class="nav-title">{{trans('message.Sifat Sertifikatlari')}}</li>
         <li class="nav-item "><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('sifat-sertificates2/*') ? 'active1' : ''}}" href="{!! url('/sifat-sertificates2/list') !!}"> <svg class="nav-icon">
                     <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-book"></use>
                 </svg>Sifat sertifikatlari</a></li>
+        @endif
         @if(session('crop') != 2)
             <li class="nav-title">{{trans('message.Sertifikatsiya')}}</li>
         <li class="nav-item "><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('application/*') ? 'active1' : ''}}" href="{!! url('/application/list') !!}"> <svg class="nav-icon">
