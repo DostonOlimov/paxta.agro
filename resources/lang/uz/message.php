@@ -62,6 +62,8 @@ return [
     'Texnik chigit' => 'Texnik chigit',
 
     //tarjima qilish kerak boshi
+    'Sifat Sertifikatlari' => 'Sifat Sertifikatlari',
+    'Mahsulotlar' => 'Mahsulotlar',
     'Namlik dalolatnomasi' => 'Namlik dalolatnomasi',
     'Namlik natijalari' => 'Namlik natijalari',
     'In Xaus ma\'lumotlari' => 'In Xaus ma\'lumotlari',
@@ -114,11 +116,9 @@ return [
     'Arizalar soni' => 'Arizalar soni',
     'Miqdori' => 'Miqdori',
     'O\'lchov birligi' => 'O\'lchov birligi',
-    'O\'lchash xatoligi' => 'O\'lchash xatoligi',
     'Viloyatlar kesimida ma\'lumot' => 'Viloyatlar kesimida ma\'lumot',
     'Barchasi' => 'Barchasi',
     'Qidirish' => 'Qidirish',
-    'Hisobotlar' => 'Hisobotlar',
 
 
     // Supplier List Page

@@ -43,16 +43,12 @@
                 </ul>
             </li>
 {{-- end --}}
+        <li class="nav-title">{{trans('message.Sifat Sertifikatlari')}}</li>
+        <li class="nav-item "><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('sifat-sertificates2/*') ? 'active1' : ''}}" href="{!! url('/sifat-sertificates2/list') !!}"> <svg class="nav-icon">
+                    <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-book"></use>
+                </svg>Sifat sertifikatlari</a></li>
         @if(session('crop') != 2)
             <li class="nav-title">{{trans('message.Sertifikatsiya')}}</li>
-        @else
-            <li class="nav-title">{{trans('message.Texnik chigit')}}</li>
-            <li class="nav-item "><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('sifat-sertificates2/*') ? 'active1' : ''}}" href="{!! url('/sifat-sertificates2/list') !!}"> <svg class="nav-icon">
-                        <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-cursor"></use>
-                    </svg>Sifat sertifikatlari</a></li>
-        @endif
-
-
         <li class="nav-item "><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('application/*') ? 'active1' : ''}}" href="{!! url('/application/list') !!}"> <svg class="nav-icon">
                     <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-cursor"></use>
                 </svg>{{trans('message.Arizalar')}}</a></li>
@@ -64,7 +60,6 @@
                     <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-inbox"></use>
                 </svg><?php echo nl2br(trans('message.Na\'muna olish dalolatnomalari')); ?></a></li>
 
-        @if(session('crop') != 2)
         <li class="nav-item"><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('akt_amount/*') ? 'active1' : ''}}" href="{!! url('/akt_amount/search') !!}"> <svg class="nav-icon">
                     <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-balance-scale"></use>
                 </svg><?php echo nl2br(trans('message.Og\'irlik bo\'yicha dalolatnomalar')); ?></a></li>
@@ -84,11 +79,11 @@
         <li class="nav-item"><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('measurement_mistake/*') ? 'active1' : ''}}" href="{!! url('/measurement_mistake/search') !!}"> <svg class="nav-icon">
                     <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-clear-all"></use>
                 </svg>{{trans('message.O\'lchash xatoligi')}}</a></li>
-        @else
-            <li class="nav-item"><a class="nav-link" href="{!! url('/laboratory_results/search') !!}"> <svg class="nav-icon">
-                        <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-bar-chart"></use>
-                    </svg>{{trans('message.Laboratoriya natijalari')}}</a></li>
-        @endif
+{{--        @else--}}
+{{--            <li class="nav-item"><a class="nav-link" href="{!! url('/laboratory_results/search') !!}"> <svg class="nav-icon">--}}
+{{--                        <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-bar-chart"></use>--}}
+{{--                    </svg>{{trans('message.Laboratoriya natijalari')}}</a></li>--}}
+{{--        @endif--}}
 
         <li class="nav-item"><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('laboratory-protocol/*') ? 'active1' : ''}}" href="{!! url('/laboratory-protocol/list') !!}"> <svg class="nav-icon">
                     <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-list"></use>
@@ -96,15 +91,15 @@
         <li class="nav-item"><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('final_results/*') ? 'active1' : ''}}" href="{!! url('/final_results/search') !!}"> <svg class="nav-icon">
                     <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-bar-chart"></use>
                 </svg>{{trans('message.Yakuniy natijalar')}}</a></li>
+        @endif
 
 
         <li class="nav-title">{{trans('message.Tizim sozlamalari')}}</li>
         @if(auth()->user()->role != \App\Models\User::ROLE_DIROCTOR)
-            @if(session('crop') != 2)
                 <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
                         <svg class="nav-icon">
                             <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-plant"></use>
-                        </svg>{{trans('message.Paxta')}}</a>
+                        </svg>{{trans('message.Mahsulotlar')}}</a>
                     <ul class="nav-group-items">
                         <li class="nav-item"><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('crops_name/*') ? 'active1' : ''}}"  href="{{ url('/crops_name/list') }}"><span class="nav-icon"></span>
                                 <svg class="nav-icon">
@@ -126,7 +121,6 @@
                         </li>
                     </ul>
                 </li>
-            @endif
         @endif
         <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
                 <svg class="nav-icon">
@@ -146,8 +140,8 @@
         </li>
         @if(session('crop') != 2)
             @if(auth()->user()->role != \App\Models\User::ROLE_DIROCTOR )
-            <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
-                    <svg class="nav-icon">
+                <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
+                        <svg class="nav-icon">
                         <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-settings"></use>
                     </svg> {{trans('message.Laboratoriya sozlamalari')}}</a>
                 <ul class="nav-group-items">

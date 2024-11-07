@@ -2,27 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\FullReportExport;
-use App\Http\Requests;
+
 use App\Models\Application;
 use App\Models\Area;
-use App\Models\ClampData;
-use App\Models\CropsName;
 use App\Models\FinalResult;
-use App\Models\Invoice;
-use App\Models\ListRegion;
-use App\Models\PaymentCategory;
 use App\Models\Region;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use App\Models\Country;
-use App\Models\CropData;
-use App\Models\CropsGeneration;
 use App\Models\CropsSelection;
-use App\Models\CropsType;
-use App\Models\Dalolatnoma;
 use App\Models\OrganizationCompanies;
 use App\Models\PreparedCompanies;
 

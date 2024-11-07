@@ -5,10 +5,14 @@ namespace App\Http\Controllers;
 
 use App\Filters\V1\ApplicationFilter;
 use App\Models\Application;
+use App\Models\ChigitResult;
 use App\Models\ChigitTips;
 use App\Models\CropData;
 use App\Models\CropsSelection;
-use App\Models\OrganizationCompanies;;
+use App\Models\Indicator;
+use App\Models\OrganizationCompanies;
+use App\Models\PreparedCompanies;
+use App\Models\SifatSertificates;
 use App\Services\SearchService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -16,21 +20,23 @@ use Illuminate\Http\Request;
 use App\Models\DefaultModels\tbl_activities;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Symfony\Component\HttpFoundation\Response;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class SifatSertificate2Controller extends Controller
 {
 
     public function applicationList(Request $request, ApplicationFilter $filter,SearchService $service)
     {
-        $user_id = Auth::user()->id;
+        $user = Auth::user();
 
         try {
-            session(['crop'=>2]);
 
             $names = getCropsNames();
             $states = getRegions();
             $years = getCropYears();
             $all_status = getAppStatus();
+
+        //    $condition = $user->branch_id == \App\Models\User::BRANCH_STATE ? [] : ['created_by', '=', $user->id];
 
             return $service->search(
                 $request,
@@ -45,9 +51,9 @@ class SifatSertificate2Controller extends Controller
                 'sifat_sertificate2.list',
                 [],
                 false,
-                null,
-                null,
-                ['app_type', '=', 2]
+                'crops',
+                'amount',
+                ['app_type','=',2]
             );
 
         } catch (\Throwable $e) {
@@ -60,22 +66,31 @@ class SifatSertificate2Controller extends Controller
 
 
     // application addform
-
     public function addApplication($organization)
     {
-        $names = DB::table('crops_name')->where('id','!=',1)->get()->toArray();
+        $user = Auth::user();
+        $names = DB::table('crops_name')->where('id','=',1)->get()->toArray();
         $selection = CropsSelection::get();
+        $laboratories = PreparedCompanies::where('state_id', '=', $user->state_id)->get();
+        $years = CropData::getYear();
 
-        return view('sifat_sertificate2.add',compact('organization','selection','names'));
+        return view('sifat_sertificate2.add',compact('organization','user','years','laboratories','selection','names'));
 
     }
+
 
     // application store
     public function store(Request $request)
     {
-        $this->authorize('create', Application::class);
-
         $user = Auth::user();
+
+        // Define validation rules with camelCase attribute names
+        $validatedData = $request->validate([
+            'name' => 'required|int',
+            'party_number' => 'required|string|max:10',
+            'amount' => 'required',
+            'selection_code' => 'required|int',
+        ]);
 
         $crop = CropData::create([
             'name_id'       => $request->input('name'),
@@ -85,7 +100,7 @@ class SifatSertificate2Controller extends Controller
             'measure_type'  => $request->input('measure_type'),
             'amount'        => $request->input('amount'),
             'selection_code' => $request->input('selection_code'),
-            'year'          => 2024,
+            'year'          => $request->input('year'),
             'toy_count'     => 1,
             'sxeme_number'  => 7,
         ]);
@@ -93,9 +108,9 @@ class SifatSertificate2Controller extends Controller
         $application = Application::create([
             'crop_data_id'     => $crop->id,
             'organization_id'  => $request->input('organization'),
-            'prepared_id'      => $user->zavod_id,
+            'prepared_id'      => $request->input('laboratory') ,
             'type'             => Application::TYPE_1,
-            'date'             => date('Y-m-d'),
+            'date'             => $request->input('dob') ? date('Y-m-d', strtotime($request->input('dob'))) : date('Y-m-d'),
             'status'           => Application::STATUS_FINISHED,
             'data'             => $request->input('data'),
             'app_type'         => 2,
@@ -111,23 +126,193 @@ class SifatSertificate2Controller extends Controller
             'time'        => now(),
         ]);
 
-        return redirect()->route('sifat-sertificates2.add_client',$application->id)->with('message', 'Successfully Submitted');
+        return redirect()->route('sifat-sertificates2.add_result',$application->id)->with('message', 'Successfully Submitted');
+    }
+
+    public function addResult($id)
+    {
+        $indicators = Indicator::where('crop_id','=',1)
+            ->get();
+        return view('sifat_sertificate2.add_result',compact('indicators','id'));
+
+    }
+    public function ResultStore(Request $request)
+    {
+        $appId = $request->input('id');
+
+        $indicators = Indicator::where('crop_id', 1)->pluck('id');
+
+        $results = $indicators->map(function ($indicatorId) use ($appId, $request) {
+            return [
+                'app_id' => $appId,
+                'indicator_id' => $indicatorId,
+                'value' => $request->input('value' . $indicatorId),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        });
+
+        ChigitResult::insert($results->toArray());
+
+        return redirect()->route('/sifat-sertificates2/list')
+            ->with('message', 'Successfully Submitted');
     }
 
     public function showapplication($id)
     {
-        $test = Application::findOrFail($id);
+        $test = Application::with('user')->findOrFail($id);
         $company = OrganizationCompanies::with('city')->findOrFail($test->organization_id);
         $formattedDate = formatUzbekDateInLatin($test->date);
 
         // Generate QR code
-        $url = route('sifat_sertificate.view', $id);
+        $url = route('sifat_sertificate2.view', $id);
         $qrCode = QrCode::size(100)->generate($url);
 
         // Fetch values and tip
         $chigitValues = $this->getChigitValuesAndTip($test);
 
         return view('sifat_sertificate2.show', compact('test', 'formattedDate','company', 'qrCode') + $chigitValues);
+    }
+
+    public function edit($id)
+    {
+        $data = Application::findOrFail($id);
+        $company = OrganizationCompanies::with('city')->findOrFail($data->organization_id);
+
+        // Fetch values and tip
+        $chigitValues = $this->getChigitValuesAndTip($data);
+
+        return view('sifat_sertificate2.edit', compact('data', 'company') + $chigitValues);
+    }
+
+    public function editData($id)
+    {
+        $data = Application::findOrFail($id);
+
+        $names = DB::table('crops_name')->where('id','!=',1)->get()->toArray();
+        $selection = CropsSelection::get();
+
+        return view('sifat_sertificate2.edit_data', compact('data','names','selection'));
+    }
+
+    public function update(Request $request)
+    {
+        $id = $request->input('id');
+
+        // Validate incoming request data
+        $validatedData = $request->validate([
+            'name' => 'required|string',
+            'tnved' => 'nullable|string',
+            'party_number' => 'nullable|string',
+            'amount' => 'required|numeric',
+            'selection_code' => 'nullable|string',
+        ]);
+
+        // Find the application and related crop data
+        $app = Application::findOrFail($id);
+        $crop_data = $app->crops;
+
+        // Update the crop data with validated input
+        $crop_data->update([
+            'name_id' => $validatedData['name'],
+            'kodtnved' => $validatedData['tnved'],
+            'party_number' => $validatedData['party_number'],
+            'amount' => $validatedData['amount'],
+            'selection_code' => $validatedData['selection_code'],
+        ]);
+
+        // Redirect with success message
+        return redirect()->route('sifat_sertificate2.edit', $id)->with('message', 'Successfully Submitted');
+    }
+
+    //edit result data
+    public function resultEdit ($id)
+    {
+        $data = Application::findOrFail($id);
+
+        $chigitValues = $this->getChigitValuesAndTip($data);
+
+        return view('sifat_sertificate2.result_edit', compact('data')+$chigitValues);
+    }
+
+    public function resultUpdate(Request $request)
+    {
+
+        $id = $request->input('id');
+        $client = Application::findOrFail($id);
+        foreach ($client->chigit_result as $result){
+            $result->value = $request->input('value'. $result->id);
+            $result->save();
+        }
+
+        return redirect()->route('sifat_sertificate2.edit',$id)->with('message', 'Successfully Submitted');
+    }
+
+    //accept online applications
+    public function accept($id)
+    {
+        $test = Application::findOrFail($id);
+        $type = 3;
+
+        $company = OrganizationCompanies::with('city')->findOrFail($test->organization_id);
+        // Fetch values and tip
+        $chigitValues = $this->getChigitValuesAndTip($test);
+
+        // date format
+        $formattedDate = formatUzbekDateInLatin($test->date);
+        $currentYear = date('Y');
+        $zavod_id = $test->prepared_id;
+        $number = 0;
+//        if($chigitValues['quality']){
+        $number = SifatSertificates::where('zavod_id', $zavod_id)
+            ->where('year', $currentYear)
+            ->where('type',$type)
+            ->max('number');
+//        }
+        $number = $number ? $number + 1 : 1;
+
+        // create sifat certificate
+        if (!$test->sifat_sertificate2) {
+
+            $sertificate = new SifatSertificates();
+            $sertificate->app_id = $id;
+            $sertificate->number = $number;
+            $sertificate->zavod_id = $zavod_id;
+            $sertificate->year = $currentYear;
+            $sertificate->type = $type;
+            $sertificate->created_by = \auth()->user()->id;
+            $sertificate->save();
+        }
+
+        $kod_middle =  ($type == 1) ? ($test->prepared->kod)*1000 : 0;
+        $sert_number = ($currentYear - 2000) * 1000000 + $kod_middle + $number;
+
+        // Generate QR code
+        $qrCode = base64_encode(QrCode::format('png')->size(100)->generate(route('sifat_sertificate2.download', $id)));
+
+        // Load the view and pass data to it
+        $pdf = Pdf::loadView('sifat_sertificate2.pdf', compact('test','sert_number','formattedDate', 'company', 'qrCode') + $chigitValues);
+
+//        return $pdf->stream('sdf');
+        // Save the PDF file
+        $filePath = storage_path('app/public/sifat_sertificates/certificate_' . $id . '.pdf');
+        $pdf->save($filePath);
+
+        // Redirect to list page with success message
+        return redirect()->route('/sifat-sertificates2/list', ['generatedAppId' => $id])
+            ->with('message', 'Certificate saved!');
+    }
+
+
+    public function download($id)
+    {
+        $filePath = storage_path('app/public/sifat_sertificates/certificate_' . $id . '.pdf');
+
+        if (file_exists($filePath)) {
+            return response()->download($filePath);
+        } else {
+            return redirect()->back()->with('error', 'File not found.');
+        }
     }
 
 // Private method to avoid code duplication

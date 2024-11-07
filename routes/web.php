@@ -257,13 +257,30 @@ Route::group(['prefix' => 'sifat-sertificates'], function () {
     Route::get('/sertificate/{id}/download', '\App\Http\Controllers\SifatSertificateController@download')->name('sifat_sertificate.download');
 
 });
-//applications
+//sifat sertificates online
 Route::group(['prefix' => 'sifat-sertificates2'], function () {
     Route::get('/list', ['as'=>'/sifat-sertificates2/list', 'uses' => '\App\Http\Controllers\SifatSertificate2Controller@applicationList']);
     Route::get('/add/{id}', ['as'=>'sifat-sertificates2.add', 'uses' => '\App\Http\Controllers\SifatSertificate2Controller@addApplication']);
     Route::post('/store', ['uses' => '\App\Http\Controllers\SifatSertificate2Controller@store']);
+    Route::get('/add_result/{id}', ['as'=>'sifat-sertificates2.add_result', 'uses' => '\App\Http\Controllers\SifatSertificate2Controller@addResult']);
+    Route::post('/result_store', ['uses' => '\App\Http\Controllers\SifatSertificate2Controller@ResultStore']);
+    Route::get('/add_client/{id}', ['as'=>'sifat-sertificates2.add_client', 'uses' => '\App\Http\Controllers\SifatSertificate2Controller@addClientData']);
+    Route::post('/client_store', ['uses' => '\App\Http\Controllers\SifatSertificate2Controller@ClientDataStore']);
 
+    Route::get('/edit/{id}', [ 'uses' => '\App\Http\Controllers\SifatSertificate2Controller@edit'])->name('sifat_sertificate2.edit');
+    Route::get('/edit-data/{id}', [ 'uses' => '\App\Http\Controllers\SifatSertificate2Controller@editData']);
+    Route::post('/update', '\App\Http\Controllers\SifatSertificate2Controller@update')->name('sifat_sertificate2/update');
     Route::get('/view/{id}', '\App\Http\Controllers\SifatSertificate2Controller@showapplication')->name('sifat_sertificate2.view');
+    Route::get('/list/delete/{id}', ['as' => '/sifat-sertificates2/list/delete/{id}', 'uses' => '\App\Http\Controllers\SifatSertificate2Controller@destory']);
+    Route::get('/accept/{id}', ['as' => '/sifat-sertificates2/accept', 'uses' => '\App\Http\Controllers\SifatSertificate2Controller@accept']);
+    Route::get('/reject/{id}', ['as' => '/sifat-sertificates2/reject', 'uses' => '\App\Http\Controllers\SifatSertificate2Controller@reject']);
+
+    Route::get('/client-edit/{id}', [ 'uses' => '\App\Http\Controllers\SifatSertificate2Controller@clientEdit']);
+    Route::post('/client-update', '\App\Http\Controllers\SifatSertificate2Controller@clientUpdate')->name('sifat_sertificate2/client_update');
+    Route::get('/result-edit/{id}', [ 'uses' => '\App\Http\Controllers\SifatSertificate2Controller@resultEdit']);
+    Route::post('/result-update', '\App\Http\Controllers\SifatSertificate2Controller@resultUpdate')->name('sifat_sertificate2/result_update');
+
+    Route::get('/sertificate/{id}/download', '\App\Http\Controllers\SifatSertificate2Controller@download')->name('sifat_sertificate2.download');
 
 });
 

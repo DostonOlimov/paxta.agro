@@ -172,32 +172,35 @@ class OrganizationCompaniesController extends Controller
 
     public function myorganizationadd(Request $request)
     {
+        $showId = $request->input('showId');
         $user = Auth::user();
         $states = DB::table('tbl_states')->where('country_id', '=', 234)->get()->toArray();
-//        if($user->branch_id == User::BRANCH_STATE){
-//            $states = $states->where('id',$user->state_id);
-//        }
-//
-//        $states = $states->get()->toArray();
+
         $cities = '';
         if(count($states) == 1){
             $cities = DB::table('tbl_cities')->where('state_id', '=', $states[0]->id)->get();
         }
         $company = null;
 
-        return view('front.organization.add', compact( 'states', 'cities', 'company','user'));
+        if($showId == 1){
+            return view('front.organization.add2', compact( 'states', 'showId','cities', 'company','user'));
+
+        }else{
+            return view('front.organization.add', compact( 'states', 'showId','cities', 'company','user'));
+        }
     }
 
     public function myorganizationstore(Request $request)
     {
         $user = Auth::user();
         $inn = $request->input('inn');
+        $showId = $request->input('showId');
 
         // Define validation rules with camelCase attribute names
         $validatedData = $request->validate([
             'inn' => 'required|int|digits:9',
             'name' => 'required|string|max:50',
-            'address' => 'required|string|max:50',
+            'address' => 'required|string|max:100',
             'owner_name' => 'required|string|max:30',
             'phone_number' => 'required|string|max:20',
         ]);
@@ -225,14 +228,19 @@ class OrganizationCompaniesController extends Controller
                 'action' => "Korxona qo'shildi",
                 'time' => now(),
             ]);
-
         }
-        if($company->sifat_contract){
-            return redirect()->route('sifat-sertificates.add', $company->id)
+
+        if($showId == 1){
+            return redirect()->route('sifat-sertificates2.add', $company->id)
                 ->with('message', 'Successfully Submitted');
         }else{
-            return redirect()->route('sifat_contracts.add', 'company_id='. $company->id)
-                ->with('message', 'Successfully Submitted');
+            if($company->sifat_contract){
+                return redirect()->route('sifat-sertificates.add', $company->id)
+                    ->with('message', 'Successfully Submitted');
+            }else{
+                return redirect()->route('sifat_contracts.add', 'company_id='. $company->id)
+                    ->with('message', 'Successfully Submitted');
+            }
         }
     }
 
