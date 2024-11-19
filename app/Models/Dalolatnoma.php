@@ -37,8 +37,6 @@ class Dalolatnoma  extends Model
         'tara'
     ];
 
-
-
     public function test_program(): BelongsTo
     {
         return $this->belongsTo(TestPrograms::class, 'test_program_id', 'id');

@@ -242,7 +242,7 @@
                                 align-items: center;
                                 background-color: white;
                                 text-align: center;">
-                        <span>{{ ($apps->sum('crops.amount')) ? trans("app.Jami og'irlik(kg)") . ': ' . number_format($apps->sum('crops.amount'), 1, ',', ' ') : '' }} kg</span>
+                        <span>{{ ($apps->sum('crops.amount')) ? trans("app.Jami og'irlik(kg)") . ': ' . number_format($apps->sum('crops.amount'), 1, ',', ' ') : '0' }} kg</span>
                     </h3>
                 </div>
             </div>

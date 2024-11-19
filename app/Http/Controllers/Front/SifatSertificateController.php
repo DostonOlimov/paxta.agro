@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Front;
 
 
 use App\Filters\V1\ApplicationFilter;
+use App\Http\Controllers\Controller;
 use App\Models\Application;
 use App\Models\ChigitLaboratories;
 use App\Models\ChigitResult;

@@ -233,28 +233,28 @@ Route::group(['prefix' => 'employee'], function () {
     });
 //sifat sertificates online
 Route::group(['prefix' => 'sifat-sertificates'], function () {
-    Route::get('/list', ['as'=>'/sifat-sertificates/list', 'uses' => '\App\Http\Controllers\SifatSertificateController@applicationList']);
-    Route::get('/add/{id}', ['as'=>'sifat-sertificates.add', 'uses' => '\App\Http\Controllers\SifatSertificateController@addApplication']);
-    Route::post('/store', ['uses' => '\App\Http\Controllers\SifatSertificateController@store']);
-    Route::get('/add_result/{id}', ['as'=>'sifat-sertificates.add_result', 'uses' => '\App\Http\Controllers\SifatSertificateController@addResult']);
-    Route::post('/result_store', ['uses' => '\App\Http\Controllers\SifatSertificateController@ResultStore']);
-    Route::get('/add_client/{id}', ['as'=>'sifat-sertificates.add_client', 'uses' => '\App\Http\Controllers\SifatSertificateController@addClientData']);
-    Route::post('/client_store', ['uses' => '\App\Http\Controllers\SifatSertificateController@ClientDataStore']);
+    Route::get('/list', ['as'=>'/sifat-sertificates/list', 'uses' => '\App\Http\Controllers\Front\SifatSertificateController@applicationList']);
+    Route::get('/add/{id}', ['as'=>'sifat-sertificates.add', 'uses' => '\App\Http\Controllers\Front\SifatSertificateController@addApplication']);
+    Route::post('/store', ['uses' => '\App\Http\Controllers\Front\SifatSertificateController@store']);
+    Route::get('/add_result/{id}', ['as'=>'sifat-sertificates.add_result', 'uses' => '\App\Http\Controllers\Front\SifatSertificateController@addResult']);
+    Route::post('/result_store', ['uses' => '\App\Http\Controllers\Front\SifatSertificateController@ResultStore']);
+    Route::get('/add_client/{id}', ['as'=>'sifat-sertificates.add_client', 'uses' => '\App\Http\Controllers\Front\SifatSertificateController@addClientData']);
+    Route::post('/client_store', ['uses' => '\App\Http\Controllers\Front\SifatSertificateController@ClientDataStore']);
 
-    Route::get('/edit/{id}', [ 'uses' => '\App\Http\Controllers\SifatSertificateController@edit'])->name('sifat_sertificate.edit');
-    Route::get('/edit-data/{id}', [ 'uses' => '\App\Http\Controllers\SifatSertificateController@editData']);
-    Route::post('/update', '\App\Http\Controllers\SifatSertificateController@update')->name('sifat_sertificate/update');
-    Route::get('/view/{id}', '\App\Http\Controllers\SifatSertificateController@showapplication')->name('sifat_sertificate.view');
-    Route::get('/list/delete/{id}', ['as' => '/sifat-sertificates/list/delete/{id}', 'uses' => '\App\Http\Controllers\SifatSertificateController@destory']);
-    Route::get('/accept/{id}', ['as' => '/sifat-sertificates/accept', 'uses' => '\App\Http\Controllers\SifatSertificateController@accept']);
-    Route::get('/reject/{id}', ['as' => '/sifat-sertificates/reject', 'uses' => '\App\Http\Controllers\SifatSertificateController@reject']);
+    Route::get('/edit/{id}', [ 'uses' => '\App\Http\Controllers\Front\SifatSertificateController@edit'])->name('sifat_sertificate.edit');
+    Route::get('/edit-data/{id}', [ 'uses' => '\App\Http\Controllers\Front\SifatSertificateController@editData']);
+    Route::post('/update', '\App\Http\Controllers\Front\SifatSertificateController@update')->name('sifat_sertificate/update');
+    Route::get('/view/{id}', '\App\Http\Controllers\Front\SifatSertificateController@showapplication')->name('sifat_sertificate.view');
+    Route::get('/list/delete/{id}', ['as' => '/sifat-sertificates/list/delete/{id}', 'uses' => '\App\Http\Controllers\Front\SifatSertificateController@destory']);
+    Route::get('/accept/{id}', ['as' => '/sifat-sertificates/accept', 'uses' => '\App\Http\Controllers\Front\SifatSertificateController@accept']);
+    Route::get('/reject/{id}', ['as' => '/sifat-sertificates/reject', 'uses' => '\App\Http\Controllers\Front\SifatSertificateController@reject']);
 
-    Route::get('/client-edit/{id}', [ 'uses' => '\App\Http\Controllers\SifatSertificateController@clientEdit']);
-    Route::post('/client-update', '\App\Http\Controllers\SifatSertificateController@clientUpdate')->name('sifat_sertificate/client_update');
-    Route::get('/result-edit/{id}', [ 'uses' => '\App\Http\Controllers\SifatSertificateController@resultEdit']);
-    Route::post('/result-update', '\App\Http\Controllers\SifatSertificateController@resultUpdate')->name('sifat_sertificate/result_update');
+    Route::get('/client-edit/{id}', [ 'uses' => '\App\Http\Controllers\Front\SifatSertificateController@clientEdit']);
+    Route::post('/client-update', '\App\Http\Controllers\Front\SifatSertificateController@clientUpdate')->name('sifat_sertificate/client_update');
+    Route::get('/result-edit/{id}', [ 'uses' => '\App\Http\Controllers\Front\SifatSertificateController@resultEdit']);
+    Route::post('/result-update', '\App\Http\Controllers\Front\SifatSertificateController@resultUpdate')->name('sifat_sertificate/result_update');
 
-    Route::get('/sertificate/{id}/download', '\App\Http\Controllers\SifatSertificateController@download')->name('sifat_sertificate.download');
+    Route::get('/sertificate/{id}/download', '\App\Http\Controllers\Front\SifatSertificateController@download')->name('sifat_sertificate.download');
 
 });
 //sifat sertificates online
@@ -463,11 +463,11 @@ Route::group(['prefix' => 'laboratory-protocol', 'middleware' => 'auth'], functi
 });
 //Laboratory results
 Route::group(['prefix' => 'sifat-contracts', 'middleware' => 'auth'], function () {
-    Route::get('/list', '\App\Http\Controllers\SifatContractsController@list')->name('sifat_contracts.list');
-    Route::get('/add', '\App\Http\Controllers\SifatContractsController@add')->name('sifat_contracts.add');
-    Route::get('/view/{id}', '\App\Http\Controllers\SifatContractsController@view');
-    Route::post('/store', '\App\Http\Controllers\SifatContractsController@store');
-    Route::get('/change/{id}', '\App\Http\Controllers\SifatContractsController@change_status');
+    Route::get('/list', '\App\Http\Controllers\Front\SifatContractsController@list')->name('sifat_contracts.list');
+    Route::get('/add', '\App\Http\Controllers\Front\SifatContractsController@add')->name('sifat_contracts.add');
+    Route::get('/view/{id}', '\App\Http\Controllers\Front\SifatContractsController@view');
+    Route::post('/store', '\App\Http\Controllers\Front\SifatContractsController@store');
+    Route::get('/change/{id}', '\App\Http\Controllers\Front\SifatContractsController@change_status');
 });
 
 //Operators

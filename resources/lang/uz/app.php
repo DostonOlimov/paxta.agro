@@ -102,7 +102,7 @@ return[
 
 
 
-    'copyright_text' => 'Qishloq xo‘jalik ekinlari urug‘larini sertifikatlashtirish tizimi tomonidan barcha huquqlar himoyalangan',
+    'copyright_text' => '"O’zagroinspeksiya" qoshidagi “Qishloq xo\'jaligi mahsulotlari sifatini baholash markazi” davlat muassasasi tomonidan barcha huquqlar himoyalangan',
 
 
 

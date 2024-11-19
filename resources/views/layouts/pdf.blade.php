@@ -8,7 +8,7 @@
             src: url('{{ storage_path('fonts/DejaVuSans.ttf') }}');
         }
         body {
-            font-family: 'DejaVuSans', sans-serif;
+            font-family: 'DejaVu Sans', sans-serif;
         }
         h1 {
             line-height: 1;

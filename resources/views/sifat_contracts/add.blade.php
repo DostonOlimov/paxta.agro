@@ -47,7 +47,7 @@
                                 <div class="row" style="column-gap: 0;">
 
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                    <input type="hidden" name="company_id" value="{{ $company->id }}">
+                                    <input type="hidden" name="company_id" value="{{ optional($company)->id }}">
 
                                     <div class="col-md-6">
                                         <div class="form-group" >

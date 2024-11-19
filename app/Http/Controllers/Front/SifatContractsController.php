@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Front;
 
 use App\Filters\V1\DalolatnomaFilter;
 use App\Filters\V1\SifatContractsFilter;
+use App\Http\Controllers\Controller;
 use App\Models\OrganizationCompanies;
 use App\Models\SifatContracts;
 use App\Services\AttachmentService;

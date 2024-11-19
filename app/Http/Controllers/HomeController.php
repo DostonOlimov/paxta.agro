@@ -97,6 +97,7 @@ class HomeController extends Controller
         ));
     }
 
+
 // Helper method for formatting date range
     private function formatDateRange($from, $till): array
     {
