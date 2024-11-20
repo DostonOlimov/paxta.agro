@@ -37,7 +37,7 @@
     @yield('styles')
 </head>
 
-@if(Auth::User()->role == \App\Models\User::ROLE_CITY_CHIGIT or Auth::User()->role == \App\Models\User::ROLE_STATE_CHIGIT)
+@if(in_array(Auth::User()->role, [\App\Models\User::ROLE_CITY_CHIGIT, \App\Models\User::ROLE_STATE_CHIGIT_BOSHLIQ, \App\Models\User::ROLE_STATE_CHIGI_XODIM]))
 <body class="app">
 <!-- partial:partials/_sidebar.php -->
 <nav>

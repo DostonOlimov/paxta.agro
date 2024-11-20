@@ -22,7 +22,7 @@ class HomeController extends Controller
     {
         $user = auth()->user();
 
-        if (in_array($user->role, [\App\Models\User::ROLE_CITY_CHIGIT, \App\Models\User::ROLE_STATE_CHIGIT])) {
+        if (in_array($user->role, [\App\Models\User::ROLE_CITY_CHIGIT, \App\Models\User::ROLE_STATE_CHIGIT_BOSHLIQ, \App\Models\User::ROLE_STATE_CHIGI_XODIM])) {
             return redirect('/sifat-sertificates/list');
         }
         $branch_crop = session('crop', 1);

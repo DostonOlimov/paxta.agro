@@ -200,11 +200,13 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
         <div class="col-sm-6">
             <span style="padding: 5px; display: block;"><b>Ijrochi :</b>
                 {{ optional($test->prepared)->region->name }} filialining<br>
-                @if(Auth::User()->role == \App\Models\User::ROLE_STATE_CHIGIT)
-                bosh mutaxassissi:
+                @if(Auth::User()->role == \App\Models\User::ROLE_STATE_CHIGI_XODIM)
+                    bosh mutaxassissi:
+                @elseif(Auth::User()->role == \App\Models\User::ROLE_STATE_CHIGIT_BOSHLIQ)
+                    laboratoriya boshlig'i
                 @else
                 {{ optional(optional($test->prepared)->chigit_laboratory)->name }}<br>
-                mudiri-guruh rahbari :
+                    mudiri-guruh rahbari :
                 @endif
                 {{ optional($test->user)->lastname . ' ' . (optional($test->user)->name) }}
             </span>

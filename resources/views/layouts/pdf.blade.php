@@ -3,12 +3,13 @@
 <head>
     <title>PAXTA MAHSULOTLARINI SERTIFIKATLASHTIRISH AVTOMATLASHTIRILGAN TIZIMI</title>
     <style>
+        <style>
         @font-face {
             font-family: 'DejaVuSans';
             src: url('{{ storage_path('fonts/DejaVuSans.ttf') }}');
         }
         body {
-            font-family: 'DejaVu Sans', sans-serif;
+            font-family: 'DejaVuSans', sans-serif;
         }
         h1 {
             line-height: 1;

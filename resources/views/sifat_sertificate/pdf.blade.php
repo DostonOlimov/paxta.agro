@@ -93,14 +93,14 @@
         /* Push the QR code to the bottom of the div */
     }
 
-    @media (max-width: 768px) {
-        .col-md-6 {
-            flex: 0 0 100%;
-            max-width: 100%;
-            text-align: center;
-            /* Align text to center on small screens */
-        }
-    }
+    /*@media (max-width: 768px) {*/
+    /*    .col-md-6 {*/
+    /*        flex: 0 0 100%;*/
+    /*        max-width: 100%;*/
+    /*        text-align: center;*/
+    /*        !* Align text to center on small screens *!*/
+    /*    }*/
+    /*}*/
 
     #invoice-cheque {
         position: relative;
@@ -121,23 +121,23 @@
         position: relative;
         z-index: 1; /* Keeps content above the image */
     }
-    @media print {
-        .invoice-cheque {
-            width: 100%;
-            border: none;
-            margin: 0;
-            padding: 0;
-        }
+    /*@media print {*/
+    /*    .invoice-cheque {*/
+    /*        width: 100%;*/
+    /*        border: none;*/
+    /*        margin: 0;*/
+    /*        padding: 0;*/
+    /*    }*/
 
-        .header__tasdiqlayman,
-        .header__title {
-            margin: 0;
-        }
+    /*    .header__tasdiqlayman,*/
+    /*    .header__title {*/
+    /*        margin: 0;*/
+    /*    }*/
 
-        table th,
-        table td {
-            padding: 5px;
-        }
+    /*    table th,*/
+    /*    table td {*/
+    /*        padding: 5px;*/
+    /*    }*/
     }
 </style>
 @endsection
@@ -252,7 +252,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
         <div style="width: 60%; display: inline-block; padding-bottom: 30px;">
              <b>Ijrochi :</b>
             {{ optional($test->prepared)->region->name }} filialining<br>
-            @if(Auth::User()->role == \App\Models\User::ROLE_STATE_CHIGIT)
+            @if(Auth::User()->role == \App\Models\User::ROLE_STATE_CHIGIT_BOSHLIQ)
                      bosh mutaxassissi:
                  @else
                      {{ optional(optional($test->prepared)->chigit_laboratory)->name }}<br>
