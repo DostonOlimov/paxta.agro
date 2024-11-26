@@ -55,7 +55,7 @@ class UserController extends Controller
 	//accountant delete
 	public function destory($id)
 	 {
-		$user = User::findOrFail($id);
+		$user = \App\Models\User::findOrFail($id);
         $this->authorize('edit', $user);
         $user->delete();
 

@@ -1,15 +1,43 @@
 <div class="sidebar sidebar-dark sidebar-fixed " id="sidebar" >
-    <div class="sidebar-brand d-none d-md-flex justify-content-around">
-
-        <div>
-            <div class="dropdown">
-                @if(session('crop') != 2) <img style="width:55px; margin-top: 9px;" src="/resources/assets/images/paxta_logo.png"> @else <img style="width:55px; margin-top: 9px;" src="/resources/assets/images/chigit_logo.png"> @endif
-                <div class="my-dropdown-year">
-                    <a href="#" onclick="changeCrop('1')"><img style="width:55px; margin-top: 9px;" src="/resources/assets/images/paxta_logo.png"><span style="color:black"> Paxta</span> </a>
-                    <a href="#" onclick="changeCrop('2')"><img style="width:55px; margin-top: 9px;" src="/resources/assets/images/chigit_logo.png"><span style="color:black"> Chigit</span> </a>
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="select__row">
+                <div class="select_col-md-4">
+                    <a href="#" onclick="changeCrop('1')">
+                        <img class="selectCropImage" src="/resources/assets/images/paxta_logo.png">
+                        <span class="selectCropText">Paxta tolasi <br>Muvofiqlik sertifikati</span>
+                    </a>
+                </div>
+                <div class="select_col-md-4">
+                    <a href="#" onclick="changeCrop('3')">
+                        <img class="selectCropImage" src="/resources/assets/images/paxta_image.jpg">
+                        <span class="selectCropText">Paxta tolasi <br>Sifat sertifikati</span>
+                    </a>
+                </div>
+                <div class="select_col-md-4">
+                    <a href="#" onclick="changeCrop('2')" >
+                        <img class="selectCropImage" src="/resources/assets/images/chigit_logo.png">
+                        <span class="selectCropText">Texnik chigit <br>Sifat sertifikati</span>
+                    </a>
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="sidebar-brand d-none d-md-flex justify-content-around">
+
+    <button id="myBtn" style="background-color: #0E46A3;border: none;">
+        @if(session('crop') == 2)
+            <img class="sidebarLogo" src="/resources/assets/images/chigit_logo.png">
+        @elseif(session('crop') == 3)
+            <img class="sidebarLogo" src="/resources/assets/images/paxta_image.png">
+        @else
+            <img class="sidebarLogo" src="/resources/assets/images/paxta_logo.png">
+        @endif
+    </button>
 
         <h2 style="font-size: 20px; color: white; margin: 6px 6px 5px -11px; !important;">{{ trans('message.AGROINSPEKSIYA') }}</h2>
     </div>

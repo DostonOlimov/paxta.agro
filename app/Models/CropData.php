@@ -12,7 +12,6 @@ class CropData extends Model
 
     const MEASURE_TYPE_TONNA= 1;
     const MEASURE_TYPE_KG = 2;
-    const MEASURE_TYPE_DONA = 3;
 
     protected $fillable = [
         'name_id',
@@ -58,7 +57,6 @@ class CropData extends Model
         $arr = [
             self::MEASURE_TYPE_TONNA => 'tonna',
             self::MEASURE_TYPE_KG => 'kg',
-            self::MEASURE_TYPE_DONA => 'dona',
         ];
 
         if ($type === null) {

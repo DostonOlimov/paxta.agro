@@ -30,6 +30,10 @@ class Area extends Model
     {
         return $this->belongsTo(Region::class, 'state_id');
     }
+    public function laboratory()
+    {
+        return $this->belongsTo(Laboratories::class, 'city_id');
+    }
 
     public function organization(): HasMany
     {

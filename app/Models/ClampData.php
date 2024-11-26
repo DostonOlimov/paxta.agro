@@ -34,7 +34,7 @@ class ClampData  extends Model
             // Add global scope for filtering by user's state if in branch state
             if ($user->branch_id == User::BRANCH_STATE) {
                 static::addGlobalScope('cityStateScope', function ($query) use ($user) {
-                    $query->whereHas('dalolatnoma.test_program.application.organization.city', function ($query) use ($user) {
+                    $query->whereHas('dalolatnoma.test_program.application.prepared', function ($query) use ($user) {
                         $query->where('state_id', $user->state_id);
                     });
                 });
@@ -43,9 +43,11 @@ class ClampData  extends Model
 
         // Add global scope to exclude deleted status and filter crops
         static::addGlobalScope('nonDeletedStatusScope', function ($query) use ($year, $crop) {
-            $query->whereHas('dalolatnoma.test_program.application.crops', function ($query) use ($year, $crop) {
-                    $query->where('year', $year)
-                        ->where('name_id', $crop == 1 ? '=' : '!=', 1);
+            $query->whereHas('dalolatnoma.test_program.application', function ($query) use ($year, $crop) {
+                    $query->where('app_type',$crop)
+                        ->whereHas('crops', function ($query) use ($year, $crop) {
+                            $query->where('year', $year);
+                        });
                 });
         });
     }

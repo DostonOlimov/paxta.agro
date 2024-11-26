@@ -88,10 +88,8 @@ class FinalResult  extends Model
                     $query->whereHas('dalolatnoma', function ($query) use ($user_city) {
                         $query->whereHas('test_program', function ($query) use ($user_city) {
                             $query->whereHas('application', function ($query) use ($user_city) {
-                                $query->whereHas('organization', function ($query) use ($user_city) {
-                                    $query->whereHas('city', function ($query) use ($user_city) {
-                                        $query->where('state_id', '=', $user_city);
-                                    });
+                                $query->whereHas('prepared', function ($query) use ($user_city) {
+                                    $query->where('state_id', '=', $user_city);
                                 });
                             });
                         });
@@ -106,9 +104,9 @@ class FinalResult  extends Model
                 $query->whereHas('test_program', function ($query) use ($year,$crop) {
                     $query->whereHas('application', function ($query) use ($year,$crop) {
                         $query->where('status', '!=', Application::STATUS_DELETED)
+                            ->where('app_type',$crop)
                             ->whereHas('crops', function ($query) use ($year,$crop) {
-                                $query->where('year', '=', $year)
-                                    ->where('name_id', $crop == 1 ? '=' : '!=', 1);
+                                $query->where('year', '=', $year);
                             });
                     });
                 });

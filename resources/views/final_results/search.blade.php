@@ -170,6 +170,7 @@
                                             <td><a href="#" class="company-link" data-id="{{ $app->test_program->application->organization_id }}">{{ optional($app->test_program->application->organization)->name }}</a></td>
                                             <td>{{ optional($app->test_program)->application->prepared->name }} - {{ optional($app->test_program)->application->prepared->kod }}</td>
                                             <td>{{ optional($app->test_program)->application->crops->name->name }}</td>
+                                            <td @if(! $app->result_sum_amount) class="text-danger" @endif>{{ $app->result_sum_amount ? $app->result_sum_amount - $app->toy_count * $app->tara : 0 }} kg</td>
                                             <td>
                                                 @if( isset($app->laboratory_result))
                                                     <a href="{!! url('/final_results/add/'. $app->id) !!}"><button type="button" class="btn btn-round btn-success">{{ trans('app.Qo\'shish')}}</button></a>

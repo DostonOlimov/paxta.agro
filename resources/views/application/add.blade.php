@@ -152,12 +152,12 @@
                                     <div class="form-group overflow-hidden">
                                         <label class="form-label">{{trans('app.Hosil yili')}}<label class="text-danger">*</label></label>
                                         <select class="w-100 form-control" name="year" required>
-                                            @if(count($year))
+                                            @if(count($years))
                                                 <option value="">{{trans('app.Hosil yilini tanlang')}}</option>
                                             @endif
-                                            @foreach($year as $key=>$name)
+                                            @foreach($years as $key=>$name)
                                                 <option value="{{ $key }}"
-                                                    @if($key == old('year')) selected @endif
+                                                    @if($key == old('year') || $key == $year) selected @endif
                                                     >{{$name}}
                                                 </option>
                                             @endforeach
@@ -196,7 +196,7 @@
 										   </span>
                                     @endif
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4" style="display: none">
                                     <div class="form-group overflow-hidden">
                                         <label class="form-label">Sertifikatlashtirish sxemasini tanlang<label class="text-danger">*</label></label>
                                         <select class="w-100 form-control" name="sxeme_number">
@@ -205,7 +205,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-8 form-group has-feedback">
+                                <div class="col-md-12 form-group has-feedback" style="display:none">
                                     <label class="form-label" for="data">{{trans('app.Qo\'shimcha ma\'lumotlar')}}<label class="text-danger">*</label></label>
                                     <div class="">
                                         <textarea id="data" name="data" class="form-control" maxlength="100" >{{ old('data')}}</textarea>

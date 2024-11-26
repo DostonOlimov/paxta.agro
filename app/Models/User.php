@@ -67,7 +67,7 @@ class User extends Authenticatable
 
     public function state(): BelongsTo
     {
-        return $this->belongsTo(Region::class, 'state_id');
+        return $this->belongsTo(Region::class,'state_id', 'id');
     }
     public function zavod(): BelongsTo
     {

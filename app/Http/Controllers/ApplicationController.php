@@ -7,7 +7,9 @@ use App\Filters\V1\ApplicationFilter;
 use App\Models\Application;
 use App\Models\AppStatusChanges;
 use App\Models\CropData;
+use App\Models\Decision;
 use App\Models\OrganizationCompanies;
+use App\Models\TestPrograms;
 use App\Services\SearchService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -40,7 +42,7 @@ class ApplicationController extends Controller
                     false,
                     null,
                     null,
-                    ['app_type', '=', 1]
+                    []
                 );
 
         } catch (\Throwable $e) {
@@ -56,12 +58,14 @@ class ApplicationController extends Controller
 
     public function addapplication()
     {
-        $names = DB::table('crops_name')->get()->toArray();
+        $crop = session('crop', 1);
+        $names = DB::table('crops_name')->where('id', ($crop != 2) ? '=' : '!=', 1)->get()->toArray();
         $countries = DB::table('tbl_countries')->get()->toArray();
         $measure_types = CropData::getMeasureType();
-        $year = CropData::getYear();
+        $years = CropData::getYear();
+        $year = session('year', 2024);
 
-        return view('application.add',compact('names', 'countries','measure_types','year'));
+        return view('application.add',compact('names', 'countries','measure_types','years','year'));
 
     }
 
@@ -73,6 +77,7 @@ class ApplicationController extends Controller
         $this->authorize('create', Application::class);
 
         $user = Auth::user();
+//        dd($user->state);
 
         $crop = CropData::create([
             'name_id'       => $request->input('name'),
@@ -95,6 +100,7 @@ class ApplicationController extends Controller
             'status'           => Application::STATUS_FINISHED,
             'data'             => $request->input('data'),
             'created_by'       => $user->id,
+            'app_type'         => session('crop', 1)
         ]);
 
         tbl_activities::create([
@@ -105,6 +111,24 @@ class ApplicationController extends Controller
             'action'      => "Ariza qo'shildi",
             'time'        => now(),
         ]);
+//        if(session('crop', 1) == 2){
+//            // Create new decision
+//            $decision = Decision::create([
+//                'app_id'       => $application->id,
+//                'director_id'  => 27, // Hardcoded, but ideally fetched dynamically
+//                'number'       => $number,
+//                'laboratory_id'=> $laboratory_id,
+//                'created_by'   => $user->id,
+//                'date'         => $request->input('dob') ? date('Y-m-d', strtotime($request->input('dob'))) : null,
+//                'status'       => Decision::STATUS_NEW,
+//            ]);
+//
+//            // Create test program entry
+//            TestPrograms::create([
+//                'app_id'      => $application->id,
+//                'director_id' => 27, // Hardcoded, but same suggestion as above
+//            ]);
+//        }
 
         return redirect()->route('listapplication')->with('message', 'Successfully Submitted');
     }
@@ -117,7 +141,8 @@ class ApplicationController extends Controller
         $app = Application::findOrFail($id); // Use findOrFail to handle missing records
 
         $type = Application::getType();
-        $names = DB::table('crops_name')->get();
+        $crop = session('crop', 1);
+        $names = DB::table('crops_name')->where('id', ($crop != 2) ? '=' : '!=', 1)->get();
         $countries = DB::table('tbl_countries')->get();
         $measure_types = CropData::getMeasureType();
         $year = CropData::getYear();

@@ -1,3 +1,93 @@
+/*crops dropdown list */
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #5986f8;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    position: relative;
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow */
+}
+
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 36px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+}
+
+/* Crop boxes */
+.select__row {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* Space between boxes */
+}
+
+.select_col-md-4 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 30%; /* Ensure same size */
+    max-width: 315px; /* Optional max width */
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px; /* Rounded corners */
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    text-align: center;
+}
+
+.select_col-md-4:hover {
+    transform: translateY(-10px); /* Lift effect on hover */
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+    background-color: #f0f0f0; /* Slightly lighter background */
+}
+
+.selectCropImage {
+    width: 100%; /* Make the image fit the box width */
+    max-height: 250px; /* Ensure consistent height */
+    object-fit: cover; /* Maintain aspect ratio */
+    margin-bottom: 10px;
+}
+
+.selectCropText {
+    color: black;
+    font-weight: bold;
+    text-align: center;
+}
+.sidebarLogo{
+    width:55px;
+    margin-top: 9px;
+}
+
 /*language dropdown */
 .my-dropdown {
     padding: 8px 14px;

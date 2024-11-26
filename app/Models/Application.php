@@ -155,7 +155,7 @@ class Application extends Model
             // Add global scope for filtering by user's state if in branch state
             if ($user->branch_id == User::BRANCH_STATE) {
                 static::addGlobalScope('cityStateScope', function ($query) use ($user) {
-                    $query->whereHas('organization.city', function ($query) use ($user) {
+                    $query->whereHas('prepared', function ($query) use ($user) {
                         $query->where('state_id', $user->state_id);
                     });
                 });
@@ -165,9 +165,9 @@ class Application extends Model
         // Add global scope to exclude deleted status and filter crops
         static::addGlobalScope('nonDeletedStatusScope', function ($query) use ($year, $crop) {
             $query->where('status', '!=', self::STATUS_DELETED)
-                ->whereHas('crops', function ($query) use ($year, $crop) {
-                    $query->where('year', $year)
-                        ->where('name_id', $crop == 1 ? '=' : '!=', 1);
+                ->where('app_type', '=', $crop)
+                ->whereHas('crops', function ($query) use ($year) {
+                    $query->where('year', $year);
                 });
         });
     }

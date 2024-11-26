@@ -48,7 +48,9 @@ class FinalResultsController extends Controller
                 compact('names', 'states', 'years'),
                 'final_results.search',
                 [],
-                false
+                false,
+                'result', // Related model for withSum
+                'amount'      // Column to sum
             );
 
         } catch (\Throwable $e) {

@@ -22,15 +22,15 @@ class OrganizationCompaniesController extends Controller
             ->get()
             ->toArray();
         $cities = '';
-        if($user->branch_id == \App\Models\User::BRANCH_STATE ){
-            $states = DB::table('tbl_states')->where('id','=',$user->state_id)
-                ->where('country_id', '=', 234)
-                ->get()
-                ->toArray();
-            $cities = DB::table('tbl_cities')->where('state_id','=',$user->state_id)
-                ->get()
-                ->toArray();
-        }
+//        if($user->branch_id == \App\Models\User::BRANCH_STATE ){
+//            $states = DB::table('tbl_states')->where('id','=',$user->state_id)
+//                ->where('country_id', '=', 234)
+//                ->get()
+//                ->toArray();
+//            $cities = DB::table('tbl_cities')->where('state_id','=',$user->state_id)
+//                ->get()
+//                ->toArray();
+//        }
         $model = new OrganizationCompanies();
         return view('organization.add', compact('title','states','cities','model','redirect_id'));
     }
@@ -152,13 +152,13 @@ class OrganizationCompaniesController extends Controller
                         ->orWhere('inn', 'like', '%' . $ownername . '%');
                 });
 
-            if ($user->branch_id == \App\Models\User::BRANCH_STATE ) {
-                $user_city = $user->state_id;
-                $owners->whereHas('city', function ($query) use ($user_city) {
-                    $query->where('state_id', $user_city);
-
-                });
-            }
+//            if ($user->branch_id == \App\Models\User::BRANCH_STATE ) {
+//                $user_city = $user->state_id;
+//                $owners->whereHas('city', function ($query) use ($user_city) {
+//                    $query->where('state_id', $user_city);
+//
+//                });
+//            }
 
             $owners = $owners->take(15)->get()->toArray();
 
