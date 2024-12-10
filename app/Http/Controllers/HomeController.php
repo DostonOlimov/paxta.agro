@@ -107,9 +107,9 @@ class HomeController extends Controller
                 ->join('final_results', 'dalolatnoma.id', '=', 'final_results.dalolatnoma_id')
                 ->join('sertificates', 'final_results.id', '=', 'sertificates.final_result_id');
 
-            $sertificatesCount = $applicationQuery2->count('sertificates.id');
+            $sertificatesCount = $applicationQuery2->count('applications.id');
 
-            $finishedApplicationsCount = $applicationQuery2->distinct('applications.id')->count('sertificates.id');
+            $finishedApplicationsCount = $applicationQuery2->distinct('applications.id')->count('applications.id');
             $sumFinalResult = $applicationQuery2->selectRaw('SUM(final_results.amount - (final_results.count * dalolatnoma.tara)) as total')->value('total');
         } else {
             $applicationQuery2 = $applicationQuery->clone()
