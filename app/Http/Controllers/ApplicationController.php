@@ -77,7 +77,7 @@ class ApplicationController extends Controller
         $this->authorize('create', Application::class);
 
         $user = Auth::user();
-//        dd($user->state);
+
 
         $crop = CropData::create([
             'name_id'       => $request->input('name'),
@@ -111,24 +111,24 @@ class ApplicationController extends Controller
             'action'      => "Ariza qo'shildi",
             'time'        => now(),
         ]);
-//        if(session('crop', 1) == 2){
-//            // Create new decision
-//            $decision = Decision::create([
-//                'app_id'       => $application->id,
-//                'director_id'  => 27, // Hardcoded, but ideally fetched dynamically
-//                'number'       => $number,
-//                'laboratory_id'=> $laboratory_id,
-//                'created_by'   => $user->id,
-//                'date'         => $request->input('dob') ? date('Y-m-d', strtotime($request->input('dob'))) : null,
-//                'status'       => Decision::STATUS_NEW,
-//            ]);
-//
-//            // Create test program entry
-//            TestPrograms::create([
-//                'app_id'      => $application->id,
-//                'director_id' => 27, // Hardcoded, but same suggestion as above
-//            ]);
-//        }
+        if(session('crop') == 3){
+            // Create new decision
+            $decision = Decision::create([
+                'app_id'       => $application->id,
+                'director_id'  => 27, // Hardcoded, but ideally fetched dynamically
+                'number'       => $application->id,
+                'laboratory_id'=> 2,
+                'created_by'   => $user->id,
+                'date'         => $request->input('dob') ? date('Y-m-d', strtotime($request->input('dob'))) : null,
+                'status'       => Decision::STATUS_NEW,
+            ]);
+
+            // Create test program entry
+            TestPrograms::create([
+                'app_id'      => $application->id,
+                'director_id' => 27, // Hardcoded, but same suggestion as above
+            ]);
+        }
 
         return redirect()->route('listapplication')->with('message', 'Successfully Submitted');
     }

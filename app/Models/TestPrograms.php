@@ -40,9 +40,9 @@ class TestPrograms  extends Model
     {
         return $this->belongsTo(FinalResult::class, 'id', 'test_program_id');
     }
-    public function dalolatnoma(): BelongsTo
+    public function dalolatnoma()
     {
-        return $this->belongsTo(Dalolatnoma::class, 'id', 'test_program_id');
+        return $this->hasOne(Dalolatnoma::class, 'test_program_id', 'id');
     }
     protected static function boot()
     {

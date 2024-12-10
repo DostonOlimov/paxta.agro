@@ -45,13 +45,13 @@ class Dalolatnoma  extends Model
     {
         return $this->hasOne(LaboratoryFinalResults::class);
     }
-    public function humidity(): BelongsTo
+    public function humidity()
     {
-        return $this->belongsTo(Humidity::class, 'id', 'dalolatnoma_id');
+        return $this->hasOne(Humidity::class, 'dalolatnoma_id', 'id');
     }
-    public function humidity_result(): BelongsTo
+    public function humidity_result()
     {
-        return $this->belongsTo(HumidityResult::class, 'id', 'dalolatnoma_id');
+        return $this->hasOne(HumidityResult::class, 'dalolatnoma_id', 'id');
     }
     public function selection()
     {
@@ -59,7 +59,7 @@ class Dalolatnoma  extends Model
     }
     public function gin_balles()
     {
-        return $this->hasMany(GinBalles::class);
+        return $this->hasMany(GinBalles::class,'dalolatnoma_id','id');
     }
     public function clamp_data()
     {
@@ -75,11 +75,11 @@ class Dalolatnoma  extends Model
     }
     public function measurement_mistake()
     {
-        return $this->belongsTo(MeasurementMistake::class, 'id', 'dalolatnoma_id');
+        return $this->hasOne(MeasurementMistake::class,'dalolatnoma_id','id');
     }
     public function laboratory_result()
     {
-        return $this->belongsTo(LaboratoryResult::class, 'id', 'dalolatnoma_id');
+        return $this->hasOne(LaboratoryResult::class,'dalolatnoma_id','id');
     }
 
 

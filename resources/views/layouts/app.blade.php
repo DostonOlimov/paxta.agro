@@ -50,7 +50,60 @@
 
     <link rel="stylesheet" href="{{ asset('resources/assets/fonts/fonts/font-awesome.min.css') }}"/>
     <link rel="stylesheet" href="{{ asset('resources/assets/css/myStyle.css') }}"/>
+    @php
+        $styles = [
+            2 => [
+                'header' => '#343a40',
+                'sidebar' => '#495057',
+                'activeLinkBg' => 'var(--cui-sidebar-nav-link-active-bg)',
+                'hoverLinkBg' => 'var(--cui-sidebar-nav-link-hover-bg)',
+                'stickyHeader' => '#d4d4d4'
+            ],
+            3 => [
+                'header' => '#157347',
+                'sidebar' => '#198754',
+                'activeLinkBg' => '#1cbd53',
+                'hoverLinkBg' => '#1cbd53',
+                'stickyHeader' => '#d9f1e4',
+            ],
+            'default' => [
+                'header' => '#0E46A3',
+                'sidebar' => '#0d6efd',
+                'activeLinkBg' => '#31a5f1',
+                'hoverLinkBg' => '#31a5f1',
+                'stickyHeader' => '#b9e6f1',
+            ],
+        ];
 
+        $crop = session('crop');
+        $currentStyles = $styles[$crop] ?? $styles['default'];
+    @endphp
+
+    <style>
+        .page-header {
+            background-color: {{ $currentStyles['header'] }};
+        }
+        .sidebar-toggler,
+        .sidebar-brand,
+        #myBtn {
+            background-color: {{ $currentStyles['header'] }};
+        }
+        .sidebar-nav {
+            background-color: {{ $currentStyles['sidebar'] }};
+        }
+        .sidebar-nav .nav-link.active1 {
+            color: var(--cui-sidebar-nav-link-active-color);
+            background: {{ $currentStyles['activeLinkBg'] }} !important;
+        }
+        .sidebar-nav .nav-link:hover {
+            color: var(--cui-sidebar-nav-link-hover-color);
+            text-decoration: none;
+            background: {{ $currentStyles['hoverLinkBg'] }};
+        }
+        .header-sticky {
+                background-color: {{ $currentStyles['stickyHeader'] }};
+            }
+    </style>
     @yield('styles')
 </head>
 <body class="app">
@@ -187,7 +240,7 @@ $settings = settings();
             url: '/change-crop',
             data: { crop: year, _token: "{{ csrf_token() }}" },
             success: function () {
-                location.reload();
+                window.location.href = '/home';
             },
             error: function (error) {
                 console.error('Error changing year', error);

@@ -3,7 +3,6 @@
 <head>
     <title>PAXTA MAHSULOTLARINI SERTIFIKATLASHTIRISH AVTOMATLASHTIRILGAN TIZIMI</title>
     <style>
-        <style>
         @font-face {
             font-family: 'DejaVuSans';
             src: url('{{ storage_path('fonts/DejaVuSans.ttf') }}');

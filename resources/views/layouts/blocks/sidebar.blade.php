@@ -29,7 +29,7 @@
 
     <div class="sidebar-brand d-none d-md-flex justify-content-around">
 
-    <button id="myBtn" style="background-color: #0E46A3;border: none;">
+    <button id="myBtn" style="border: none;">
         @if(session('crop') == 2)
             <img class="sidebarLogo" src="/resources/assets/images/chigit_logo.png">
         @elseif(session('crop') == 3)
@@ -82,9 +82,11 @@
         <li class="nav-item "><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('application/*') ? 'active1' : ''}}" href="{!! url('/application/list') !!}"> <svg class="nav-icon">
                     <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-cursor"></use>
                 </svg>{{trans('message.Arizalar')}}</a></li>
-        <li class="nav-item"><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('decision/*') ? 'active1' : ''}}" href="{!! url('/decision/search') !!}"> <svg class="nav-icon">
-                    <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-folder-open"></use>
-                </svg><?php echo nl2br(trans('message.Qaror va Sinov dasturlari')); ?></a></li>
+        @if(session('crop') == 1)
+            <li class="nav-item"><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('decision/*') ? 'active1' : ''}}" href="{!! url('/decision/search') !!}"> <svg class="nav-icon">
+                        <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-folder-open"></use>
+                    </svg><?php echo nl2br(trans('message.Qaror va Sinov dasturlari')); ?></a></li>
+        @endif
 
         <li class="nav-item"><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('dalolatnoma/*') ? 'active1' : ''}}" href="{!! url('/dalolatnoma/search') !!}"> <svg class="nav-icon">
                     <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-inbox"></use>
@@ -93,22 +95,25 @@
         <li class="nav-item"><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('akt_amount/*') ? 'active1' : ''}}" href="{!! url('/akt_amount/search') !!}"> <svg class="nav-icon">
                     <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-balance-scale"></use>
                 </svg><?php echo nl2br(trans('message.Og\'irlik bo\'yicha dalolatnomalar')); ?></a></li>
-        <li class="nav-item"><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('humidity/*') ? 'active1' : ''}}" href="{!! url('/humidity/search') !!}"> <svg class="nav-icon">
-                    <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-eyedropper"></use>
-                </svg>{{trans('message.Namlik dalolatnomasi')}}</a></li>
+            @if(session('crop') == 1)
+            <li class="nav-item"><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('humidity/*') ? 'active1' : ''}}" href="{!! url('/humidity/search') !!}"> <svg class="nav-icon">
+                        <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-eyedropper"></use>
+                    </svg>{{trans('message.Namlik dalolatnomasi')}}</a></li>
 
-        <li class="nav-title">{{trans('message.Laboratoriya')}}</li>
+            <li class="nav-title">{{trans('message.Laboratoriya')}}</li>
+            @endif
 
         <li class="nav-item"><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('hvi/*') ? 'active1' : ''}}" href="{!! url('/hvi/list') !!}"> <svg class="nav-icon">
                     <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-devices"></use>
                 </svg>{{trans('message.HVI ma\'lumotlari')}}</a></li>
+            @if(session('crop') == 1)
+            <li class="nav-item"><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('humidity_result/*') ? 'active1' : ''}}" href="{!! url('/humidity_result/search') !!}"> <svg class="nav-icon">
+                        <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-chart"></use>
+                    </svg>{{trans('message.Namlik natijalari')}}</a></li>
+            <li class="nav-item"><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('measurement_mistake/*') ? 'active1' : ''}}" href="{!! url('/measurement_mistake/search') !!}"> <svg class="nav-icon">
+                        <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-clear-all"></use>
+                    </svg>{{trans('message.O\'lchash xatoligi')}}</a></li>
 
-        <li class="nav-item"><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('humidity_result/*') ? 'active1' : ''}}" href="{!! url('/humidity_result/search') !!}"> <svg class="nav-icon">
-                    <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-chart"></use>
-                </svg>{{trans('message.Namlik natijalari')}}</a></li>
-        <li class="nav-item"><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('measurement_mistake/*') ? 'active1' : ''}}" href="{!! url('/measurement_mistake/search') !!}"> <svg class="nav-icon">
-                    <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-clear-all"></use>
-                </svg>{{trans('message.O\'lchash xatoligi')}}</a></li>
 {{--        @else--}}
 {{--            <li class="nav-item"><a class="nav-link" href="{!! url('/laboratory_results/search') !!}"> <svg class="nav-icon">--}}
 {{--                        <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-bar-chart"></use>--}}
@@ -121,6 +126,11 @@
         <li class="nav-item"><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('final_results/*') ? 'active1' : ''}}" href="{!! url('/final_results/search') !!}"> <svg class="nav-icon">
                     <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-bar-chart"></use>
                 </svg>{{trans('message.Yakuniy natijalar')}}</a></li>
+            @else
+                <li class="nav-item"><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('sertificate-protocol/*') ? 'active1' : ''}}" href="{!! url('/sertificate-protocol/list') !!}"> <svg class="nav-icon">
+                            <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-list"></use>
+                        </svg>{{trans('message.Sinov bayonnomalari')}}</a></li>
+            @endif
         @endif
 
 

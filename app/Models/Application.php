@@ -62,23 +62,23 @@ class Application extends Model
     }
     public function tests()
     {
-        return $this->belongsTo(TestPrograms::class, 'id','app_id');
+        return $this->hasOne(TestPrograms::class, 'app_id', 'id');
     }
     public function decision()
     {
-        return $this->belongsTo(Decision::class, 'id','app_id');
+        return $this->hasOne(Decision::class,'app_id', 'id');
     }
     public function comment()
     {
-        return $this->belongsTo(AppStatusChanges::class, 'id','app_id');
+        return $this->hasOne(AppStatusChanges::class,'app_id', 'id');
     }
     public function files()
     {
-        return $this->belongsTo(Files::class, 'id','app_id');
+        return $this->hasOne(Files::class,'app_id', 'id');
     }
     public function client_data()
     {
-        return $this->belongsTo(ClientData::class,'id','app_id');
+        return $this->hasOne(ClientData::class,'app_id','id');
     }
     public function chigit_result()
     {
@@ -86,7 +86,7 @@ class Application extends Model
     }
     public function sifat_sertificate()
     {
-        return $this->belongsTo(SifatSertificates::class,'id','app_id');
+        return $this->hasOne(SifatSertificates::class,'app_id','id');
     }
 
     public static function getType($type = null)

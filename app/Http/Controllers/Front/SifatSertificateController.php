@@ -15,6 +15,7 @@ use App\Models\CropData;
 use App\Models\CropsSelection;
 use App\Models\Indicator;
 use App\Models\OrganizationCompanies;
+use App\Models\SifatContracts;
 use App\Models\SifatSertificates;
 use App\Services\SearchService;
 use Illuminate\Support\Facades\Auth;
@@ -305,10 +306,13 @@ class SifatSertificateController extends Controller
     public function accept($id)
     {
         $test = Application::findOrFail($id);
-        $type = 1;
+
+        //setting type
+        $type = SifatSertificates::CIGIT_TYPE_XARIDORLI;
         if(optional($test->client_data)->client_id == 0){
-            $type = 2;
+            $type = SifatSertificates::CIGIT_TYPE_XARIDORSIZ;
         }
+
         $company = OrganizationCompanies::with('city')->findOrFail($test->organization_id);
         // Fetch values and tip
         $chigitValues = $this->getChigitValuesAndTip($test);

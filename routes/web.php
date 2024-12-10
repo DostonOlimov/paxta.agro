@@ -442,18 +442,7 @@ Route::group(['prefix' => 'laboratory_results', 'middleware' => 'auth'], functio
     Route::get('/view/{id}', '\App\Http\Controllers\LaboratoryResultController@view');
     Route::post('/store', '\App\Http\Controllers\LaboratoryResultController@store');
 });
-//measurement mistake
-Route::group(['prefix' => 'laboratory_protocol', 'middleware' => 'auth'], function () {
-    Route::get('/search', '\App\Http\Controllers\LaboratoryProtocolController@search');
-    Route::get('/add/{id}', '\App\Http\Controllers\LaboratoryProtocolController@add');
-    Route::get('/list', '\App\Http\Controllers\LaboratoryProtocolController@list');
-    Route::get('/list/delete/{id}', '\App\Http\Controllers\LaboratoryProtocolController@destory');
-    Route::get('/edit/{id}', '\App\Http\Controllers\LaboratoryProtocolController@edit');
-    Route::post('/edit/update/{id}', '\App\Http\Controllers\LaboratoryProtocolController@update');
-    Route::get('/view/{id}', '\App\Http\Controllers\LaboratoryProtocolController@view');
-    Route::post('/store', '\App\Http\Controllers\LaboratoryProtocolController@store');
-});
-//Laboratory results
+//Laboratory protocol
 Route::group(['prefix' => 'laboratory-protocol', 'middleware' => 'auth'], function () {
     Route::get('/list', '\App\Http\Controllers\LaboratoryProtocolController@list')->name('laboratory_protocol.list');
     Route::get('/add/{id}', '\App\Http\Controllers\LaboratoryProtocolController@add');
@@ -461,6 +450,17 @@ Route::group(['prefix' => 'laboratory-protocol', 'middleware' => 'auth'], functi
     Route::post('/store', '\App\Http\Controllers\LaboratoryProtocolController@store');
     Route::get('/change/{id}', '\App\Http\Controllers\LaboratoryProtocolController@change_status');
 });
+//Sertificate protocol
+Route::group(['prefix' => 'sertificate-protocol', 'middleware' => 'auth'], function () {
+    Route::get('/list', '\App\Http\Controllers\SertificateProtocolController@list')->name('sertificate_protocol.list');
+    Route::get('/add/{id}', '\App\Http\Controllers\SertificateProtocolController@add');
+    Route::get('/view/{id}', '\App\Http\Controllers\SertificateProtocolController@view')->name('sertificate_protocol.view');
+    Route::get('/sertificate-view/{id}', '\App\Http\Controllers\SertificateProtocolController@sertificateView')->name('sertificate_protocol.sertificate_view');
+    Route::get('/accept/{id}', '\App\Http\Controllers\SertificateProtocolController@accept');
+    Route::post('/store', '\App\Http\Controllers\SertificateProtocolController@store');
+    Route::get('/change/{id}', '\App\Http\Controllers\SertificateProtocolController@change_status');
+});
+Route::get('/protocol/{id}/download', '\App\Http\Controllers\SertificateProtocolController@download')->name('laboratory_protocol.download');
 //Laboratory results
 Route::group(['prefix' => 'sifat-contracts', 'middleware' => 'auth'], function () {
     Route::get('/list', '\App\Http\Controllers\Front\SifatContractsController@list')->name('sifat_contracts.list');

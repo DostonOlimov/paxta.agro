@@ -72,6 +72,9 @@ return [
     'Laboratoriya sozlamalari' => 'Laboratoriya sozlamalari',
     'O\'lchash xatoligini aniqlash dalolatnomasi' => 'O\'lchash xatoligini aniqlash dalolatnomasi',
     'Namlikni massaviy nisbatini aniqlash dalolatnomasi' => 'Namlikni massaviy nisbatini aniqlash dalolatnomasi',
+    'Taqdim etilgan sertifikatlar soni' => 'Taqdim etilgan sertifikatlar soni',
+    'Texnik chigit miqdori'     => 'Texnik chigit miqdori',
+    'Sertifikalangan mahsulot miqdori' => 'Sertifikalangan mahsulot miqdori',
     //tarjima qilish kerak oxiri
 
 

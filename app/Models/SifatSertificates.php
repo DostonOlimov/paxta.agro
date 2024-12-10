@@ -21,6 +21,10 @@ class SifatSertificates  extends Model
 {
     use  LogsActivity,HasAttachment;
 
+    const CIGIT_TYPE_XARIDORLI = 1;
+    const CIGIT_TYPE_XARIDORSIZ = 2;
+    const PAXTA_TYPE = 3;
+
     protected $table = 'sifat_sertificates';
 
 

@@ -138,7 +138,7 @@
     /*    table td {*/
     /*        padding: 5px;*/
     /*    }*/
-    }
+    /*}*/
 </style>
 @endsection
 @section('content')
@@ -252,12 +252,14 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
         <div style="width: 60%; display: inline-block; padding-bottom: 30px;">
              <b>Ijrochi :</b>
             {{ optional($test->prepared)->region->name }} filialining<br>
-            @if(Auth::User()->role == \App\Models\User::ROLE_STATE_CHIGIT_BOSHLIQ)
-                     bosh mutaxassissi:
-                 @else
-                     {{ optional(optional($test->prepared)->chigit_laboratory)->name }}<br>
-                     mudiri-guruh rahbari :
-                 @endif
+            @if(Auth::User()->role == \App\Models\User::ROLE_STATE_CHIGI_XODIM)
+                bosh mutaxassissi:
+            @elseif(Auth::User()->role == \App\Models\User::ROLE_STATE_CHIGIT_BOSHLIQ)
+                laboratoriya boshlig'i
+            @else
+                {{ optional(optional($test->prepared)->chigit_laboratory)->name }}<br>
+                mudiri-guruh rahbari :
+            @endif
                  {{ optional($test->user)->lastname . ' ' . (optional($test->user)->name) }}
         </div>
 
