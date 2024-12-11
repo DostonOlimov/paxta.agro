@@ -199,9 +199,9 @@ class OrganizationCompaniesController extends Controller
         // Define validation rules with camelCase attribute names
         $validatedData = $request->validate([
             'inn' => 'required|int|digits:9',
-            'name' => 'required|string|max:50',
-            'address' => 'required|string|max:100',
-            'owner_name' => 'required|string|max:30',
+            'name' => 'required|string|max:100',
+            'address' => 'required|string|max:150',
+            'owner_name' => 'required|string|max:50',
             'phone_number' => 'required|string|max:20',
         ]);
 
