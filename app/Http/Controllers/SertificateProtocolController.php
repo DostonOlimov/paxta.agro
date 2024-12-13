@@ -12,6 +12,7 @@ use App\Models\LaboratoryOperator;
 use App\Models\MeasurementMistake;
 use App\Models\OrganizationCompanies;
 use App\Models\SifatSertificates;
+use App\Models\Tips;
 use App\Models\User;
 use App\Services\SearchService;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -78,8 +79,31 @@ class SertificateProtocolController extends Controller
         $userA = Auth::user();
         $this->authorize('create', Application::class);
         $data=$request->all();
+        dd($data);
         $data['klassiyor_id'] = $data['klassiyor_id'] ?? $userA->id;
 
+        $clamp_data = ClampData::selectRaw('
+        AVG(mic) as mic,
+        AVG(staple) as staple,
+        AVG(strength) as strength,
+        AVG(uniform) as uniform,
+        AVG(fiblength) as fiblength'
+        )
+            ->where('dalolatnoma_id', $id)
+            ->first();
+
+        $fiblength = round($clamp_data->fiblength / 100,2);
+        $tip = Tips::where('max', '>=', $fiblength)
+            ->where('min', '<=', $fiblength)
+            ->first();
+
+        // Storing LaboratoryResult
+        $this->storeLaboratoryResult($id, $clamp_data, $tip, $humidity_result);
+
+        // Check if FinalResult exists, if not, create
+        if (!FinalResult::where('dalolatnoma_id', $id)->exists()) {
+            $this->storeFinalResults($id, $clamp_data, $humidity_result);
+        }
 
         $parsedDate = Carbon::createFromFormat('d-m-Y', $request->input('date'));
         $reformattedDate = $parsedDate->format('Y-m-d');

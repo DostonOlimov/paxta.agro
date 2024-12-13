@@ -109,7 +109,9 @@
                                             @endif
                                         </a>
                                     </th>
-
+                                    <th class="border-bottom-0 border-top-0">
+                                        {{ trans('app.Zavod nomi va kodi') }}
+                                    </th>
                                     <th class="border-bottom-0 border-top-0">
                                         {{ trans('app.Sertifikatlanuvchi mahsulot') }}
                                     </th>
@@ -154,6 +156,7 @@
                                             onclick="changeDisplay('companyId[eq]')"></i>
                                         @endif
                                     </td>
+                                    <td></td>
                                     <td>
                                         <select class="w-100 form-control name_of_corn custom-select" name="name"
                                             id="crops_name">
@@ -188,6 +191,7 @@
                                     <td><a href="#" class="company-link"
                                             data-id="{{ $app->organization_id }}">{{ optional($app->organization)->name }}</a>
                                     </td>
+                                    <td>{{ optional($app->prepared)->name }} - {{ optional($app->prepared)->kod }}</td>
                                     <td>{{ optional($app->crops->name)->name }}</td>
                                     <td>{{ optional($app->crops)->amount_name }}</td>
                                     <td style="display: flex; flex-wrap: nowrap;">
@@ -218,16 +222,25 @@
 </div>
 @endsection
 @section('scripts')
-<script>
-    const labels = {
-        inn: @json(trans('app.Tashkilot STIRi')),
-        owner: @json(trans('app.Tashkilot rahbari')),
-        phone: @json(trans('app.Telefon raqami')),
-        address: @json(trans('app.Address')),
-        state: @json(trans('app.Viloyat nomi')),
-        city: @json(trans('app.Tuman nomi'))
-    };
-</script>
-<script src="{{ asset('js/my_js_files/filter.js') }}"></script>
-<script src="{{ asset('js/my_js_files/view_company.js') }}"></script>
+    <script>
+        var translations = {
+            inputTooShort: '{{ trans('app.Korxona (nomi), STIR ini kiritib izlang') }}',
+            searching: '{{ trans('app.Izlanmoqda...') }}',
+            noResults: '{{ trans('app.Natija topilmadi') }}',
+            errorLoading: '{{ trans('app.Natija topilmadi') }}',
+            placeholder: '{{ trans('app.Korxona nomini kiriting') }}'
+        };
+
+        const labels = {
+            inn: @json(trans('app.Tashkilot STIRi')),
+            owner: @json(trans('app.Tashkilot rahbari')),
+            phone: @json(trans('app.Telefon raqami')),
+            address: @json(trans('app.Address')),
+            state: @json(trans('app.Viloyat nomi')),
+            city: @json(trans('app.Tuman nomi'))
+        };
+    </script>
+    <script src="{{ asset('js/my_js_files/filter.js') }}"></script>
+    <script src="{{ asset('js/my_js_files/get_company.js') }}"></script>
+    <script src="{{ asset('js/my_js_files/view_company.js') }}"></script>
 @endsection
