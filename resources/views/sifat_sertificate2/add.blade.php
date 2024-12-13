@@ -1,6 +1,8 @@
 @extends('layouts.app')
 @section('content')
-
+    <!-- page content -->
+    <?php $userid = Auth::user()->id; ?>
+    @can('sertificateCreate',\App\Models\Application::class)
         <style>
             @media screen and (max-width: 768px) {
                 main {
@@ -207,6 +209,15 @@
                 </div>
             </div>
         </div>
+    @else
+        <div class="section" role="main">
+            <div class="card">
+                <div class="card-body text-center">
+                    <span class="titleup text-danger"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp {{ trans('app.You Are Not Authorize This page.')}}</span>
+                </div>
+            </div>
+        </div>
+    @endcan
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="{{ asset('vendors/moment/min/moment.min.js') }}"></script>
     <script src="{{ asset('vendors/bootstrap-daterangepicker/daterangepicker.js') }}"></script>

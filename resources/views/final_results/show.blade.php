@@ -69,7 +69,7 @@
                                     <div class="card-body">
                                         <div class="data-section mb-3 p-3" style="background-color: #3498db; color: #ffffff; font-size: large; border-radius: 8px;">
                                         <div class="row "  >
-                                            <div class="col-md-3 ">Partiya raqami : {{$dalolatnoma->party}}</div>
+                                            <div class="col-md-3 ">Partiya raqami : {{ optional(optional(optional($dalolatnoma->test_program)->application)->crops)->party_number}}</div>
                                             <div class="col-md-3">Kip soni : {{$dalolatnoma->toy_count}}</div>
                                             <div class="col-md-3">Mikroneyr : {{round($mic,1)}}</div>
                                             <div class="col-md-3">Uzunlik : {{round($length)/100}}</div>

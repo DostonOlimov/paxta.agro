@@ -10,6 +10,7 @@ use App\Models\CropData;
 use App\Models\Decision;
 use App\Models\OrganizationCompanies;
 use App\Models\TestPrograms;
+use App\Rules\CheckingParyNumber;
 use App\Services\SearchService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -77,6 +78,9 @@ class ApplicationController extends Controller
         $this->authorize('create', Application::class);
 
         $user = Auth::user();
+        $validated = $request->validate([
+            'party_number' => ['required', new CheckingParyNumber($request->input('prepared'),$request->input('party_number'))],
+        ]);
 
 
         $crop = CropData::create([

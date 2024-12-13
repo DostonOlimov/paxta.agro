@@ -54,11 +54,22 @@ class ApplicationPolicy
      */
     public function create(User $user)
     {
-        return ($user->role != 30 or $user->role != 60)
+        return ($user->role != 30 or $user->crop_branch != User::CROP_BRANCH_CHIGIT)
             ? Response::allow()
             : Response::deny('Sizga ushbu sahifadan foydalanishga ruxsat berilmagan.');
     }
-
+    /**
+     * Determine whether the user can create models.
+     *
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function sertificateCreate(User $user)
+    {
+        return (false)
+            ? Response::allow()
+            : Response::deny('Sizga ushbu sahifadan foydalanishga ruxsat berilmagan.');
+    }
     /**
      * Determine whether the user can update the model.
      *

@@ -222,7 +222,7 @@ class SertificateProtocolController extends Controller
         // Load the view and pass data to it
         $pdf = Pdf::loadView('sertificate_protocol.sertificate_pdf', compact('test','sert_number','formattedDate','qrCode','final_results'));
 
-        return $pdf->stream('sdf.pdf');
+//        return $pdf->stream('sdf.pdf');
         // Save the PDF file
         $filePath = storage_path('app/public/sifat_sertificates/certificate_' . $id . '.pdf');
         $pdf->save($filePath);

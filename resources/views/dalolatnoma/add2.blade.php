@@ -54,7 +54,7 @@
 @section('content')
     <!-- page content -->
     <?php $userid = Auth::user()->id; ?>
-    @can('view',\App\Models\Application::class)
+    @can('create',\App\Models\Application::class)
         <div class="section">
             <div class="page-header">
                 <ol class="breadcrumb">

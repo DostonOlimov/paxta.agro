@@ -144,7 +144,7 @@
                                     <input type="text" class="form-control" maxlength="25"  name="party_number" value="{{ old('party_number')}}">
                                     @if ($errors->has('party_number'))
                                         <span class="help-block">
-											 <strong>Partiya raqami noto'g'ri shaklda kiritilgan</strong>
+											 <strong style="color:red">Ushbu partiya raqami olidin kiritilgan.</strong>
 										   </span>
                                     @endif
                                 </div>

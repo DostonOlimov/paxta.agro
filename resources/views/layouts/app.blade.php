@@ -55,6 +55,7 @@
             2 => [
                 'header' => '#343a40',
                 'sidebar' => '#495057',
+                'navgroupBg' => '#797f84',
                 'activeLinkBg' => 'var(--cui-sidebar-nav-link-active-bg)',
                 'hoverLinkBg' => 'var(--cui-sidebar-nav-link-hover-bg)',
                 'stickyHeader' => '#d4d4d4'
@@ -62,6 +63,7 @@
             3 => [
                 'header' => '#157347',
                 'sidebar' => '#198754',
+                'navgroupBg' => '#4eba69',
                 'activeLinkBg' => '#1cbd53',
                 'hoverLinkBg' => '#1cbd53',
                 'stickyHeader' => '#d9f1e4',
@@ -69,6 +71,7 @@
             'default' => [
                 'header' => '#0E46A3',
                 'sidebar' => '#0d6efd',
+                'navgroupBg' => '#4eb6ba',
                 'activeLinkBg' => '#31a5f1',
                 'hoverLinkBg' => '#31a5f1',
                 'stickyHeader' => '#b9e6f1',
@@ -99,6 +102,9 @@
             color: var(--cui-sidebar-nav-link-hover-color);
             text-decoration: none;
             background: {{ $currentStyles['hoverLinkBg'] }};
+        }
+        .nav-group .nav-group-items{
+            background-color: {{ $currentStyles['navgroupBg'] }};
         }
         .header-sticky {
                 background-color: {{ $currentStyles['stickyHeader'] }};

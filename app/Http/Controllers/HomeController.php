@@ -59,7 +59,7 @@ class HomeController extends Controller
             ->leftJoin('tbl_cities', 'tbl_states.id', '=', 'tbl_cities.state_id')
             ->leftJoin('organization_companies', 'tbl_cities.id', '=', 'organization_companies.city_id')
             ->join('applications', 'organization_companies.id', '=', 'applications.organization_id')
-            ->leftJoin('crop_data', 'applications.crop_data_id', '=', 'crop_data.id');
+            ->join('crop_data', 'applications.crop_data_id', '=', 'crop_data.id');
 
         // Apply joins for non-branch crop type
         if ($branchCrop != 2) {
@@ -77,6 +77,7 @@ class HomeController extends Controller
         // Date filters
         if ($filters['from'] && $filters['till']) {
             [$fromTime, $tillTime] = $this->formatDateRange($filters['from'], $filters['till']);
+
             $applicationQuery->whereBetween(
                 $branchCrop == 2 ? 'date' : 'dalolatnoma.date',
                 [$fromTime, $tillTime]
