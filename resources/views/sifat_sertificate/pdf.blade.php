@@ -172,13 +172,13 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
         <h2 class="main__intro"><b>Berilgan sana :</b> {{ $formattedDate }} - yil</h2>
 
-        <h2 class="main__intro text-left"><b>Ishlab chiqaruvchi(yetkazib beruvchi) nomi : </b>{{ $test->organization->name }}</h2>
+        <h2 class="main__intro text-left"><b>Ishlab chiqaruvchi(yetkazib beruvchi) nomi : </b><span style="font-family: DejaVu Sans" >{{ $test->organization->name }}</span></h2>
         <h2 class="main__intro text-left"><b>Ishlab chiqaruvchi(yetkazib beruvchi) manzili : </b>{{ $test->organization->full_address }}</h2>
 
         <h2 class="header__intro" style="display: inline;"><b>Texnik chigit to'da raqami : </b> {{$test->crops->party_number}}</h2>
 
         @if(optional(optional($test->client_data)->client)->id != 0)
-            <h2 class="main__intro text-left"> <b>Xaridor(yog‘-moy korxonasi) nomi:&nbsp;</b>&nbsp; {{ optional(optional($test->client_data)->client)->name}} &nbsp; </h2>
+                <h2 class="main__intro text-left"> <b>Xaridor(yog‘-moy korxonasi) nomi:&nbsp;</b>&nbsp;<span style="font-family: DejaVu Sans" > {{ optional(optional($test->client_data)->client)->name}} </span>&nbsp; </h2>
             <div style="display: flex !important;  justify-content: space-between !important;">
                 <h2 class="header__intro" style="display: inline;"><b>Avtotransport/ vagon raqami: </b> {{ optional($test->client_data)->vagon_number}}</h2>
                 <h2 class="header__intro" style="display: inline;"><b> Yuk xati raqami : </b>{{optional($test->client_data)->yuk_xati }}</h2>
