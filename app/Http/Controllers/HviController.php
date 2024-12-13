@@ -95,9 +95,9 @@ class HviController extends Controller
 
     private function getGinBalles($state_id)
     {
-        return GinBalles::with('dalolatnoma.test_program.application.organization.city')
+        return GinBalles::with('dalolatnoma.test_program.application.prepared')
             ->with('dalolatnoma.clamp_data')
-            ->whereHas('dalolatnoma.test_program.application.organization.city', function ($query) use ($state_id) {
+            ->whereHas('dalolatnoma.test_program.application.prepared', function ($query) use ($state_id) {
                 $query->where('state_id', '=', $state_id);
             })
             ->whereHas('dalolatnoma.clamp_data', function ($query) {
