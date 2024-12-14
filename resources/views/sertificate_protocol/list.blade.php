@@ -189,11 +189,16 @@
                                     @endphp
                                     @foreach($apps as $app)
                                         <tr>
-                                            <td>{{$offset + $loop->iteration}}</td>
-                                            <td>{{ $app->number }}</td>
-                                            <td> {{ optional($app->test_program->application->crops)->party_number }}</td>
-                                            <td> {{ $app->date }}</td>
-                                            <td> {{ optional(optional(optional($app->test_program->application->organization)->area)->region)->name }}</td>
+                                            <td style="white-space: nowrap;">
+                                                {{ $offset + $loop->iteration }}.&nbsp;
+                                                <a href="{!! url('sertificate-protocol/refresh/' . $app->id) !!}">
+                                                    <span class="fa fa-refresh"></span>
+                                                </a>
+                                            </td>
+                                            <td class="text-center">{{ $app->number }}</td>
+                                            <td>{{ optional($app->test_program->application->crops)->party_number }}</td>
+                                            <td>{{ $app->date }}</td>
+                                            <td>{{ optional(optional(optional($app->test_program->application->organization)->area)->region)->name }}</td>
                                             <td><a href="#" class="company-link" data-id="{{ $app->test_program->application->organization_id }}">{{ optional($app->test_program->application->organization)->name }}</a></td>
                                             <td>{{ optional($app->test_program)->application->prepared->name }} - {{ optional($app->test_program)->application->prepared->kod }}</td>
                                             <td>{{ optional($app->test_program)->application->crops->name->name }}</td>

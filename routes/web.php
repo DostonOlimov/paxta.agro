@@ -459,6 +459,7 @@ Route::group(['prefix' => 'sertificate-protocol', 'middleware' => 'auth'], funct
     Route::get('/accept/{id}', '\App\Http\Controllers\SertificateProtocolController@accept');
     Route::post('/store', '\App\Http\Controllers\SertificateProtocolController@store');
     Route::get('/change/{id}', '\App\Http\Controllers\SertificateProtocolController@change_status');
+    Route::get('/refresh/{id}', '\App\Http\Controllers\SertificateProtocolController@refresh');
 });
 Route::get('/protocol/{id}/download', '\App\Http\Controllers\SertificateProtocolController@download')->name('laboratory_protocol.download');
 //Laboratory results
