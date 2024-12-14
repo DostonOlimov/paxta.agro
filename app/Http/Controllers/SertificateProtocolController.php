@@ -185,8 +185,9 @@ class SertificateProtocolController extends Controller
         $qrCode = $test->laboratory_final_results->status == 1
             ? $this->generateQrCode(route('lab.view', $id))
             : null;
+        $t =1;
 
-        return view('sertificate_protocol.view', compact('test', 'final_results', 'formattedDate', 'formattedDate2', 'qrCode'));
+        return view('sertificate_protocol.view', compact('test','t', 'final_results', 'formattedDate', 'formattedDate2', 'qrCode'));
     }
 
     public function sertificateView ($id)
@@ -242,6 +243,9 @@ class SertificateProtocolController extends Controller
         $dalolatnoma = $this->fetchDalolatnoma($id);
         $application = $dalolatnoma->test_program->application;
 
+        $final_results = FinalResult::with('dalolatnoma.laboratory_result')->where('dalolatnoma_id', $id)->get();
+
+
         // Generate certificate number
         $currentYear = date('Y');
         $number = SifatSertificates::where('year', $currentYear)
@@ -265,7 +269,7 @@ class SertificateProtocolController extends Controller
         $qrCode = $this->generateQrCode(route('sifat_sertificate.download', $id));
         $formattedDate = $this->formatDates($dalolatnoma->laboratory_final_results->date);
 
-        $pdf = Pdf::loadView('sertificate_protocol.sertificate_pdf', compact('application', 'sertNumber', 'formattedDate', 'qrCode'));
+        $pdf = Pdf::loadView('sertificate_protocol.sertificate_pdf', compact('application','final_results', 'sertNumber', 'formattedDate', 'qrCode'));
         $pdf->save(storage_path("app/public/sifat_sertificates/certificate_{$id}.pdf"));
 
         return redirect()->route('sertificate_protocol.list', ['generatedAppId' => $id])

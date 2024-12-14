@@ -27,6 +27,16 @@ class SifatSertificates  extends Model
 
     protected $table = 'sifat_sertificates';
 
+    protected $fillable = [
+        'id',
+        'app_id',
+        'number',
+        'year',
+        'zavod_id',
+        'type',
+        'created_by',
+    ];
+
 
     public function application(): BelongsTo
     {

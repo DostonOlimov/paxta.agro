@@ -14,16 +14,16 @@
 
 
         <h1 class="head__title">SIFAT SERTIFIKATI</h1>
-        <h2 class="header__intro" style="font-weight: bold;padding-bottom: 30px;">Reestr raqami: @if(isset($sert_number)) {{ $test->prepared->region->series }}{{ $sert_number }} @endif</h2>
+        <h2 class="header__intro" style="font-weight: bold;padding-bottom: 30px;">Reestr raqami: @if(isset($sert_number)) {{ $application->prepared->region->series }}{{ $sert_number }} @endif</h2>
         {{--        @else--}}
         {{--            <h1 class="header__intro text-center" style="color:#f3775b; font-size: 24px"><b>Nomuvofiqlik bayonnomasi</b></h1>--}}
         {{--        @endif--}}
         <div style="width: 100%; display: flex; justify-content: space-between;">
             <div style="width: 50%; display: inline-block;">
-                <h2 class="main__intro"><b>Mahsulot nomi:</b> {{$test->crops->name->name}} </h2>
+                <h2 class="main__intro"><b>Mahsulot nomi:</b> {{$application->crops->name->name}} </h2>
             </div>
             <div style="width: 30%; display: inline-block;">
-                <h2 class="main__intro"><b>KOD TN VED:</b> {{$test->crops->name->kodtnved}}</h2>
+                <h2 class="main__intro"><b>KOD TN VED:</b> {{$application->crops->name->kodtnved}}</h2>
             </div>
         </div>
         <div style="width: 100%; display: flex; justify-content: space-between;">
@@ -31,12 +31,12 @@
                 <h2 class="main__intro"><b>Berilgan sana:</b> {{ $formattedDate }} - yil </h2>
             </div>
             <div style="width: 30%; display: inline-block;">
-                <h2 class="main__intro"><b>Paxta hosil yili: </b> {{$test->crops->year}}</h2>
+                <h2 class="main__intro"><b>Paxta hosil yili: </b> {{$application->crops->year}}</h2>
             </div>
         </div>
-        <h2 class="main__intro"><b>Ishlab chiqaruvchi (arizachi) nomi: </b> {{ $test->organization->name }} </h2>
-        <h2 class="main__intro"><b>STIR:  </b> {{$test->organization->inn}}</h2>
-        <h2 class="main__intro"><b>Ishlab chiqaruvchi (arizachi) manzili: </b> {{ $test->organization->fulladdress }} </h2>
+        <h2 class="main__intro"><b>Ishlab chiqaruvchi (arizachi) nomi: </b> {{ $application->organization->name }} </h2>
+        <h2 class="main__intro"><b>STIR:  </b> {{$application->organization->inn}}</h2>
+        <h2 class="main__intro"><b>Ishlab chiqaruvchi (arizachi) manzili: </b> {{ $application->organization->fulladdress }} </h2>
 
         <h1 class="header__intro" style="margin-top: 10px;"> IJROCHINING MA’LUMOTLARI</h1>
 
@@ -63,13 +63,13 @@
                 @foreach ($final_results as $item)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
-                        <td>{{ str_pad($test->prepared->kod, 3, '0', STR_PAD_LEFT) }}</td>
-                        <td>{{ $test->crops->party_number}}</td>
+                        <td>{{ str_pad($application->prepared->kod, 3, '0', STR_PAD_LEFT) }}</td>
+                        <td>{{ $application->crops->party_number}}</td>
                         <td>{{ $item->count }}</td>
                         <td>{{ $item->amount }}</td>
-                        <td>{{ $test->tests->dalolatnoma->selection->name }}</td>
+                        <td>{{ $application->tests->dalolatnoma->selection->name }}</td>
                         <td>{{ round($item->staple,2) }}</td>
-                        <td>{{ optional($test->tests->dalolatnoma->laboratory_result)->tip->staple }}</td>
+                        <td>{{ optional($application->tests->dalolatnoma->laboratory_result)->tip->staple }}</td>
                         <td>{{ $item->sort }}</td>
                         <td>{{ optional(\App\Models\CropsGeneration::where('kod','=',$item->class)->first())->name  }}</td>
                         <td>{{ round($item->mic,1) }}</td>
@@ -83,10 +83,10 @@
         <div style="width: 100%; display: flex; justify-content: space-between;">
             <div style="width: 60%; display: inline-block; padding-bottom: 30px;">
                 <b>Ijrochi :</b>
-                {{ optional($test->prepared)->region->name }}<br>
+                {{ optional($application->prepared)->region->name }}<br>
                 Paxta mahsulotlarini hududiy<br>
                 sinov laboratoriya boshlig‘i:
-                {{ optional($test->user)->lastname . ' ' . (optional($test->user)->name) }}
+                {{ optional($application->user)->lastname . ' ' . (optional($application->user)->name) }}
             </div>
 
             <div style="width: 30%;padding-top:60px; text-align: center; display: inline-block;">
