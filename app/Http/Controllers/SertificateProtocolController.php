@@ -9,6 +9,7 @@ use App\Models\Dalolatnoma;
 use App\Models\FinalResult;
 use App\Models\LaboratoryFinalResults;
 use App\Models\LaboratoryOperator;
+use App\Models\LaboratoryResult;
 use App\Models\MeasurementMistake;
 use App\Models\OrganizationCompanies;
 use App\Models\SifatSertificates;
@@ -79,7 +80,7 @@ class SertificateProtocolController extends Controller
         $userA = Auth::user();
         $this->authorize('create', Application::class);
         $data=$request->all();
-        dd($data);
+
         $data['klassiyor_id'] = $data['klassiyor_id'] ?? $userA->id;
 
         $clamp_data = ClampData::selectRaw('
@@ -89,7 +90,7 @@ class SertificateProtocolController extends Controller
         AVG(uniform) as uniform,
         AVG(fiblength) as fiblength'
         )
-            ->where('dalolatnoma_id', $id)
+            ->where('dalolatnoma_id', $data['dalolatnoma_id'])
             ->first();
 
         $fiblength = round($clamp_data->fiblength / 100,2);
@@ -98,11 +99,11 @@ class SertificateProtocolController extends Controller
             ->first();
 
         // Storing LaboratoryResult
-        $this->storeLaboratoryResult($id, $clamp_data, $tip, $humidity_result);
+        $this->storeLaboratoryResult($data['dalolatnoma_id'], $clamp_data, $tip, 5.1);
 
         // Check if FinalResult exists, if not, create
-        if (!FinalResult::where('dalolatnoma_id', $id)->exists()) {
-            $this->storeFinalResults($id, $clamp_data, $humidity_result);
+        if (!FinalResult::where('dalolatnoma_id', $data['dalolatnoma_id'])->exists()) {
+            $this->storeFinalResults($data['dalolatnoma_id'], $clamp_data, 5.1);
         }
 
         $parsedDate = Carbon::createFromFormat('d-m-Y', $request->input('date'));
@@ -265,6 +266,62 @@ class SertificateProtocolController extends Controller
             return response()->download($filePath);
         } else {
             return redirect()->back()->with('error', 'File not found.');
+        }
+    }
+    /**
+     * Store LaboratoryResult data.
+     */
+    private function storeLaboratoryResult($dalolatnoma_id, $clamp_data, $tip, $humidity_result)
+    {
+        $result = new LaboratoryResult();
+        $result->dalolatnoma_id = $dalolatnoma_id;
+        $result->tip_id = optional($tip)->id ?? 11;
+        $result->mic = $clamp_data->mic;
+        $result->staple = $clamp_data->staple;
+        $result->strength = $clamp_data->strength;
+        $result->uniform = $clamp_data->uniform;
+        $result->fiblength = $clamp_data->fiblength;
+        $result->humidity = $humidity_result;
+        $result->save();
+    }
+
+    /**
+     * Store FinalResults if they don't exist.
+     */
+    private function storeFinalResults($dalolatnoma_id, $clamp_data, $humidity_result)
+    {
+        $counts = ClampData::selectRaw('
+        sort, class,
+        COUNT(*) as count,
+        SUM(akt_amount.amount) as total_amount,
+        AVG(mic) as mic,
+        AVG(staple) as staple,
+        AVG(strength) as strength,
+        AVG(uniform) as uniform,
+        AVG(humidity) as humidity'
+        )
+            ->join('akt_amount', function($join) use ($dalolatnoma_id) {
+                $join->on('akt_amount.shtrix_kod', '=', 'clamp_data.gin_bale')
+                    ->on('akt_amount.dalolatnoma_id', '=', 'clamp_data.dalolatnoma_id');
+            })
+            ->where('clamp_data.dalolatnoma_id', $dalolatnoma_id)
+            ->groupBy('sort', 'class')
+            ->get();
+
+        foreach ($counts as $count) {
+            $result = new FinalResult();
+            $result->dalolatnoma_id = $dalolatnoma_id;
+            $result->test_program_id = $dalolatnoma_id;
+            $result->sort = $count->sort;
+            $result->class = $count->class;
+            $result->count = $count->count;
+            $result->amount = $count->total_amount;
+            $result->mic = $clamp_data->mic;
+            $result->staple = $clamp_data->staple;
+            $result->strength = $clamp_data->strength;
+            $result->uniform = $clamp_data->uniform;
+            $result->humidity = $humidity_result;
+            $result->save();
         }
     }
 
