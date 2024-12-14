@@ -175,17 +175,18 @@ class SertificateProtocolController extends Controller
 
     public function view($id)
     {
-        $dalolatnoma = $this->fetchDalolatnoma($id);
-        $formattedDate = $this->formatDates($dalolatnoma->laboratory_final_results->date);
-        $formattedDate2 = $this->formatDates($dalolatnoma->date);
+        $test = $this->fetchDalolatnoma($id);
+        $formattedDate = $this->formatDates($test->laboratory_final_results->date);
+        $formattedDate2 = $this->formatDates($test->date);
 
-        $finalResults = FinalResult::with('dalolatnoma.laboratory_result')->where('dalolatnoma_id', $id)->get();
 
-        $qrCode = $dalolatnoma->laboratory_final_results->status == 1
+        $final_results = FinalResult::with('dalolatnoma.laboratory_result')->where('dalolatnoma_id', $id)->get();
+
+        $qrCode = $test->laboratory_final_results->status == 1
             ? $this->generateQrCode(route('lab.view', $id))
             : null;
 
-        return view('sertificate_protocol.view', compact('dalolatnoma', 'finalResults', 'formattedDate', 'formattedDate2', 'qrCode'));
+        return view('sertificate_protocol.view', compact('test', 'final_results', 'formattedDate', 'formattedDate2', 'qrCode'));
     }
 
     public function sertificateView ($id)
