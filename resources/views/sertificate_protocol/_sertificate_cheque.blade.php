@@ -14,16 +14,16 @@
 
 
         <h1 class="head__title">SIFAT SERTIFIKATI</h1>
-        <h2 class="header__intro" style="font-weight: bold;padding-bottom: 30px;">Reestr raqami: @if(isset($sert_number)) {{ $application->prepared->region->series }}{{ $sert_number }} @endif</h2>
+        <h2 class="header__intro" style="font-weight: bold;padding-bottom: 30px;">Reestr raqami: @if(isset($sertNumber)) {{ $application->prepared->region->series }}/{{ $currentYear }}-{{ substr($sertNumber, 2) }} @endif</h2>
         {{--        @else--}}
         {{--            <h1 class="header__intro text-center" style="color:#f3775b; font-size: 24px"><b>Nomuvofiqlik bayonnomasi</b></h1>--}}
         {{--        @endif--}}
         <div style="width: 100%; display: flex; justify-content: space-between;">
             <div style="width: 50%; display: inline-block;">
-                <h2 class="main__intro"><b>Mahsulot nomi:</b> {{$application->crops->name->name}} </h2>
+                <h2 class="main__intro"><b>Mahsulot nomi:</b> {{ $application->crops->name->name}} </h2>
             </div>
             <div style="width: 30%; display: inline-block;">
-                <h2 class="main__intro"><b>KOD TN VED:</b> {{$application->crops->name->kodtnved}}</h2>
+                <h2 class="main__intro"><b>KOD TN VED:</b> {{ $application->crops->name->kodtnved}}</h2>
             </div>
         </div>
         <div style="width: 100%; display: flex; justify-content: space-between;">
@@ -68,7 +68,7 @@
                         <td>{{ $item->count }}</td>
                         <td>{{ $item->amount }}</td>
                         <td>{{ $application->tests->dalolatnoma->selection->name }}</td>
-                        <td>{{ round($item->staple,2) }}</td>
+                        <td>{{ optional($application->tests->dalolatnoma->laboratory_result)->tip->name }}</td>
                         <td>{{ optional($application->tests->dalolatnoma->laboratory_result)->tip->staple }}</td>
                         <td>{{ $item->sort }}</td>
                         <td>{{ optional(\App\Models\CropsGeneration::where('kod','=',$item->class)->first())->name  }}</td>
@@ -81,20 +81,19 @@
 
         <h5 style="margin-top: 10px; line-height: 1.2">*Izoh: sifat sertifikati paxta mahsulotlari laboratoriyalarining sinov bayonnomasisiz haqiqiy hisoblanmaydi.</h5>
         <div style="width: 100%; display: flex; justify-content: space-between;">
-            <div style="width: 60%; display: inline-block; padding-bottom: 30px;">
+            <div style="width: 45%; display: inline-block; padding-bottom: 30px;">
                 <b>Ijrochi :</b>
-                {{ optional($application->prepared)->region->name }}<br>
-                Paxta mahsulotlarini hududiy<br>
-                sinov laboratoriya boshlig‘i:
+                {{ $application->decision->laboratory->name }} boshlig‘i:
                 {{ optional($application->user)->lastname . ' ' . (optional($application->user)->name) }}
             </div>
+            <div style="width: 20%; display: inline-block;"></div>
 
             <div style="width: 30%;padding-top:60px; text-align: center; display: inline-block;">
                 @if(!isset($t))
                     <img src="data:image/png;base64,{{ $qrCode }}" style="height: 100px;" alt="QR Code"><br>
                 @endif
 
-                <span style="display: block; margin-top: 5px;margin-left: 120px;"> @if(isset($sert_number)) {{ substr($sert_number, 2) }} @endif</span>
+                <span style="display: block; margin-top: 5px;margin-left: 120px;"> @if(isset($sertNumber)) {{ substr($sertNumber, 2) }} @endif</span>
 
             </div>
         </div>

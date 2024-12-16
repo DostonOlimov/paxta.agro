@@ -1,7 +1,46 @@
 @extends('layouts.app')
-
-@section('content')
+@section('styles')
     <style>
+        .data-section {
+            margin-bottom: 1rem; /* Replaces mb-3 */
+            padding: 1rem; /* Replaces p-3 */
+            background-color: #3498db;
+            color: #ffffff;
+            font-size: large;
+            border-radius: 8px;
+        }
+
+        .data-section .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-left: -0.5rem; /* Align columns */
+            margin-right: -0.5rem;
+        }
+
+        .data-section .col-md-3,
+        .data-section .col-md-6 {
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+            box-sizing: border-box;
+        }
+
+        .data-section .col-md-3 {
+            flex: 0 0 25%; /* Replaces col-md-3 */
+            max-width: 25%;
+        }
+
+        .data-section .col-md-6 {
+            flex: 0 0 50%; /* Replaces col-md-6 */
+            max-width: 50%;
+        }
+
+        @media (max-width: 768px) {
+            .data-section .col-md-3,
+            .data-section .col-md-6 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+        }
         .right_side .table_row, .member_right .table_row {
             border-bottom: 1px solid #dedede;
             float: left;
@@ -23,6 +62,9 @@
         }
 
     </style>
+@endsection
+
+@section('content')
     <div class="section">
         <div class="page-header">
             <ol class="breadcrumb">
@@ -63,21 +105,36 @@
                             </div>
                         </div>
                         @if($results)
-                        <div class="row">
+                            <div class="py-3">
+                                <a href="{{url()->previous()}}" class="btn btn-primary"><i class="fa fa-arrow-left"></i> {{ trans("app.Ortga") }}</a>
+                                <button class="btn btn-primary" id="print-invoice-btn"><i class="fa fa-print"></i> {{ trans("app.Chop etish") }}</button>
+                            </div>
+                        <div id="invoice-cheque" class="row">
                             <div class="col-md-12">
                                 <div class="card">
                                     <div class="card-body">
-                                        <div class="data-section mb-3 p-3" style="background-color: #3498db; color: #ffffff; font-size: large; border-radius: 8px;">
-                                        <div class="row "  >
-                                            <div class="col-md-3 ">Partiya raqami : {{ optional(optional(optional($dalolatnoma->test_program)->application)->crops)->party_number}}</div>
-                                            <div class="col-md-3">Kip soni : {{$dalolatnoma->toy_count}}</div>
-                                            <div class="col-md-3">Mikroneyr : {{round($mic,1)}}</div>
-                                            <div class="col-md-3">Uzunlik : {{round($length)/100}}</div>
-                                            <div class="col-md-6">Maxsus uzilish og'irligi, gf/tex : {{round($strength,1)}}</div>
-                                            <div class="col-md-6">Uzunligi bo'yicha bir xillik ko'rsatkichi,%: {{round($uniform,1)}}</div>
-                                            <!-- Add styles for the date -->
+                                        <div class="data-section">
+                                            <div class="row">
+                                                <div class="col-md-3"></div>
+                                                <div class="col-md-3"></div>
+                                                <div class="col-md-3"></div>
+                                                <div class="col-md-3"></div>
+                                                <div class="col-md-6"></div>
+                                                <div class="col-md-6"></div>
+                                            </div>
                                         </div>
-                                        </div>
+                                        <table>
+                                            <tr>
+                                                <td>Partiya raqami: {{ optional(optional(optional($dalolatnoma->test_program)->application)->crops)->party_number }}</td>
+                                                <td>Kip soni: {{$dalolatnoma->toy_count}}</td>
+                                                <td>Mikroneyr: {{ round($mic, 1) }}</td>
+                                                <td>Uzunlik: {{ round($length) / 100 }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Maxsus uzilish og'irligi, gf/tex: {{ round($strength, 1) }}</td>
+                                                <td>Uzunligi bo'yicha bir xillik ko'rsatkichi, %: {{ round($uniform, 1) }}</td>
+                                            </tr>
+                                        </table>
                                         <div class="table-responsive row">
                                             <table id="examples1" class="table table-striped table-bordered nowrap" style="margin-top:20px;" >
                                                 <thead>
@@ -170,4 +227,25 @@
                 </div>
             </div>
 
+@endsection
+            @section('scripts')
+                <script>
+                    $(document).ready(function () {
+                        function fillCheque() {
+
+                        }
+                        function printCheque() {
+                            $('#invoice-cheque').print({
+                                NoPrintSelector: '.no-print',
+                                title: '',
+                            })
+                        }
+
+                        fillCheque()
+
+                        $('#print-invoice-btn').click(function (ev) {
+                            printCheque()
+                        })
+                    });
+                </script>
 @endsection

@@ -269,10 +269,12 @@ class SertificateProtocolController extends Controller
         $qrCode = $this->generateQrCode(route('sifat_sertificate.download', $id));
         $formattedDate = $this->formatDates($dalolatnoma->laboratory_final_results->date);
 
-        $pdf = Pdf::loadView('sertificate_protocol.sertificate_pdf', compact('application','final_results', 'sertNumber', 'formattedDate', 'qrCode'));
-        $pdf->save(storage_path("app/public/sifat_sertificates/certificate_{$id}.pdf"));
+        $pdf = Pdf::loadView('sertificate_protocol.sertificate_pdf', compact('application','final_results', 'sertNumber', 'currentYear','formattedDate', 'qrCode'));
+//        return $pdf->stream('sdf');
+        $appId = $application->id;
+        $pdf->save(storage_path("app/public/sifat_sertificates/certificate_{$appId}.pdf"));
 
-        return redirect()->route('sertificate_protocol.list', ['generatedAppId' => $id])
+        return redirect()->route('sertificate_protocol.list', ['generatedAppId' => $appId])
             ->with('message', 'Certificate saved!');
     }
 
