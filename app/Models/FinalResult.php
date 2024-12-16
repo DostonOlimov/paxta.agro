@@ -38,6 +38,7 @@ class FinalResult  extends Model
         'strength',
         'uniform',
         'humidity',
+        'test_program_id'
     ];
 
     public function certificate(): BelongsTo
