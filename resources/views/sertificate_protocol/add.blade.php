@@ -11,7 +11,7 @@
                     </li>
                 </ol>
             </div>
-            @if($test->clamp_data()->exists())
+            @if($dalolatnoma->clamp_data()->exists())
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
@@ -38,7 +38,7 @@
                                 @csrf
                                 <div class="row" >
                                     @csrf
-                                    <input type="hidden"  name="dalolatnoma_id" value="{{ $apps->id}}" >
+                                    <input type="hidden"  name="dalolatnoma_id" value="{{  $dalolatnoma->id}}" >
 
                                     <div class="col-md-4 form-group has-feedback {{ $errors->has('number') ? ' has-error' : '' }}">
                                         <label for="number" class="form-label certificate">{{trans('app.Sinov bayonnoma raqami')}}<label class="text-danger">*</label></label>
@@ -82,8 +82,8 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <input type="hidden" name="director_id" value="{{$apps->test_program->application->decision->laboratory->director_id}}">
-                                    <input type="hidden" name="klassiyor_id" value="{{optional(optional($klassiyor)->klassiyor)->id}}">
+                                    <input type="hidden" name="director_id" value="{{ $dalolatnoma->test_program->application->decision->laboratory->director_id}}">
+                                    <input type="hidden" name="klassiyor_id" value="{{optional(optional($clampData->klassiyor)->klassiyor)->id}}">
 
                                 </div>
                                     <div class="col-md-6 col-sm-6">

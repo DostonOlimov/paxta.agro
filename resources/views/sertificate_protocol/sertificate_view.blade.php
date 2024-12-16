@@ -82,7 +82,7 @@
                             </a>
                         </li>
                         <li class="btn-success">
-                            <a class="text-light sa-warning" url="{!! url('/sertificate-protocol/accept/'.$test->tests->dalolatnoma->id)!!}">
+                            <a class="text-light sa-warning" url="{!! url('/sertificate-protocol/accept/'. $dalolatnoma->id)!!}">
                                 <span class="visible-xs"></span>
                                 <i class="fa fa-check fa-lg">&nbsp;</i> Tasdiqlash
                             </a>
@@ -147,7 +147,7 @@
                 })
             }
 
-            let currenttest = @json($test);
+            let currenttest = @json($dalolatnoma);
 
 
             fillCheque()
