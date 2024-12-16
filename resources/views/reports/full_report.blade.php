@@ -114,6 +114,7 @@
                                         <th rowspan="2">{{trans('app.Toʼda (partiya) raqami')}}</th>
                                         <th rowspan="2">{{trans('app.Hosil yili')}}</th>
                                         <th rowspan="2">{{trans("app.To'dadagi toylar soni (dona)")}}</th>
+                                        <th rowspan="2">{{trans("app.amount")}}</th>
                                         <th rowspan="2">{{trans("app.Jami og'irlik(kg)")}}</th>
                                         <th rowspan="2">{{trans("app.Sof Og'irlik(kg)")}}</th>
                                         <th colspan="8" style="text-align: center">{{trans("app.Sifat nazorati natijalari")}}</th>
@@ -258,6 +259,7 @@
                                         <td></td>
                                         <td></td>
                                         <td></td>
+                                        <td></td>
                                     </tr>
                                     @php
                                         $offset = (request()->get('page', 1) - 1) * 50;
@@ -280,8 +282,9 @@
                                                     <td>{{ optional($result->dalolatnoma->test_program->application->crops)->year }}</td>
 
                                                     <td> {{ $result->count}}</td>
+                                                    <td>{{ optional($result->dalolatnoma->akt_amount)->sum('amount') }}</td>
                                                     <td> {{ (optional($result)->amount)? $result->amount." kg":''}}</td>
-                                                    <td> {{ ($result->amount!=null)?$result->amount - $result->count * optional($result->dalolatnoma)->tara : ''}}</td>
+                                                    <td> {{ ($result->amount != null)?$result->amount - $result->count * optional($result->dalolatnoma)->tara : ''}}</td>
                                                     <td> 4</td>
                                                     <td> {{ $result->sort}}</td>
                                                     <td> {{ optional($result->generation)->name}}</td>

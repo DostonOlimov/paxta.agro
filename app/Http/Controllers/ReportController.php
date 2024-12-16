@@ -19,11 +19,6 @@ use App\Models\PreparedCompanies;
 
 class ReportController extends Controller
 {
-
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
     public function excel_export(Request $request)
     {
         $data = $this->getReport($request);

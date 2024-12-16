@@ -153,7 +153,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
     <div class="content">
         @if($quality)
             <div class="container head_image" >
-                <img src="{{ asset('/img/dashboard/t1.png') }}" alt="image" >
+                <img src="{{ asset('/img/dashboard/t1.jpg') }}" alt="image" >
             </div>
         @endif
 
