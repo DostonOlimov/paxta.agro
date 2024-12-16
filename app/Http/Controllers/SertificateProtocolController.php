@@ -323,8 +323,7 @@ class SertificateProtocolController extends Controller
     private function storeLaboratoryResult($dalolatnomaId, $clampData, $tip, $humidityResult)
     {
         LaboratoryResult::updateOrCreate(
-            ['dalolatnoma_id' => $dalolatnomaId,
-                'test_program_id' => $dalolatnomaId,],
+            ['dalolatnoma_id' => $dalolatnomaId,],
             [
                 'tip_id' => optional($tip)->id ?? 11,
                 'mic' => $clampData->mic,
