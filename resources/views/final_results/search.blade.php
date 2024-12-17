@@ -177,6 +177,12 @@
                                                     <a href="{!! url('/final_results/add/view/'. $app->id) !!}"><button type="button" class="btn btn-round btn-info">{{ trans('app.View')}}</button></a>
                                                 @endif
                                             </td>
+                                            <td>
+                                                @if( isset($app->laboratory_result))
+                                                    <a href="{!! url('/final_results/view/'. $app->id) !!}"><button type="button" class="btn btn-round btn-info">bayonnoma</button></a>
+                                                    <a href="{!! url('/final_results/akt-amount/'. $app->id) !!}"><button type="button" class="btn btn-round btn-info">bayonnoma</button></a>
+                                                @endif
+                                            </td>
                                         </tr>
                                     @endforeach
                                     </tbody>

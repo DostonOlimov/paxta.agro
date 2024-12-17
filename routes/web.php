@@ -378,6 +378,7 @@ Route::group(['prefix' => 'hvi', 'middleware' => 'auth'], function () {
     Route::get('/list/edit/{id}', '\App\Http\Controllers\FinalResultsController@edit');
     Route::post('/list/edit/update/{id}', '\App\Http\Controllers\FinalResultsController@update');
     Route::get('/view/{id}', '\App\Http\Controllers\FinalResultsController@view');
+    Route::get('/akt-amount/{id}', '\App\Http\Controllers\FinalResultsController@aktAmount');
     Route::post('/store', '\App\Http\Controllers\FinalResultsController@store');
     Route::get('/update/{id}', '\App\Http\Controllers\FinalResultsController@update');
     });
