@@ -253,7 +253,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
              <b>Ijrochi :</b>
             {{ optional($test->prepared)->region->name }} filialining<br>
             @if(Auth::User()->role == \App\Models\User::ROLE_STATE_CHIGI_XODIM)
-                bosh mutaxassissi:
+                bosh mutaxassisi:
             @elseif(Auth::User()->role == \App\Models\User::ROLE_STATE_CHIGIT_BOSHLIQ)
                 laboratoriya boshlig'i
             @else
