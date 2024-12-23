@@ -78,9 +78,9 @@ class ApplicationController extends Controller
         $this->authorize('create', Application::class);
 
         $user = Auth::user();
-        $validated = $request->validate([
-            'party_number' => ['required', new CheckingParyNumber($request->input('prepared'),$request->input('party_number'))],
-        ]);
+//        $validated = $request->validate([
+//            'party_number' => ['required', new CheckingParyNumber($request->input('prepared'),$request->input('party_number'))],
+//        ]);
 
 
         $crop = CropData::create([
