@@ -59,7 +59,7 @@
 
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     <input type="hidden" name="organization" value="{{ $organization }}">
-                                    @if($user->branch_id == \App\Models\User::BRANCH_STATE)
+                                    @if($user->role != \App\Models\User::ROLE_CITY_CHIGIT)
                                         <div class="col-md-6">
                                             <div class="form-group overflow-hidden">
                                                 <label class="form-label">{{ trans('app.Laboratoriyani tanlang') }}<label

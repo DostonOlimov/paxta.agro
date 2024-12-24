@@ -3,17 +3,11 @@
 namespace App\Jobs;
 
 use App\Models\ClampData;
-use App\Models\Dalolatnoma;
-use App\Models\DefaultModels\MyTableReader;
-use App\Models\GinBalles;
-use App\Models\Region;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Storage;
 use XBase\TableReader;
 
 class ProcessFile implements ShouldQueue
@@ -57,7 +51,7 @@ class ProcessFile implements ShouldQueue
 
             if ($record->gin_id == $this->gin_id and $record->gin_bale >= $this->balles->from_number and $record->gin_bale <= $this->balles->to_number) {
 
-                if (!in_array($record->gin_bale, $clampedData)) {
+                if (!in_array($record->gin_bale, $clampedData) and $record->mic) {
                             $myData[] = [
                                 'dalolatnoma_id' => $this->balles->dalolatnoma_id,
                                 'gin_id' => $record->gin_id,

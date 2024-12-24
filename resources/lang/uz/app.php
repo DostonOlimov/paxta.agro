@@ -236,6 +236,8 @@ return[
     'In Xaus qo\'shish'=>'In Xaus qo\'shish',
     'Laboratoriya ma\'lumotlari hali yuklanmagan'=>'Laboratoriya ma\'lumotlari hali yuklanmagan',
 
+    'Zavod nomini yoki kodini kiritib izlang' => 'Zavod nomini yoki kodini kiritib izlang',
+
     "Sinov bayonnomasi"=>"Sinov bayonnomasi",
     "Ortga"=>"Ortga",
     "Chop etish"=>"Chop etish",

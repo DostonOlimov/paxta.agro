@@ -70,6 +70,30 @@ $(document).ready(function() {
             }
         });
     });
+    //prepared companies change
+    $('#prepared').change(function() {
+        var selectedRegion = $(this).val();
+
+        var currentUrl = window.location.href;
+        var url = new URL(currentUrl);
+
+        // Set the new query parameter
+        url.searchParams.set('factoryId[eq]', selectedRegion);
+
+        // Modify the URL and trigger an AJAX request
+        var newUrl = url.toString();
+        window.history.pushState({
+            path: newUrl
+        }, '', newUrl);
+
+        $.ajax({
+            url: newUrl,
+            method: "GET",
+            success: function(response) {
+                window.location.reload(true);
+            }
+        });
+    });
     //status change
     $('#status').change(function() {
         var selectedRegion = $(this).val();

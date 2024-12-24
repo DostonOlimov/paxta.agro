@@ -2,6 +2,7 @@
 namespace App\Services;
 
 use App\Models\OrganizationCompanies;
+use App\Models\PreparedCompanies;
 use Illuminate\Http\Request;
 
 class SearchService
@@ -68,10 +69,15 @@ class SearchService
         $organization = $filterValues['companyId'] ?? null
                 ? OrganizationCompanies::find($filterValues['companyId'])
                 : null;
+        // Fetch prepared if companyId filter is applied
+        $prepared = $filterValues['factoryId'] ?? null
+                ? PreparedCompanies::find($filterValues['factoryId'])
+                : null;
 
         return view($viewName, array_merge($viewData, [
             'apps' => $results,
             'organization' => $organization,
+            'prepared' => $prepared,
             'filterValues' => $filterValues,
             'sort_by' => $sort_by,
             'sort_order' => $sort_order,

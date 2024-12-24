@@ -13,6 +13,22 @@ class ClampData  extends Model
 {
     protected $table = 'clamp_data';
 
+    public $timestamps = false;
+
+    protected $fillable = [
+        'dalolatnoma_id',
+        'gin_id',
+        'gin_bale',
+        'lot_number',
+        'weight',
+        'selection',
+        'date_class',
+        'time_class',
+        'classer_id',
+        'sort',
+        'class',
+    ];
+
     public function klassiyor(): BelongsTo
     {
         return $this->belongsTo(Klassiyor::class, 'classer_id', 'kode');

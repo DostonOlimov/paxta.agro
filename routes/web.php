@@ -363,9 +363,11 @@ Route::group(['prefix' => 'akt_laboratory', 'middleware' => 'auth'], function ()
 //HVI data
 Route::group(['prefix' => 'hvi', 'middleware' => 'auth'], function () {
     Route::get('/add/{id}', '\App\Http\Controllers\HviController@add');
+    Route::get('/add2/{id}', '\App\Http\Controllers\HviController@addLclass');
     Route::get('/list', '\App\Http\Controllers\HviController@list');
     Route::get('/view/{id}', '\App\Http\Controllers\HviController@view');
     Route::post('/store', '\App\Http\Controllers\HviController@store')->name('hvi.store');
+    Route::post('/store2', '\App\Http\Controllers\HviController@storeLclass')->name('hvi.store2');
 });
     //Final results
     Route::group(['prefix' => 'final_results', 'middleware' => 'auth'], function () {

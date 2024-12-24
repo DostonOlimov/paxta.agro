@@ -41,7 +41,8 @@ class SifatSertificateController extends Controller
             $years = getCropYears();
             $all_status = getAppStatus();
 
-            $condition = $user->branch_id == \App\Models\User::BRANCH_STATE ? [] : ['created_by', '=', $user->id];
+
+            $condition = $user->role != \App\Models\User::ROLE_CITY_CHIGIT ? [] : ['created_by', '=', $user->id];
 
             return $service->search(
                 $request,

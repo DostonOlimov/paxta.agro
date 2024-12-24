@@ -44,7 +44,8 @@
                                         <th>{{trans("app.Faylni yuklagan xodim")}}</th>
                                         <th>{{trans("app.Oxirgi yangilangan sanasi")}}</th>
                                         <th>{{trans("app.Ma'lumot miqdori")}}</th>
-                                        <th>{{trans('app.Action')}}</th>
+                                        <th>HVI ma'lumotlari</th>
+                                        <th>iclass ma'lumotlari</th>
                                     </tr>
 
                                     </thead>
@@ -53,7 +54,7 @@
                                         $offset = (request()->get('page', 1) - 1) * 50;
                                     @endphp
                                     @foreach($states as $state)
-                                        @php if($loop->iteration == 14) break; @endphp
+                                        @php if($loop->iteration == 14) continue; @endphp
                                         <tr>
                                             <td>{{$offset + $loop->iteration}}</td>
                                             <td>{{ __('message.' . $state->name) }}</td>
@@ -61,8 +62,11 @@
                                             <td>{{ optional($state->hvi_file)->date }}</td>
                                             <td>{{ optional($state->hvi_file)->count }}</td>
                                             <td>
-                                                <a href="{!! url('/hvi/add/'.$state->id) !!}"><button type="button" class="btn btn-round btn-success">{{trans('app.Yangilash')}}</button></a>
-                                                <a href="{!! url('/hvi/view/'.$state->id) !!}"><button type="button" class="btn btn-round btn-info">{{ trans('app.View')}}</button></a>
+                                                <a href="{!! url('/hvi/add/'.$state->id) !!}"><button type="button" class="btn btn-round btn-success"><i class="fa fa-refresh"></i>{{trans('app.Yangilash')}}</button></a>
+                                                <a href="{!! url('/hvi/view/'.$state->id) !!}"><button type="button" class="btn btn-round btn-info"><i class="fa fa-eye"></i>{{ trans('app.View')}}</button></a>
+                                            </td>
+                                            <td>
+                                                <a href="{!! url('/hvi/add2/'.$state->id) !!}"><button type="button" class="btn btn-round btn-warning"><i class="fa fa-plus"></i> {{trans('app.Qo\'shish')}}</button></a>
                                             </td>
                                         </tr>
                                     @endforeach

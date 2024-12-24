@@ -156,7 +156,19 @@
                                             onclick="changeDisplay('companyId[eq]')"></i>
                                         @endif
                                     </td>
-                                    <td></td>
+                                    <td>
+                                        <select id="prepared" class="form-control owner_search2" name="prepared">
+                                            @if (!empty($prepared))
+                                                <option selected value="{{ $prepared->id }}">
+                                                    {{ $prepared->name }}
+                                                </option>
+                                            @endif
+                                        </select>
+                                        @if ($prepared)
+                                            <i class="fa fa-trash" style="color:red"
+                                               onclick="changeDisplay('factoryId[eq]')"></i>
+                                        @endif
+                                    </td>
                                     <td>
                                         <select class="w-100 form-control name_of_corn custom-select" name="name"
                                             id="crops_name">
@@ -186,7 +198,7 @@
                                 <tr>
                                     <td>{{ $offset + $loop->iteration }}</td>
                                     <td>{{ optional($app->crops)->party_number }}</td>
-                                    <td>@if(optional($app->sifat_sertificate)->number){{ substr(10000000 + 1000 * $app->prepared->kod + optional($app->sifat_sertificate)->number , 2)  }} @endif</td>
+                                    <td>@if(optional($app->sifat_sertificate)->number){{ substr(10000000 + ((optional($app->sifat_sertificate)->type == 1) ? 1000 * $app->prepared->kod : 0) + optional($app->sifat_sertificate)->number , 2)  }} @endif</td>
                                     <td> <a href="{!! url('/sifat-sertificates/view/' . $app->id) !!}">{{ $app->date }}</a></td>
                                     <td><a href="#" class="company-link"
                                             data-id="{{ $app->organization_id }}">{{ optional($app->organization)->name }}</a>
@@ -228,7 +240,8 @@
             searching: '{{ trans('app.Izlanmoqda...') }}',
             noResults: '{{ trans('app.Natija topilmadi') }}',
             errorLoading: '{{ trans('app.Natija topilmadi') }}',
-            placeholder: '{{ trans('app.Korxona nomini kiriting') }}'
+            placeholder: '{{ trans('app.Korxona nomini kiriting') }}',
+            inputTooShort2: '{{ trans('app.Zavod nomini yoki kodini kiritib izlang') }}',
         };
 
         const labels = {

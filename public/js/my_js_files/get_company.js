@@ -13,8 +13,7 @@ $(document).ready(function() {
                 data = data.map((name, index) => {
                     return {
                         id: name.id,
-                        text: capitalize(name.name + (name.name ? ' - STiR:' + name
-                            .inn : ''))
+                        text: capitalize(name.name + (name.name ? ' - STiR:' + name.inn : ''))
                     }
                 });
                 return {
@@ -53,7 +52,7 @@ $(document).ready(function() {
                 data = data.map((name, index) => {
                     return {
                         id: name.id,
-                        text: capitalize(name.name)
+                        text: capitalize(name.name + (name.name ? ' - kod:' + name.kod : ''))
                     }
                 });
                 return {
@@ -63,7 +62,7 @@ $(document).ready(function() {
         },
         language: {
             inputTooShort: function() {
-                return translations.inputTooShort;
+                return translations.inputTooShort2;
             },
             searching: function() {
                 return translations.searching;

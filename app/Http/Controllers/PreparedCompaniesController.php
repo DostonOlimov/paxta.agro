@@ -119,9 +119,10 @@ class PreparedCompaniesController extends Controller
 
         if (!empty($ownername)) {
             $owners = DB::table('prepared_companies')
-                ->select('id', 'name')
+                ->select('id', 'name','kod')
                 ->where(function ($query) use ($ownername) {
-                    $query->where('name', 'like', '%' . $ownername . '%');
+                    $query->where('name', 'like', '%' . $ownername . '%')
+                        ->orWhere('kod', 'like','%' . $ownername . '%');
                 });
 
             if ($user->branch_id == \App\Models\User::BRANCH_STATE ) {

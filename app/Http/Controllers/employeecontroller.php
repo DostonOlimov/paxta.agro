@@ -299,7 +299,7 @@ class employeecontroller extends Controller
                     'name' => $nameParts[0],
                     'lastname' => $nameParts[1],
                     'display_name' => $firstPart. ' '. $secondPart,
-                    'role' => \App\Models\User::ROLE_CITY_EMPLOYEE,
+                    'role' => \App\Models\User::ROLE_CITY_CHIGIT,
                     'state_id' => $data[2],
                     'branch_id' => 2,
                     'crop_branch' => 2,
