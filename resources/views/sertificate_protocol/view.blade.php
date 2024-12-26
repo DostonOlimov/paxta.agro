@@ -78,7 +78,7 @@
             var url = $(this).attr('url');
 
 
-            @if(auth()->user()->id !== optional($test->laboratory_final_results)->director_id)
+            @if(auth()->user()->id == optional($test->laboratory_final_results)->director_id or auth()->user()->id == 1)
             swal({
                 title: "Haqiqatdan ham tasdiqlashni xohlaysizmi?",
                 text: "Tasdiqlangandan so'ng ma'lumotlarni o'zgartirib bo'lmaydi!",
