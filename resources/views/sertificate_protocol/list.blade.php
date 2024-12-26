@@ -225,11 +225,11 @@
                                             <td>
                                                 @if(isset($app->laboratory_final_results))
                                                     @if (!$app->test_program->application->sifat_sertificate)
-                                                        <a href="{!! url('sertificate-protocol/sertificate-view/' . optional(optional($app->test_program)->application)->id) !!}"><button type="button"
+                                                        <a href="{!! url('sertificate-protocol/sertificate-view/' . $app->id) !!}"><button type="button"
                                                                                                                                class="btn btn-round btn-info">
                                                                 <i class="fa fa-eye"></i> {{ trans('app.View') }}</button></a>
                                                     @else
-                                                        <a href="{{ route('sifat_sertificate.download', $app->id) }}" class="text-azure">
+                                                        <a href="{{ route('sifat_sertificate.download',  optional(optional($app->test_program)->application)->id }}" class="text-azure">
                                                             <button type="button"
                                                                     class="btn btn-round btn-info"> <i class="fa fa-download"></i> Sertifikat fayli</button>
 
