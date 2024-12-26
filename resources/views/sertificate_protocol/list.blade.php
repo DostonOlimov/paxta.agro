@@ -229,7 +229,7 @@
                                                                                                                                class="btn btn-round btn-info">
                                                                 <i class="fa fa-eye"></i> {{ trans('app.View') }}</button></a>
                                                     @else
-                                                        <a href="{{ route('sifat_sertificate.download',  optional(optional($app->test_program)->application)->id }}" class="text-azure">
+                                                        <a href="{{ route('sifat_sertificate.download',  optional(optional($app->test_program)->application)->id )}}" class="text-azure">
                                                             <button type="button"
                                                                     class="btn btn-round btn-info"> <i class="fa fa-download"></i> Sertifikat fayli</button>
 
