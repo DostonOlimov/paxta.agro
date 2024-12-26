@@ -100,12 +100,12 @@
                 <td>{{ $item->amount }}</td>
                 <td>{{ $item->sort }}</td>
                 <td>{{ optional(\App\Models\CropsGeneration::where('kod','=',$item->class)->first())->name  }}</td>
-                <td>{{  round($item->staple,1) }}</td>
+                <td>{{  number_format($item->dalolatnoma->laboratory_result->fiblength/100, 2, '.', '.') }} </td>
                 <td>{{  optional($test->laboratory_result)->tip->staple }}</td>
 
                 <td>{{ round($item->mic,1) }}</td>
                 <td>{{ number_format($item->strength, 1, '.', '.') }}</td>
-                <td>{{ number_format($item->dalolatnoma->laboratory_result->fiblength/100, 2, '.', '.') }}</td>
+                <td>{{ number_format($item->dalolatnoma->laboratory_result->uniform, 1, '.', '.') }}</td>
             </tr>
             @endforeach
             @endif

@@ -78,6 +78,7 @@
             var url = $(this).attr('url');
 
 
+            @if(auth()->user()->id !== optional($test->laboratory_final_results)->director_id)
             swal({
                 title: "Haqiqatdan ham tasdiqlashni xohlaysizmi?",
                 text: "Tasdiqlangandan so'ng ma'lumotlarni o'zgartirib bo'lmaydi!",
@@ -89,8 +90,14 @@
                 closeOnConfirm: false
             }).then((result) => {
                 window.location.href = url;
-
             });
+            @else
+            swal({
+                type: "error",
+                title: "Xatolik...",
+                text: "Sizda tasdiqlash huquqi mavjud emas!",
+            });
+            @endif
         });
     </script>
 

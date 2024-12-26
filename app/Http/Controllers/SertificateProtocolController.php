@@ -195,8 +195,7 @@ class SertificateProtocolController extends Controller
         $dalolatnoma = $this->fetchDalolatnoma($id);
         $application = $dalolatnoma->test_program->application;
 
-        $formattedDate = $this->formatDates($dalolatnoma->laboratory_result->date);
-
+        $formattedDate = $this->formatDates($dalolatnoma->laboratory_final_results->date);
         // Generate QR code
         $url = route('sertificate_protocol.sertificate_view', $id);
         $qrCode = QrCode::size(100)->generate($url);
@@ -242,6 +241,7 @@ class SertificateProtocolController extends Controller
     {
         $dalolatnoma = $this->fetchDalolatnoma($id);
         $application = $dalolatnoma->test_program->application;
+        $appId = $application->id;
 
         $final_results = FinalResult::with('dalolatnoma.laboratory_result')->where('dalolatnoma_id', $id)->get();
 
@@ -256,7 +256,7 @@ class SertificateProtocolController extends Controller
         // Create certificate if not exists
         if (!$application->sifat_sertificate) {
             SifatSertificates::create([
-                'app_id' => $application->id,
+                'app_id' => $appId,
                 'number' => $number,
                 'zavod_id' => $application->prepared_id,
                 'year' => $currentYear,
@@ -266,12 +266,12 @@ class SertificateProtocolController extends Controller
         }
 
         $sertNumber = ($currentYear - 2000) * 1000000 + $number;
-        $qrCode = $this->generateQrCode(route('sifat_sertificate.download', $id));
+        $qrCode = $this->generateQrCode(route('sifat_sertificate.download', $appId));
         $formattedDate = $this->formatDates($dalolatnoma->laboratory_final_results->date);
 
-        $pdf = Pdf::loadView('sertificate_protocol.sertificate_pdf', compact('application','final_results', 'sertNumber', 'currentYear','formattedDate', 'qrCode'));
+        $pdf = Pdf::loadView('sertificate_protocol.sertificate_pdf', compact('application','dalolatnoma','final_results', 'sertNumber', 'currentYear','formattedDate', 'qrCode'));
 //        return $pdf->stream('sdf');
-        $appId = $application->id;
+
         $pdf->save(storage_path("app/public/sifat_sertificates/certificate_{$appId}.pdf"));
 
         return redirect()->route('sertificate_protocol.list', ['generatedAppId' => $appId])

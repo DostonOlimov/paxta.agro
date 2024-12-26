@@ -50,7 +50,7 @@ class TestPrograms  extends Model
 
         // Ensure the user is authenticated
         $user = auth()->user();
-        $year = session('year', 2024);
+        $year = session('year', date("Y"));
         $crop = session('crop', 1);
 
         if ($user) {

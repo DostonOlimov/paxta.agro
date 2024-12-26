@@ -42,7 +42,7 @@ class ClampData  extends Model
         parent::boot(); // Always call the parent boot first
 
         // Retrieve year and crop from session or use defaults
-        $year = session('year', 2024);
+        $year = session('year', date("Y"));
         $crop = session('crop', 1);
 
         // Ensure the user is authenticated

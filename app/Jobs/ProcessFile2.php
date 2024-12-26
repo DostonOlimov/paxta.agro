@@ -8,6 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\DB;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use XBase\TableReader;
 
@@ -80,7 +81,7 @@ class ProcessFile2 implements ShouldQueue
      */
     private function getClampedData()
     {
-        return ClampData::whereIn('gin_bale', range($this->balles->from_number, $this->balles->to_number))
+        return DB::table('clamp_data')->whereIn('gin_bale', range($this->balles->from_number, $this->balles->to_number))
             ->where('gin_id', $this->gin_id)
             ->where('dalolatnoma_id', $this->balles->dalolatnoma_id)
             ->pluck('gin_bale')
@@ -155,17 +156,14 @@ class ProcessFile2 implements ShouldQueue
      */
     private function updateClampedData(array $data)
     {
-        $clamp = ClampData::where('gin_bale', $data['gin_bale'])
+        DB::table('clamp_data')
+            ->where('gin_bale', $data['gin_bale'])
             ->where('gin_id', $data['gin_id'])
             ->where('dalolatnoma_id', $this->balles->dalolatnoma_id)
-            ->first();
-
-        if ($clamp) {
-            $clamp->sort = $data['sort'];
-            $clamp->class = $data['class'];
-            $clamp->classer_id = $data['classer_id'];
-            $clamp->save();
-        }
+            ->update([
+                'sort' => $data['sort'],
+                'class' => $data['class'],
+                'classer_id' => $data['classer_id'],
+            ]);
     }
-
 }

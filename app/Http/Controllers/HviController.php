@@ -147,7 +147,7 @@ class HviController extends Controller
             $state = Region::find($state_id);
             $gin_id = 1000 * $state->clamp_id + $balles->dalolatnoma->test_program->application->prepared->kod;
 
-
+//
 //            $file = storage_path('app/' . $filePath);
 //            $table = new TableReader($file);
 //
@@ -160,11 +160,13 @@ class HviController extends Controller
 //            $myData = [];
 //
 //
+//
 //            while($record = $table->nextRecord()){
 //
 //                if ($record->gin_id == $gin_id and $record->gin_bale >= $balles->from_number and $record->gin_bale <= $balles->to_number) {
 //
-//                    if (!in_array($record->gin_bale, $clampedData)) {
+//                    if (!in_array($record->gin_bale, $clampedData) and $record->mic) {
+//
 //                        if($record->gin_bale){
 //                            $myData[] = [
 //                                'dalolatnoma_id' => $balles->dalolatnoma_id,
@@ -214,6 +216,7 @@ class HviController extends Controller
 //                    }
 //                }
 //            }
+//            dd($myData);
 //            if (!empty( $myData )) {
 //                // Perform bulk insertion
 //                ClampData::insert($myData );
@@ -223,7 +226,6 @@ class HviController extends Controller
             ProcessFile::dispatch([
                 'path' => $filePath,
                 'balles' => $balles,
-                'count' => $count,
                 'gin_id' => $gin_id,
             ]);
         }

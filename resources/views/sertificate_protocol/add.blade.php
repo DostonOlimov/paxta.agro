@@ -83,7 +83,7 @@
                                         </div>
                                     </div>
                                     <input type="hidden" name="director_id" value="{{ $dalolatnoma->test_program->application->decision->laboratory->director_id}}">
-                                    <input type="hidden" name="klassiyor_id" value="{{optional(optional($clampData->klassiyor)->klassiyor)->id}}">
+                                    <input type="hidden" name="klassiyor_id" value="{{ optional($clampData->klassiyor)->id }}">
 
                                 </div>
                                     <div class="col-md-6 col-sm-6">

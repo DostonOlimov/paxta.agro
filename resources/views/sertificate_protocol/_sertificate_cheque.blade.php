@@ -14,29 +14,34 @@
 
 
         <h1 class="head__title">SIFAT SERTIFIKATI</h1>
-        <h2 class="header__intro" style="font-weight: bold;padding-bottom: 30px;">Reestr raqami: @if(isset($sertNumber)) {{ $application->prepared->region->series }}/{{ $currentYear }}-{{ substr($sertNumber, 2) }} @endif</h2>
+        <h2 class="header__intro" style="font-weight: bold;padding-bottom: 30px;">Reestr raqami: @if(isset($sertNumber)) {{ $application->prepared->region->series }}-{{ substr($sertNumber, 2) }} @endif</h2>
         {{--        @else--}}
         {{--            <h1 class="header__intro text-center" style="color:#f3775b; font-size: 24px"><b>Nomuvofiqlik bayonnomasi</b></h1>--}}
         {{--        @endif--}}
         <div style="width: 100%; display: flex; justify-content: space-between;">
             <div style="width: 50%; display: inline-block;">
-                <h2 class="main__intro"><b>Mahsulot nomi:</b> {{ $application->crops->name->name}} </h2>
+                <h2 class="main__intro"><b>Mahsulot nomi:&nbsp; </b> {{ $application->crops->name->name}} </h2>
             </div>
             <div style="width: 30%; display: inline-block;">
-                <h2 class="main__intro"><b>KOD TN VED:</b> {{ $application->crops->name->kodtnved}}</h2>
+                <h2 class="main__intro"><b>KOD TN VED:&nbsp; </b> {{ $application->crops->name->kodtnved}}</h2>
             </div>
         </div>
         <div style="width: 100%; display: flex; justify-content: space-between;">
             <div style="width: 50%; display: inline-block;">
-                <h2 class="main__intro"><b>Berilgan sana:</b> {{ $formattedDate }} - yil </h2>
+                <h2 class="main__intro"><b>Berilgan sana:&nbsp; </b> {{ $formattedDate }} - yil </h2>
             </div>
             <div style="width: 30%; display: inline-block;">
-                <h2 class="main__intro"><b>Paxta hosil yili: </b> {{$application->crops->year}}</h2>
+                <h2 class="main__intro"><b>Paxta hosil yili:&nbsp; </b> {{$application->crops->year}}</h2>
             </div>
         </div>
-        <h2 class="main__intro"><b>Ishlab chiqaruvchi (arizachi) nomi: </b> {{ $application->organization->name }} </h2>
-        <h2 class="main__intro"><b>STIR:  </b> {{$application->organization->inn}}</h2>
-        <h2 class="main__intro"><b>Ishlab chiqaruvchi (arizachi) manzili: </b> {{ $application->organization->fulladdress }} </h2>
+        <div style="width: 100%; display: flex; justify-content: space-between;">
+            <div style="width: 50%; display: inline-block;">
+                <h2 class="main__intro"><b>Amal qilish muddati:&nbsp;</b> 6 oy </h2>
+            </div>
+        </div>
+        <h2 class="main__intro"><b>Ishlab chiqaruvchi (arizachi) nomi:&nbsp; </b> {{ $application->organization->name }} </h2>
+        <h2 class="main__intro"><b>STIR:&nbsp;  </b> {{$application->organization->inn}}</h2>
+        <h2 class="main__intro"><b>Ishlab chiqaruvchi (arizachi) manzili:&nbsp; </b> {{ $application->organization->fulladdress }} </h2>
 
         <h1 class="header__intro" style="margin-top: 10px;"> IJROCHINING MA’LUMOTLARI</h1>
 
@@ -84,7 +89,7 @@
             <div style="width: 45%; display: inline-block; padding-bottom: 30px;">
                 <b>Ijrochi :</b>
                 {{ $application->decision->laboratory->name }} boshlig‘i:
-                {{ optional($application->user)->lastname . ' ' . (optional($application->user)->name) }}
+                {{ optional(optional($dalolatnoma->laboratory_final_results)->director)->lastname . ' ' . substr(optional(optional($dalolatnoma->laboratory_final_results)->director)->name,0,1). '.' }}
             </div>
             <div style="width: 20%; display: inline-block;"></div>
 
