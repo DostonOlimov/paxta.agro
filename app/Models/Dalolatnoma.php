@@ -137,7 +137,7 @@ class Dalolatnoma  extends Model
 
         // Ensure the user is authenticated
         $user = auth()->user();
-        $year = session('year', date("Y"));
+        $year = session('year', 2024);
         $crop = session('crop', 1);
 
         if ($user) {

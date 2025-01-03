@@ -30,7 +30,7 @@ class AktAmount  extends Model
 
         // Ensure the user is authenticated
         $user = auth()->user();
-        $year = session('year', date("Y"));
+        $year = session('year',2024);
         $crop = session('crop', 1);
 
         if ($user) {
@@ -58,9 +58,9 @@ class AktAmount  extends Model
                 $query->whereHas('test_program', function ($query) use ($year,$crop) {
                     $query->whereHas('application', function ($query) use ($year,$crop) {
                         $query->where('status', '!=', Application::STATUS_DELETED)
-                            ->where('app_type', '=', $crop)
+                            ->where('app_type', $crop)
                             ->whereHas('crops', function ($query) use ($year,$crop) {
-                                $query->where('year', '=', $year);
+                                $query->where('year', $year);
                             });
                     });
                 });
