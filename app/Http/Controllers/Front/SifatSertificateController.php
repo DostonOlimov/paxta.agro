@@ -320,7 +320,8 @@ class SifatSertificateController extends Controller
 
         // date format
         $formattedDate = formatUzbekDateInLatin($test->date);
-        $currentYear = date('Y');
+
+        $currentYear =date("Y", strtotime($test->date));
         $zavod_id = $test->prepared_id;
         $number = 0;
 //        if($chigitValues['quality']){
