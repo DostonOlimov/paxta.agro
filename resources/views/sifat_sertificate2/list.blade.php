@@ -202,7 +202,9 @@
                                 <tr>
                                     <td style="white-space: nowrap;">
                                         <div style="display:inline-block;">{{ $offset + $loop->iteration }}.</div>
-                                        <div class="@if(optional($app->sifat_sertificate)->type == 2) bg-warning @else bg-success @endif" style="display:inline-block; border-radius: 50%; height: 20px;width: 20px;">
+                                        <div class="@if(optional($app->sifat_sertificate)->type == 2) bg-warning @else
+                                        @if($app->sertificateQuality) bg-success @else bg-danger @endif
+                                        @endif" style="display:inline-block; border-radius: 50%; height: 20px;width: 20px;">
                                         </div>
                                     </td>
 
