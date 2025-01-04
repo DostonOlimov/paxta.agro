@@ -82,16 +82,18 @@
                                                         @foreach ($counts as $count)
                                                             <tr>
                                                                 <td>
-                                                                    @if(!$count->certificate)
-                                                                    <a href="{!! url('/final_results/add2/'.$count->id) !!}"><button type="button" class="btn btn-round btn-success">{{ trans('app.Qo\'shish')}}</button></a>
-                                                                    @else
-                                                                        <span class="txt_color">
-                                                                            @if(\App\Models\Sertificate::find($count->certificate->id)->attachment)
-                                                                                <a href="{{route('attachment.download', ['id' => $count->certificate->attachment->id])}}" class="text-azure">
-                                                                                <i class="fa fa-download"></i> Asos fayli
-                                                                                    </a>
-                                                                            @endif
-                                                                        </span>
+                                                                    @if(session('crop') == 1)
+                                                                        @if(!$count->certificate)
+                                                                            <a href="{!! url('/final_results/add2/'. $count->id) !!}"><button type="button" class="btn btn-round btn-success">{{ trans('app.Qo\'shish')}}</button></a>
+                                                                        @else
+                                                                            <span class="txt_color">
+                                                                                @if(\App\Models\Sertificate::find($count->certificate->id)->attachment)
+                                                                                    <a href="{{route('attachment.download', ['id' => $count->certificate->attachment->id])}}" class="text-azure">
+                                                                                    <i class="fa fa-download"></i> Asos fayli
+                                                                                        </a>
+                                                                                @endif
+                                                                            </span>
+                                                                        @endif
                                                                     @endif
                                                                 </td>
                                                                 <td> {{ $count->count}}</td>

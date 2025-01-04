@@ -57,9 +57,9 @@
                             <svg class="nav-icon">
                                 <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-list"></use>
                             </svg>{{trans('message.Umumiy ro\'yxat')}}</a></li>
-                    <li class="nav-item"><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('akt_laboratory/*') ? 'active1' : ''}}" href="{!! url('/akt_laboratory/search') !!}"> <svg class="nav-icon">
-                            <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-search"></use>
-                        </svg>{{trans('message.Laboratoriya ma\'lumotlari')}}</a></li>
+{{--                    <li class="nav-item"><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('akt_laboratory/*') ? 'active1' : ''}}" href="{!! url('/akt_laboratory/search') !!}"> <svg class="nav-icon">--}}
+{{--                            <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-search"></use>--}}
+{{--                        </svg>{{trans('message.Laboratoriya ma\'lumotlari')}}</a></li>--}}
                     <li class="nav-item {{ \Illuminate\Support\Facades\Request::is('organization-company-report') ? 'active1' : ''}}"><a class="nav-link" href="{!! url('organization-company-report') !!}">
                         <svg class="nav-icon">
                             <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-building"></use>
@@ -123,14 +123,14 @@
         <li class="nav-item"><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('laboratory-protocol/*') ? 'active1' : ''}}" href="{!! url('/laboratory-protocol/list') !!}"> <svg class="nav-icon">
                     <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-list"></use>
                 </svg>{{trans('message.Sinov bayonnomalari')}}</a></li>
-        <li class="nav-item"><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('final_results/*') ? 'active1' : ''}}" href="{!! url('/final_results/search') !!}"> <svg class="nav-icon">
-                    <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-bar-chart"></use>
-                </svg>{{trans('message.Yakuniy natijalar')}}</a></li>
             @else
                 <li class="nav-item"><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('sertificate-protocol/*') ? 'active1' : ''}}" href="{!! url('/sertificate-protocol/list') !!}"> <svg class="nav-icon">
                             <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-list"></use>
                         </svg>{{trans('message.Sinov bayonnomalari')}}</a></li>
             @endif
+            <li class="nav-item"><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('final_results/*') ? 'active1' : ''}}" href="{!! url('/final_results/search') !!}"> <svg class="nav-icon">
+                        <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-bar-chart"></use>
+                    </svg>{{trans('message.Yakuniy natijalar')}}</a></li>
         @endif
 
 
