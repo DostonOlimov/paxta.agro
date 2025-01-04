@@ -200,9 +200,18 @@
 
                                 @foreach ($apps as $app)
                                 <tr>
-                                    <td>{{ $offset + $loop->iteration }}</td>
+                                    <td style="white-space: nowrap;">
+                                        <div style="display:inline-block;">{{ $offset + $loop->iteration }}.</div>
+                                        <div class="@if(optional($app->sifat_sertificate)->type == 2) bg-warning @else bg-success @endif" style="display:inline-block; border-radius: 50%; height: 20px;width: 20px;">
+                                        </div>
+                                    </td>
+
                                     <td>{{ optional($app->crops)->party_number }}</td>
-                                    <td>@if(optional($app->sifat_sertificate)->number){{ substr(10000000 + 1000 * $app->prepared->kod + optional($app->sifat_sertificate)->number , 2)  }} @endif</td>
+                                    <td>
+                                        @if(optional($app->sifat_sertificate)->number)
+                                            {{ substr(10000000 + ((optional($app->sifat_sertificate)->type == 1) ? 1000 * $app->prepared->kod : 500000) + optional($app->sifat_sertificate)->number , 2)  }}
+                                        @endif
+                                    </td>
                                     <td> <a href="{!! url('/sifat-sertificates2/view/' . $app->id) !!}">{{ $app->date }}</a></td>
                                     <td> {{ optional(optional(optional($app->organization)->area)->region)->name }}</td>
                                     <td><a href="#" class="company-link"

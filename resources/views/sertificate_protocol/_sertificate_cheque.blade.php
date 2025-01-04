@@ -22,7 +22,7 @@
             <div style="width: 50%; display: inline-block;">
                 <h2 class="main__intro"><b>Mahsulot nomi:&nbsp; </b> {{ $application->crops->name->name}} </h2>
             </div>
-            <div style="width: 30%; display: inline-block;">
+            <div style="width: 40%; display: inline-block;">
                 <h2 class="main__intro"><b>KOD TN VED:&nbsp; </b> {{ $application->crops->name->kodtnved}}</h2>
             </div>
         </div>
@@ -30,7 +30,7 @@
             <div style="width: 50%; display: inline-block;">
                 <h2 class="main__intro"><b>Berilgan sana:&nbsp; </b> {{ $formattedDate }} - yil </h2>
             </div>
-            <div style="width: 30%; display: inline-block;">
+            <div style="width: 40%; display: inline-block;">
                 <h2 class="main__intro"><b>Paxta hosil yili:&nbsp; </b> {{$application->crops->year}}</h2>
             </div>
         </div>
@@ -38,7 +38,11 @@
             <div style="width: 50%; display: inline-block;">
                 <h2 class="main__intro"><b>Amal qilish muddati:&nbsp;</b> 6 oy </h2>
             </div>
+            <div style="width: 40%; display: inline-block;">
+                <h2 class="main__intro"><b>Sinov bayonnomasi raqami:&nbsp; </b> {{ $dalolatnoma->laboratory_final_results->number }} </h2>
+            </div>
         </div>
+
         <h2 class="main__intro"><b>Ishlab chiqaruvchi (arizachi) nomi:&nbsp; </b> {{ $application->organization->name }} </h2>
         <h2 class="main__intro"><b>STIR:&nbsp;  </b> {{$application->organization->inn}}</h2>
         <h2 class="main__intro"><b>Ishlab chiqaruvchi (arizachi) manzili:&nbsp; </b> {{ $application->organization->fulladdress }} </h2>

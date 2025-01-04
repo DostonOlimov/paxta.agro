@@ -135,6 +135,9 @@ class FinalResultsController extends Controller
                 ->where('akt_amount.dalolatnoma_id', $id)
                 ->groupBy('sort', 'class')
                 ->get();
+
+            $data = $this->getClampData($id);
+
             foreach($counts as $count){
                 $result = new FinalResult();
                 $result->dalolatnoma_id = $id;
@@ -143,10 +146,10 @@ class FinalResultsController extends Controller
                 $result->class = $count->class;
                 $result->count = $count->count;
                 $result->amount = $count->total_amount;
-                $result->mic = $count->mic;
-                $result->staple = $count->staple;
-                $result->strength = $count->strength;
-                $result->uniform = $count->uniform;
+                $result->mic = $data->mic;
+                $result->staple = $data->staple;
+                $result->strength = $data->strength;
+                $result->uniform = $data->uniform;
                 $result->humidity = optional($dalolatnoma->laboratory_result)->humidity;
                 $result->save();
             }
@@ -296,13 +299,15 @@ class FinalResultsController extends Controller
                 ->groupBy('sort', 'class')
                 ->get();
 
+            $data = $this->getClampData($result->dalolatnoma_id);
+
             foreach ($counts as $count) {
                 $result->count = $count->count;
                 $result->amount = $count->total_amount;
-                $result->mic = $count->mic;
-                $result->staple = $count->staple;
-                $result->strength = $count->strength;
-                $result->uniform = $count->uniform;
+                $result->mic = $data->mic;
+                $result->staple = $data->staple;
+                $result->strength = $data->strength;
+                $result->uniform = $data->uniform;
                 $result->humidity = optional(optional($result->dalolatnoma)->laboratory_result)->humidity;
                 $result->save();
             }
@@ -310,6 +315,17 @@ class FinalResultsController extends Controller
         return redirect('/final_results/add/'.$result->dalolatnoma_id)->with('message', 'Successfully Submitted');
 
     }
-
+    private function getClampData($dalolatnoma_id)
+    {
+        return ClampData::select(
+            DB::raw('AVG(clamp_data.mic) as mic'),
+            DB::raw('AVG(clamp_data.staple) as staple'),
+            DB::raw('AVG(clamp_data.strength) as strength'),
+            DB::raw('AVG(clamp_data.uniform) as uniform'),
+            DB::raw('AVG(clamp_data.fiblength) as fiblength')
+        )
+            ->where('clamp_data.dalolatnoma_id', $dalolatnoma_id)
+            ->first();
+    }
 
 }

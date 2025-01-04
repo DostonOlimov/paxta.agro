@@ -17,6 +17,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class SertificateProtocolController extends Controller
@@ -344,6 +345,7 @@ class SertificateProtocolController extends Controller
     private function storeFinalResults($dalolatnomaId)
     {
         $results = $this->getAggregatedClampData($dalolatnomaId);
+        $data = $this->getAggregatedData($dalolatnomaId);
 
         foreach ($results as $result) {
             FinalResult::create([
@@ -353,10 +355,10 @@ class SertificateProtocolController extends Controller
                 'class' => $result->class,
                 'count' => $result->count,
                 'amount' => $result->total_amount,
-                'mic' => $result->mic,
-                'staple' => $result->staple,
-                'strength' => $result->strength,
-                'uniform' => $result->uniform,
+                'mic' => $data->mic,
+                'staple' => $data->staple,
+                'strength' => $data->strength,
+                'uniform' => $data->uniform,
                 'humidity' => 5,
             ]);
         }
@@ -368,6 +370,7 @@ class SertificateProtocolController extends Controller
     private function updateFinalResults($dalolatnomaId)
     {
         $results = $this->getAggregatedClampData($dalolatnomaId);
+        $data = $this->getAggregatedData($dalolatnomaId);
 
         foreach ($results as $result) {
             FinalResult::updateOrCreate(
@@ -379,10 +382,10 @@ class SertificateProtocolController extends Controller
                 [
                     'count' => $result->count,
                     'amount' => $result->total_amount,
-                    'mic' => $result->mic,
-                    'staple' => $result->staple,
-                    'strength' => $result->strength,
-                    'uniform' => $result->uniform,
+                    'mic' => $data->mic,
+                    'staple' => $data->staple,
+                    'strength' => $data->strength,
+                    'uniform' => $data->uniform,
                     'humidity' => 5,
                 ]
             );
@@ -411,6 +414,21 @@ class SertificateProtocolController extends Controller
             ->where('clamp_data.dalolatnoma_id', $dalolatnomaId)
             ->groupBy('sort', 'class')
             ->get();
+    }
+    /**
+     * Get aggregated clamp data.
+     */
+    private function getAggregatedData($dalolatnomaId)
+    {
+        return ClampData::select(
+            DB::raw('AVG(clamp_data.mic) as mic'),
+            DB::raw('AVG(clamp_data.staple) as staple'),
+            DB::raw('AVG(clamp_data.strength) as strength'),
+            DB::raw('AVG(clamp_data.uniform) as uniform'),
+            DB::raw('AVG(clamp_data.fiblength) as fiblength')
+        )
+            ->where('clamp_data.dalolatnoma_id', $dalolatnomaId)
+            ->first();
     }
 
 }

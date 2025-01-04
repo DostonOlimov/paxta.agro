@@ -324,12 +324,14 @@ class SifatSertificateController extends Controller
         $currentYear =date("Y", strtotime($test->date));
         $zavod_id = $test->prepared_id;
         $number = 0;
-//        if($chigitValues['quality']){
-            $number = SifatSertificates::where('zavod_id', $zavod_id)
-                ->where('year', $currentYear)
-                ->where('type',$type)
-                ->max('number');
-//        }
+
+        $sertQuery = SifatSertificates::where('year', $currentYear)
+            ->where('type',$type);
+        if($type == SifatSertificates::CIGIT_TYPE_XARIDORLI){
+            $sertQuery = $sertQuery->where('zavod_id', $zavod_id);
+        }
+        $number = $sertQuery->max('number');
+
         $number = $number ? $number + 1 : 1;
 
         // create sifat certificate
@@ -345,7 +347,7 @@ class SifatSertificateController extends Controller
             $sertificate->save();
         }
 
-        $kod_middle =  ($type == 1) ? ($test->prepared->kod)*1000 : 0;
+        $kod_middle =  ($type == 1) ? ($test->prepared->kod)*1000 : 500000;
         $sert_number = ($currentYear - 2000) * 1000000 + $kod_middle + $number;
 
         // Generate QR code
