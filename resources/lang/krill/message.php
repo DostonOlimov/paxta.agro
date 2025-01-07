@@ -20,7 +20,7 @@ return [
     'Inventory' => 'Inventarizatsiya',
     'Home' => 'Home',
     'Paxta tolasini sertifikatlashtirish avtomatlashtirilgan axborot tizimi' => 'Пахта толасини сертификатлаштириш автоматлаштирилган ахборот тизими',
-
+    'Page title' => 'Пахта маҳсулотларини сертификатлаштириш тизими',
     //Dashbord page
     'AGROINSPEKSIYA' => 'АГРОИНСПЕКЦИЯ',
     'Dashboard' => 'Aсбоблар панели',

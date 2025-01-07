@@ -6,6 +6,7 @@ return [
     'Inventory' => 'Inventarizatsiya',
     'Home' => 'Home',
     'Paxta tolasini sertifikatlashtirish avtomatlashtirilgan axborot tizimi' => 'Cotton fiber certification automated information system                          ',
+    'Page title' => 'Cotton Product Certification System',
 
     //Dashbord page
     'AGROINSPEKSIYA' => 'AGROINSPECTION',

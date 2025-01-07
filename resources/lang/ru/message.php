@@ -6,6 +6,7 @@ return [
     'Inventory' => 'Inventarizatsiya',
     'Home' => 'Home',
     'Paxta tolasini sertifikatlashtirish avtomatlashtirilgan axborot tizimi' => 'Автоматизированная информационная система сертификации хлопкового волокна.',
+    'Page title' => 'Система сертификации хлопчатобумажной продукции',
 
     //Dashbord page
     'AGROINSPEKSIYA' => 'АГРОИНСПЕКЦИЯ',

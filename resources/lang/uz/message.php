@@ -23,6 +23,7 @@ return [
     'Home' => 'Home',
 
     'Paxta tolasini sertifikatlashtirish avtomatlashtirilgan axborot tizimi' => 'Paxta tolasini sertifikatlashtirish avtomatlashtirilgan axborot tizimi',
+    'Page title' => 'Paxta mahsulotlarini sertifikatlashtirish tizimi',
 
     //Dashbord page
     'AGROINSPEKSIYA' => 'AGROINSPEKSIYA',
