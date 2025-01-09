@@ -1,5 +1,5 @@
 import { createApp } from 'vue';
-import App from './components/App.vue';
+import App from './components/StateReport.vue';
 
 const appElement = document.querySelector('#app');
 if (appElement) {

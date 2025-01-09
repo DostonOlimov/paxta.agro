@@ -479,5 +479,5 @@ Route::middleware(['auth'])->group(function() {
     Route::delete('/laboratory_operators/{laboratoryOperator}', [LaboratoryOperatorController::class, 'destroy'])->name('laboratory_operators.destroy');
 });
 
-Route::get('/company-report', function () { return view('reports.company'); });
+Route::get('/state-report', function () { return view('reports.state_report'); });
 

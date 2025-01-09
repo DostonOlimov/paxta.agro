@@ -1,8 +1,5 @@
 <?php
 
-use App\Http\Controllers\Api\AppOnlineController;
-use App\Http\Controllers\Api\CertConnetionController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
@@ -24,4 +21,9 @@ Route::group([
     Route::post('/login', [\App\Http\Controllers\Api\V1\AuthController::class, 'login'])->withoutMiddleware('auth:sanctum');
 });
 
-
+Route::group([
+    'prefix' => 'v1',
+    'namespace' => 'App\Http\Controllers\Api\V1\Vue',
+], function () {
+    Route::get('/get-state-report', [App\Http\Controllers\Api\V1\Vue\ReportsController::class, 'getReportByState'])->name('reports.getReportByState');
+});
