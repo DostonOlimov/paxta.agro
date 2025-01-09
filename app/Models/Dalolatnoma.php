@@ -128,7 +128,7 @@ class Dalolatnoma  extends Model
             $sumOfSquares += ($value - $average)**2;
         }
         // Calculate the result
-        return sqrt(round($sumOfSquares,8) / ($n * ($n - 1)));
+        return sqrt(round($sumOfSquares,8) / (221 * (221 - 1)));
     }
 
     protected static function boot()
