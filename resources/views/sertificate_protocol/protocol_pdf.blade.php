@@ -57,7 +57,7 @@
         table th,
         table td {
             border: 1px solid black;
-            padding: 3px;
+            padding: 2px;
             text-align: center;
         }
 

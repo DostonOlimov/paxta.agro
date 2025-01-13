@@ -76,6 +76,7 @@ return [
     'Taqdim etilgan sertifikatlar soni' => 'Taqdim etilgan sertifikatlar soni',
     'Texnik chigit miqdori'     => 'Texnik chigit miqdori',
     'Sertifikalangan mahsulot miqdori' => 'Sertifikalangan mahsulot miqdori',
+    'Hududlar kesimda ma\'lumot' => 'Hududlar kesimda ma\'lumot',
     //tarjima qilish kerak oxiri
 
 

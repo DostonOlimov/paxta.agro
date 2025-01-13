@@ -44,7 +44,8 @@ class ReportsController extends Controller
 
         return $query->addSelect([
             DB::raw('COUNT(CASE WHEN sifat_sertificates.id IS NOT NULL THEN applications.id END) as certificates_count'),
-            DB::raw('SUM(CASE WHEN sifat_sertificates.id IS NOT NULL THEN crop_data.amount END) as application_amount')
+            DB::raw('SUM(CASE WHEN sifat_sertificates.id IS NOT NULL THEN crop_data.amount END) as application_amount'),
+            DB::raw('COUNT(CASE WHEN sifat_sertificates.id IS NOT NULL THEN applications.id END) as certified_application_count')
         ])
             ->leftJoin('sifat_sertificates', 'applications.id', '=', 'sifat_sertificates.app_id')
             ->groupBy('tbl_states.id', 'tbl_states.name')
@@ -58,7 +59,8 @@ class ReportsController extends Controller
 
         return $query->addSelect([
             DB::raw('COUNT(DISTINCT CASE WHEN sertificates.id IS NOT NULL THEN sertificates.id END) as certificates_count'),
-            DB::raw('SUM(CASE WHEN sertificates.id IS NOT NULL THEN (akt_amount.amount - dalolatnoma.tara) END) as application_amount')
+            DB::raw('SUM(CASE WHEN sertificates.id IS NOT NULL THEN (akt_amount.amount - dalolatnoma.tara) END) as application_amount'),
+            DB::raw('COUNT(DISTINCT CASE WHEN sertificates.id IS NOT NULL THEN applications.id END) as certified_application_count')
         ])
             ->join('test_programs', 'applications.id', '=', 'test_programs.app_id')
             ->join('dalolatnoma', 'test_programs.id', '=', 'dalolatnoma.test_program_id')
@@ -83,8 +85,7 @@ class ReportsController extends Controller
         $query = Region::select(
             'tbl_states.id as id',
             'tbl_states.name as name',
-            DB::raw('COUNT(DISTINCT(applications.id)) as application_count'),
-            DB::raw('COUNT(DISTINCT CASE WHEN sertificates.id IS NOT NULL THEN applications.id END) as certified_application_count')
+            DB::raw('COUNT(DISTINCT(applications.id)) as application_count')
         )
             ->leftJoin('prepared_companies', 'tbl_states.id', '=', 'prepared_companies.state_id')
             ->join('applications', 'prepared_companies.id', '=', 'applications.prepared_id')

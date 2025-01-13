@@ -18,6 +18,13 @@
             'hover' => '#ed3957',
 
         ],
+         4 => [
+            'bgDefault' => '#319e92',
+            'bgSecond' => '#198754',
+            'bgThird' => '#4eba69',
+            'hover' => '#ed72e3',
+
+        ],
         'default' => [
            'bgDefault' => '#31a5f1 ',
             'bgSecond' => '#387ADF',

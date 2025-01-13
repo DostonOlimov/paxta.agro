@@ -47,8 +47,7 @@ class HomeController extends Controller
 
         // Base queries
         $applicationQuery = Application::query()
-            ->join('organization_companies', 'applications.organization_id', '=', 'organization_companies.id')
-            ->join('tbl_cities', 'organization_companies.city_id', '=', 'tbl_cities.id')
+            ->join('prepared_companies', 'applications.prepared_id', '=', 'prepared_companies.id')
             ->join('crop_data', 'applications.crop_data_id', '=', 'crop_data.id');
 
         $appStatesQuery = Region::select(
@@ -56,9 +55,8 @@ class HomeController extends Controller
             'tbl_states.name',
             DB::raw('COUNT(applications.id) as application_count')
         )
-            ->leftJoin('tbl_cities', 'tbl_states.id', '=', 'tbl_cities.state_id')
-            ->leftJoin('organization_companies', 'tbl_cities.id', '=', 'organization_companies.city_id')
-            ->join('applications', 'organization_companies.id', '=', 'applications.organization_id')
+            ->leftJoin('prepared_companies', 'tbl_states.id', '=', 'prepared_companies.state_id')
+            ->join('applications', 'prepared_companies.id', '=', 'applications.prepared_id')
             ->join('crop_data', 'applications.crop_data_id', '=', 'crop_data.id');
 
         // Apply joins for non-branch crop type
@@ -87,8 +85,8 @@ class HomeController extends Controller
 
         // City filter
         if ($filters['city']) {
-            $applicationQuery->where('tbl_cities.state_id', $filters['city']);
-            $appStatesQuery->where('tbl_cities.state_id', $filters['city']);
+            $applicationQuery->where('prepared_companies.state_id', $filters['city']);
+            $appStatesQuery->where('prepared_companies.state_id', $filters['city']);
         }
 
         // Crop filter

@@ -23,6 +23,12 @@
                         <span class="selectCropText">Texnik chigit <br>Sifat sertifikati</span>
                     </a>
                 </div>
+                <div class="select_col-md-4">
+                    <a href="#" onclick="changeCrop('4')" >
+                        <img class="selectCropImage" src="/resources/assets/images/momig_logo2.png">
+                        <span class="selectCropText">Paxta momig'i <br>Sifat sertifikati</span>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
@@ -34,6 +40,8 @@
             <img class="sidebarLogo" src="/resources/assets/images/chigit_logo.png">
         @elseif(session('crop') == 3)
             <img class="sidebarLogo" src="/resources/assets/images/paxta_image.png">
+        @elseif(session('crop') == 4)
+            <img class="sidebarLogo" src="/resources/assets/images/momig_logo2.png">
         @else
             <img class="sidebarLogo" src="/resources/assets/images/paxta_logo.png">
         @endif

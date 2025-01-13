@@ -7,7 +7,9 @@ use App\Filters\V1\ApplicationFilter;
 use App\Models\Application;
 use App\Models\AppStatusChanges;
 use App\Models\CropData;
+use App\Models\CropsName;
 use App\Models\Decision;
+use App\Models\Laboratories;
 use App\Models\OrganizationCompanies;
 use App\Models\TestPrograms;
 use App\Rules\CheckingParyNumber;
@@ -60,7 +62,7 @@ class ApplicationController extends Controller
     public function addapplication()
     {
         $crop = session('crop', 1);
-        $names = DB::table('crops_name')->where('id', ($crop != 2) ? '=' : '!=', 1)->get()->toArray();
+        $names = getCropsNames();
         $countries = DB::table('tbl_countries')->get()->toArray();
         $measure_types = CropData::getMeasureType();
         $years = CropData::getYear();
@@ -76,7 +78,6 @@ class ApplicationController extends Controller
     public function store(Request $request)
     {
         $this->authorize('create', Application::class);
-
         $user = Auth::user();
 //        $validated = $request->validate([
 //            'party_number' => ['required', new CheckingParyNumber($request->input('prepared'),$request->input('party_number'))],
@@ -115,13 +116,18 @@ class ApplicationController extends Controller
             'action'      => "Ariza qo'shildi",
             'time'        => now(),
         ]);
-        if(session('crop') == 3){
+        if(session('crop') == CropsName::CROP_TYPE_3 or session('crop') == CropsName::CROP_TYPE_4){
+            $stateId = optional($application->prepared)->state_id;
+            $lab = Laboratories::whereHas('city', function ($query) use ($stateId) {
+                $query->where('state_id', 4012);
+            })->first();
+
             // Create new decision
             $decision = Decision::create([
                 'app_id'       => $application->id,
                 'director_id'  => 27, // Hardcoded, but ideally fetched dynamically
                 'number'       => $application->id,
-                'laboratory_id'=> 2,
+                'laboratory_id'=> $lab->id,
                 'created_by'   => $user->id,
                 'date'         => $request->input('dob') ? date('Y-m-d', strtotime($request->input('dob'))) : null,
                 'status'       => Decision::STATUS_NEW,

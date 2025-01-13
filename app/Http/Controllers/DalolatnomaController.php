@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Filters\V1\ApplicationFilter;
 use App\Models\AktAmount;
 use App\Models\Application;
+use App\Models\CropsName;
 use App\Models\CropsSelection;
 use App\Models\Dalolatnoma;
 use App\Models\GinBalles;
@@ -92,27 +93,29 @@ class DalolatnomaController extends Controller
                 'test_program_id' => $data['test_id'],
                 'number' => $data['number'],
                 'date' => $date,
-                'selection_code' => $data['selection_code'],
+                'selection_code' => isset($data['selection_code']) ? $data['selection_code'] : 99,
                 'toy_count' => $data['toy_count'],
                 'amount' => $data['amount'],
                 'party' => $data['party_number'],
-                'nav' => $data['nav'],
-                'sinf' => $data['sinf'],
+                'nav' => isset($data['nav']) ? $data['nav'] : 1 ,
+                'sinf' => isset($data['sinf']) ? $data['sinf'] : 1,
                 'tara' => $data['tara'],
             ]);
 
-            // Create Humidity
-            Humidity::create([
-                'dalolatnoma_id' => $dal->id,
-                'number' => $data['number'],
-                'date' => $date,
-                'selection_code' => $data['selection_code'],
-                'toy_count' => $data['toy_count'],
-                'toy_amount' => ceil($data['toy_count'] / 10),
-                'party_number' => $data['party_number'],
-                'nav' => $data['nav'],
-                'sinf' => $data['sinf'],
-            ]);
+            if(session('crop',1) == CropsName::CROP_TYPE_1){
+                // Create Humidity
+                Humidity::create([
+                    'dalolatnoma_id' => $dal->id,
+                    'number' => $data['number'],
+                    'date' => $date,
+                    'selection_code' => $data['selection_code'],
+                    'toy_count' => $data['toy_count'],
+                    'toy_amount' => ceil($data['toy_count'] / 10),
+                    'party_number' => $data['party_number'],
+                    'nav' => $data['nav'],
+                    'sinf' => $data['sinf'],
+                ]);
+            }
 
             // Process GinBalles and AktAmount
             $balls = $this->prepareGinBalles($dal->id, $kod_toy);

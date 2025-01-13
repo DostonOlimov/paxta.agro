@@ -93,14 +93,6 @@
         /* Push the QR code to the bottom of the div */
     }
 
-    /*@media (max-width: 768px) {*/
-    /*    .col-md-6 {*/
-    /*        flex: 0 0 100%;*/
-    /*        max-width: 100%;*/
-    /*        text-align: center;*/
-    /*        !* Align text to center on small screens *!*/
-    /*    }*/
-    /*}*/
 
     #invoice-cheque {
         position: relative;
@@ -121,24 +113,7 @@
         position: relative;
         z-index: 1; /* Keeps content above the image */
     }
-    /*@media print {*/
-    /*    .invoice-cheque {*/
-    /*        width: 100%;*/
-    /*        border: none;*/
-    /*        margin: 0;*/
-    /*        padding: 0;*/
-    /*    }*/
 
-    /*    .header__tasdiqlayman,*/
-    /*    .header__title {*/
-    /*        margin: 0;*/
-    /*    }*/
-
-    /*    table th,*/
-    /*    table td {*/
-    /*        padding: 5px;*/
-    /*    }*/
-    /*}*/
 </style>
 @endsection
 @section('content')
@@ -189,14 +164,14 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
     <div style="width: 100%; display: flex; justify-content: space-between; padding-top:10px; font-size: 18px;">
         <div style="width: 74%; display: inline-block;">
-            <span> <b>Ariza beruvchining nomi:</b>{{ $test->test_program->application->organization->name }}.</span>
+            <b>Ariza beruvchining nomi:</b><span style="font-family: 'DejaVu Serif'">{{ $test->test_program->application->organization->name }}.</span>
         </div>
         <div style="width: 25%; display: inline-block; text-align: right">
             <span><b>Hosil yili:</b> {{ $test->test_program->application->crops->year }} y.</span>
         </div>
     </div>
     <div style="width: 100%; display: flex; justify-content: space-between; padding-top:10px; font-size: 18px;">
-        <span><b>Ishlab chiqaruvchi nomi va kodi:</b>  {{ $test->test_program->application->prepared->name . ' - ' . str_pad($test->test_program->application->prepared->kod, 3, '0', STR_PAD_LEFT) }}</span>
+        <b>Ishlab chiqaruvchi nomi va kodi:</b><span style="font-family: 'DejaVu Serif'">  {{ $test->test_program->application->prepared->name . ' - ' . str_pad($test->test_program->application->prepared->kod, 3, '0', STR_PAD_LEFT) }}</span>
     </div>
     <div style="width: 100%; display: flex; justify-content: space-between; padding-top:10px; font-size: 18px;">
         <div style="width: 69%; display: inline-block;">
@@ -217,7 +192,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
     <span style="padding: 10px 0;">Sinov natijasi:</span>
 
-    <table class="table table-border " style="border: 1px solid black ;text-align: center;font-size: 18px;">
+    <table class="table table-border " style="border: 1px solid black ;text-align: center;font-size: 16px;">
         <tr>
             {{-- <th">T\r</th> --}}
             <th rowspan="2"> <span style="font-family: 'DejaVu Serif'"> № </span></th>

@@ -63,6 +63,14 @@
                 'hoverLinkBg' => '#1cbd53',
                 'stickyHeader' => '#d9f1e4',
             ],
+              4 => [
+                'header' => '#0a786d',
+                'sidebar' => '#319e92',
+                'navgroupBg' => '#319e92',
+                'activeLinkBg' => '#ed72e3',
+                'hoverLinkBg' => '#29bfd6',
+                'stickyHeader' => '#a8ede6',
+            ],
             'default' => [
                 'header' => '#0E46A3',
                 'sidebar' => '#0d6efd',
@@ -174,6 +182,20 @@
 <script src="{{ asset('/assets/vendors/@coreui/coreui/js/coreui.bundle.min.js') }}"></script>
 <script src="{{ asset('/assets/vendors/simplebar/js/simplebar.min.js') }}"></script>
 
+{{-- Data table js files--}}
+<script src="{{ asset('resources/assets/plugins/datatable/js/jquery.dataTables.js') }}"></script>
+<script src="{{ asset('resources/assets/plugins/datatable/js/dataTables.bootstrap4.js') }}"></script>
+<script src="{{ asset('resources/assets/plugins/datatable/js/dataTables.buttons.min.js') }}"></script>
+
+<script src="{{ asset('resources/assets/plugins/datatable/js/buttons.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('resources/assets/plugins/datatable/js//vfs_fonts.js') }}"></script>
+<script src="{{ asset('resources/assets/plugins/datatable/js/buttons.html5.min.js') }}"></script>
+<script src="{{ asset('resources/assets/plugins/datatable/js/buttons.print.min.js') }}"></script>
+<script src="{{ asset('resources/assets/plugins/datatable/js/buttons.colVis.min.js') }}"></script>
+<script src="{{ asset('resources/assets/plugins/datatable/dataTables.responsive.min.js') }}"></script>
+<script src="{{ asset('resources/assets/plugins/datatable/responsive.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('resources/assets/plugins/datatable/datatable.js') }}"></script>
+
 <!-- Vue-Specific Scripts -->
 @stack('scripts') <!-- Push Vue-specific scripts here -->
 
@@ -226,5 +248,6 @@
         });
     }
 </script>
+
 </body>
 </html>

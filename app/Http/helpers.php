@@ -534,9 +534,8 @@ if (! function_exists('getAppStatus')) {
 if (! function_exists('getCropsNames')) {
     function getCropsNames()
     {
-        return \Illuminate\Support\Facades\Cache::remember('crops_names', 60*60, function () {
-            return \App\Models\CropsName::all();
-        });
+        return \App\Models\CropsName::all();
+
     }
 }
 

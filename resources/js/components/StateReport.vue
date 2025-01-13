@@ -1,11 +1,13 @@
 <template>
     <div class="state-report">
         <div class="filters">
-            <label for="start-date">Start Date:</label>
+            Vaqt bo'yicha filterlash
+            <label for="start-date">:</label>
             <input type="date" id="start-date" v-model="startDate" @change="fetchStatesReport" />
 
-            <label for="end-date">End Date:</label>
+            <label for="end-date">dan</label>
             <input type="date" id="end-date" v-model="endDate" @change="fetchStatesReport" />
+            gacha
         </div>
 
         <table class="state-table">
@@ -27,6 +29,10 @@
                     Sertifikatlangan miqdor(kg)
                     <span v-if="sortKey === 'certified_application_count'">{{ sortOrder === 'asc' ? '↑' : '↓' }}</span>
                 </th>
+                <th @click="sortTable('certified_application_count')">
+                    Sertifikatlangan miqdor(tonna)
+                    <span v-if="sortKey === 'certified_application_count'">{{ sortOrder === 'asc' ? '↑' : '↓' }}</span>
+                </th>
                 <th>Samaradorlik</th>
             </tr>
             </thead>
@@ -35,15 +41,17 @@
                 <td>{{ state.name }}</td>
                 <td>{{ state.apps_count }}</td>
                 <td>{{ state.certificates_count }}</td>
-                <td>{{ state.apps_sum_amount }}</td>
-                <td>{{ state.apps_count > 0 ? ((state.certified_application_count / state.apps_count) * 100).toFixed() + '%' : '0%' }}</td>
+                <td>{{ state.apps_sum_amount.toFixed() }}</td>
+                <td>{{ (state.apps_sum_amount / 1000).toFixed() }}</td>
+                <td>{{ state.apps_count > 0 ? ((state.certified_application_count / state.apps_count) * 100).toFixed(2) + '%' : '0%' }}</td>
             </tr>
             <tr class="total-row" style=" background-color: #ffeeba;">
                 <td><strong>Jami</strong></td>
                 <td>{{ totalAppsCount }}</td>
                 <td>{{ totalCertifiedCount }}</td>
-                <td>{{ totalAppsSumAmount }}</td>
-                <td>{{ totalAppsCount > 0 ? ((totalCertifiedCount / totalAppsCount) * 100).toFixed() + '%' : '0%' }}</td>
+                <td>{{ totalAppsSumAmount.toFixed() }}</td>
+                <td>{{ (totalAppsSumAmount / 1000).toFixed() }}</td>
+                <td>{{ totalAppsCount > 0 ? ((totalCertifiedAppCount / totalAppsCount) * 100).toFixed(2) + '%' : '0%' }}</td>
             </tr>
             </tbody>
         </table>
@@ -86,6 +94,9 @@
             totalCertifiedCount() {
                 return this.sortedStates.reduce((sum, state) => sum + state.certificates_count, 0);
             },
+            totalCertifiedAppCount() {
+                return this.sortedStates.reduce((sum, state) => sum + state.certified_application_count, 0);
+            },
             totalAppsSumAmount() {
                 return this.sortedStates.reduce((sum, state) => sum + state.apps_sum_amount, 0);
             },
@@ -98,7 +109,7 @@
                         end_date: this.endDate,
                     };
                     const response = await axios.get("/api/v1/get-state-report", { params });
-                    this.states = response.data;
+                    this.states = response.data.data;
                 } catch (error) {
                     console.error("Failed to fetch state report:", error);
                 }

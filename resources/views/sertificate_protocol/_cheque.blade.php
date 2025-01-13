@@ -123,11 +123,10 @@
         </div>
     <div style="width: 100%; display: flex; justify-content: space-between; padding-top:10px;font-size: 18px;">
         <div style="width: 49%; display: inline-block;">
-            <span> <b>Paxta mahsuloti sifatini tasniflash
-                bo‘yicha mutaxassis (klasser)  </b></span>
+            <span> <b>Paxta tolasi, paxta momig'ini tasniflash bo'yicha mutaxassis  </b></span>
         </div>
         <div style="width: 50%; display: inline-block;text-align: center">
-            <span>
+            <span style="font-family: 'DejaVu Serif'">
                 {{ optional($test->laboratory_final_results->klassiyor)->name }}
             </span>
         </div>
@@ -138,7 +137,7 @@
                 operatori (HVI)  </b></span>
         </div>
         <div style="width: 50%; display: inline-block;text-align: center">
-            <span> {{ optional($test->laboratory_final_results->operator)->name }}</span>
+            <span style="font-family: 'DejaVu Serif'"> {{ optional($test->laboratory_final_results->operator)->name }}</span>
         </div>
     </div>
 </div>

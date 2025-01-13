@@ -102,7 +102,8 @@ class DalolatnomaFilter extends ApiFilter
             $query->join('test_programs', 'dalolatnoma.test_program_id', '=', 'test_programs.id')
                 ->join('applications', 'test_programs.app_id', '=', 'applications.id')
                 ->join('organization_companies', 'applications.organization_id', '=', 'organization_companies.id')
-                ->join('tbl_cities as cities', 'organization_companies.city_id', '=', 'cities.id');
+                ->join('tbl_cities as cities', 'organization_companies.city_id', '=', 'cities.id')
+                ->join('prepared_companies', 'applications.prepared_id', '=', 'prepared_companies.id');
         }
     }
 
@@ -115,7 +116,7 @@ class DalolatnomaFilter extends ApiFilter
             'nameId' => 'crop_data.name_id',
             'partyNumber' => 'crop_data.party_number',
             'stateId' => 'cities.state_id',
-            'companyId' => 'applications.organization_id'
+            'companyId' => 'prepared_companies.organization_id'
         ];
 
         return $joinColumnMap[$key] ?? $this->getColumn($key);

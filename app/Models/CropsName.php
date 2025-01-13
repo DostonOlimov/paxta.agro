@@ -19,6 +19,11 @@ class CropsName extends Model
 {
     protected $table = 'crops_name';
 
+    const CROP_TYPE_1 = 1;
+    const CROP_TYPE_2 = 2;
+    const CROP_TYPE_3 = 3;
+    const CROP_TYPE_4 = 4;
+
     protected $fillable = [
         'id', 'name',
     ];
@@ -47,5 +52,17 @@ class CropsName extends Model
     public function applications(): HasManyThrough
     {
         return $this->hasManyThrough(Application::class, CropData::class, 'name_id', 'crop_data_id','id','id'); // Corrected foreign keys
+    }
+    protected static function boot()
+    {
+        parent::boot(); // Always call the parent boot first
+
+        // Retrieve the crop type from the session or default to 1
+        $crop = session('crop', 1);
+
+        // Add a global scope based on the crop type
+        static::addGlobalScope('cropNameType', function ($query) use ($crop) {
+            $query->where('crop_type', in_array($crop, [2, 4]) ? $crop : 1);
+        });
     }
 }
