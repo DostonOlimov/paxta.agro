@@ -114,11 +114,11 @@
                                                                     @if(isset($data[$i]))
                                                                         @if($data[$i]['class'] == $count->class and $data[$i]['sort'] == $count->sort)
                                                                             @if($data[$i]['amount'])
-                                                                                <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.25rem 0.35rem;" class="bg-info text-white">
+                                                                                <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.25rem 0.35rem;" >
                                                                                     {{$data[$i]['amount']}} kg
                                                                                 </td>
                                                                             @else
-                                                                                <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.25rem 0.35rem;" class="bg-danger text-white">
+                                                                                <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.25rem 0.35rem;">
                                                                                     0 kg
                                                                                 </td>
                                                                             @endif
