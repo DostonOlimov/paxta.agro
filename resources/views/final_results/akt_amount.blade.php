@@ -97,12 +97,12 @@
                                                         </b></div>
                                                 </div>
                                                 <div class="table-responsive row">
-                                                    <table class="table table-striped table-bordered nowrap" style="margin-top:20px;" >
+                                                    <table style="border:1px black; margin-top:20px;" >
                                                         <thead>
                                                         <tr>
                                                             @foreach($results as $data)
-                                                                <th >№</th>
-                                                                <th>Og'irligi</th>
+                                                                <th style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.25rem 0.35rem;" >№</th>
+                                                                <th style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.25rem 0.35rem;">Og'irligi</th>
                                                             @endforeach
                                                         </tr>
                                                         </thead>
@@ -110,20 +110,20 @@
                                                         @for($i = 0; $i < 50; $i++)
                                                             <tr>
                                                                 @foreach($results as $data)
-                                                                    <td>{{ 50 * ($loop->iteration-1) + $i +1 }}</td>
+                                                                    <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.25rem 0.35rem;">{{ 50 * ($loop->iteration-1) + $i +1 }}</td>
                                                                     @if(isset($data[$i]))
                                                                         @if($data[$i]['class'] == $count->class and $data[$i]['sort'] == $count->sort)
                                                                             @if($data[$i]['amount'])
-                                                                                <td class="bg-info text-white">
+                                                                                <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.25rem 0.35rem;" class="bg-info text-white">
                                                                                     {{$data[$i]['amount']}} kg
                                                                                 </td>
                                                                             @else
-                                                                                <td class="bg-danger text-white">
+                                                                                <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.25rem 0.35rem;" class="bg-danger text-white">
                                                                                     0 kg
                                                                                 </td>
                                                                             @endif
                                                                         @else
-                                                                            <td></td>
+                                                                            <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.25rem 0.35rem;"></td>
                                                                         @endif
                                                                     @endif
                                                                 @endforeach
