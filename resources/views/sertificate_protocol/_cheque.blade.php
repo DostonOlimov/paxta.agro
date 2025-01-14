@@ -59,17 +59,26 @@
             <span> {{ $formattedDate2}} y.</span>
         </div>
     </div>
-    <div style="width: 100%; display: flex; justify-content: space-between; padding-top:10px; font-size: 18px;">
-        <div style="width: 49%; display: inline-block;">
-            <span> <b>Seleksiya nomi:  </b>{{ $test->selection->name  }}.</span>
+    @if(session('crop') != \App\Models\CropsName::CROP_TYPE_4)
+        <div style="width: 100%; display: flex; justify-content: space-between; padding-top:10px; font-size: 18px;">
+            <div style="width: 49%; display: inline-block;">
+                <span> <b>Seleksiya nomi:  </b>{{ $test->selection->name  }}.</span>
+            </div>
+            <div style="width: 50%; display: inline-block;">
+                <span> <b>Laboratoriya kodi:  </b> {{  str_pad($test->test_program->application->decision->laboratory->kod, 2, '0', STR_PAD_LEFT) }} </span>
+            </div>
         </div>
-        <div style="width: 50%; display: inline-block;">
-            <span> <b>Laboratoriya kodi:  </b> {{  str_pad($test->test_program->application->decision->laboratory->kod, 2, '0', STR_PAD_LEFT) }} </span>
+    @else
+        <div style="width: 100%; display: flex; justify-content: space-between; padding-top:10px; font-size: 18px;">
+            <div style="width: 99%; display: inline-block;">
+                <span> <b>Me'yoriy hujjati:  </b>O'z DSt 645 "Paxta momig'i.Texnikaviy shartlari"</span>
+            </div>
         </div>
-    </div>
+    @endif
+
 
         <span style="padding: 10px 0;">Sinov natijasi:</span>
-
+    @if(session('crop') != \App\Models\CropsName::CROP_TYPE_4)
         <table class="table table-border " style="border: 1px solid black ;text-align: center;font-size: 18px;">
             <tr>
                 {{-- <th">T\r</th> --}}
@@ -110,6 +119,41 @@
             @endforeach
             @endif
         </table>
+    @else
+        <table class="table table-border " style="border: 1px solid black ;text-align: center;font-size: 18px;">
+            <tr>
+                {{-- <th">T\r</th> --}}
+                <th rowspan="2"> <span style="font-family: 'DejaVu Serif'"> № </span></th>
+                <th colspan="2"> Korxona</th>
+                <th rowspan="2"> To‘dadagi toylar soni (dona)</th>
+                <th rowspan="2"> Netto massasi (kg)</th>
+                <th rowspan="2"> Nav</th>
+                <th rowspan="2"> Sinf</th>
+                <th colspan="2"> O'z DSt 660:2011 <br> Tip(mm) </th>
+            </tr>
+            <tr>
+                <th rowspan="1">kodi</th>
+                <th rowspan="1"> to‘da raqami</th>
+                <th rowspan="1"> A <br>7-8 va unda yuqori</th>
+                <th rowspan="1"> B <br>6-7 va undan kam</th>
+            </tr>
+            @if ($final_results)
+                @foreach ($final_results as $item)
+                    <tr>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{  str_pad($test->test_program->application->prepared->kod, 3, '0', STR_PAD_LEFT) }}</td>
+                        <td>{{ $test->test_program->application->crops->party_number}}</td>
+                        <td>{{ $item->count }}</td>
+                        <td>{{ $item->amount ? $item->amount - $item->count * $test->tara : 0 }}</td>
+                        <td>{{ $item->sort }}</td>
+                        <td>{{ optional(\App\Models\CropsGeneration::where('kod','=',$item->class)->where('crop_id',4)->first())->name  }}</td>
+                        <td> </td>
+                        <td> </td>
+                    </tr>
+                @endforeach
+            @endif
+        </table>
+    @endif
 
         <div style="display: flex;font-size: 16px;">
             <p>

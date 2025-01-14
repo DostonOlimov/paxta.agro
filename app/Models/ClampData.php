@@ -27,6 +27,12 @@ class ClampData  extends Model
         'classer_id',
         'sort',
         'class',
+        'mic',
+        'uniform',
+        'staple',
+        'strength',
+        'fiblength',
+        'colortype'
     ];
 
     public function klassiyor(): BelongsTo

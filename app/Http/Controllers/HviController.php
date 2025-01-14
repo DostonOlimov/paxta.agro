@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\ProcessFile2;
+use App\Jobs\ProcessFile3;
 use App\Models\AktAmount;
 use App\Models\Area;
 use App\Models\ClampData;
+use App\Models\CropsName;
 use Carbon\Carbon;
 use App\Models\GinBalles;
 use Illuminate\Support\Facades\DB;
@@ -115,7 +117,13 @@ class HviController extends Controller
             $gin_balles = $this->getGinBalles($state_id);
 
             $filePath = $this->storeFile($file, $state_id);
-            $this->processGinBallesForLClass($gin_balles, $filePath, $state_id);
+            if(session('crop') == CropsName::CROP_TYPE_4){
+                $this->processGinBallesForLClassLint($gin_balles, $filePath, $state_id);
+
+            }else{
+                $this->processGinBallesForLClass($gin_balles, $filePath, $state_id);
+
+            }
             $this->updateHvi($hvi, $user->id);
 
         }
@@ -269,6 +277,44 @@ class HviController extends Controller
             }
         }
     }
+    private function processGinBallesForLClassLint($gin_balles, $filePath, $state_id)
+    {
+        foreach ($gin_balles as $balles) {
+                $state = Region::find($state_id);
+                $gin_id = 1000 * $state->clamp_id + $balles->dalolatnoma->test_program->application->prepared->kod;
+
+//                $file = storage_path('app/' . $filePath);
+//                $spreadsheet = IOFactory::load($file);
+//                $worksheet = $spreadsheet->getActiveSheet();
+//
+//                // Parse Excel data into an array
+//                $excelData = $this->parseWorksheet($worksheet);
+//
+//                // Retrieve existing clamped data
+//                $clampedData = $this->getClampedData($balles,$gin_id);
+//
+//                // Process the data and prepare for insertion or updates
+//                [$dataToInsert, $dataToUpdate] = $this->processExcelData($excelData, $clampedData,$gin_id,$balles);
+//
+//                dd($dataToInsert);
+//                // Perform bulk insertion for new records
+//                if (!empty($dataToInsert)) {
+//                    ClampData::insert($dataToInsert);
+//                }
+//
+//                // Update existing records
+//                foreach ($dataToUpdate as $update) {
+//                    $this->updateClampedData($update,$balles);
+//                }
+//                dd('sdf');
+                ProcessFile3::dispatch([
+                    'path' => $filePath,
+                    'balles' => $balles,
+                    'gin_id' => $gin_id,
+                ]);
+        }
+    }
+
 
     private function saveOrUpdateHvi($hvi, $filePath, $userId, $count,$state_id)
     {
@@ -299,114 +345,114 @@ class HviController extends Controller
 
     //sdafaf
 
-//    /**
-//     * Parse the worksheet to extract data.
-//     */
-//    private function parseWorksheet($worksheet)
-//    {
-//        $data = [];
-//        foreach ($worksheet->getRowIterator() as $row) {
-//            $rowData = [];
-//            foreach ($row->getCellIterator() as $cell) {
-//                $rowData[] = $cell->getValue();
-//            }
-//            $data[] = $rowData;
-//        }
-//        return $data;
-//    }
-//
-//    /**
-//     * Retrieve clamped data from the database.
-//     */
-//    private function getClampedData($balles,$gin_id)
-//    {
-//        return ClampData::whereIn('gin_bale', range($balles->from_number, $balles->to_number))
-//            ->where('gin_id', $gin_id)
-//            ->where('dalolatnoma_id', $balles->dalolatnoma_id)
-//            ->pluck('gin_bale')
-//            ->toArray();
-//    }
-//
-//    /**
-//     * Process Excel data to prepare for insertion and updates.
-//     */
-//    private function processExcelData(array $excelData, array $clampedData, $gin_id, $balles)
-//    {
-//        $dataToInsert = [];
-//        $dataToUpdate = [];
-//
-//        foreach ($excelData as $data) {
-//            $ginId = $data[0] ?? null;
-//            $ginBale = $data[1] ?? null;
-//
-//            // Skip rows with invalid gin_id or gin_bale
-//            if (!$ginId || !$ginBale) {
-//                continue;
-//            }
-//
-//            if ($ginId == $gin_id && $ginBale >= $balles->from_number && $ginBale <= $balles->to_number) {
-//                if (!in_array($ginBale, $clampedData)) {
-//                    $dataToInsert[] = $this->prepareInsertData($data,$balles);
-//                } else {
-//                    $dataToUpdate[] = $this->prepareUpdateData($data);
-//                }
-//            }
-//        }
-//
-//        return [$dataToInsert, $dataToUpdate];
-//    }
-//
-//    /**
-//     * Prepare data for insertion.
-//     */
-//    private function prepareInsertData(array $data,$balles)
-//    {
-//        return [
-//            'dalolatnoma_id' => $balles->dalolatnoma_id,
-//            'gin_id' => $data[0],
-//            'gin_bale' => $data[1],
-//            'lot_number' => $data[2],
-//            'weight' => null,
-//            'selection' => $data[12],
-//            'date_class' => $data[4],
-//            'time_class' => $data[5],
-//            'classer_id' => $data[10],
-//            'sort' => $data[6],
-//            'class' => $data[7],
-//        ];
-//    }
-//
-//    /**
-//     * Prepare data for updating existing records.
-//     */
-//    private function prepareUpdateData(array $data)
-//    {
-//        return [
-//            'gin_id' => $data[0],
-//            'gin_bale' => $data[1],
-//            'sort' => $data[6],
-//            'class' => $data[7],
-//            'classer_id' => $data[10],
-//        ];
-//    }
-//
-//    /**
-//     * Update existing clamped data in the database.
-//     */
-//    private function updateClampedData(array $data,$balles)
-//    {
-//        $clamp = ClampData::where('gin_bale', $data['gin_bale'])
-//            ->where('gin_id', $data['gin_id'])
-//            ->where('dalolatnoma_id', $balles->dalolatnoma_id)
-//            ->first();
-//
-//        if ($clamp) {
-//            $clamp->update([
-//                'sort' => $data['sort'],
-//                'class' => $data['class'],
-//                'classer_id' => $data['classer_id'],
-//            ]);
-//        }
-//    }
+    /**
+     * Parse the worksheet to extract data.
+     */
+    private function parseWorksheet($worksheet)
+    {
+        $data = [];
+        foreach ($worksheet->getRowIterator() as $row) {
+            $rowData = [];
+            foreach ($row->getCellIterator() as $cell) {
+                $rowData[] = $cell->getValue();
+            }
+            $data[] = $rowData;
+        }
+        return $data;
+    }
+
+    /**
+     * Retrieve clamped data from the database.
+     */
+    private function getClampedData($balles,$gin_id)
+    {
+        return ClampData::whereIn('gin_bale', range($balles->from_number, $balles->to_number))
+            ->where('gin_id', $gin_id)
+            ->where('dalolatnoma_id', $balles->dalolatnoma_id)
+            ->pluck('gin_bale')
+            ->toArray();
+    }
+
+    /**
+     * Process Excel data to prepare for insertion and updates.
+     */
+    private function processExcelData(array $excelData, array $clampedData, $gin_id, $balles)
+    {
+        $dataToInsert = [];
+        $dataToUpdate = [];
+
+        foreach ($excelData as $data) {
+            $ginId = $data[0] ?? null;
+            $ginBale = $data[1] ?? null;
+
+            // Skip rows with invalid gin_id or gin_bale
+            if (!$ginId || !$ginBale) {
+                continue;
+            }
+
+            if ($ginId == $gin_id && $ginBale >= $balles->from_number && $ginBale <= $balles->to_number) {
+                if (!in_array($ginBale, $clampedData)) {
+                    $dataToInsert[] = $this->prepareInsertData($data,$balles);
+                } else {
+                    $dataToUpdate[] = $this->prepareUpdateData($data);
+                }
+            }
+        }
+
+        return [$dataToInsert, $dataToUpdate];
+    }
+
+    /**
+     * Prepare data for insertion.
+     */
+    private function prepareInsertData(array $data,$balles)
+    {
+        return [
+            'dalolatnoma_id' => $balles->dalolatnoma_id,
+            'gin_id' => $data[0],
+            'gin_bale' => $data[1],
+            'lot_number' => $data[2],
+            'weight' => null,
+            'selection' => $data[12],
+            'date_class' => $data[4],
+            'time_class' => $data[5],
+            'classer_id' => $data[10],
+            'sort' => $data[6],
+            'class' => $data[7],
+        ];
+    }
+
+    /**
+     * Prepare data for updating existing records.
+     */
+    private function prepareUpdateData(array $data)
+    {
+        return [
+            'gin_id' => $data[0],
+            'gin_bale' => $data[1],
+            'sort' => $data[6],
+            'class' => $data[7],
+            'classer_id' => $data[10],
+        ];
+    }
+
+    /**
+     * Update existing clamped data in the database.
+     */
+    private function updateClampedData(array $data,$balles)
+    {
+        $clamp = ClampData::where('gin_bale', $data['gin_bale'])
+            ->where('gin_id', $data['gin_id'])
+            ->where('dalolatnoma_id', $balles->dalolatnoma_id)
+            ->first();
+
+        if ($clamp) {
+            $clamp->update([
+                'sort' => $data['sort'],
+                'class' => $data['class'],
+                'classer_id' => $data['classer_id'],
+            ]);
+        }
+    }
 
 }
