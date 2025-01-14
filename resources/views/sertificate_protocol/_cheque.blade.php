@@ -106,7 +106,7 @@
                 <td>{{  str_pad($test->test_program->application->prepared->kod, 3, '0', STR_PAD_LEFT) }}</td>
                 <td>{{ $test->test_program->application->crops->party_number}}</td>
                 <td>{{ $item->count }}</td>
-                <td>{{ $item->amount }}</td>
+                <td>{{  $item->amount ? $item->amount - $item->count * $test->tara : 0 }}</td>
                 <td>{{ $item->sort }}</td>
                 <td>{{ optional(\App\Models\CropsGeneration::where('kod','=',$item->class)->first())->name  }}</td>
                 <td>{{  number_format($item->dalolatnoma->laboratory_result->fiblength/100, 2, '.', '.') }} </td>
