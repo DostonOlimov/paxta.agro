@@ -97,12 +97,12 @@
                                                         </b></div>
                                                 </div>
                                                 <div class="table-responsive row">
-                                                    <table style="border:1px black; margin-top:15px; text-align: center" >
+                                                    <table style="border:1px black; margin-top:15px; text-align: center; font-size: 14px;" >
                                                         <thead>
                                                         <tr>
                                                             @foreach($results as $data)
-                                                                <th style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.35rem 0.35rem;" >№</th>
-                                                                <th style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.35rem 0.35rem;">Og'irligi</th>
+                                                                <th style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.1rem 0.1rem;" >№</th>
+                                                                <th style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.1rem 0.1rem;">Og'irligi</th>
                                                             @endforeach
                                                         </tr>
                                                         </thead>
@@ -110,20 +110,20 @@
                                                         @for($i = 0; $i < 50; $i++)
                                                             <tr>
                                                                 @foreach($results as $data)
-                                                                    <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.35rem 0.35rem;">{{ 50 * ($loop->iteration-1) + $i +1 }}</td>
+                                                                    <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.1rem 0.1rem;">{{ 50 * ($loop->iteration-1) + $i +1 }}</td>
                                                                     @if(isset($data[$i]))
                                                                         @if($data[$i]['class'] == $count->class and $data[$i]['sort'] == $count->sort)
                                                                             @if($data[$i]['amount'])
-                                                                                <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.35rem 0.35rem;" >
+                                                                                <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.1rem 0.1rem;" >
                                                                                     {{$data[$i]['amount']}} kg
                                                                                 </td>
                                                                             @else
-                                                                                <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.35rem 0.35rem;">
+                                                                                <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.1rem 0.1rem;">
                                                                                     0 kg
                                                                                 </td>
                                                                             @endif
                                                                         @else
-                                                                            <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.35rem 0.35rem;"></td>
+                                                                            <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.1rem 0.1rem;"></td>
                                                                         @endif
                                                                     @endif
                                                                 @endforeach
@@ -132,7 +132,7 @@
                                                         </tbody>
                                                     </table>
                                                     <div style="font-family: 'Arial Black'; width: 100%; display: flex; justify-content: space-between; padding-top:10px;font-size: 16px;">
-                                                        <span> <b>Izox: qilib Paxta tolasi toylari bo‘yicha og‘irlik xisoboti Buyurtmachi tomonidan taqdim qilingan.  </b></span>
+                                                        <span> <b>Izox: Paxta tolasi toylari bo‘yicha og‘irlik xisoboti Buyurtmachi tomonidan taqdim qilingan.  </b></span>
                                                     </div>
                                                 </div>
                                             </div>
