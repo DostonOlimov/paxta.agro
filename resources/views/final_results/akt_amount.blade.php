@@ -74,35 +74,35 @@
                                     <div class="col-md-12">
                                         <div class="card">
                                             <div class="card-body">
-                                                <div style="width: 100%; display: flex; font-size: 18px; padding: 5px">
-                                                    <div style="width: 100%; text-align: center; display: inline-block;font-size: 24px;"><b>KIP BO'YICHA OG'IRLIK HISOBOTI</b></div>
+                                                <div style="font-family: 'Arial Black'; width: 100%; display: flex; font-size: 18px; padding: 5px">
+                                                    <div style="font-family: 'Arial Black'; width: 100%; text-align: center; display: inline-block;font-size: 20px;"><b>Paxta tolasi toylarining og‘irlik bo‘yicha xisoboti</b></div>
                                                 </div>
-                                                <div style="width: 100%; display: flex; font-size: 18px;">
-                                                    <div style="width: 55%; text-align: left; display: inline-block;"><b>Laboratoriya:</b>{{ $dalolatnoma->test_program->application->decision->laboratory->name }}</div>
-                                                    <div style="width: 10%; text-align: left; display: inline-block;"></div>
-                                                    <div style="width: 34%; text-align: right; display: inline-block;"><b>Sana:</b> {{ optional($dalolatnoma->laboratory_final_results)->date }}</div>
+                                                <div style="font-family: 'Arial Black'; width: 100%; display: flex; font-size: 16px;">
+                                                    <div style="font-family: 'Arial Black'; width: 55%; text-align: left; display: inline-block;"><b>Laboratoriya:</b>{{ $dalolatnoma->test_program->application->decision->laboratory->name }}</div>
+                                                    <div style="font-family: 'Arial Black'; width: 10%; text-align: left; display: inline-block;"></div>
+                                                    <div style="font-family: 'Arial Black'; width: 34%; text-align: right; display: inline-block;"><b>Sana:</b> {{ optional($dalolatnoma->laboratory_final_results)->date }}</div>
                                                 </div>
-                                                <div style="width: 100%; display: flex; font-size: 18px;">
-                                                    <div style="width: 55%; text-align: left; display: inline-block;"><b>Buyurtmachi:</b>{{ $dalolatnoma->test_program->application->organization->name }}</div>
-                                                    <div style="width: 30%; text-align: left; display: inline-block;"><b>Partiya:</b>{{ $dalolatnoma->test_program->application->crops->party_number }}</div>
-                                                    <div style="width: 15%; text-align: right; display: inline-block;"><b>Shtrix kod:</b></div>
+                                                <div style="font-family: 'Arial Black'; width: 100%; display: flex; font-size: 16px;">
+                                                    <div style="font-family: 'Arial Black'; width: 55%; text-align: left; display: inline-block;"><b>Buyurtmachi:</b>{{ $dalolatnoma->test_program->application->organization->name }}</div>
+                                                    <div style="font-family: 'Arial Black'; width: 30%; text-align: left; display: inline-block;"><b>Partiya:</b>{{ $dalolatnoma->test_program->application->crops->party_number }}</div>
+                                                    <div style="font-family: 'Arial Black'; width: 15%; text-align: right; display: inline-block;"><b>Shtrix kod:</b></div>
                                                 </div>
-                                                <div style="width: 100%; display: flex; font-size: 18px;">
-                                                    <div style="width: 55%; text-align: left; display: inline-block;"><b>Zavod nomi:</b>{{ $dalolatnoma->test_program->application->prepared->name }}-{{ $dalolatnoma->test_program->application->prepared->kod }}</div>
-                                                    <div style="width: 10%; text-align: left; display: inline-block;"></div>
-                                                    <div style="width: 35%; text-align: right; display: inline-block;"><b>
+                                                <div style="font-family: 'Arial Black'; width: 100%; display: flex; font-size: 16px;">
+                                                    <div style="font-family: 'Arial Black'; width: 55%; text-align: left; display: inline-block;"><b>Zavod nomi:</b>{{ $dalolatnoma->test_program->application->prepared->name }}-{{ $dalolatnoma->test_program->application->prepared->kod }}</div>
+                                                    <div style="font-family: 'Arial Black'; width: 10%; text-align: left; display: inline-block;"></div>
+                                                    <div style="font-family: 'Arial Black'; width: 35%; text-align: right; display: inline-block;"><b>
                                                             @foreach($dalolatnoma->gin_balles as $ball)
                                                                 {{ $ball->from_number }} dan {{ $ball->to_number }} gacha <br>
                                                             @endforeach
                                                         </b></div>
                                                 </div>
                                                 <div class="table-responsive row">
-                                                    <table style="border:1px black; margin-top:20px;" >
+                                                    <table style="border:1px black; margin-top:15px; text-align: center" >
                                                         <thead>
                                                         <tr>
                                                             @foreach($results as $data)
-                                                                <th style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.25rem 0.35rem;" >№</th>
-                                                                <th style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.25rem 0.35rem;">Og'irligi</th>
+                                                                <th style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.35rem 0.35rem;" >№</th>
+                                                                <th style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.35rem 0.35rem;">Og'irligi</th>
                                                             @endforeach
                                                         </tr>
                                                         </thead>
@@ -110,20 +110,20 @@
                                                         @for($i = 0; $i < 50; $i++)
                                                             <tr>
                                                                 @foreach($results as $data)
-                                                                    <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.25rem 0.35rem;">{{ 50 * ($loop->iteration-1) + $i +1 }}</td>
+                                                                    <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.35rem 0.35rem;">{{ 50 * ($loop->iteration-1) + $i +1 }}</td>
                                                                     @if(isset($data[$i]))
                                                                         @if($data[$i]['class'] == $count->class and $data[$i]['sort'] == $count->sort)
                                                                             @if($data[$i]['amount'])
-                                                                                <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.25rem 0.35rem;" >
+                                                                                <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.35rem 0.35rem;" >
                                                                                     {{$data[$i]['amount']}} kg
                                                                                 </td>
                                                                             @else
-                                                                                <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.25rem 0.35rem;">
+                                                                                <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.35rem 0.35rem;">
                                                                                     0 kg
                                                                                 </td>
                                                                             @endif
                                                                         @else
-                                                                            <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.25rem 0.35rem;"></td>
+                                                                            <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.35rem 0.35rem;"></td>
                                                                         @endif
                                                                     @endif
                                                                 @endforeach
@@ -131,24 +131,8 @@
                                                         @endfor
                                                         </tbody>
                                                     </table>
-                                                    <div style="width: 100%; display: flex; justify-content: space-between; padding-top:10px;font-size: 18px;">
-                                                        <div style="width: 49%; display: inline-block;">
-                                                        <span> <b>Paxta mahsuloti sifatini tasniflash
-                                                            bo‘yicha mutaxassis (klasser)  </b></span>
-                                                        </div>
-                                                        <div style="width: 50%; display: inline-block;text-align: center">
-                                                        <span>
-                                                            {{ optional(optional($dalolatnoma->laboratory_final_results)->klassiyor)->name }}
-                                                        </span>
-                                                        </div>
-                                                    </div>
-                                                    <div style="width: 100%; display: flex; justify-content: space-between; padding-top:10px; font-size: 18px;">
-                                                        <div style="width: 49%; display: inline-block;">
-                                                            <span> <b>Texnologik qurilmalar operatori (HVI)  </b></span>
-                                                        </div>
-                                                        <div style="width: 50%; display: inline-block;text-align: center;">
-                                                            <span> {{ optional(optional($dalolatnoma->laboratory_final_results)->operator)->name }}</span>
-                                                        </div>
+                                                    <div style="font-family: 'Arial Black'; width: 100%; display: flex; justify-content: space-between; padding-top:10px;font-size: 16px;">
+                                                        <span> <b>Izox: qilib Paxta tolasi toylari bo‘yicha og‘irlik xisoboti Buyurtmachi tomonidan taqdim qilingan.  </b></span>
                                                     </div>
                                                 </div>
                                             </div>

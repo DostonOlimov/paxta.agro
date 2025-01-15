@@ -1,28 +1,4 @@
 @extends('layouts.app')
-@section('styles')
-    <style>
-        .right_side .table_row, .member_right .table_row {
-            border-bottom: 1px solid #dedede;
-            float: left;
-            width: 100%;
-            padding: 1px 0px 4px 2px;
-        }
-
-        .table_row .table_td {
-            padding: 8px 8px !important;
-        }
-        th{
-            font-weight: bold;
-        }
-        td{
-            font-weight: bold;
-        }
-        .nuber_column{
-            background-color: yellow !important;
-        }
-
-    </style>
-@endsection
 
 @section('content')
     <div class="section">
@@ -73,48 +49,59 @@
                             <div class="col-md-12">
                                 <div class="card">
                                     <div class="card-body">
-                                        <div style="width: 100%; display: flex; font-size: 18px; padding-top: 15px">
-                                            <div style="width: 35%;padding-top:20px; text-align: left; display: inline-block;font-size: 24px;"><b>SINOV NATIJASI HISOBOTI</b></div>
+                                        <div style="width: 100%; display: flex; font-size: 18px; padding-top: 5px">
+                                            <div style="font-family: 'Arial Black'; width: 35%;padding-top:20px; text-align: left; display: inline-block;font-size: 22px;"><b>SINOV NATIJASI HISOBOTI</b></div>
                                                 <div style="width: 25%;padding-top:20px; text-align: right; display: inline-block;">
                                                 </div>
 
-                                            <div style="width: 39%; display: inline-block;text-align: right">
+                                            <div style="font-family: 'Arial Black';  width: 39%; display: inline-block;text-align: right">
                                                 <b>{{ $dalolatnoma->test_program->application->decision->laboratory->name }} boshlig‘i
-                                                    <span style="padding: 5px; display: block">
+                                                    <span style="font-family: 'Arial Black'; padding: 5px; display: block">
                                                     {{ optional(optional($dalolatnoma->laboratory_final_results)->director)->lastname . '. ' . substr( optional(optional($dalolatnoma->laboratory_final_results)->director)->name, 0, 1) }}</span>
                                                 </b>
                                             </div>
                                         </div>
-                                        <div style="width: 100%; display: flex; font-size: 18px;">
-                                            <div style="width: 25%; text-align: left; display: inline-block;">Partiya raqami: {{ optional(optional(optional($dalolatnoma->test_program)->application)->crops)->party_number }}</div>
-                                            <div style="width: 25%; text-align: left; display: inline-block;">Kip soni: {{$dalolatnoma->toy_count}}</div>
-                                            <div style="width: 25%; text-align: left; display: inline-block;">Mikroneyr: {{ round($mic, 1) }}</div>
-                                            <div style="width: 24%; display: inline-block;text-align: left">Uzunlik: {{ round($length) / 100 }}</div>
+                                        <div style="width: 100%; display: flex; font-size: 16px;">
+                                            <div style="font-family: 'Arial Black';  width: 25%; text-align: left; display: inline-block;">Partiya raqami: {{ optional(optional(optional($dalolatnoma->test_program)->application)->crops)->party_number }}</div>
+                                            <div style="font-family: 'Arial Black'; width: 25%; text-align: left; display: inline-block;">Kip soni: {{$dalolatnoma->toy_count}}</div>
+                                            <div style="font-family: 'Arial Black'; width: 25%; text-align: left; display: inline-block;">Mikroneyr: {{ round($mic, 1) }}</div>
+                                            <div style="font-family: 'Arial Black'; width: 24%; display: inline-block;text-align: left">Uzunlik: {{ round($length) / 100 }}</div>
                                         </div>
-                                        <div style="width: 100%; display: flex; font-size: 18px;">
-                                            <div style="width: 50%; text-align: left; display: inline-block;">Maxsus uzilish og'irligi, gf/tex: {{ round($strength, 1) }}</div>
-                                            <div style="width: 49%; text-align: left; display: inline-block;">Uzunligi bo'yicha bir xillik ko'rsatkichi, %: {{ round($uniform, 1) }}</div>
+                                        <div style="width: 100%; display: flex; font-size: 16px;">
+                                            <div style="font-family: 'Arial Black'; width: 50%; text-align: left; display: inline-block;">Maxsus uzilish og'irligi, gf/tex: {{ round($strength, 1) }}</div>
+                                            <div style="font-family: 'Arial Black'; width: 49%; text-align: left; display: inline-block;">Uzunligi bo'yicha bir xillik ko'rsatkichi, %: {{ round($uniform, 1) }}</div>
                                         </div>
                                         <div class="table-responsive row">
-                                            <table  style="border: 1px solid black; border-collapse: collapse; width: 100%; table-layout: fixed; white-space: nowrap; margin-top:20px; background-color: white !important;" >
+                                            <table  style="
+                                            border: 1px solid black;
+                                            border-collapse: collapse;
+                                            width: 100%;
+                                            table-layout: fixed;
+                                            white-space: nowrap;
+                                            margin-top:20px;
+                                            background-color: white !important;
+                                            text-align: center;
+                                            font-size: 12px;
+
+" >
                                                 <thead>
                                                 <tr >
-                                                    <th style="border: 1px solid black;  padding: 0.25rem 0.35rem; font-weight: bold;">№</th>
-                                                    <th style="border: 1px solid black;  padding: 0.25rem 0.35rem; font-weight: bold;">Kip raqami</th>
-                                                    <th style="border: 1px solid black;  padding: 0.25rem 0.35rem; font-weight: bold;">Nav</th>
-                                                    <th style="border: 1px solid black;  padding: 0.25rem 0.35rem; font-weight: bold;">Sinf</th>
-                                                    <th style="border: 1px solid black;  padding: 0.25rem 0.35rem; font-weight: bold;">№</th>
-                                                    <th style="border: 1px solid black;  padding: 0.25rem 0.35rem; font-weight: bold;">Kip raqami</th>
-                                                    <th style="border: 1px solid black;  padding: 0.25rem 0.35rem; font-weight: bold;">Nav</th>
-                                                    <th style="border: 1px solid black;  padding: 0.25rem 0.35rem; font-weight: bold;">Sinf</th>
-                                                    <th style="border: 1px solid black;  padding: 0.25rem 0.35rem; font-weight: bold;">№</th>
-                                                    <th style="border: 1px solid black;  padding: 0.25rem 0.35rem; font-weight: bold;">Kip raqami</th>
-                                                    <th style="border: 1px solid black;  padding: 0.25rem 0.35rem; font-weight: bold;">Nav</th>
-                                                    <th style="border: 1px solid black;  padding: 0.25rem 0.35rem; font-weight: bold;">Sinf</th>
-                                                    <th style="border: 1px solid black;  padding: 0.25rem 0.35rem; font-weight: bold;">№</th>
-                                                    <th style="border: 1px solid black;  padding: 0.25rem 0.35rem; font-weight: bold;">Kip raqami</th>
-                                                    <th style="border: 1px solid black;  padding: 0.25rem 0.35rem; font-weight: bold;">Nav</th>
-                                                    <th style="border: 1px solid black;  padding: 0.25rem 0.35rem; font-weight: bold;">Sinf</th>
+                                                    <th style="font-family: 'Arial Black'; border: 1px solid black;  padding: 0.1rem 0.1rem; font-weight: bold;">№</th>
+                                                    <th style="font-family: 'Arial Black'; border: 1px solid black;  padding: 0.15rem 0.1rem; font-weight: bold;">Kip <br>raqami</th>
+                                                    <th style="font-family: 'Arial Black'; border: 1px solid black;  padding: 0.1rem 0.1rem; font-weight: bold;">Nav</th>
+                                                    <th style="font-family: 'Arial Black'; border: 1px solid black;  padding: 0.1rem 0.1rem; font-weight: bold;">Sinf</th>
+                                                    <th style="font-family: 'Arial Black'; border: 1px solid black;  padding: 0.1rem 0.1rem; font-weight: bold;">№</th>
+                                                    <th style="font-family: 'Arial Black'; border: 1px solid black;  padding: 0.15rem 0.1rem; font-weight: bold;">Kip <br>raqami</th>
+                                                    <th style="font-family: 'Arial Black'; border: 1px solid black;  padding: 0.1rem 0.1rem; font-weight: bold;">Nav</th>
+                                                    <th style="font-family: 'Arial Black'; border: 1px solid black;  padding: 0.1rem 0.1rem; font-weight: bold;">Sinf</th>
+                                                    <th style="font-family: 'Arial Black'; border: 1px solid black;  padding: 0.1rem 0.1rem; font-weight: bold;">№</th>
+                                                    <th style="font-family: 'Arial Black'; border: 1px solid black;  padding: 0.15rem 0.1rem; font-weight: bold;">Kip <br>raqami</th>
+                                                    <th style="font-family: 'Arial Black'; border: 1px solid black;  padding: 0.1rem 0.1rem; font-weight: bold;">Nav</th>
+                                                    <th style="font-family: 'Arial Black'; border: 1px solid black;  padding: 0.1rem 0.1rem; font-weight: bold;">Sinf</th>
+                                                    <th style="font-family: 'Arial Black'; border: 1px solid black;  padding: 0.1rem 0.1rem; font-weight: bold;">№</th>
+                                                    <th style="font-family: 'Arial Black'; border: 1px solid black;  padding: 0.15rem 0.1rem; font-weight: bold;">Kip <br>raqami</th>
+                                                    <th style="font-family: 'Arial Black'; border: 1px solid black;  padding: 0.1rem 0.1rem; font-weight: bold;">Nav</th>
+                                                    <th style="font-family: 'Arial Black'; border: 1px solid black;  padding: 0.1rem 0.1rem; font-weight: bold;">Sinf</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
@@ -124,45 +111,45 @@
                                                     @php $count = count($results[0]); @endphp
                                                     @for($i = 0; $i < $count; $i++)
                                                         <tr>
-                                                            <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.25rem 0.35rem;" class="nuber_column">{{ $i+1}}</td>
-                                                            <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.25rem 0.35rem; font-weight: bold;">{{ $results[0][$i]['gin_bale'] }}</td>
-                                                            <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.25rem 0.35rem; font-weight: bold;">{{ $results[0][$i]['sort'] }}</td>
-                                                            <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.25rem 0.35rem; font-weight: bold;">{{ $results[0][$i]['class'] }}</td>
+                                                            <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.1rem 0.1rem;" class="nuber_column">{{ $i+1}}</td>
+                                                            <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.1rem 0.1rem; font-weight: bold;">{{ $results[0][$i]['gin_bale'] }}</td>
+                                                            <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.1rem 0.1rem; font-weight: bold;">{{ $results[0][$i]['sort'] }}</td>
+                                                            <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.1rem 0.1rem; font-weight: bold;">{{ $results[0][$i]['class'] }}</td>
 
-                                                            <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.25rem 0.35rem; font-weight: bold;" class="nuber_column">{{ $count + $i+1 }}</td>
-                                                            <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.25rem 0.35rem; font-weight: bold;">{{$results[1][$i]['gin_bale']}}</td>
-                                                            <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.25rem 0.35rem; font-weight: bold;">{{$results[1][$i]['sort']}}</td>
-                                                            <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.25rem 0.35rem; font-weight: bold;">{{$results[1][$i]['class']}}</td>
-
-
-                                                            <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.25rem 0.35rem; font-weight: bold;" class="nuber_column">{{ 2 * $count + $i +1}}</td>
-                                                            <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.25rem 0.35rem; font-weight: bold;">{{$results[2][$i]['gin_bale']}}</td>
-                                                            <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.25rem 0.35rem; font-weight: bold;">{{$results[2][$i]['sort']}}</td>
-                                                            <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.25rem 0.35rem; font-weight: bold;">{{$results[2][$i]['class']}}</td>
+                                                            <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.1rem 0.1rem; font-weight: bold;" class="nuber_column">{{ $count + $i+1 }}</td>
+                                                            <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.1rem 0.1rem; font-weight: bold;">{{$results[1][$i]['gin_bale']}}</td>
+                                                            <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.1rem 0.1rem; font-weight: bold;">{{$results[1][$i]['sort']}}</td>
+                                                            <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.1rem 0.1rem; font-weight: bold;">{{$results[1][$i]['class']}}</td>
 
 
-                                                            <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.25rem 0.35rem; font-weight: bold;" class="nuber_column">{{ 3 * $count + $i +1}}</td>
-                                                            <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.25rem 0.35rem; font-weight: bold;">@if(array_key_exists($i,$results[3])) {{$results[3][$i]['gin_bale']}}  @endif</td>
+                                                            <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.1rem 0.1rem; font-weight: bold;" class="nuber_column">{{ 2 * $count + $i +1}}</td>
+                                                            <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.1rem 0.1rem; font-weight: bold;">{{$results[2][$i]['gin_bale']}}</td>
+                                                            <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.1rem 0.1rem; font-weight: bold;">{{$results[2][$i]['sort']}}</td>
+                                                            <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.1rem 0.1rem; font-weight: bold;">{{$results[2][$i]['class']}}</td>
+
+
+                                                            <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.1rem 0.1rem; font-weight: bold;" class="nuber_column">{{ 3 * $count + $i +1}}</td>
+                                                            <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.1rem 0.1rem; font-weight: bold;">@if(array_key_exists($i,$results[3])) {{$results[3][$i]['gin_bale']}}  @endif</td>
 
                                                             @if(array_key_exists($i,$results[3]))
                                                                 @if($results[3][$i]['class'])
-                                                                    <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.25rem 0.35rem; font-weight: bold;">
+                                                                    <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.1rem 0.1rem; font-weight: bold;">
                                                                         {{$results[3][$i]['sort']}}
                                                                     </td>
-                                                                    <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.25rem 0.35rem; font-weight: bold;">
+                                                                    <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.1rem 0.1rem; font-weight: bold;">
                                                                         {{$results[3][$i]['class']}}
                                                                     </td>
                                                                 @endif
                                                             @else
-                                                                <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.25rem 0.35rem; font-weight: bold;"></td>
-                                                                <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.25rem 0.35rem; font-weight: bold;"></td>
+                                                                <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.1rem 0.1rem; font-weight: bold;"></td>
+                                                                <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.1rem 0.1rem; font-weight: bold;"></td>
                                                             @endif
 
                                                         </tr>
                                                     @endfor
                                                 </tbody>
                                             </table>
-                                            <div class="data-section mb-3 p-3" style="font-size: 20px;">
+                                            <div class="data-section mb-3 p-3" style="font-family: 'Arial Black'; font-size: 18px;">
                                                <b>
                                                    {{"Jami :"}}
                                                         @foreach ($counts as $count)
@@ -170,20 +157,20 @@
                                                         @endforeach
                                                </b>
                                             </div>
-                                            <div style="width: 100%; display: flex; justify-content: space-between; padding-top:10px;font-size: 18px;">
+                                            <div style="font-family: 'Arial Black';width: 100%; display: flex; justify-content: space-between; padding-top:10px;font-size: 16px;">
                                                 <div style="width: 49%; display: inline-block;">
-                                                    <span> <b>Paxta mahsuloti sifatini tasniflash
-                                                        bo‘yicha mutaxassis (klasser)  </b></span>
-                                                                                        </div>
-                                                                                        <div style="width: 50%; display: inline-block;text-align: center">
-                                                    <span>
-                                                        {{ optional(optional($dalolatnoma->laboratory_final_results)->klassiyor)->name }}
-                                                    </span>
+                                                        <span> <b>Paxta mahsuloti sifatini tasniflash
+                                                            bo‘yicha mutaxassis (klasser)  </b></span>
+                                                </div>
+                                                <div style="width: 50%; display: inline-block;text-align: center">
+                                                        <span>
+                                                            {{ optional(optional($dalolatnoma->laboratory_final_results)->klassiyor)->name }}
+                                                        </span>
                                                 </div>
                                             </div>
-                                            <div style="width: 100%; display: flex; justify-content: space-between; padding-top:10px; font-size: 18px;">
+                                            <div style="font-family: 'Arial Black';width: 100%; display: flex; justify-content: space-between; padding-top:10px; font-size: 16px;">
                                                 <div style="width: 49%; display: inline-block;">
-                                                <span> <b>Texnologik qurilmalar operatori (HVI)  </b></span>
+                                                    <span> <b>Texnologik qurilmalar operatori (HVI)  </b></span>
                                                 </div>
                                                 <div style="width: 50%; display: inline-block;text-align: center;">
                                                     <span> {{ optional(optional($dalolatnoma->laboratory_final_results)->operator)->name }}</span>
