@@ -158,21 +158,25 @@
                                                </b>
                                             </div>
                                             <div style="font-family: 'Arial Black';width: 100%; display: flex; justify-content: space-between; padding-top:10px;font-size: 16px;">
-                                                <div style="width: 49%; display: inline-block;">
+                                                <div style="width: 55%; display: inline-block;">
                                                         <span> <b>Paxta mahsuloti sifatini tasniflash
                                                             bo‘yicha mutaxassis (klasser)  </b></span>
                                                 </div>
-                                                <div style="width: 50%; display: inline-block;text-align: center">
+                                                <div style="width: 15%; display: inline-block;text-align:left;border-bottom: 1px solid black;">
+                                                </div>
+                                                <div style="width: 30%; display: inline-block;text-align: center">
                                                         <span>
                                                             {{ optional(optional($dalolatnoma->laboratory_final_results)->klassiyor)->name }}
                                                         </span>
                                                 </div>
                                             </div>
                                             <div style="font-family: 'Arial Black';width: 100%; display: flex; justify-content: space-between; padding-top:10px; font-size: 16px;">
-                                                <div style="width: 49%; display: inline-block;">
+                                                <div style="width: 55%; display: inline-block;">
                                                     <span> <b>Texnologik qurilmalar operatori (HVI)  </b></span>
                                                 </div>
-                                                <div style="width: 50%; display: inline-block;text-align: center;">
+                                                <div style="width: 15%; display: inline-block;text-align:left;border-bottom: 1px solid black;">
+                                                </div>
+                                                <div style="width: 30%; display: inline-block;text-align: center;">
                                                     <span> {{ optional(optional($dalolatnoma->laboratory_final_results)->operator)->name }}</span>
                                                 </div>
                                             </div>

@@ -140,16 +140,16 @@
                                                             <span> <b>Kip soni:<br> {{$dalolatnoma->toy_count}} ta  </b></span>
                                                         </div>
                                                         <div style="border:1px solid black;  width: 20%;text-align: center; display: flex; align-items: center;justify-content: center; ">
-                                                            <span> <b>Jami og'irligi:<br> {{$sum_amount ? $sum_amount : 0 }} kg </b></span>
+                                                            <span> <b>Brutto og'irligi:<br> {{$sum_amount ? $sum_amount : 0 }} kg </b></span>
                                                         </div>
                                                         <div style="border:1px solid black;  width: 20%;text-align: center; display: flex; align-items: center;justify-content: center; ">
-                                                            <span> <b>Sof og'irligi:<br> {{ $sum_amount ? $sum_amount - $dalolatnoma->toy_count*$dalolatnoma->tara : 0 }} kg  </b></span>
+                                                            <span> <b>Netto og'irligi:<br> {{ $sum_amount ? $sum_amount - $dalolatnoma->toy_count*$dalolatnoma->tara : 0 }} kg  </b></span>
                                                         </div>
                                                         <div style="border:1px solid black;  width: 20%;text-align: center; display: flex; align-items: center;justify-content: center; ">
                                                             <span> <b>Tara og'irligi: <br>{{ $dalolatnoma->toy_count*$dalolatnoma->tara }} kg  </b></span>
                                                         </div>
                                                         <div style="border:1px solid black;  width: 20%;text-align: center; display: flex; align-items: center;justify-content: center; ">
-                                                            <span> <b>Bitta tara og'irligi:<br> {{ $dalolatnoma->tara }} kg  </b></span>
+                                                            <span> <b>Tara og'irligi(1):<br> {{ $dalolatnoma->tara }} kg  </b></span>
                                                         </div>
                                                     </div>
                                                     <div style="font-family: 'Arial Black'; width: 100%; display: flex; justify-content: space-between; padding-top:10px;font-size: 16px;">
