@@ -80,7 +80,7 @@
                                                 <div style="font-family: 'Arial Black'; width: 100%; display: flex; font-size: 16px;">
                                                     <div style="font-family: 'Arial Black'; width: 55%; text-align: left; display: inline-block;"><b>Laboratoriya:</b>{{ $dalolatnoma->test_program->application->decision->laboratory->name }}</div>
                                                     <div style="font-family: 'Arial Black'; width: 10%; text-align: left; display: inline-block;"></div>
-                                                    <div style="font-family: 'Arial Black'; width: 34%; text-align: right; display: inline-block;"><b>Sana:</b> {{ optional($dalolatnoma->laboratory_final_results)->date }}</div>
+                                                    <div style="font-family: 'Arial Black'; width: 34%; text-align: right; display: inline-block;"><b>Sana:</b> {{ date("d.m.Y", strtotime(optional($dalolatnoma->laboratory_final_results)->date)) }}</div>
                                                 </div>
                                                 <div style="font-family: 'Arial Black'; width: 100%; display: flex; font-size: 16px;">
                                                     <div style="font-family: 'Arial Black'; width: 55%; text-align: left; display: inline-block;"><b>Buyurtmachi:</b>{{ $dalolatnoma->test_program->application->organization->name }}</div>
@@ -129,8 +129,29 @@
                                                                 @endforeach
                                                             </tr>
                                                         @endfor
+
                                                         </tbody>
                                                     </table>
+                                                    @php
+                                                        $sum_amount = $dalolatnoma->akt_amount()->sum('amount');
+                                                    @endphp
+                                                    <div style="border:1px solid black; font-family: 'Arial Black'; width: 100%; display: flex; justify-content: space-between; padding:0; font-size: 16px;">
+                                                        <div style="border:1px solid black;  width: 20%;text-align: center; display: flex; align-items: center;justify-content: center; ">
+                                                            <span> <b>Kip soni:<br> {{$dalolatnoma->toy_count}} ta  </b></span>
+                                                        </div>
+                                                        <div style="border:1px solid black;  width: 20%;text-align: center; display: flex; align-items: center;justify-content: center; ">
+                                                            <span> <b>Jami og'irligi:<br> {{$sum_amount ? $sum_amount : 0 }} kg </b></span>
+                                                        </div>
+                                                        <div style="border:1px solid black;  width: 20%;text-align: center; display: flex; align-items: center;justify-content: center; ">
+                                                            <span> <b>Sof og'irligi:<br> {{ $sum_amount ? $sum_amount - $dalolatnoma->toy_count*$dalolatnoma->tara : 0 }} kg  </b></span>
+                                                        </div>
+                                                        <div style="border:1px solid black;  width: 20%;text-align: center; display: flex; align-items: center;justify-content: center; ">
+                                                            <span> <b>Tara og'irligi: <br>{{ $dalolatnoma->toy_count*$dalolatnoma->tara }} kg  </b></span>
+                                                        </div>
+                                                        <div style="border:1px solid black;  width: 20%;text-align: center; display: flex; align-items: center;justify-content: center; ">
+                                                            <span> <b>Bitta tara og'irligi:<br> {{ $dalolatnoma->tara }} kg  </b></span>
+                                                        </div>
+                                                    </div>
                                                     <div style="font-family: 'Arial Black'; width: 100%; display: flex; justify-content: space-between; padding-top:10px;font-size: 16px;">
                                                         <span> <b>Izox: Paxta tolasi toylari bo‘yicha og‘irlik xisoboti Buyurtmachi tomonidan taqdim qilingan.  </b></span>
                                                     </div>
