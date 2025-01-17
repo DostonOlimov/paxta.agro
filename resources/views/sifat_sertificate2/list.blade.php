@@ -129,6 +129,7 @@
                                             @endif
                                         </a>
                                     </th>
+                                    <th>Kond. massa</th>
                                     <th class="border-bottom-0 border-top-0">{{ trans('app.Action') }}</th>
                                 </tr>
                             </thead>
@@ -173,6 +174,7 @@
                                         @endif
                                     </td>
                                     <td></td>
+                                    <td></td>
                                     <td>
                                         <select class="w-100 form-control name_of_corn custom-select" name="name"
                                             id="crops_name">
@@ -203,7 +205,7 @@
                                     <td style="white-space: nowrap;">
                                         <div style="display:inline-block;">{{ $offset + $loop->iteration }}.</div>
                                         <div class="@if(optional($app->sifat_sertificate)->type == 2) bg-warning @else
-                                        @if($app->sertificateQuality) bg-success @else bg-danger @endif
+                                        @if(optional($app->sifat_sertificate)->quality) bg-success @else bg-danger @endif
                                         @endif" style="display:inline-block; border-radius: 50%; height: 20px;width: 20px;">
                                         </div>
                                     </td>
@@ -222,6 +224,7 @@
                                     <td>{{ optional($app->prepared)->name }} - {{ optional($app->prepared)->kod }}</td>
                                     <td>{{ optional($app->crops->name)->name }}</td>
                                     <td>{{ optional($app->crops)->amount_name }}</td>
+                                    <td>{{ round(optional($app->sifat_sertificate)->amount) }}kg</td>
                                     <td style="display: flex; flex-wrap: nowrap;">
                                         @if(!$app->sifat_sertificate)
                                             <a href="{!! url('/sifat-sertificates2/view/' . $app->id) !!}"><button type="button"

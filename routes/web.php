@@ -481,10 +481,26 @@ Route::middleware(['auth'])->group(function() {
 
 // Serve specific Laravel routes
 Route::get('/vue/state-report', function () {
-    return view('reports.state_report');
-});
+    if (in_array(Auth::user()->role, [
+        \App\Models\User::ROLE_CITY_CHIGIT,
+        \App\Models\User::ROLE_STATE_CHIGIT_BOSHLIQ,
+        \App\Models\User::ROLE_STATE_CHIGI_XODIM
+    ])) {
+        return view('reports.state_report2');
+    } else {
+        return view('reports.state_report');
+    }
+})->middleware('auth');
 
 // Fallback for Vue routes
 Route::get('/vue/{any}', function () {
-    return view('reports.state_report'); // Ensure this loads your Vue SPA
+    if (in_array(Auth::user()->role, [
+        \App\Models\User::ROLE_CITY_CHIGIT,
+        \App\Models\User::ROLE_STATE_CHIGIT_BOSHLIQ,
+        \App\Models\User::ROLE_STATE_CHIGI_XODIM
+    ])) {
+        return view('reports.state_report2');
+    } else {
+        return view('reports.state_report');
+    }
 })->where('any', '.*');

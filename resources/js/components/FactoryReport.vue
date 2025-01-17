@@ -38,8 +38,8 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="state in sortedStates" :key="state.id">
-                <td>
+            <tr v-for="state in sortedStates" :key="state.id" >
+                <td class="name_row">
                     <router-link :to="{ name: 'FactoryReport', params: { id: state.id } }">
                         {{ state.name }}
                     </router-link>
@@ -163,7 +163,7 @@
     }
 
     .state-table th {
-        background-color: #f1f1f1;
+        background-color: #f53535;
         font-weight: bold;
     }
 
@@ -200,6 +200,11 @@
         padding: 5px;
         border: 1px solid #ccc;
         border-radius: 4px;
+    }
+    .name_row{
+        background-color: #929395;
+        color:white;
+        font-weight: bolder;
     }
 </style>
 

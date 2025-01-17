@@ -1,13 +1,21 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-
 <head>
+    <!-- Character Encoding -->
     <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=0'>
-    <meta name="description" content="paxta.agroset">
+
+    <!-- Viewport Settings -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+    <!-- Metadata -->
+    <meta name="organization" content="Agroinspeksiya">
     <meta name="author" content="Doston Olimov">
-    <title>Paxta tolasini sertifikatlashtirish tizimi</title>
+    <meta name="description" content="paxta.agroset.uz">
+
+    <!-- Page Title -->
+    <title>{{ trans('message.Page title') }}</title>
+
+    <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="252x252" href="{{ asset('/resources/assets/images/paxta_logo.png') }}">
     <!-- Vendors styles-->
 
@@ -35,6 +43,7 @@
         }
     </style>
     @yield('styles')
+    @stack('styles') <!-- For Vue-specific styles -->
 </head>
 
 @if(in_array(Auth::User()->role, [\App\Models\User::ROLE_CITY_CHIGIT, \App\Models\User::ROLE_STATE_CHIGIT_BOSHLIQ, \App\Models\User::ROLE_STATE_CHIGI_XODIM]))
@@ -59,38 +68,45 @@
     </div>
 @endif
 @include('front.layouts.footer')
-<!-- JQUERY SCRIPTS JS-->
-<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
-
+<!-- JQUERY SCRIPTS JS -->
 <script src="{{ asset('resources/assets/plugins/hyperform/dist/hyperform.js') }}"></script>
 <script>hyperform(window)</script>
 <script src="{{ asset('resources/assets/js/vendors/jquery-3.2.1.min.js') }}"></script>
 <script src="{{ asset('resources/assets/plugins/date-picker/jquery-ui.js') }}"></script>
-<script src="{{ asset('resources/assets/plugins/waves/js/popper.min.js')}}"></script>
 
+<!-- Input Mask -->
 <script src="{{ asset('resources/assets/plugins/input-mask/input-mask.min.js') }}"></script>
-<script src="{{ asset('resources/assets/plugins/p-scroll/p-scroll.js') }}"></script>
-<script src="{{ asset('resources/assets/plugins/sidemenu/sidemenu.js') }}"></script>
-<script src="{{ asset('resources/assets/plugins/sidemenu-responsive-tabs/js/sidemenu-responsive-tabs.js') }}"></script>
-<script src="{{ asset('resources/assets/plugins/tabs/jquery.multipurpose_tabcontent.js') }}"></script>
-<script src="{{ asset('resources/assets/plugins/tabs/tab-content.js') }}"></script>
-<script src="{{ asset('resources/assets/js/left-menu.js') }}"></script>
 
-
+<!-- Select2 -->
 <script src="{{ asset('resources/assets/plugins/select2/dist/js/select2.min.js') }}"></script>
-<script src="{{ asset('resources/assets/plugins/date-picker/date-picker.js') }}"></script>
-<script src="{{ asset('resources/assets/js/vendors/bootstrap.bundle.min.js') }}"></script>
 
+<!-- Date Picker -->
+<script src="{{ asset('resources/assets/plugins/date-picker/date-picker.js') }}"></script>
+
+<!-- Bootstrap Bundle -->
+<script src="{{ asset('resources/assets/js/vendors/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') }}"></script>
 
-
-{{--<!-- FILE UPLOADES JS -->--}}
-<script src="{{ asset('resources/assets/plugins/fileupload/js/fileupload.min.js') }}"></script>
-<script src="{{ asset('resources/assets/plugins/fileupload/js/file-upload.js') }}"></script>
+<!-- SweetAlert2 and Multi Select -->
 <script src="{{ asset('resources/assets/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
 <script src="{{ asset('resources/assets/plugins/multipleselect/multiple-select.js') }}"></script>
 <script src="{{ asset('resources/assets/plugins/multipleselect/multi-select.js') }}"></script>
 
+<!-- Moment.js -->
+<script src="{{ asset('resources/assets/js/moment.js') }}"></script>
+
+<!-- Print Button -->
+<script src="{{ asset('resources/assets/plugins/print/dist/jQuery.print.min.js') }}"></script>
+
+<!-- Custom Scripts -->
+<script src="{{ asset('resources/assets/js/custom.js') }}"></script>
+<script src="{{ asset('resources/assets/js/myjs.js') }}"></script>
+
+<!-- CoreUI and Necessary Plugins -->
+<script src="{{ asset('/assets/vendors/@coreui/coreui/js/coreui.bundle.min.js') }}"></script>
+<script src="{{ asset('/assets/vendors/simplebar/js/simplebar.min.js') }}"></script>
+
+{{-- Data table js files--}}
 <script src="{{ asset('resources/assets/plugins/datatable/js/jquery.dataTables.js') }}"></script>
 <script src="{{ asset('resources/assets/plugins/datatable/js/dataTables.bootstrap4.js') }}"></script>
 <script src="{{ asset('resources/assets/plugins/datatable/js/dataTables.buttons.min.js') }}"></script>
@@ -104,21 +120,10 @@
 <script src="{{ asset('resources/assets/plugins/datatable/responsive.bootstrap4.min.js') }}"></script>
 <script src="{{ asset('resources/assets/plugins/datatable/datatable.js') }}"></script>
 
-<script sync type="text/javascript" src="{{ asset('resources/assets/plugins/table-export/file-saver.min.js') }}"></script>
-<script sync type="text/javascript" src="{{ asset('resources/assets/plugins/table-export/blob.min.js') }}"></script>
-<script src="{{ asset('resources/assets/plugins/stickyTable/jquery.stickytable.js') }}"></script>
-<script src="{{ asset('resources/assets/js/moment.js') }}"></script>
-<script src="{{ asset('resources/assets/js/uz-latn.js') }}"></script>
-<script src="{{ asset('vendors/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
-
-<script src="/js/num.js"></script>
-<script src="{{ asset('resources/assets/plugins/print/dist/jQuery.print.min.js') }}"></script>
-<script src="{{ asset('resources/assets/plugins/cropper/cropper.min.js') }}"></script>
-<script src="{{ asset('build/js/control.js') }}"></script>
-
-<script src="{{ asset('resources/assets/js/custom.js') }}"></script>
-<script src="{{ asset('resources/assets/js/myjs.js') }}"></script>
 @yield('scripts')
+<!-- Vue-Specific Scripts -->
+@stack('scripts') <!-- Push Vue-specific scripts here -->
+
 <script>
     function changeLanguage(language) {
         // Use AJAX to send a request to change the language

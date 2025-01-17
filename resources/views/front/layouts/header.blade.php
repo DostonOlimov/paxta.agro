@@ -142,6 +142,7 @@ $currentFlag = "/img/flags/united-kingdom.png";
                         <div class="my-dropdown-year">
                             <a href="{!! url('/sifat-sertificates/list') !!}"><b>Sifat sertifikatlari</b></a>
                             <a href="{!! url('/sifat-contracts/list') !!}"><b>Shartnomalar</b></a>
+                            <a href="{!! url('/vue/state-report') !!}"><b>Hisobotlar</b></a>
                         </div>
                     </div>
                 </div>

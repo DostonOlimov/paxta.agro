@@ -343,6 +343,8 @@ class SifatSertificateController extends Controller
             $sertificate->zavod_id = $zavod_id;
             $sertificate->year = $currentYear;
             $sertificate->type = $type;
+            $sertificate->quality = $chigitValues['quality'];
+            $sertificate->amount = round($test->crops->amount * ((100 - $chigitValues['namlik'] - $chigitValues['zararkunanda']) / (100-10-0.5)),3);
             $sertificate->created_by = \auth()->user()->id;
             $sertificate->save();
         }

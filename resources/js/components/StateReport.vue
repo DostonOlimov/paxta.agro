@@ -161,7 +161,7 @@
     }
 
     .state-table th {
-        background-color: #f1f1f1;
+        background-color: #f53535;
         font-weight: bold;
     }
 

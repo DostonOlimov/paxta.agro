@@ -28,7 +28,6 @@ class SifatSertificate2Controller extends Controller
     public function applicationList(Request $request, ApplicationFilter $filter,SearchService $service)
     {
         $user = Auth::user();
-
         try {
 
             $names = getCropsNames();
@@ -69,7 +68,7 @@ class SifatSertificate2Controller extends Controller
     public function addApplication($organization)
     {
         $user = Auth::user();
-        $names = DB::table('crops_name')->where('id','=',1)->get()->toArray();
+        $names = getCropsNames();
         $selection = CropsSelection::get();
         $laboratories = PreparedCompanies::where('state_id', '=', $user->state_id)->get();
         $years = CropData::getYear();
