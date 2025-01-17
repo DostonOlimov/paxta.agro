@@ -97,7 +97,7 @@
                                                         </b></div>
                                                 </div>
                                                 <div class="table-responsive row">
-                                                    <table style="border:1px black; margin-top:15px; text-align: center; font-size: 14px;" >
+                                                    <table style="border:1px black; margin-top:5px; text-align: center; font-size: 14px;" >
                                                         <thead>
                                                         <tr>
                                                             @foreach($results as $data)

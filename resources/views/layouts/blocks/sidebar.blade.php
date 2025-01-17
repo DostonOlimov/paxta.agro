@@ -65,17 +65,16 @@
                             <svg class="nav-icon">
                                 <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-list"></use>
                             </svg>{{trans('message.Umumiy ro\'yxat')}}</a></li>
-{{--                    <li class="nav-item"><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('akt_laboratory/*') ? 'active1' : ''}}" href="{!! url('/akt_laboratory/search') !!}"> <svg class="nav-icon">--}}
-{{--                            <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-search"></use>--}}
-{{--                        </svg>{{trans('message.Laboratoriya ma\'lumotlari')}}</a></li>--}}
+
+                    <li class="nav-item"><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('/vue/state-report') ? 'active1' : ''}}" href="{!! url('/vue/state-report') !!}">
+                            <svg class="nav-icon">
+                                <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-map"></use>
+                            </svg>{{trans("message.Hududlar kesimda ma'lumot")}}</a></li>
+
                     <li class="nav-item {{ \Illuminate\Support\Facades\Request::is('organization-company-report') ? 'active1' : ''}}"><a class="nav-link" href="{!! url('organization-company-report') !!}">
                         <svg class="nav-icon">
                             <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-building"></use>
                         </svg>{{trans("message.Korxonalar kesimda ma'lumot")}}</a></li>
-                    <li class="nav-item"><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('prepared-company-report') ? 'active1' : ''}}" href="{!! url('prepared-company-report') !!}">
-                        <svg class="nav-icon">
-                            <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-institution"></use>
-                        </svg>{{trans("message.Ishlab chiqaruvchi zavodlar kesimda ma'lumot")}}</a></li>
                 </ul>
             </li>
 {{-- end --}}
