@@ -25,5 +25,6 @@ Route::group([
     'prefix' => 'v1',
     'namespace' => 'App\Http\Controllers\Api\V1\Vue',
 ], function () {
-    Route::get('/get-state-report', [App\Http\Controllers\Api\V1\Vue\ReportsController::class, 'getReportByState'])->name('reports.getReportByState');
+    Route::get('/get-state-report', [App\Http\Controllers\Api\V1\Vue\StateByReportController::class, 'getReportByState'])->name('reports.getReportByState');
+    Route::get('/get-factory-report', [App\Http\Controllers\Api\V1\Vue\FactoryByReportController::class, 'getReportByFactory'])->name('reports.getReportByFactory');
 });

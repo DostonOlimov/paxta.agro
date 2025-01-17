@@ -479,5 +479,12 @@ Route::middleware(['auth'])->group(function() {
     Route::delete('/laboratory_operators/{laboratoryOperator}', [LaboratoryOperatorController::class, 'destroy'])->name('laboratory_operators.destroy');
 });
 
-Route::get('/state-report', function () { return view('reports.state_report'); });
+// Serve specific Laravel routes
+Route::get('/vue/state-report', function () {
+    return view('reports.state_report');
+});
 
+// Fallback for Vue routes
+Route::get('/vue/{any}', function () {
+    return view('reports.state_report'); // Ensure this loads your Vue SPA
+})->where('any', '.*');

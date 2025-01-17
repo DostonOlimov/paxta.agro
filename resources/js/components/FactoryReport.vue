@@ -39,7 +39,7 @@
             </thead>
             <tbody>
             <tr v-for="state in sortedStates" :key="state.id">
-                <td class="name_row">
+                <td>
                     <router-link :to="{ name: 'FactoryReport', params: { id: state.id } }">
                         {{ state.name }}
                     </router-link>
@@ -68,7 +68,7 @@
     import axios from "axios";
 
     export default {
-        name: "StateReport",
+        name: "FactoryReport",
         data() {
             return {
                 states: [], // Holds state data
@@ -76,6 +76,7 @@
                 sortOrder: "asc", // 'asc' or 'desc'
                 startDate: "", // Start date for filtering
                 endDate: "", // End date for filtering
+                stateId:  this.$route.params.id,
             };
         },
         computed: {
@@ -112,8 +113,9 @@
                     const params = {
                         start_date: this.startDate,
                         end_date: this.endDate,
+                        stateId: this.stateId,
                     };
-                    const response = await axios.get("/api/v1/get-state-report", { params });
+                    const response = await axios.get("/api/v1/get-factory-report", { params });
                     this.states = response.data.data;
                 } catch (error) {
                     console.error("Failed to fetch state report:", error);
@@ -199,9 +201,5 @@
         border: 1px solid #ccc;
         border-radius: 4px;
     }
-    .name_row{
-        background-color: #929395;
-        color:white;
-        font-weight: bolder;
-    }
 </style>
+

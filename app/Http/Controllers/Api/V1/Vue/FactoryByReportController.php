@@ -6,16 +6,17 @@ use App\Filters\V1\ApplicationFilter;
 use App\Http\Controllers\Api\V1\Controller;
 use App\Http\Resources\V1\Vue\StateByReportCollection;
 use App\Http\Resources\V1\Vue\StateByReportResource;
+use App\Models\PreparedCompanies;
 use App\Models\Region;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
 
-class ReportsController extends Controller
+class FactoryByReportController extends Controller
 {
 
-    public function getReportByState(Request $request)
+    public function getReportByFactory(Request $request)
     {
         try {
             $crop = session('crop', 1);
@@ -48,7 +49,7 @@ class ReportsController extends Controller
             DB::raw('COUNT(CASE WHEN sifat_sertificates.id IS NOT NULL THEN applications.id END) as certified_application_count')
         ])
             ->leftJoin('sifat_sertificates', 'applications.id', '=', 'sifat_sertificates.app_id')
-            ->groupBy('tbl_states.id', 'tbl_states.name')
+            ->groupBy('prepared_companies.id', 'prepared_companies.name')
             ->orderByDesc('application_count')
             ->get();
     }
@@ -67,7 +68,7 @@ class ReportsController extends Controller
             ->join('akt_amount', 'dalolatnoma.id', '=', 'akt_amount.dalolatnoma_id')
             ->leftJoin('final_results', 'dalolatnoma.id', '=', 'final_results.dalolatnoma_id')
             ->leftJoin('sertificates', 'final_results.id', '=', 'sertificates.final_result_id')
-            ->groupBy('tbl_states.id', 'tbl_states.name')
+            ->groupBy('prepared_companies.id', 'prepared_companies.name')
             ->orderByDesc('application_count')
             ->get();
     }
@@ -81,17 +82,18 @@ class ReportsController extends Controller
         $branchCrop = session('crop', 1);
         $start_date = $request->input('start_date');
         $end_date = $request->input('end_date');
+        $stateId = $request->input('stateId');
 
-        $query = Region::select(
-            'tbl_states.id as id',
-            'tbl_states.name as name',
+        $query = PreparedCompanies::select(
+            'prepared_companies.id as id',
+            'prepared_companies.name as name',
             DB::raw('COUNT(DISTINCT(applications.id)) as application_count')
         )
-            ->leftJoin('prepared_companies', 'tbl_states.id', '=', 'prepared_companies.state_id')
             ->join('applications', 'prepared_companies.id', '=', 'applications.prepared_id')
             ->join('crop_data', 'applications.crop_data_id', '=', 'crop_data.id')
             ->where('crop_data.year', $year)
-            ->where('applications.app_type', $branchCrop);
+            ->where('applications.app_type', $branchCrop)
+            ->where('prepared_companies.state_id',$stateId);
 
         // Apply date filters
         if ($start_date) {
