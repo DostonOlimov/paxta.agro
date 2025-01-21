@@ -119,7 +119,7 @@ class ApplicationController extends Controller
         if(session('crop') == CropsName::CROP_TYPE_3 or session('crop') == CropsName::CROP_TYPE_4){
             $stateId = optional($application->prepared)->state_id;
             $lab = Laboratories::whereHas('city', function ($query) use ($stateId) {
-                $query->where('state_id', 4012);
+                $query->where('state_id', $stateId);
             })->first();
 
             // Create new decision
