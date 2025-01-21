@@ -125,7 +125,7 @@ class ApplicationController extends Controller
             // Create new decision
             $decision = Decision::create([
                 'app_id'       => $application->id,
-                'director_id'  => 27, // Hardcoded, but ideally fetched dynamically
+                'director_id'  => $lab->director_id, // Hardcoded, but ideally fetched dynamically
                 'number'       => $application->id,
                 'laboratory_id'=> $lab->id,
                 'created_by'   => $user->id,
@@ -136,7 +136,7 @@ class ApplicationController extends Controller
             // Create test program entry
             TestPrograms::create([
                 'app_id'      => $application->id,
-                'director_id' => 27, // Hardcoded, but same suggestion as above
+                'director_id' => $lab->director_id, // Hardcoded, but same suggestion as above
             ]);
         }
 

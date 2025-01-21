@@ -2,13 +2,21 @@
     <router-view></router-view> <!-- Renders the routed component -->
     <div class="state-report">
         <div class="filters">
-            Vaqt bo'yicha filterlash
-            <label for="start-date">:</label>
-            <input type="date" id="start-date" v-model="startDate" @change="fetchStatesReport" />
+            <label for="start-date">Boshlanish sanasi:</label>
+            <Datepicker
+                v-model="startDate"
+                :format="'yyyy-MM-dd'"
+                @change="onDateChange"
+                placeholder="Boshlanish sanasini tanlang"
+            />
 
-            <label for="end-date">dan</label>
-            <input type="date" id="end-date" v-model="endDate" @change="fetchStatesReport" />
-            gacha
+            <label for="end-date">Tugash sanasi:</label>
+            <Datepicker
+                v-model="endDate"
+                :format="'dd-MM-yyyy'"
+                @change="onDateChange"
+                placeholder="Tugash sanasini tanlang"
+            />
         </div>
 
         <table class="state-table">
@@ -66,14 +74,19 @@
 
 <script>
     import axios from "axios";
+    import Datepicker from "@vuepic/vue-datepicker";
+    import "@vuepic/vue-datepicker/dist/main.css"; // Import the CSS for styling
 
     export default {
         name: "StateReport",
+        components: {
+            Datepicker, // Register the Datepicker component
+        },
         data() {
             return {
-                states: [], // Holds state data
-                sortKey: "", // The key to sort by
-                sortOrder: "asc", // 'asc' or 'desc'
+                states: [],
+                sortKey: "",
+                sortOrder: "asc",
                 startDate: "", // Start date for filtering
                 endDate: "", // End date for filtering
             };
@@ -100,7 +113,10 @@
                 return this.sortedStates.reduce((sum, state) => sum + state.certificates_count, 0);
             },
             totalCertifiedAppCount() {
-                return this.sortedStates.reduce((sum, state) => sum + state.certified_application_count, 0);
+                return this.sortedStates.reduce(
+                    (sum, state) => sum + state.certified_application_count,
+                    0
+                );
             },
             totalAppsSumAmount() {
                 return this.sortedStates.reduce((sum, state) => sum + state.apps_sum_amount, 0);
@@ -108,11 +124,13 @@
         },
         methods: {
             async fetchStatesReport() {
+
                 try {
                     const params = {
                         start_date: this.startDate,
                         end_date: this.endDate,
                     };
+                    console.log(params);
                     const response = await axios.get("/api/v1/get-state-report", { params });
                     this.states = response.data.data;
                 } catch (error) {
@@ -126,6 +144,11 @@
                     this.sortKey = key;
                     this.sortOrder = "asc";
                 }
+            },
+            onDateChange() {
+                console.log("Date changed:", this.startDate, this.endDate);
+                // Trigger fetching data whenever date changes
+                this.fetchStatesReport();
             },
         },
         created() {
@@ -152,7 +175,9 @@
         width: 100%;
         border-collapse: collapse;
     }
-
+    .state-table th{
+        color:white;
+    }
     .state-table th,
     .state-table td {
         padding: 10px;

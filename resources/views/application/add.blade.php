@@ -234,9 +234,9 @@
 	</div>
 @endcan
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<script src="{{ URL::asset('vendors/moment/min/moment.min.js') }}"></script>
-	<script src="{{ URL::asset('vendors/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
-	<script src="{{ URL::asset('vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') }}"></script>
+	<script src="{{ asset('vendors/moment/min/moment.min.js') }}"></script>
+	<script src="{{ asset('vendors/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+	<script src="{{ asset('vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') }}"></script>
 <script type="text/javascript">
     $("input.dob").datetimepicker({
         format: "dd-mm-yyyy",
