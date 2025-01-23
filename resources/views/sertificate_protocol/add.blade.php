@@ -67,21 +67,21 @@
                                         @endif
                                     </div>
 
-                                    <div class="col-12 col-md-4">
-                                        <div class="form-group">
-                                            <label class="form-label"
-                                                   for="first-name">{{ trans('app.Operator nomi')}} <label
-                                                    class="text-danger">*</label>
-                                            </label>
-                                            <select name="operator_id" class="form-control" required>
-                                                <option value="">{{ trans('app.Operatorni tanlang')}}</option>
-                                                @foreach($operators as $operator)
-                                                    <option
-                                                        value="{{ $operator->id }}">{{ $operator->name }}</option>
-                                                @endforeach
-                                            </select>
+                                        <div class="col-12 col-md-4" @if(session('crop',1) == \App\Models\CropsName::CROP_TYPE_4) style="display: none" @endif>
+                                            <div class="form-group">
+                                                <label class="form-label"
+                                                       for="first-name">{{ trans('app.Operator nomi')}} <label
+                                                        class="text-danger">*</label>
+                                                </label>
+                                                <select name="operator_id" class="form-control" required>
+                                                    @foreach($operators as $operator)
+                                                        <option
+                                                            value="{{ $operator->id }}">{{ $operator->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                         </div>
-                                    </div>
+
                                     <input type="hidden" name="director_id" value="{{ $dalolatnoma->test_program->application->decision->laboratory->director_id}}">
                                     <input type="hidden" name="klassiyor_id" value="{{ optional($clampData->klassiyor)->id }}">
 

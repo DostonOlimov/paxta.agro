@@ -71,7 +71,7 @@
     @else
         <div style="width: 100%; display: flex; justify-content: space-between; padding-top:10px; font-size: 18px;">
             <div style="width: 99%; display: inline-block;">
-                <span> <b>Me'yoriy hujjati:  </b>O'z DSt 645 "Paxta momig'i.Texnikaviy shartlari"</span>
+                <span> <b>Me'yoriy hujjati:  </b>O'zMSt 456:2024 "Paxta momig'i.Texnikaviy shartlari"</span>
             </div>
         </div>
     @endif
@@ -175,14 +175,16 @@
             </span>
         </div>
     </div>
-    <div style="width: 100%; display: flex; justify-content: space-between; padding-top:10px; font-size: 18px;">
-        <div style="width: 49%; display: inline-block;">
-            <span> <b>Texnologik qurilmalar
-                operatori (HVI)  </b></span>
+    @if(session('crop',1) != \App\Models\CropsName::CROP_TYPE_4)
+        <div style="width: 100%; display: flex; justify-content: space-between; padding-top:10px; font-size: 18px;">
+            <div style="width: 49%; display: inline-block;">
+                <span> <b>Texnologik qurilmalar
+                    operatori (HVI)  </b></span>
+            </div>
+            <div style="width: 50%; display: inline-block;text-align: center">
+                <span style="font-family: 'DejaVu Serif'"> {{ optional($test->laboratory_final_results->operator)->name }}</span>
+            </div>
         </div>
-        <div style="width: 50%; display: inline-block;text-align: center">
-            <span style="font-family: 'DejaVu Serif'"> {{ optional($test->laboratory_final_results->operator)->name }}</span>
-        </div>
-    </div>
+    @endif
 </div>
 

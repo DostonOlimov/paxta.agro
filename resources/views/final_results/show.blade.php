@@ -170,16 +170,19 @@
                                                         </span>
                                                 </div>
                                             </div>
-                                            <div style="font-family: 'Arial Black';width: 100%; display: flex; justify-content: space-between; padding-top:10px; font-size: 16px;">
-                                                <div style="width: 55%; display: inline-block;">
-                                                    <span> <b>Texnologik qurilmalar operatori (HVI)  </b></span>
+                                            @if(session('crop',1) != \App\Models\CropsName::CROP_TYPE_4)
+                                                <div style="font-family: 'Arial Black';width: 100%; display: flex; justify-content: space-between; padding-top:10px; font-size: 16px;">
+                                                    <div style="width: 55%; display: inline-block;">
+                                                        <span> <b>Texnologik qurilmalar operatori (HVI)  </b></span>
+                                                    </div>
+                                                    <div style="width: 15%; display: inline-block;text-align:left;border-bottom: 1px solid black;">
+                                                    </div>
+                                                    <div style="width: 30%; display: inline-block;text-align: center;">
+                                                        <span> {{ optional(optional($dalolatnoma->laboratory_final_results)->operator)->name }}</span>
+                                                    </div>
                                                 </div>
-                                                <div style="width: 15%; display: inline-block;text-align:left;border-bottom: 1px solid black;">
-                                                </div>
-                                                <div style="width: 30%; display: inline-block;text-align: center;">
-                                                    <span> {{ optional(optional($dalolatnoma->laboratory_final_results)->operator)->name }}</span>
-                                                </div>
-                                            </div>
+                                            @endif
+
                                         </div>
                                     </div>
                                 </div>
