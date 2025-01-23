@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Filters\V1\DalolatnomaFilter;
 use App\Models\Application;
 use App\Models\ClampData;
+use App\Models\CropsName;
 use App\Models\Dalolatnoma;
 use App\Models\FinalResult;
 use App\Models\LaboratoryFinalResults;
@@ -220,6 +221,12 @@ class SertificateProtocolController extends Controller
         $lab->status = 1;
         $lab->save();
 
+        $type = 1;
+        $clamp_data = ClampData::where('dalolatnoma_id',$id)->first();
+        if($clamp_data->croptype == "Á"){
+            $type = 2;
+        }
+
         $final_results = FinalResult::with('dalolatnoma.laboratory_result')->where('dalolatnoma_id', $id)->get();
 
         // date format
@@ -230,7 +237,7 @@ class SertificateProtocolController extends Controller
         $qrCode = base64_encode(QrCode::format('png')->size(100)->generate(route('laboratory_protocol.download', $id)));
 
         // Load the view and pass data to it
-        $pdf = Pdf::loadView('sertificate_protocol.protocol_pdf', compact('test','formattedDate','formattedDate2','qrCode','final_results'));
+        $pdf = Pdf::loadView('sertificate_protocol.protocol_pdf', compact('test','type','formattedDate','formattedDate2','qrCode','final_results'));
 
 //        return $pdf->stream('sdf.pdf');
         // Save the PDF file
@@ -249,13 +256,15 @@ class SertificateProtocolController extends Controller
         $application = $dalolatnoma->test_program->application;
         $appId = $application->id;
 
+        $sertType = session('crop') == CropsName::CROP_TYPE_4 ? SifatSertificates::LINT_TYPE : SifatSertificates::PAXTA_TYPE;
+
         $final_results = FinalResult::with('dalolatnoma.laboratory_result')->where('dalolatnoma_id', $id)->get();
 
 
         // Generate certificate number
         $currentYear = date('Y');
         $number = SifatSertificates::where('year', $currentYear)
-                ->where('type', SifatSertificates::PAXTA_TYPE)
+                ->where('type', $sertType)
                 ->max('number') ?? 0;
         $number++;
 
@@ -266,7 +275,7 @@ class SertificateProtocolController extends Controller
                 'number' => $number,
                 'zavod_id' => $application->prepared_id,
                 'year' => $currentYear,
-                'type' => SifatSertificates::PAXTA_TYPE,
+                'type' => $sertType,
                 'created_by' => auth()->id(),
             ]);
         }

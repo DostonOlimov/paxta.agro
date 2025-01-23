@@ -11,6 +11,7 @@ class SifatSertificates extends Model
     const CIGIT_TYPE_XARIDORLI = 1;
     const CIGIT_TYPE_XARIDORSIZ = 2;
     const PAXTA_TYPE = 3;
+    const LINT_TYPE = 4;
 
     protected $table = 'sifat_sertificates';
 

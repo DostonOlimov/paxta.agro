@@ -25,7 +25,7 @@
                 </div>
                 <div class="select_col-md-4">
                     <a href="#" onclick="changeCrop('4')" >
-                        <img class="selectCropImage" src="/resources/assets/images/momig_logo2.png">
+                        <img class="selectCropImage" src="/resources/assets/images/momig.jpg">
                         <span class="selectCropText">Paxta momig'i <br>Sifat sertifikati</span>
                     </a>
                 </div>
@@ -41,7 +41,7 @@
         @elseif(session('crop') == 3)
             <img class="sidebarLogo" src="/resources/assets/images/paxta_image.png">
         @elseif(session('crop') == 4)
-            <img class="sidebarLogo" src="/resources/assets/images/momig_logo2.png">
+            <img class="sidebarLogo" src="/resources/assets/images/momig.jpg">
         @else
             <img class="sidebarLogo" src="/resources/assets/images/paxta_logo.png">
         @endif
@@ -112,7 +112,7 @@
 
         <li class="nav-item"><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('hvi/*') ? 'active1' : ''}}" href="{!! url('/hvi/list') !!}"> <svg class="nav-icon">
                     <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-devices"></use>
-                </svg>{{trans('message.HVI ma\'lumotlari')}}</a></li>
+                </svg>@if(session('crop',1) != \App\Models\CropsName::CROP_TYPE_4) {{ trans('message.HVI ma\'lumotlari') }}@else Lclass ma'lumotlari @endif</a></li>
             @if(session('crop') == 1)
             <li class="nav-item"><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('humidity_result/*') ? 'active1' : ''}}" href="{!! url('/humidity_result/search') !!}"> <svg class="nav-icon">
                         <use xlink:href="/assets/vendors/@coreui/icons/svg/free.svg#cil-chart"></use>
