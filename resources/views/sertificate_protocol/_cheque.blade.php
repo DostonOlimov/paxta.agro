@@ -129,7 +129,7 @@
                 <th rowspan="2"> Netto massasi (kg)</th>
                 <th rowspan="2"> Nav</th>
                 <th rowspan="2"> Sinf</th>
-                <th colspan="2"> O'z DSt 660:2011 <br> Tip(mm) </th>
+                <th colspan="2"> O'zMSt 384:2024 <br> Tip(mm) </th>
             </tr>
             <tr>
                 <th rowspan="1">kodi</th>
@@ -157,7 +157,7 @@
 
         <div style="display: flex;font-size: 16px;">
             <p>
-                Sinov natijalari, sinov o’tkazilgan namunalarga tegishlidir.
+                Sinov natijalari, sinovdan o'tkazilgan namunalarga tegishlidir.
             </p>
         </div>
         <div class="comments-section">
