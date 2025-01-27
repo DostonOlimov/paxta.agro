@@ -26,7 +26,7 @@
     </div>
     <h1 style="padding-top:10px" class="text-center">
         <b>
-            <span style="font-size:24px;">  SINOV BAYONNOMASI <span style="font-family: 'DejaVu Serif'"> № </span>{{$test->laboratory_final_results->number}}</span>
+            <span style="font-size:24px;">  SINOV BAYONNOMASI <span style="font-family: 'DejaVu Serif'"> № </span>{{ $test->laboratory_final_results->number + $i }}</span>
         </b>
     </h1>
 
@@ -99,8 +99,8 @@
                 <th rowspan="1"> Dyum</th>
                 <th rowspan="1"> Kodi</th>
             </tr>
-            @if ($final_results)
-            @foreach ($final_results as $item)
+            @if ($group)
+            @foreach ($group as $item)
             <tr>
                 <td>{{ $loop->iteration }}</td>
                 <td>{{  str_pad($test->test_program->application->prepared->kod, 3, '0', STR_PAD_LEFT) }}</td>

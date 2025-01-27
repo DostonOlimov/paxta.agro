@@ -70,7 +70,7 @@
                                     <a href="{{url()->previous()}}" class="btn btn-primary"><i class="fa fa-arrow-left"></i> {{ trans("app.Ortga") }}</a>
                                     <button class="btn btn-primary" id="print-invoice-btn-{{ $loop->iteration }}"><i class="fa fa-print"></i> {{ trans("app.Chop etish") }}</button>
                                 </div>
-                                <div id="invoice-cheque-{{ $loop->iteration }}" class="row">
+                                <div id="invoice-cheque-{{ $loop->iteration }}" class="row" style="padding: 10px;">
                                     <div class="col-md-12">
                                         <div class="card">
                                             <div class="card-body">
@@ -101,8 +101,8 @@
                                                         <thead>
                                                         <tr>
                                                             @foreach($results as $data)
-                                                                <th style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.1rem 0.1rem;" >№</th>
-                                                                <th style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.1rem 0.1rem;">Og'irligi</th>
+                                                                <th style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.08rem 0.08rem;" >№</th>
+                                                                <th style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.08rem 0.08rem;">Og'irligi</th>
                                                             @endforeach
                                                         </tr>
                                                         </thead>
@@ -110,20 +110,20 @@
                                                         @for($i = 0; $i < 50; $i++)
                                                             <tr>
                                                                 @foreach($results as $data)
-                                                                    <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.1rem 0.1rem;">{{ 50 * ($loop->iteration-1) + $i +1 }}</td>
+                                                                    <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.08rem 0.08rem;">{{ 50 * ($loop->iteration-1) + $i +1 }}</td>
                                                                     @if(isset($data[$i]))
                                                                         @if($data[$i]['class'] == $count->class and $data[$i]['sort'] == $count->sort)
                                                                             @if($data[$i]['amount'])
-                                                                                <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.1rem 0.1rem;" >
+                                                                                <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.08rem 0.08rem;" >
                                                                                     {{$data[$i]['amount']}} kg
                                                                                 </td>
                                                                             @else
-                                                                                <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.1rem 0.1rem;">
+                                                                                <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.08rem 0.08rem;">
                                                                                     0 kg
                                                                                 </td>
                                                                             @endif
                                                                         @else
-                                                                            <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.1rem 0.1rem;"></td>
+                                                                            <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.08rem 0.08rem;"></td>
                                                                         @endif
                                                                     @endif
                                                                 @endforeach

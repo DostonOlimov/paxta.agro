@@ -93,8 +93,13 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card p-4">
+                        @foreach($labResults as $group)
+                            @php $i = $loop->iteration - 1; @endphp
 
-                        @include('sertificate_protocol._sertificate_cheque')
+                            @include('sertificate_protocol._sertificate_cheque')
+
+                        @endforeach
+
 
                     </div>
                 </div>

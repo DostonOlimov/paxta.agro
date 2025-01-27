@@ -25,6 +25,7 @@ class LaboratoryFinalResults extends Model
         'harorat',
         'yoruglik',
         'status',
+        'chp'
 
     ];
 

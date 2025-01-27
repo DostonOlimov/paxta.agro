@@ -327,9 +327,11 @@ class SifatSertificateController extends Controller
 
         $sertQuery = SifatSertificates::where('year', $currentYear)
             ->where('type',$type);
+
         if($type == SifatSertificates::CIGIT_TYPE_XARIDORLI){
             $sertQuery = $sertQuery->where('zavod_id', $zavod_id);
         }
+
         $number = $sertQuery->max('number');
 
         $number = $number ? $number + 1 : 1;
@@ -369,9 +371,14 @@ class SifatSertificateController extends Controller
     }
 
 
-    public function download($id)
+    public function download($id, Request $request)
     {
-        $filePath = storage_path('app/public/sifat_sertificates/certificate_' . $id . '.pdf');
+        if($request->input('type') >= 1){
+            $type = $request->input('type');
+            $filePath = storage_path('app/public/sifat_sertificates/certificate_' . $id . '_' . $type .'.pdf');
+        }else{
+            $filePath = storage_path('app/public/sifat_sertificates/certificate_' . $id . '.pdf');
+        }
 
         if (file_exists($filePath)) {
             return response()->download($filePath);

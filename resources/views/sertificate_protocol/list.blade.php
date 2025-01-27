@@ -219,6 +219,15 @@
                                                                         class="btn btn-round btn-info"> <i class="fa fa-download"></i> Bayonnoma fayli</button>
 
                                                             </a>
+                                                            @if($app->laboratory_final_results->chp >=2 )
+                                                                @for($j = 1; $j < $app->laboratory_final_results->chp; $j++)
+                                                                    <a href="{{ route('laboratory_protocol.download', ['id' => $app->id, 'type' => $j ]) }}" class="text-azure">
+                                                                        <button type="button"
+                                                                                class="btn btn-round btn-info"> <i class="fa fa-download"></i> Bayonnoma fayli( {{ $j+1 }} )</button>
+
+                                                                    </a>
+                                                                @endfor
+                                                            @endif
                                                         @endif
                                                     @endif
                                                 </td>
@@ -231,9 +240,19 @@
                                                     @else
                                                         <a href="{{ route('sifat_sertificate.download',  optional(optional($app->test_program)->application)->id )}}" class="text-azure">
                                                             <button type="button"
-                                                                    class="btn btn-round btn-info"> <i class="fa fa-download"></i> Sertifikat fayli</button>
+                                                                    class="btn btn-round btn-info"> <i class="fa fa-download"></i> Sertifikat fayli </button>
 
                                                         </a>
+                                                        @if($app->laboratory_final_results->chp >=2 )
+                                                            @for($j = 1; $j < $app->laboratory_final_results->chp; $j++)
+                                                                <a href="{{ route('sifat_sertificate.download', ['id'=>optional(optional($app->test_program)->application)->id,'type'=>$j]  )}}" class="text-azure">
+                                                                    <button type="button"
+                                                                            class="btn btn-round btn-info"> <i class="fa fa-download"></i> Sertifikat fayli( {{ $app->laboratory_final_results->chp }} )</button>
+
+                                                                </a>
+                                                            @endfor
+                                                        @endif
+
                                                     @endif
                                                 @endif
                                             </td>

@@ -23,6 +23,7 @@ class SifatSertificates extends Model
         'zavod_id',
         'type',
         'created_by',
+        'chp'
     ];
 
     public function application(): BelongsTo

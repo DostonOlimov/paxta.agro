@@ -39,7 +39,7 @@
                 <h2 class="main__intro"><b>Amal qilish muddati:&nbsp;</b> @if(session('crop') != \App\Models\CropsName::CROP_TYPE_4) 6 oy @else 1 yil @endif </h2>
             </div>
             <div style="width: 40%; display: inline-block;">
-                <h2 class="main__intro"><b>Sinov bayonnomasi raqami:&nbsp; </b> {{ $dalolatnoma->laboratory_final_results->number }} </h2>
+                <h2 class="main__intro"><b>Sinov bayonnomasi raqami:&nbsp; </b> {{ $application->tests->dalolatnoma->laboratory_final_results->number }} </h2>
             </div>
         </div>
 
@@ -68,8 +68,8 @@
                     <th> Tipi</th>
                     <th> Kodi</th>
                 </tr>
-                @if ($final_results)
-                    @foreach ($final_results as $item)
+                @if ($group)
+                    @foreach ($group as $item)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ str_pad($application->prepared->kod, 3, '0', STR_PAD_LEFT) }}</td>
@@ -102,8 +102,8 @@
                     <th>kodi</th>
                     <th> to‘da raqami</th>
                 </tr>
-                @if ($final_results)
-                    @foreach ($final_results as $item)
+                @if ($group)
+                    @foreach ($group as $item)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ str_pad($application->prepared->kod, 3, '0', STR_PAD_LEFT) }}</td>
@@ -125,7 +125,7 @@
             <div style="width: 45%; display: inline-block; padding-bottom: 30px;">
                 <b>Ijrochi :</b>
                 {{ $application->decision->laboratory->name }} boshlig‘i:
-                {{ optional(optional($dalolatnoma->laboratory_final_results)->director)->lastname . ' ' . substr(optional(optional($dalolatnoma->laboratory_final_results)->director)->name,0,1). '.' }}
+                {{ optional(optional($application->tests->dalolatnoma->laboratory_final_results)->director)->lastname . ' ' . substr(optional(optional($application->tests->dalolatnoma->laboratory_final_results)->director)->name,0,1). '.' }}
             </div>
             <div style="width: 20%; display: inline-block;"></div>
 

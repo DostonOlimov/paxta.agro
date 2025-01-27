@@ -94,6 +94,20 @@
                                                                                 @endif
                                                                             </span>
                                                                         @endif
+                                                                    @else
+{{--                                                                        @if(!$count->certificate)--}}
+{{--                                                                            <a href="{!! url('sertificate-protocol/sertificate-view2/' . $count->id) !!}"><button type="button"--}}
+{{--                                                                                                                                                               class="btn btn-round btn-info">--}}
+{{--                                                                                    <i class="fa fa-eye"></i> {{ trans('app.View') }}</button></a>--}}
+{{--                                                                        @else--}}
+{{--                                                                            <span class="txt_color">--}}
+{{--                                                                                @if(\App\Models\Sertificate::find($count->certificate->id)->attachment)--}}
+{{--                                                                                    <a href="{{route('attachment.download', ['id' => $count->certificate->attachment->id])}}" class="text-azure">--}}
+{{--                                                                                    <i class="fa fa-download"></i> Asos fayli--}}
+{{--                                                                                        </a>--}}
+{{--                                                                                @endif--}}
+{{--                                                                            </span>--}}
+{{--                                                                        @endif--}}
                                                                     @endif
                                                                 </td>
                                                                 <td> {{ $count->count}}</td>
