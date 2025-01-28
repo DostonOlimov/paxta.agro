@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Filters\V1\DalolatnomaFilter;
-use App\Jobs\SertificateSaveJob;
 use App\Models\Application;
 use App\Models\ClampData;
 use App\Models\CropsName;
@@ -271,6 +270,8 @@ class SertificateProtocolController extends Controller
                     'chp' => $index + 1
                 ]);
             }
+        }else{
+            $startingNumber = $application->sifat_sertificate->number;
         }
 
         // Prepare certificate files
