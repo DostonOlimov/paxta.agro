@@ -271,7 +271,7 @@ class SertificateProtocolController extends Controller
                 ]);
             }
         }else{
-            $startingNumber = $application->sifat_sertificate->number;
+            $startingNumber = $application->sifat_sertificate->number-1;
         }
 
         // Prepare certificate files
