@@ -65,14 +65,14 @@
 
                                                 <div style="width: 100%; display: flex; justify-content: space-between; font-size: 18px;">
                                                     <div style="width: 50%; display: inline-block;">
-                                                        <h1 class="text-left">Tanlov joyi: {{optional($result->test_program)->application->organization->name}}</h1>
+                                                        <h1 class="text-left">Tanlov joyi:{{optional($result->test_program)->application->prepared->name}} - {{optional($result->test_program)->application->prepared->kod}}</h1>
                                                     </div>
                                                     <div style="width: 50%; display: inline-block;">
                                                         <h1 class="text-center">{{$date}} yil</h1>
                                                     </div>
                                                 </div>
 
-                                                <h1 class="text-left">Ishlab chiqaruvchi nomi : <span  class="text-decoration-underline">&nbsp;&nbsp;{{optional($result->test_program)->application->prepared->name}} - {{optional($result->test_program)->application->prepared->kod}}</span></h1>
+                                                <h1 class="text-left">Ishlab chiqaruvchi(yetkazib beruvchi) nomi : <span  class="text-decoration-underline">&nbsp;&nbsp; {{optional($result->test_program)->application->organization->name}}</span></h1>
                                                 <h1 class="text-left">Paxta tolasi to'dasi p/x № <span  class="text-decoration-underline">&nbsp;&nbsp;{{$result->party}}&nbsp;&nbsp;</span> &nbsp;&nbsp;, navi p/x <span  class="text-decoration-underline">&nbsp;&nbsp;{{$result->nav}}&nbsp;&nbsp;</span> &nbsp;&nbsp;, sinfi p/x <span  class="text-decoration-underline">&nbsp;&nbsp;{{$result->sinf}}&nbsp;&nbsp;</span></h1>
 
                                                 <div style="width: 100%; display: flex; justify-content: space-between; font-size: 18px;">

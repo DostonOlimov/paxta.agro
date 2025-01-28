@@ -17,6 +17,7 @@ use App\Services\SearchService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
@@ -186,38 +187,40 @@ class SertificateProtocolController extends Controller
         $labResults = $this->groupResultsBySort($id);
 
         $type = $this->determineCropType($id);
-        $t =1;
+        $t = 1;
 
-        return view('sertificate_protocol.view', compact('labResults','test','t','type', 'formattedDate', 'formattedDate2'));
+        return view('sertificate_protocol.view', compact(
+            'labResults', 'test', 'type', 'formattedDate', 'formattedDate2','t'
+        ));
     }
 
     //saving sertificate protocol
-    function change_status($id)
+    public function change_status($id)
     {
         $test = Dalolatnoma::findOrFail($id);
-        $lab = LaboratoryFinalResults::where('dalolatnoma_id', $id)->first();
+        $lab = LaboratoryFinalResults::where('dalolatnoma_id', $id)->firstOrFail();
 
         $type = $this->determineCropType($id);
-
         $groupedResults = $this->groupResultsBySort($id);
+        $sortCount = count($groupedResults);
 
         $formattedDate = $this->formatDates($test->laboratory_final_results->date);
         $formattedDate2 = $this->formatDates($test->date);
 
-        $sortCount = count($groupedResults);
-        if ($sortCount >= 2) {
-            for ($i = 1; $i < $sortCount; $i++) {
-                $qrCode = $this->generateQrCode(route('laboratory_protocol.download', ['id' => $id, 'type' => $i]));
-                $this->generatePdf($id, $groupedResults[$i], $test, $type, $formattedDate, $formattedDate2, $qrCode, $i);
-            }
-            $lab->chp = $sortCount;
+        // Generate PDFs for each group
+        foreach ($groupedResults as $index => $group) {
+            $qrCode = $this->generateQrCode(route('laboratory_protocol.download', [
+                'id' => $id,
+                'type' => $index,
+            ]));
+
+            $this->generatePdf($id, $group, $test, $type, $formattedDate, $formattedDate2, $qrCode, $index);
         }
 
+        // Update lab status and chp count
+        $lab->chp = $sortCount;
         $lab->status = 1;
         $lab->save();
-
-        $qrCode = $this->generateQrCode(route('laboratory_protocol.download', $id));
-        $this->generatePdf($id, $groupedResults[0], $test, $type, $formattedDate, $formattedDate2, $qrCode, 0);
 
         return redirect('/sertificate-protocol/list?generatedAppId=' . $id)
             ->with('message', 'Protocol saved!');
@@ -229,7 +232,6 @@ class SertificateProtocolController extends Controller
         $dalolatnoma = $this->fetchDalolatnoma($id);
         $application = $dalolatnoma->test_program->application;
         $formattedDate = $this->formatDates($dalolatnoma->laboratory_final_results->date);
-        // Generate QR code
         $t = 1;
 
         $labResults = $this->groupResultsBySort($id);
@@ -245,79 +247,60 @@ class SertificateProtocolController extends Controller
         $application = $dalolatnoma->test_program->application;
         $appId = $application->id;
 
+        // Determine certificate type based on session
         $sertType = session('crop') == CropsName::CROP_TYPE_4
             ? SifatSertificates::LINT_TYPE
             : SifatSertificates::PAXTA_TYPE;
 
         $groupedResults = $this->groupResultsBySort($id);
-
-        // Generate certificate number
         $currentYear = date('Y');
+
+        // Fetch the starting number for certificates
         $startingNumber = SifatSertificates::where('year', $currentYear)
                 ->where('type', $sertType)
                 ->max('number') ?? 0;
 
-        // Create certificates if they do not exist
+        // Create certificates if they don't exist
         if (!$application->sifat_sertificate) {
-            foreach ($groupedResults as $index => $group) {
-                SifatSertificates::create([
-                    'app_id' => $appId,
-                    'number' => $startingNumber + $index + 1,
-                    'zavod_id' => $application->prepared_id,
-                    'year' => $currentYear,
-                    'type' => $sertType,
-                    'created_by' => auth()->id(),
-                    'chp' => $index + 1
-                ]);
-            }
-        }else{
-            $startingNumber = $application->sifat_sertificate->number-1;
+            $this->createCertificates($appId, $groupedResults, $startingNumber, $sertType, $currentYear);
+        } else {
+            $startingNumber = $application->sifat_sertificate->number - 1;
         }
 
-        // Prepare certificate files
+        // Prepare and save certificate files
         $formattedDate = $this->formatDates($dalolatnoma->laboratory_final_results->date);
-        foreach ($groupedResults as $index => $group) {
-            $sertNumber = (($currentYear - 2000) * 1000000) + $startingNumber + $index + 1;
-            $route = route('sifat_sertificate.download', ['id' => $appId, 'type' => $index ]);
-            $qrCode = $this->generateQrCode($route);
-
-            // Generate and save the PDF file
-            $pdf = Pdf::loadView('sertificate_protocol.sertificate_pdf', compact(
-                'application', 'group', 'sertNumber', 'currentYear', 'formattedDate', 'qrCode'
-            ));
-            if($index == 0){
-                $pdf->save(storage_path("app/public/sifat_sertificates/certificate_{$appId}.pdf"));
-            }else{
-                $pdf->save(storage_path("app/public/sifat_sertificates/certificate_{$appId}_{$index}.pdf"));
-            }
-
-        }
+        $this->generateCertificateFiles($appId, $groupedResults, $startingNumber, $currentYear, $formattedDate);
 
         return redirect()->route('sertificate_protocol.list', ['generatedAppId' => $appId])
             ->with('message', 'Certificate saved!');
     }
 
-    public function download( $id,Request $request)
+    public function download($id, Request $request)
     {
-        if($request->input('type') >= 1){
-            $type = $request->input('type');
-            $filePath = storage_path('app/public/protocols/protocol_' . $id . '_' . $type .'.pdf');
-        }else{
-            $filePath = storage_path('app/public/protocols/protocol_' . $id . '.pdf');
-        }
+        // Determine the file path based on the request type
+        $fileName = $request->input('type') >= 1
+            ? 'protocol_' . $id . '_' . $request->input('type') . '.pdf'
+            : 'protocol_' . $id . '.pdf';
 
-        if (file_exists($filePath)) {
-            return response()->download($filePath);
-        } else {
+        $filePath = storage_path('app/public/protocols/' . $fileName);
+
+        // Check if the file exists
+        if (!file_exists($filePath)) {
             return redirect()->back()->with('error', 'File not found.');
         }
+
+        // Download the file
+        return response()->download($filePath);
     }
 
-    // Reusable method for fetching dalolatnoma with relationships
+
+
+    /**
+     * Fetch Dalolatnoma with relationships.
+     */
     private function fetchDalolatnoma($id)
     {
         return Dalolatnoma::with([
-            'measurement_mistake',
             'laboratory_result',
             'result',
             'selection',
@@ -330,19 +313,101 @@ class SertificateProtocolController extends Controller
             'test_program.application.prepared.region',
         ])->findOrFail($id);
     }
-
-    // Reusable QR code generation
+    /**
+     * Generate a QR code for a given route.
+     */
     private function generateQrCode($route)
     {
         return base64_encode(QrCode::format('png')->size(100)->generate($route));
     }
 
-    // Format date
+    /**
+     * Format date in Uzbek Latin format.
+     */
     private function formatDates($date)
     {
         return $date ? formatUzbekDateInLatin($date) : null;
     }
 
+    /**
+     * Group final results by sort.
+     */
+    private function groupResultsBySort($id)
+    {
+        return FinalResult::with('dalolatnoma.laboratory_result')
+            ->where('dalolatnoma_id', $id)
+            ->get()
+            ->groupBy('sort')
+            ->values();
+    }
+    /**
+     * Create certificates in bulk.
+     */
+    protected function createCertificates($appId, $groupedResults, $startingNumber, $sertType, $currentYear)
+    {
+        $certificates = [];
+        foreach ($groupedResults as $index => $group) {
+            $certificates[] = [
+                'app_id' => $appId,
+                'number' => $startingNumber + $index + 1,
+                'zavod_id' => 3,
+                'year' => $currentYear,
+                'type' => $sertType,
+                'created_by' => auth()->id(),
+                'chp' => $index + 1,
+            ];
+        }
+        SifatSertificates::insert($certificates); // Bulk insert for better performance
+    }
+
+    /**
+     * Generate and save certificate files.
+     */
+    protected function generateCertificateFiles($appId, $groupedResults, $startingNumber, $currentYear, $formattedDate)
+    {
+        $application = Application::find($appId);
+        foreach ($groupedResults as $index => $group) {
+            $sertNumber = (($currentYear - 2000) * 1000000) + $startingNumber + $index + 1;
+            $route = route('sifat_sertificate.download', ['id' => $appId, 'type' => $index]);
+            $qrCode = $this->generateQrCode($route);
+
+            // Generate and save the PDF file
+            $pdf = Pdf::loadView('sertificate_protocol.sertificate_pdf', compact(
+                'application', 'group', 'sertNumber', 'currentYear', 'formattedDate', 'qrCode'
+            ));
+
+            $fileName = $index == 0
+                ? "certificate_{$appId}.pdf"
+                : "certificate_{$appId}_{$index}.pdf";
+
+            $pdf->save(storage_path("app/public/sifat_sertificates/{$fileName}"));
+        }
+    }
+    /**
+     * Determine crop type based on ClampData.
+     */
+    private function determineCropType($id)
+    {
+        $clampData = ClampData::where('dalolatnoma_id', $id)->first();
+        return ($clampData && $clampData->croptype == "Á") ? 2 : 1;
+    }
+
+    /**
+     * Generate pdf file for protocol
+     */
+    private function generatePdf($id, $group, $test, $type, $formattedDate, $formattedDate2, $qrCode, $i)
+    {
+        $pdf = Pdf::loadView('sertificate_protocol.protocol_pdf', compact(
+            'test', 'type', 'formattedDate', 'formattedDate2', 'qrCode', 'group', 'i'
+        ));
+
+        $fileName = $i === 0
+            ? 'protocol_' . $id . '.pdf'
+            : 'protocol_' . $id . '_' . $i . '.pdf';
+
+        $filePath = storage_path('app/public/protocols/' . $fileName);
+        $pdf->save($filePath);
+    }
     /**
      * Store LaboratoryResult data.
      */
@@ -454,37 +519,4 @@ class SertificateProtocolController extends Controller
             ->first();
     }
 
-
-
-
-
-
-    private function groupResultsBySort($id)
-    {
-        $finalResults = FinalResult::with('dalolatnoma.laboratory_result')->where('dalolatnoma_id', $id)->get();
-
-        $grouped = [];
-        foreach ($finalResults as $item) {
-            $grouped[$item['sort']][] = $item;
-        }
-
-        return array_values($grouped);
-    }
-
-    private function determineCropType($id)
-    {
-        $clampData = ClampData::where('dalolatnoma_id', $id)->first();
-        return ($clampData && $clampData->croptype == "Á") ? 2 : 1;
-    }
-
-    private function generatePdf($id, $group, $test, $type, $formattedDate, $formattedDate2, $qrCode, $i)
-    {
-        $pdf = Pdf::loadView('sertificate_protocol.protocol_pdf', compact('test', 'type', 'formattedDate', 'formattedDate2', 'qrCode', 'group', 'i'));
-
-        $filePath = $i === 0
-            ? storage_path('app/public/protocols/protocol_' . $id . '.pdf')
-            : storage_path('app/public/protocols/protocol_' . $id . '_' . $i . '.pdf');
-
-        $pdf->save($filePath);
-    }
 }
