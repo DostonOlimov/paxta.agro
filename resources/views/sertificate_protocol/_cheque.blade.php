@@ -137,8 +137,8 @@
                 <th rowspan="1"> A <br>7-8 va unda yuqori</th>
                 <th rowspan="1"> B <br>6-7 va undan kam</th>
             </tr>
-            @if ($final_results)
-                @foreach ($final_results as $item)
+            @if ($group)
+                @foreach ($group as $item)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{  str_pad($test->test_program->application->prepared->kod, 3, '0', STR_PAD_LEFT) }}</td>
