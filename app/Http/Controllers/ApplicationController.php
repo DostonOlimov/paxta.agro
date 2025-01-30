@@ -152,7 +152,7 @@ class ApplicationController extends Controller
 
         $type = Application::getType();
         $crop = session('crop', 1);
-        $names = DB::table('crops_name')->where('id', ($crop != 2) ? '=' : '!=', 1)->get();
+        $names = getCropsNames();
         $countries = DB::table('tbl_countries')->get();
         $measure_types = CropData::getMeasureType();
         $year = CropData::getYear();
