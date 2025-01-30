@@ -68,12 +68,6 @@
                 <span> <b>Laboratoriya kodi:  </b> {{  str_pad($test->test_program->application->decision->laboratory->kod, 2, '0', STR_PAD_LEFT) }} </span>
             </div>
         </div>
-    @else
-        <div style="width: 100%; display: flex; justify-content: space-between; padding-top:10px; font-size: 18px;">
-            <div style="width: 99%; display: inline-block;">
-                <span> <b>Me'yoriy hujjati:  </b>O'zMSt 456:2024 "Paxta momig'i.Texnikaviy shartlari"</span>
-            </div>
-        </div>
     @endif
 
 
@@ -129,7 +123,7 @@
                 <th rowspan="2"> Netto massasi (kg)</th>
                 <th rowspan="2"> Nav</th>
                 <th rowspan="2"> Sinf</th>
-                <th colspan="2"> O'zMSt 384:2024 <br> Tip(mm) </th>
+                <th colspan="2">Tip(mm) </th>
             </tr>
             <tr>
                 <th rowspan="1">kodi</th>
