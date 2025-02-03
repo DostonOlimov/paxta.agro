@@ -44,9 +44,7 @@ class HumidityResult  extends Model
         $value1 = 100 * ($this->m0 - $this->mk0) / $this->mk0 - 0.4;
         $value2 = 100 * ($this->m1 - $this->mk1) / $this->mk1 - 0.4;
 
-        $value = ($value1 + $value2) / 2;
-
-        return $value;
+        return ($value1 + $value2) / 2;
     }
     public function calculateMistake()
     {
@@ -54,9 +52,8 @@ class HumidityResult  extends Model
         $e2 = 50 / $this->mk1;
         $f1 = (50 * $this->m0) / ($this->mk0 * $this->mk0);
         $f2 = (50 * $this->m1) / ($this->mk1 * $this->mk1);
-        $h = $this->kalibrovka / 2;
         $i = sqrt( $e1**2 + $f1**2  + $e2**2  + $f2**2 );
 
-        return 2*$i*$h ;
+        return 2 * $i * $this->kalibrovka / 2 ;
     }
 }
