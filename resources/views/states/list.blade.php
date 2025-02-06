@@ -3,7 +3,6 @@
 <!-- page content -->
 <?php $userid = Auth::user()->id; ?>
 @if (getAccessStatusUser('Vehicles',$userid)=='yes')
-	 @if(getActiveCustomer($userid)=='yes' || getActiveEmployee($userid)=='yes')
 
     <div class="section">
 			<!-- PAGE-HEADER -->
@@ -14,21 +13,10 @@
 				</li>
 			</ol>
 		</div>
-		@if(session('message'))
-		<div class="row massage">
-			<div class="col-md-12 col-sm-12 col-xs-12">
-				<div class="alert alert-success text-center">
-                 @if(session('message') == 'Successfully Submitted')
-					<label for="checkbox-10 colo_success"> {{trans('app.Successfully Submitted')}}  </label>
-				   @elseif(session('message')=='Successfully Updated')
-				   <label for="checkbox-10 colo_success"> {{ trans('app.Successfully Updated')}}  </label>
-				   @elseif(session('message')=='Successfully Deleted')
-				   <label for="checkbox-10 colo_success"> {{ trans('app.Successfully Deleted')}}  </label>
-			    @endif
-                </div>
-			</div>
-		</div>
-		@endif
+        {{--      start of message component --}}
+        <x-flash-message />
+        {{--      end of message component --}}
+
         <div class="row">
 				<div class="col-md-12">
 					<div class="card">
@@ -75,15 +63,6 @@
 			</div>
 		</div>
     </div>
-	@else
-	<div class="section" role="main">
-		<div class="card">
-			<div class="card-body text-center">
-				<span class="titleup text-danger"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp {{ trans('app.You Are Not Authorize This page.')}}</span>
-			</div>
-		</div>
-	</div>
-	@endif
 @else
 	<div class="section" role="main">
 		<div class="card">

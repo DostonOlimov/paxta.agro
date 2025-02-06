@@ -16,7 +16,7 @@ use App\Rules\ExsistInXaus;
 use App\Services\SearchService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
+use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\DB;
 
 
@@ -37,9 +37,14 @@ class MeasurementMistakeController extends Controller
                 [
                     'test_program',
                     'test_program.application',
+                    'test_program.application.crops',
+                    'test_program.application.crops.name',
                     'test_program.application.decision',
                     'test_program.application.organization',
+                    'test_program.application.organization.area.region',
                     'test_program.application.prepared',
+                    'measurement_mistake',
+                    'humidity_result'
                 ],
                 compact('names', 'states', 'years'),
                 'measurement_mistake.search',

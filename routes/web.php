@@ -218,19 +218,20 @@ Route::group(['prefix' => 'employee'], function () {
     Route::get('/list/edit/{id}', '\App\Http\Controllers\IndicatorController@edit');
     Route::post('/list/edit/update/{id}', '\App\Http\Controllers\IndicatorController@update');
     });
-    //applications
-    Route::group(['prefix' => 'application'], function () {
-    Route::get('/list', ['as' => 'listapplication', 'uses' => '\App\Http\Controllers\ApplicationController@applicationlist']);
-    Route::get('/add', ['as' => 'addapplication', 'uses' => '\App\Http\Controllers\ApplicationController@addapplication']);
-    Route::post('/store', ['as' => 'storeapplication', 'uses' => '\App\Http\Controllers\ApplicationController@store']);
-    Route::get('/edit/{id}', ['as' => 'editapplication', 'uses' => '\App\Http\Controllers\ApplicationController@edit']);
-    Route::patch('/edit/update/{id}', '\App\Http\Controllers\ApplicationController@update');
-    Route::get('/view/{id}', '\App\Http\Controllers\ApplicationController@showapplication');
-    Route::get('/list/delete/{id}', ['as' => '/application/list/delete/{id}', 'uses' => '\App\Http\Controllers\ApplicationController@destory']);
-    Route::get('/accept/{id}', ['as' => '/application/accept', 'uses' => '\App\Http\Controllers\ApplicationController@accept']);
-    Route::get('/reject/{id}', ['as' => '/application/reject', 'uses' => '\App\Http\Controllers\ApplicationController@reject']);
-    Route::post('/reject/store', ['as' => '/application/rejectstore', 'uses' => '\App\Http\Controllers\ApplicationController@reject_store']);
-    });
+// Applications
+Route::prefix('application')->group(function () {
+    Route::get('/list', [\App\Http\Controllers\ApplicationController::class, 'applicationList'])->name('application.list');
+    Route::get('/add', [\App\Http\Controllers\ApplicationController::class, 'addapplication'])->name('application.add');
+    Route::post('/store', [\App\Http\Controllers\ApplicationController::class, 'store'])->name('application.store');
+    Route::get('/edit/{id}', [\App\Http\Controllers\ApplicationController::class, 'edit'])->name('application.edit');
+    Route::patch('/update/{id}', [\App\Http\Controllers\ApplicationController::class, 'update'])->name('application.update');
+    Route::get('/view/{id}', [\App\Http\Controllers\ApplicationController::class, 'showapplication'])->name('application.view');
+    Route::delete('/delete/{id}', [\App\Http\Controllers\ApplicationController::class, 'destroy'])->name('application.delete');
+    Route::get('/accept/{id}', [\App\Http\Controllers\ApplicationController::class, 'accept'])->name('application.accept');
+    Route::get('/reject/{id}', [\App\Http\Controllers\ApplicationController::class, 'reject'])->name('application.reject');
+    Route::post('/reject/store', [\App\Http\Controllers\ApplicationController::class, 'reject_store'])->name('application.reject.store');
+});
+
 //sifat sertificates online
 Route::group(['prefix' => 'sifat-sertificates'], function () {
     Route::get('/list', ['as'=>'/sifat-sertificates/list', 'uses' => '\App\Http\Controllers\Front\SifatSertificateController@applicationList']);
@@ -385,12 +386,6 @@ Route::group(['prefix' => 'hvi', 'middleware' => 'auth'], function () {
     Route::get('/update/{id}', '\App\Http\Controllers\FinalResultsController@update');
     });
 
-//final decisions
-Route::group(['prefix' => 'final_decision', 'middleware' => 'auth'], function () {
-    Route::get('/search', '\App\Http\Controllers\FinalDecisionController@search');
-    Route::get('/list', '\App\Http\Controllers\FinalDecisionController@list');
-    Route::get('/view/{id}', '\App\Http\Controllers\FinalDecisionController@view');
-});
 //Namlik
 Route::group(['prefix' => 'humidity', 'middleware' => 'auth'], function () {
     Route::get('/search', '\App\Http\Controllers\HumidityController@search')->name('humidity.search');

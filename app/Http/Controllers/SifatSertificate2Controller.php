@@ -43,8 +43,10 @@ class SifatSertificate2Controller extends Controller
                 Application::class,
                 [
                     'crops',
-                    'organization',
-                    'prepared'
+                    'crops.name',
+                    'organization.area.region',
+                    'prepared',
+                    'sifat_sertificate'
                 ],
                 compact('names', 'states', 'years','all_status'),
                 'sifat_sertificate2.list',

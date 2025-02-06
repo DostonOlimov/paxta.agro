@@ -12,45 +12,9 @@
                     </li>
                 </ol>
             </div>
-            @if (session('message'))
-                <div class="row massage">
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <div class="alert alert-success text-center">
-                            @if (session('message') == 'Successfully Submitted')
-                                <label for="checkbox-10 colo_success"> {{ trans('app.Successfully Submitted') }}</label>
-                            @elseif(session('message') == 'Successfully Updated')
-                                <label for="checkbox-10 colo_success"> {{ trans('app.Successfully Updated') }} </label>
-                            @elseif(session('message') == 'Successfully Deleted')
-                                <label for="checkbox-10 colo_success"> {{ trans('app.Successfully Deleted') }} </label>
-                            @elseif(session('message') == 'Certificate saved!')
-                                <label for="checkbox-10 colo_success"> Sertifikat fayli saqlandi! Yuklab olishingiz mumkin. </label>
-                                <script>
-                                    @php
-                                        $generatedAppId = $_GET['generatedAppId'] ?? 1;
-                                        $downloadUrl = route('sifat_sertificate.download', $generatedAppId);
-                                    @endphp
-                                    // Automatically trigger download after the page loads
-                                    window.onload = function() {
-                                        window.location.href = "{{ $downloadUrl }}";
-                                    };
-                                </script>
-                            @elseif(session('message') == 'Protocol saved!')
-                                <label for="checkbox-10 colo_success"> Bayonnoma fayli saqlandi! Yuklab olishingiz mumkin. </label>
-                                <script>
-                                    @php
-                                        $generatedAppId = $_GET['generatedAppId'] ?? 1;
-                                        $downloadUrl = route('laboratory_protocol.download', $generatedAppId);
-                                    @endphp
-                                    // Automatically trigger download after the page loads
-                                    window.onload = function() {
-                                        window.location.href = "{{ $downloadUrl }}";
-                                    };
-                                </script>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-            @endif
+            {{--      start of message component --}}
+                <x-flash-message />
+            {{--      end of message component --}}
 
             <div class="row">
                 <div class="col-md-12">

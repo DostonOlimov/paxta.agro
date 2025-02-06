@@ -17,7 +17,7 @@ use App\Services\SearchService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
@@ -39,9 +39,16 @@ class SertificateProtocolController extends Controller
                 [
                     'test_program',
                     'test_program.application',
+                    'test_program.application.sifat_sertificate',
+                    'test_program.application.crops',
+                    'test_program.application.crops.name',
                     'test_program.application.decision',
                     'test_program.application.organization',
+                    'test_program.application.organization.area.region',
                     'test_program.application.prepared',
+                    'laboratory_final_results',
+
+
                 ],
                 compact('names', 'states', 'years'),
                 'sertificate_protocol.list',

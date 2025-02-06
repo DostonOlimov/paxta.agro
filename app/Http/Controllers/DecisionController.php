@@ -12,6 +12,7 @@ use App\Models\TestPrograms;
 use App\Models\User;
 use App\Services\SearchService;
 use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Auth;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
@@ -39,7 +40,11 @@ class DecisionController extends Controller
                 [
                     'crops',
                     'organization',
-                    'prepared'
+                    'decision',
+                    'tests',
+                    'prepared',
+                    'crops.name',
+                    'organization.area.region'
                 ],
                 compact('names', 'states', 'years'),
                 'decision.search',

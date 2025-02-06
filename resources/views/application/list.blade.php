@@ -1,7 +1,10 @@
 @extends('layouts.app')
 @section('content')
 <!-- page content -->
-<?php $userid = Auth::user()->id; ?>
+@php
+    $sortService = new \App\Services\SortService('application.list');
+@endphp
+
 @can('viewAny', \App\Models\Application::class)
    <div class="section">
 			<!-- PAGE-HEADER -->
@@ -12,21 +15,11 @@
 				</li>
 			</ol>
 		</div>
-		@if(session('message'))
-		<div class="row massage">
-			<div class="col-md-12 col-sm-12 col-xs-12">
-				<div class="alert alert-success text-center">
-                @if(session('message') == 'Successfully Submitted')
-					<label for="checkbox-10 colo_success"> {{trans('app.Successfully Submitted')}}</label>
-				   @elseif(session('message')=='Successfully Updated')
-				   <label for="checkbox-10 colo_success"> {{ trans('app.Successfully Updated')}}  </label>
-				   @elseif(session('message')=='Successfully Deleted')
-				   <label for="checkbox-10 colo_success"> {{ trans('app.Successfully Deleted')}}  </label>
-			    @endif
-                </div>
-			</div>
-		</div>
-		@endif
+
+       {{--      start of message component --}}
+            <x-flash-message />
+       {{--      end of message component --}}
+
         <div class="row">
 			<div class="col-md-12">
 				<div class="card">
@@ -55,85 +48,19 @@
 						<div class="table-responsive">
 							<table class="table table-striped table-bordered nowrap display" style="margin-top:20px;" >
 								<thead>
-									<tr>
-                                        <th>#</th>
-                                        <th class="border-bottom-0 border-top-0">
-                                            <a href="{{ route('listapplication', ['sort_by' => 'status', 'sort_order' => ($sort_by === 'status' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
-                                                {{ trans('app.Ariza statusi') }}
-                                                @if($sort_by === 'status')
-                                                    @if($sort_order === 'asc')
-                                                        <i class="fa fa-arrow-up"></i>
-                                                    @else
-                                                        <i class="fa fa-arrow-down"></i>
-                                                    @endif
-                                                @endif
-                                            </a>
-                                        </th>
-										<th class="border-bottom-0 border-top-0">
-                                            <a href="{{ route('listapplication', ['sort_by' => 'id', 'sort_order' => ($sort_by === 'id' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
-                                                {{trans('app.Ariza raqami')}}
-                                                @if($sort_by === 'id')
-                                                    @if($sort_order === 'asc')
-                                                        <i class="fa fa-arrow-up"></i>
-                                                    @else
-                                                        <i class="fa fa-arrow-down"></i>
-                                                    @endif
-                                                @endif
-                                            </a>
-                                        </th>
-                                        <th class="border-bottom-0 border-top-0">
-                                            <a href="{{ route('listapplication', ['sort_by' => 'party_number', 'sort_order' => ($sort_by === 'party_number' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
-                                                {{trans('app.Toʼda (partiya) raqami')}}
-                                                @if($sort_by === 'party_number')
-                                                    @if($sort_order === 'asc')
-                                                        <i class="fa fa-arrow-up"></i>
-                                                    @else
-                                                        <i class="fa fa-arrow-down"></i>
-                                                    @endif
-                                                @endif
-                                            </a>
-                                        </th>
-                                        <th class="border-bottom-0 border-top-0">
-                                            <a href="{{ route('listapplication', ['sort_by' => 'date', 'sort_order' => ($sort_by === 'date' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
-                                                {{trans('app.Ariza sanasi')}}
-                                                @if($sort_by === 'date')
-                                                    @if($sort_order === 'asc')
-                                                        <i class="fa fa-arrow-up"></i>
-                                                    @else
-                                                        <i class="fa fa-arrow-down"></i>
-                                                    @endif
-                                                @endif
-                                            </a>
-                                        </th>
-                                        <th class="border-bottom-0 border-top-0">{{trans('app.Viloyat nomi')}}</th>
-										<th class="border-bottom-0 border-top-0">
-                                            <a href="{{ route('listapplication', ['sort_by' => 'organization', 'sort_order' => ($sort_by === 'organization' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
-                                                {{trans('app.Buyurtmachi korxona yoki tashkilot nomi')}}
-                                                @if($sort_by === 'organization')
-                                                    @if($sort_order === 'asc')
-                                                        <i class="fa fa-arrow-up"></i>
-                                                    @else
-                                                        <i class="fa fa-arrow-down"></i>
-                                                    @endif
-                                                @endif
-                                            </a>
-                                        </th>
-										<th class="border-bottom-0 border-top-0">{{trans('app.Sertifikatlanuvchi mahsulot')}}</th>
-										<th class="border-bottom-0 border-top-0">
-                                            <a href="{{ route('listapplication', ['sort_by' => 'amount', 'sort_order' => ($sort_by === 'amount' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
-                                                {{trans('app.amount')}}
-                                                @if($sort_by === 'amount')
-                                                    @if($sort_order === 'asc')
-                                                        <i class="fa fa-arrow-up"></i>
-                                                    @else
-                                                        <i class="fa fa-arrow-down"></i>
-                                                    @endif
-                                                @endif
-                                            </a>
-                                        </th>
-										<th class="border-bottom-0 border-top-0">{{trans('app.Hosil yili')}}</th>
-                                        <th class="border-bottom-0 border-top-0">{{trans('app.Action')}}</th>
-									</tr>
+                                <tr>
+                                    <th>#</th>
+                                    <th>{!! $sortService->sortable('status', 'app.Ariza statusi') !!}</th>
+                                    <th>{!! $sortService->sortable('id', 'app.Ariza raqami') !!}</th>
+                                    <th>{!! $sortService->sortable('party_number', 'app.Toʼda (partiya) raqami') !!}</th>
+                                    <th>{!! $sortService->sortable('date', 'app.Ariza sanasi') !!}</th>
+                                    <th>{{ trans('app.Viloyat nomi') }}</th>
+                                    <th>{!! $sortService->sortable('organization', 'app.Buyurtmachi korxona yoki tashkilot nomi') !!}</th>
+                                    <th>{{ trans('app.Sertifikatlanuvchi mahsulot') }}</th>
+                                    <th>{!! $sortService->sortable('amount', 'app.amount') !!}</th>
+                                    <th>{{ trans('app.Hosil yili') }}</th>
+                                    <th>{{ trans('app.Action') }}</th>
+                                </tr>
 								</thead>
 								<tbody>
                                 <tr style="background-color: #90aec6 !important;">

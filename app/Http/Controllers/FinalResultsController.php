@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Filters\V1\DalolatnomaFilter;
-use App\Http\Controllers\Traits\DalolatnomaTrait;
 use App\Models\Application;
 use App\Models\ClampData;
 use App\Models\Dalolatnoma;
@@ -16,6 +15,7 @@ use App\Services\SearchService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Response;
 
 class FinalResultsController extends Controller
 {
@@ -41,9 +41,15 @@ class FinalResultsController extends Controller
                 [
                     'test_program',
                     'test_program.application',
+                    'test_program.application.crops',
+                    'test_program.application.crops.name',
                     'test_program.application.decision',
                     'test_program.application.organization',
+                    'test_program.application.organization.area.region',
                     'test_program.application.prepared',
+                    'measurement_mistake',
+                    'laboratory_result',
+                    'laboratory_final_results'
                 ],
                 compact('names', 'states', 'years'),
                 'final_results.search',

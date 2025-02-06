@@ -1,7 +1,9 @@
 @extends('layouts.app')
 @section('content')
     <!-- page content -->
-    <?php $userid = Auth::user()->id; ?>
+    @php
+        $sortService = new \App\Services\SortService('final_results.search');
+    @endphp
     @can('viewAny',\App\Models\User::class)
         <div class="section">
             <!-- PAGE-HEADER -->
@@ -12,21 +14,10 @@
                     </li>
                 </ol>
             </div>
-            @if(session('message'))
-                <div class="row massage">
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <div class="alert alert-success text-center">
-                            @if(session('message') == 'Successfully Submitted')
-                                <label for="checkbox-10 colo_success"> {{trans('app.Successfully Submitted')}}</label>
-                            @elseif(session('message')=='Successfully Updated')
-                                <label for="checkbox-10 colo_success"> {{ trans('app.Successfully Updated')}}  </label>
-                            @elseif(session('message')=='Successfully Deleted')
-                                <label for="checkbox-10 colo_success"> {{ trans('app.Successfully Deleted')}}  </label>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-        @endif
+            {{--      start of message component --}}
+            <x-flash-message />
+            {{--      end of message component --}}
+
 
             <div class="row">
                 <div class="col-md-12">
@@ -36,61 +27,17 @@
                                 <table class="table table-striped table-bordered nowrap" style="margin-top:20px;" >
                                     <thead>
                                     <tr>
-                                        <th class="border-bottom-0 border-top-0">#</th>
-                                        <th class="border-bottom-0 border-top-0">
-                                            <a href="{{ route('final_results.search', ['sort_by' => 'number', 'sort_order' => ($sort_by === 'number' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
-                                                {{ trans('app.Dalolatnoma raqami') }}
-                                                @if($sort_by === 'number')
-                                                    @if($sort_order === 'asc')
-                                                        <i class="fa fa-arrow-up"></i>
-                                                    @else
-                                                        <i class="fa fa-arrow-down"></i>
-                                                    @endif
-                                                @endif
-                                            </a>
-                                        </th>
-                                        <th class="border-bottom-0 border-top-0">
-                                            <a href="{{ route('final_results.search', ['sort_by' => 'party_number', 'sort_order' => ($sort_by === 'party_number' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
-                                                {{ trans('app.To\'da (partya) raqami') }}
-                                                @if($sort_by === 'party_number')
-                                                    @if($sort_order === 'asc')
-                                                        <i class="fa fa-arrow-up"></i>
-                                                    @else
-                                                        <i class="fa fa-arrow-down"></i>
-                                                    @endif
-                                                @endif
-                                            </a>
-                                        </th>
-                                        <th class="border-bottom-0 border-top-0">
-                                            <a href="{{ route('final_results.search', ['sort_by' => 'date', 'sort_order' => ($sort_by === 'date' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
-                                                {{ trans('app.Dalolatnoma sanasi') }}
-                                                @if($sort_by === 'date')
-                                                    @if($sort_order === 'asc')
-                                                        <i class="fa fa-arrow-up"></i>
-                                                    @else
-                                                        <i class="fa fa-arrow-down"></i>
-                                                    @endif
-                                                @endif
-                                            </a>
-                                        </th>
-                                        <th class="border-bottom-0 border-top-0">{{trans('app.Viloyat nomi')}}</th>
-                                        <th class="border-bottom-0 border-top-0">
-                                            <a href="{{ route('final_results.search', ['sort_by' => 'organization', 'sort_order' => ($sort_by === 'organization' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
-                                                {{trans('app.Buyurtmachi korxona yoki tashkilot nomi')}}
-                                                @if($sort_by === 'organization')
-                                                    @if($sort_order === 'asc')
-                                                        <i class="fa fa-arrow-up"></i>
-                                                    @else
-                                                        <i class="fa fa-arrow-down"></i>
-                                                    @endif
-                                                @endif
-                                            </a>
-                                        </th>
-                                        <th class="border-bottom-0 border-top-0">
-                                            {{ trans('app.Zavod nomi va kodi') }}
-                                        </th>
-                                        <th>{{trans('app.Sertifikatlanuvchi mahsulot')}}</th>
-                                        <th>{{trans('app.Action')}}</th>
+                                        <th>#</th>
+                                        <th>{!! $sortService->sortable('number', 'app.Dalolatnoma raqami') !!}</th>
+                                        <th>{!! $sortService->sortable('party_number', 'app.Toʼda (partiya) raqami') !!}</th>
+                                        <th>{!! $sortService->sortable('date', 'app.Dalolatnoma sanasi') !!}</th>
+                                        <th>{{ trans('app.Viloyat nomi') }}</th>
+                                        <th>{!! $sortService->sortable('organization', 'app.Buyurtmachi korxona yoki tashkilot nomi') !!}</th>
+                                        <th>{{ trans('app.Zavod nomi va kodi') }}</th>
+                                        <th>{{ trans('app.Sertifikatlanuvchi mahsulot') }}</th>
+                                        <th>{{ trans('app.Sof og\'irligi (kg)') }}</th>
+                                        <th>{{ trans('app.Action') }}</th>
+                                        <th></th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -170,7 +117,7 @@
                                             <td><a href="#" class="company-link" data-id="{{ $app->test_program->application->organization_id }}">{{ optional($app->test_program->application->organization)->name }}</a></td>
                                             <td>{{ optional($app->test_program)->application->prepared->name }} - {{ optional($app->test_program)->application->prepared->kod }}</td>
                                             <td>{{ optional($app->test_program)->application->crops->name->name }}</td>
-                                            <td @if(! $app->result_sum_amount) class="text-danger" @endif>{{ $app->result_sum_amount ? $app->result_sum_amount - $app->toy_count * $app->tara : 0 }} kg</td>
+                                            <td @if(! $app->result_sum_amount) class="text-danger" @endif>{{ $app->result_sum_amount ? round($app->result_sum_amount - $app->toy_count * $app->tara) : 0 }} kg</td>
                                             <td>
                                                 @if( isset($app->laboratory_result))
                                                     <a href="{!! url('/final_results/add/'. $app->id) !!}"><button type="button" class="btn btn-round btn-success">{{ trans('app.Qo\'shish')}}</button></a>

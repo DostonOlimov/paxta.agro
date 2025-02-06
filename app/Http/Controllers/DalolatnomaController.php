@@ -38,8 +38,11 @@ class DalolatnomaController extends Controller
                 Application::class,
                 [
                     'crops',
+                    'tests.dalolatnoma',
                     'organization',
-                    'prepared'
+                    'prepared',
+                    'crops.name',
+                    'organization.area.region'
                 ],
                 compact('names', 'states', 'years','all_status'),
                 'dalolatnoma.search',

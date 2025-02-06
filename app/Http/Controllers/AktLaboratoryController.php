@@ -9,6 +9,7 @@ use App\Models\ClampData;
 use App\Models\Dalolatnoma;
 use App\Services\SearchService;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 
 class AktLaboratoryController extends Controller

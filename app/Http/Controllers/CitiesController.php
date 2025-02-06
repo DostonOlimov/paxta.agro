@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
 use Illuminate\Http\Request;
-use App\tbl_cities;
 use Illuminate\Support\Facades\DB;
 
 class CitiesController extends Controller

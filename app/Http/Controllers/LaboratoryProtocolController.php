@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Filters\V1\DalolatnomaFilter;
-use App\Http\Controllers\Traits\DalolatnomaTrait;
 use App\Models\Application;
 use App\Models\ClampData;
 use App\Models\Dalolatnoma;
@@ -11,10 +10,10 @@ use App\Models\FinalResult;
 use App\Models\LaboratoryFinalResults;
 use App\Models\LaboratoryOperator;
 use App\Models\MeasurementMistake;
-use App\Models\User;
 use App\Services\SearchService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
@@ -35,9 +34,15 @@ class LaboratoryProtocolController extends Controller
                 [
                     'test_program',
                     'test_program.application',
+                    'test_program.application.crops',
+                    'test_program.application.crops.name',
                     'test_program.application.decision',
                     'test_program.application.organization',
+                    'test_program.application.organization.area.region',
                     'test_program.application.prepared',
+                    'measurement_mistake',
+                    'laboratory_result',
+                    'laboratory_final_results'
                 ],
                 compact('names', 'states', 'years'),
                 'laboratory_protocol.list',

@@ -11,6 +11,7 @@ use App\Models\Humidity;
 use App\Services\SearchService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 class HumidityController extends Controller
 {
@@ -29,9 +30,13 @@ class HumidityController extends Controller
                 [
                     'test_program',
                     'test_program.application',
+                    'test_program.application.crops',
+                    'test_program.application.crops.name',
                     'test_program.application.decision',
                     'test_program.application.organization',
+                    'test_program.application.organization.area.region',
                     'test_program.application.prepared',
+                    'humidity'
                 ],
                 compact('names', 'states', 'years'),
                 'humidity.search',

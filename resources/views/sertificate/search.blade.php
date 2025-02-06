@@ -1,7 +1,9 @@
 @extends('layouts.app')
 @section('content')
     <!-- page content -->
-    <?php $userid = Auth::user()->id; ?>
+    @php
+        $sortService = new \App\Services\SortService('measurement_mistake.search');
+    @endphp
     @can('viewAny',\App\Models\User::class)
         <div class="section">
             <!-- PAGE-HEADER -->
@@ -12,21 +14,10 @@
                     </li>
                 </ol>
             </div>
-            @if(session('message'))
-                <div class="row massage">
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <div class="alert alert-success text-center">
-                            @if(session('message') == 'Successfully Submitted')
-                                <label for="checkbox-10 colo_success"> {{trans('app.Successfully Submitted')}}</label>
-                            @elseif(session('message')=='Successfully Updated')
-                                <label for="checkbox-10 colo_success"> {{ trans('app.Successfully Updated')}}  </label>
-                            @elseif(session('message')=='Successfully Deleted')
-                                <label for="checkbox-10 colo_success"> {{ trans('app.Successfully Deleted')}}  </label>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-            @endif
+            {{--      start of message component --}}
+            <x-flash-message />
+            {{--      end of message component --}}
+
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">

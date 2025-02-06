@@ -31,7 +31,7 @@
 									</ul>
 								</div>
 							</div>
-							<form method="post" action="update/{{ $app->id }}" enctype="multipart/form-data" class="form-horizontal upperform">
+							<form method="post" action="/application/update/{{ $app->id }}" enctype="multipart/form-data" class="form-horizontal upperform">
                                 <div class="row" >
                                     {!! method_field('patch') !!}
                                     <input type="hidden" name="_token" value="{{csrf_token()}}">

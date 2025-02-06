@@ -12,7 +12,6 @@ use App\Models\Decision;
 use App\Models\Laboratories;
 use App\Models\OrganizationCompanies;
 use App\Models\TestPrograms;
-use App\Rules\CheckingParyNumber;
 use App\Services\SearchService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -22,7 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ApplicationController extends Controller
 {
-    public function applicationlist(Request $request, ApplicationFilter $filter,SearchService $service)
+    public function applicationList(Request $request, ApplicationFilter $filter,SearchService $service)
     {
         try {
             $names = getCropsNames();
@@ -37,7 +36,9 @@ class ApplicationController extends Controller
                     [
                         'crops',
                         'organization',
-                        'prepared'
+                        'prepared',
+                        'crops.name',
+                        'organization.area.region'
                     ],
                     compact('names', 'states', 'years','all_status'),
                     'application.list',
@@ -140,7 +141,7 @@ class ApplicationController extends Controller
             ]);
         }
 
-        return redirect()->route('listapplication')->with('message', 'Successfully Submitted');
+        return redirect()->route('application.list')->with('message', 'Successfully Submitted');
     }
 
     // application edit
@@ -198,7 +199,7 @@ class ApplicationController extends Controller
             'time'        => now(),
         ]);
 
-        return redirect()->route('listapplication')->with('message', 'Successfully Updated');
+        return redirect()->route('application.list')->with('message', 'Successfully Updated');
     }
 
     public function showapplication($id)
@@ -222,7 +223,7 @@ class ApplicationController extends Controller
             'accepted_id'  => Auth::id(),
         ]);
 
-        return redirect()->route('listapplication')->with('message', 'Successfully Accepted');
+        return redirect()->route('application.list')->with('message', 'Successfully Accepted');
     }
 
     //reject online applications
@@ -249,7 +250,7 @@ class ApplicationController extends Controller
             'user_id' => Auth::id(),
         ]);
 
-        return redirect()->route('listapplication')->with('message', 'Application Rejected Successfully');
+        return redirect()->route('application.list')->with('message', 'Application Rejected Successfully');
     }
 
 }

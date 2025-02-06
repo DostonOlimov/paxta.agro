@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\Filters\V1\DalolatnomaFilter;
 use App\Models\Dalolatnoma;
 use App\Models\Indicator;
-use App\Models\LaboratoryFinalResults;
 use App\Models\LaboratoryResult;
 use App\Services\SearchService;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class LaboratoryResultController extends Controller
 {

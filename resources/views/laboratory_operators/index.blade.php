@@ -13,40 +13,12 @@
             </div>
 
             <!-- Session-based messages -->
-            @if (session('message'))
-                <div class="row">
-                    <div class="col-md-12">
-                        <div
-                            class="alert text-center
-                            @php
-                                echo (session('message') == 'Cannot Delete' || session('message') == 'Duplicate Data') ? 'alert-danger' : 'alert-success'; @endphp">
-                            @switch(session('message'))
-                                @case('Successfully Submitted')
-                                    {{ trans('app.Successfully Submitted') }}
-                                @break
+            {{--      start of message component --}}
+            <x-flash-message />
+        {{--      end of message component --}}
 
-                                @case('Successfully Updated')
-                                    {{ trans('app.Successfully Updated') }}
-                                @break
 
-                                @case('Successfully Deleted')
-                                    {{ trans('app.Successfully Deleted') }}
-                                @break
-
-                                @case('Duplicate Data')
-                                    {{ trans('app.Duplicate Data') }}
-                                @break
-
-                                @case('Cannot Delete')
-                                    {{ trans('app.Cannot Delete') }}
-                                @break
-                            @endswitch
-                        </div>
-                    </div>
-                </div>
-            @endif
-
-            <!-- Main content -->
+        <!-- Main content -->
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">

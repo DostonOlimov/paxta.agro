@@ -6,14 +6,12 @@
             <Datepicker
                 v-model="startDate"
                 :format="'yyyy-MM-dd'"
-                @change="onDateChange"
+                @change="onDateChange()"
                 placeholder="Boshlanish sanasini tanlang"
             />
-
-            <label for="end-date">Tugash sanasi:</label>
             <Datepicker
                 v-model="endDate"
-                :format="'dd-MM-yyyy'"
+                :format="'yyyy-MM-dd'"
                 @change="onDateChange"
                 placeholder="Tugash sanasini tanlang"
             />

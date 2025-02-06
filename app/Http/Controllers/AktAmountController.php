@@ -9,6 +9,7 @@ use App\Models\GinBalles;
 use App\Models\TestPrograms;
 use App\Services\SearchService;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\DB;
 
 class AktAmountController extends Controller
@@ -28,8 +29,11 @@ class AktAmountController extends Controller
                 [
                     'test_program',
                     'test_program.application',
+                    'test_program.application.crops',
+                    'test_program.application.crops.name',
                     'test_program.application.decision',
                     'test_program.application.organization',
+                    'test_program.application.organization.area.region',
                     'test_program.application.prepared',
                 ],
                 compact('names', 'states', 'years'),
