@@ -136,33 +136,6 @@ class Application extends Model
          }
     }
 
-    public function getSertificateQualityAttribute()
-    {
-
-        $nuqsondorlik = $this->chigit_result()->where('indicator_id', 9)->value('value');
-        $tukdorlik = $this->chigit_result()->where('indicator_id', 12)->value('value');
-        $namlik = $this->chigit_result()->where('indicator_id', 11)->value('value');
-
-        if (!$nuqsondorlik || !$tukdorlik) {
-            return false;
-        }
-
-        $cropId = $this->crops->name_id ?? null;
-
-        $tipQuery = ChigitTips::where('nuqsondorlik', '>=', $nuqsondorlik)
-            ->where('crop_id', $cropId);
-
-        if ($cropId == 2) {
-            $tipQuery->where('tukdorlik', '>=', $tukdorlik)
-                ->where('tukdorlik_min', '<=', $tukdorlik);
-        }
-
-        $tip = $tipQuery->first();
-
-        return $tip && $namlik <= $tip->namlik
-            && $tukdorlik <= $tip->tukdorlik
-            && $tukdorlik >= $tip->tukdorlik_min;
-    }
 
     public function getYear()
     {

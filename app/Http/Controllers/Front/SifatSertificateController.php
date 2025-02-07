@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Front;
 
 
 use App\Filters\V1\ApplicationFilter;
+use App\HelperClasses\ChigitQualityEvaluator;
 use App\Http\Controllers\Controller;
 use App\Models\Application;
 use App\Models\ChigitLaboratories;
@@ -77,8 +78,8 @@ class SifatSertificateController extends Controller
     public function addApplication($organization)
     {
         $user = Auth::user();
-        $names = DB::table('crops_name')->where('id','!=',1)->get()->toArray();
-        $selection = CropsSelection::get();
+        $names = getCropsNames();
+        $selection = getSelections();
         $laboratories = ChigitLaboratories::whereHas('zavod', function ($query) use ($user) {
             $query->where('state_id', '=', $user->state_id);
         })->get();
@@ -392,36 +393,8 @@ class SifatSertificateController extends Controller
 // Private method to avoid code duplication
     private function getChigitValuesAndTip($application)
     {
-        $nuqsondorlik = optional($application->chigit_result()->where('indicator_id', 9)->first())->value;
-        $tukdorlik = optional($application->chigit_result()->where('indicator_id', 12)->first())->value;
-        $namlik = optional($application->chigit_result()->where('indicator_id', 11)->first())->value;
-        $zararkunanda = optional($application->chigit_result()->where('indicator_id', 10)->first())->value;
-
-        $tip = null;
-        if($nuqsondorlik and $tukdorlik){
-            $tip = ChigitTips::where('nuqsondorlik', '>=', $nuqsondorlik);
-            if($application->crops->name_id == 2){
-                $tip = $tip->where('tukdorlik', '>=', $tukdorlik)
-                    ->where('tukdorlik_min', '<=', $tukdorlik);
-            }
-
-                $tip = $tip->where('crop_id', $application->crops->name_id)
-                ->first();
-        }
-
-        $quality = false;
-        if($tip && $namlik <= $tip->namlik && $tukdorlik <= $tip->tukdorlik and $tukdorlik >= $tip->tukdorlik_min){
-            $quality = true;
-        }
-
-        return [
-            'nuqsondorlik' => $nuqsondorlik,
-            'tukdorlik' => $tukdorlik,
-            'namlik' => $namlik,
-            'zararkunanda' => $zararkunanda,
-            'tip' => $tip,
-            'quality' => $quality
-        ];
+        $evaluator = new ChigitQualityEvaluator($application);
+        return $evaluator->getResults();
     }
 }
 

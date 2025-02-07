@@ -68,13 +68,13 @@
                         </a>
                     </li>
                     <li class="btn-primary">
-                        <a class="text-light" href="{!! url('/sifat-sertificates/edit/'.$test->id)!!}">
+                        <a class="text-light" href="{!! url('/sifat-sertificates2/edit/'.$test->id)!!}">
                             <span class="visible-xs"></span>
                             <i class="fa fa-edit fa-lg">&nbsp;</i> {{ trans('app.Edit')}}
                         </a>
                     </li>
                     <li class="btn-success">
-                        <a class="text-light sa-warning" url="{!! url('/sifat-sertificates/accept/'.$test->id)!!}">
+                        <a class="text-light sa-warning" url="{!! url('/sifat-sertificates2/accept/'.$test->id)!!}">
                             <span class="visible-xs"></span>
                             <i class="fa fa-check fa-lg">&nbsp;</i> Tasdiqlash
                         </a>

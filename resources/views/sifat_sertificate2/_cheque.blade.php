@@ -1,5 +1,5 @@
 @php
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
+    use SimpleSoftwareIO\QrCode\Facades\QrCode;
 @endphp
 <style>
     #invoice-cheque {
@@ -102,18 +102,18 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 <div id="invoice-cheque" class="py-4 col-12 background-image">
     @if($quality)
-    <div class="text-center">
-        <img height="300" src="{{ asset('/img/dashboard/gerb.png') }}">
-    </div>
+        <div class="text-center">
+            <img height="300" src="{{ asset('/img/dashboard/gerb.png') }}">
+        </div>
     @endif
     <h2 style="text-align: center"> Agrosanoat majmui ustidan nazorat qilish
         Inspeksiyasi qoshidagi <br> “Qishloq xo‘jaligi mahsulotlari sifatini baholash markazi” <br> davlat muassasasi</h2>
 
     @if($quality)
-    <h1 class="text-center"><b>SIFAT SERTIFIKATI</b></h1>
-    <h2 class="text-center">Reestr raqami: </h2>
+        <h1 class="text-center"><b>SIFAT SERTIFIKATI</b></h1>
+        <h2 class="text-center">Reestr raqami: </h2>
     @else
-    <h1 class="text-center " style="color:#f3775b"><b>Nomuvofiqlik bayonnomasi</b></h1>
+        <h1 class="text-center " style="color:#f3775b"><b>Nomuvofiqlik bayonnomasi</b></h1>
     @endif
 
     <h2 class="text-left"><b>Sertifikatlanuvchi mahsulot nomi :</b> {{$test->crops->name->name}} </h2>
@@ -136,61 +136,61 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
     <h3 class="text-center"> ISHLAB CHIQARUVCHI (YETKAZIB BERUVCHI) NING MA’LUMOTLARI</h3>
     <table class="table table-bordered">
         <thead>
-            <tr>
-                <th>Texnik chigit turi (jinlangan/linterlangan)</th>
-                <th>Seleksiya navi</th>
-                <th>Netto massasi (kg)</th>
-                <th>Konditsion massasi (kg)</th>
-            </tr>
+        <tr>
+            <th>Texnik chigit turi (jinlangan/linterlangan)</th>
+            <th>Seleksiya navi</th>
+            <th>Netto massasi (kg)</th>
+            <th>Konditsion massasi (kg)</th>
+        </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>{{ $test->crops->name->name }}</td>
-                <td>{{ optional($test->crops->selection)->name }}</td>
-                <td>{{ $test->crops->amount }}</td>
-                <td>{{ round ($test->crops->amount * (100 - $namlik - $zararkunanda) / (100 - 10 - 0.5)) }}</td>
-            </tr>
+        <tr>
+            <td>{{ $test->crops->name->name }}</td>
+            <td>{{ optional($test->crops->selection)->name }}</td>
+            <td>{{ $test->crops->amount }}</td>
+            <td>{{ round ($test->crops->amount * (100 - $namlik - $zararkunanda) / (100 - 10 - 0.5)) }}</td>
+        </tr>
         </tbody>
     </table>
     <h3 class="text-center"> IJROCHINING MA’LUMOTLARI</h3>
     <table class="table table-bordered">
         <thead>
-            <tr>
-                <th rowspan="2">Navi/ sinfi</th>
-                <th colspan="2">O’zDSt 597 Nuqsonli chigitning massaviy ulushi (%)</th>
-                <th colspan="2">O’zDSt 599 Mineral va organik aralashmalarning massaviy ulushi (%)</th>
-                <th colspan="2">O’zDSt 601 Tukdorlikning massaviy ulushi (%)</th>
-                <th colspan="2">O’zDSt 600 Namlikning massaviy ulushi (%)</th>
-            </tr>
-            <tr>
-                <th>Me'yorda</th>
-                <th>Amalda</th>
-                <th>Me'yor</th>
-                <th>Amalda</th>
-                <th>Me'yor</th>
-                <th>Amalda</th>
-                <th>Me'yor</th>
-                <th>Amalda</th>
-            </tr>
+        <tr>
+            <th rowspan="2">Navi/ sinfi</th>
+            <th colspan="2">O’zDSt 597 Nuqsonli chigitning massaviy ulushi (%)</th>
+            <th colspan="2">O’zDSt 599 Mineral va organik aralashmalarning massaviy ulushi (%)</th>
+            <th colspan="2">O’zDSt 601 Tukdorlikning massaviy ulushi (%)</th>
+            <th colspan="2">O’zDSt 600 Namlikning massaviy ulushi (%)</th>
+        </tr>
+        <tr>
+            <th>Me'yorda</th>
+            <th>Amalda</th>
+            <th>Me'yor</th>
+            <th>Amalda</th>
+            <th>Me'yor</th>
+            <th>Amalda</th>
+            <th>Me'yor</th>
+            <th>Amalda</th>
+        </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>{{ optional($tip)->nav }} / {{ optional($tip)->sinf ?? '-' }}</td>
-                <td>{{ number_format( optional($tip)->nuqsondorlik, 1, '.', '.') }}</td>
-                <td @if($nuqsondorlik> optional($tip)->nuqsondorlik) style="color:red" @endif>{{ number_format( $nuqsondorlik, 1, '.', '.') }}</td>
-                <td> - </td>
-                <td>{{ number_format( $zararkunanda, 1, '.', '.') }}</td>
-                <td>@if(optional($tip)->tukdorlik_min) {{ number_format( optional($tip)->tukdorlik_min, 1, '.', '.')}} - @endif{{ number_format( optional($tip)->tukdorlik, 1, '.', '.') }}</td>
-                <td @if(optional($tip)->tukdorlik_min > $tukdorlik or $tukdorlik > optional($tip)->tukdorlik) style="color:red" @endif>{{ number_format( $tukdorlik, 1, '.', '.') }}</td>
-                <td>{{ number_format( optional($tip)->namlik, 1, '.', '.') }}</td>
-                <td @if($namlik> optional($tip)->namlik) style="color:red" @endif>{{ number_format( $namlik, 1, '.', '.') }}</td>
-            </tr>
+        <tr>
+            <td>{{ optional($tip)->nav }} / {{ optional($tip)->sinf ?? '-' }}</td>
+            <td>{{ number_format( optional($tip)->nuqsondorlik, 1, '.', '.') }}</td>
+            <td @if($nuqsondorlik> optional($tip)->nuqsondorlik) style="color:red" @endif>{{ number_format( $nuqsondorlik, 1, '.', '.') }}</td>
+            <td> - </td>
+            <td>{{ number_format( $zararkunanda, 1, '.', '.') }}</td>
+            <td>@if(optional($tip)->tukdorlik_min) {{ number_format( optional($tip)->tukdorlik_min, 1, '.', '.')}} - @endif{{ number_format( optional($tip)->tukdorlik, 1, '.', '.') }}</td>
+            <td @if(optional($tip)->tukdorlik_min > $tukdorlik or $tukdorlik > optional($tip)->tukdorlik) style="color:red" @endif>{{ number_format( $tukdorlik, 1, '.', '.') }}</td>
+            <td>{{ number_format( optional($tip)->namlik, 1, '.', '.') }}</td>
+            <td @if($namlik> optional($tip)->namlik) style="color:red" @endif>{{ number_format( $namlik, 1, '.', '.') }}</td>
+        </tr>
         </tbody>
     </table>
     @if($quality)
-    <h3 class="main__intro"> To‘da yuqoridagi ko‘rsatkichlari bo‘yicha O’z DSt 596 standartining 4.1, 4.2 bandlariga muvofiq.</h3>
+        <h3 class="main__intro"> To‘da yuqoridagi ko‘rsatkichlari bo‘yicha O’z DSt 596 standartining 4.1, 4.2 bandlariga muvofiq.</h3>
     @else
-    <h3 class="main__intro" style="color:#f3775b"> To‘da yuqoridagi ko‘rsatkichlari bo‘yicha O’z DSt 596 standartining bandlariga nomuvofiq.</h3>
+        <h3 class="main__intro" style="color:#f3775b"> To‘da yuqoridagi ko‘rsatkichlari bo‘yicha O’z DSt 596 standartining bandlariga nomuvofiq.</h3>
     @endif
     <h5 style="margin-top: 10px; line-height: 1.2">
         Alohida yozuvlar: Sifat sertifikati O'zDst 596 standartiga to'liq rioya qilinganda va QR-kod bilan tasdiqlanganda haqiqiy hisoblanadi.
@@ -200,19 +200,21 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
         <div class="col-sm-6">
             <span style="padding: 5px; display: block;"><b>Ijrochi :</b>
                 {{ optional($test->prepared)->region->name }} filialining<br>
-                @if(Auth::User()->role == \App\Models\User::ROLE_STATE_CHIGIT)
-                bosh mutaxassissi:
+                @if(Auth::User()->role == \App\Models\User::ROLE_STATE_CHIGI_XODIM)
+                    bosh mutaxassisi:
+                @elseif(Auth::User()->role == \App\Models\User::ROLE_STATE_CHIGIT_BOSHLIQ)
+                    laboratoriya boshlig'i
                 @else
-                {{ optional(optional($test->prepared)->chigit_laboratory)->name }}<br>
-                mudiri-guruh rahbari :
+                    {{ optional(optional($test->prepared)->chigit_laboratory)->name }}<br>
+                    mudiri-guruh rahbari :
                 @endif
                 {{ optional($test->user)->lastname . ' ' . (optional($test->user)->name) }}
             </span>
         </div>
         <div class="col-sm-2"></div>
-        <!-- {{--        <div class="col-sm-4" style="display: flex; flex-direction: column; justify-content: end;">--}}
-{{--            <div class="text-center"> {!! $qrCode !!}</div>--}}
-{{--        </div>--}} -->
+    <!-- {{--        <div class="col-sm-4" style="display: flex; flex-direction: column; justify-content: end;">--}}
+    {{--            <div class="text-center"> {!! $qrCode !!}</div>--}}
+    {{--        </div>--}} -->
     </div>
 </div>
 

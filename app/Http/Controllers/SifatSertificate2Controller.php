@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 
 use App\Filters\V1\ApplicationFilter;
+use App\HelperClasses\ChigitQualityEvaluator;
 use App\Models\Application;
+use App\Models\ChigitLaboratories;
 use App\Models\ChigitResult;
-use App\Models\ChigitTips;
+use App\Models\ClientData;
 use App\Models\CropData;
 use App\Models\CropsSelection;
 use App\Models\Indicator;
@@ -27,15 +29,12 @@ class SifatSertificate2Controller extends Controller
 
     public function applicationList(Request $request, ApplicationFilter $filter,SearchService $service)
     {
-        $user = Auth::user();
         try {
 
             $names = getCropsNames();
             $states = getRegions();
             $years = getCropYears();
             $all_status = getAppStatus();
-
-        //    $condition = $user->branch_id == \App\Models\User::BRANCH_STATE ? [] : ['created_by', '=', $user->id];
 
             return $service->search(
                 $request,
@@ -71,9 +70,11 @@ class SifatSertificate2Controller extends Controller
     {
         $user = Auth::user();
         $names = getCropsNames();
-        $selection = CropsSelection::get();
-        $laboratories = PreparedCompanies::where('state_id', '=', $user->state_id)->get();
+        $selection = getSelections();
         $years = CropData::getYear();
+        $laboratories = ChigitLaboratories::whereHas('zavod', function ($query) use ($user) {
+            $query->where('state_id', '=', $user->state_id);
+        })->get();
 
         return view('sifat_sertificate2.add',compact('organization','user','years','laboratories','selection','names'));
 
@@ -106,10 +107,14 @@ class SifatSertificate2Controller extends Controller
             'sxeme_number'  => 7,
         ]);
 
+        $zavod_id = $user->zavod_id;
+        if($lab_id = $request->input('laboratory')){
+            $zavod_id = ChigitLaboratories::findOrFail($lab_id)->zavod->id;
+        }
         $application = Application::create([
             'crop_data_id'     => $crop->id,
             'organization_id'  => $request->input('organization'),
-            'prepared_id'      => $request->input('laboratory') ,
+            'prepared_id'      => $zavod_id ,
             'type'             => Application::TYPE_1,
             'date'             => $request->input('dob') ? date('Y-m-d', strtotime($request->input('dob'))) : date('Y-m-d'),
             'status'           => Application::STATUS_FINISHED,
@@ -127,12 +132,34 @@ class SifatSertificate2Controller extends Controller
             'time'        => now(),
         ]);
 
-        return redirect()->route('sifat-sertificates2.add_result',$application->id)->with('message', 'Successfully Submitted');
+        return redirect()->route('sifat-sertificates2.add_client',$application->id)->with('message', 'Successfully Submitted');
+    }
+
+    public function addClientData($id)
+    {
+        $user = Auth::user();
+        $clients = DB::table('clients')->get()->toArray();
+
+        return view('sifat_sertificate2.client_data_add',compact('clients','id','user'));
+
+    }
+    public function ClientDataStore(Request $request)
+    {
+
+        $crop = ClientData::create([
+            'app_id'       => $request->input('id'),
+            'client_id'    => $request->input('client') ?? 0,
+            'vagon_number'      => $request->input('number'),
+            'yuk_xati'  => $request->input('yuk_xati'),
+        ]);
+
+
+        return redirect()->route('sifat-sertificates2.add_result',$request->input('id'))->with('message', 'Successfully Submitted');
     }
 
     public function addResult($id)
     {
-        $indicators = Indicator::where('crop_id','=',1)
+        $indicators = Indicator::where('crop_id','=',2)
             ->get();
         return view('sifat_sertificate2.add_result',compact('indicators','id'));
 
@@ -141,7 +168,7 @@ class SifatSertificate2Controller extends Controller
     {
         $appId = $request->input('id');
 
-        $indicators = Indicator::where('crop_id', 1)->pluck('id');
+        $indicators = Indicator::where('crop_id', 2)->pluck('id');
 
         $results = $indicators->map(function ($indicatorId) use ($appId, $request) {
             return [
@@ -253,7 +280,12 @@ class SifatSertificate2Controller extends Controller
     public function accept($id)
     {
         $test = Application::findOrFail($id);
-        $type = 3;
+
+        //setting type
+        $type = SifatSertificates::CIGIT_TYPE_XARIDORLI;
+        if(optional($test->client_data)->client_id == 0){
+            $type = SifatSertificates::CIGIT_TYPE_XARIDORSIZ;
+        }
 
         $company = OrganizationCompanies::with('city')->findOrFail($test->organization_id);
         // Fetch values and tip
@@ -261,19 +293,24 @@ class SifatSertificate2Controller extends Controller
 
         // date format
         $formattedDate = formatUzbekDateInLatin($test->date);
-        $currentYear = date('Y');
+
+        $currentYear =date("Y", strtotime($test->date));
         $zavod_id = $test->prepared_id;
         $number = 0;
-//        if($chigitValues['quality']){
-        $number = SifatSertificates::where('zavod_id', $zavod_id)
-            ->where('year', $currentYear)
-            ->where('type',$type)
-            ->max('number');
-//        }
+
+        $sertQuery = SifatSertificates::where('year', $currentYear)
+            ->where('type',$type);
+
+        if($type == SifatSertificates::CIGIT_TYPE_XARIDORLI){
+            $sertQuery = $sertQuery->where('zavod_id', $zavod_id);
+        }
+
+        $number = $sertQuery->max('number');
+
         $number = $number ? $number + 1 : 1;
 
         // create sifat certificate
-        if (!$test->sifat_sertificate2) {
+        if (!$test->sifat_sertificate) {
 
             $sertificate = new SifatSertificates();
             $sertificate->app_id = $id;
@@ -281,11 +318,13 @@ class SifatSertificate2Controller extends Controller
             $sertificate->zavod_id = $zavod_id;
             $sertificate->year = $currentYear;
             $sertificate->type = $type;
+            $sertificate->quality = $chigitValues['quality'];
+            $sertificate->amount = round($test->crops->amount * ((100 - $chigitValues['namlik'] - $chigitValues['zararkunanda']) / (100-10-0.5)),3);
             $sertificate->created_by = \auth()->user()->id;
             $sertificate->save();
         }
 
-        $kod_middle =  ($type == 1) ? ($test->prepared->kod)*1000 : 0;
+        $kod_middle =  ($type == 1) ? ($test->prepared->kod)*1000 : 500000;
         $sert_number = ($currentYear - 2000) * 1000000 + $kod_middle + $number;
 
         // Generate QR code
@@ -316,39 +355,11 @@ class SifatSertificate2Controller extends Controller
         }
     }
 
-// Private method to avoid code duplication
+    // Private method to avoid code duplication
     private function getChigitValuesAndTip($application)
     {
-        $nuqsondorlik = optional($application->chigit_result()->where('indicator_id', 9)->first())->value;
-        $tukdorlik = optional($application->chigit_result()->where('indicator_id', 12)->first())->value;
-        $namlik = optional($application->chigit_result()->where('indicator_id', 11)->first())->value;
-        $zararkunanda = optional($application->chigit_result()->where('indicator_id', 10)->first())->value;
-
-        $tip = null;
-        if($nuqsondorlik and $tukdorlik){
-            $tip = ChigitTips::where('nuqsondorlik', '>=', $nuqsondorlik);
-            if($application->crops->name_id == 2){
-                $tip = $tip->where('tukdorlik', '>=', $tukdorlik)
-                    ->where('tukdorlik_min', '<=', $tukdorlik);
-            }
-
-            $tip = $tip->where('crop_id', $application->crops->name_id)
-                ->first();
-        }
-
-        $quality = false;
-        if($tip && $namlik <= $tip->namlik && $tukdorlik <= $tip->tukdorlik and $tukdorlik >= $tip->tukdorlik_min){
-            $quality = true;
-        }
-
-        return [
-            'nuqsondorlik' => $nuqsondorlik,
-            'tukdorlik' => $tukdorlik,
-            'namlik' => $namlik,
-            'zararkunanda' => $zararkunanda,
-            'tip' => $tip,
-            'quality' => $quality
-        ];
+        $evaluator = new ChigitQualityEvaluator($application);
+        return $evaluator->getResults();
     }
 }
 
