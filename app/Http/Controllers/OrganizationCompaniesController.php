@@ -230,18 +230,13 @@ class OrganizationCompaniesController extends Controller
             ]);
         }
 
-        if($showId == 1){
-            return redirect()->route('sifat-sertificates2.add', $company->id)
-                ->with('message', 'Successfully Submitted');
-        }else{
-            if($company->sifat_contract){
-                return redirect()->route('sifat-sertificates.add', $company->id)
-                    ->with('message', 'Successfully Submitted');
-            }else{
-                return redirect()->route('sifat_contracts.add', 'company_id='. $company->id)
-                    ->with('message', 'Successfully Submitted');
-            }
-        }
+        $route = $company->sifat_contract
+            ? 'sifat-sertificates.add'
+            : ($showId == 1 ? 'sifat-sertificates2.add' : 'sifat_contracts.add');
+
+        $param = $route === 'sifat_contracts.add' ? ['company_id' => $company->id] : $company->id;
+
+        return redirect()->route($route, $param)->with('message', 'Successfully Submitted');
     }
 
     public function myorganizationview ($id)

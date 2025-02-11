@@ -44,7 +44,8 @@ class ChigitQualityEvaluator
         $tipQuery = ChigitTips::where('nuqsondorlik', '>=', $this->values['nuqsondorlik']);
 
         if ($this->application->crops->name_id == 2) {
-            $tipQuery->whereBetween('tukdorlik', [$this->values['tukdorlik'], $this->values['tukdorlik']]);
+            $tipQuery->where('tukdorlik_min', '<=', $this->values['tukdorlik'])
+                ->where('tukdorlik', '>=', $this->values['tukdorlik']);
         }
 
         $this->tip = $tipQuery
