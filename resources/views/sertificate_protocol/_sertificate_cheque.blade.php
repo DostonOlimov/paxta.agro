@@ -39,7 +39,7 @@
                 <h2 class="main__intro"><b>Amal qilish muddati:&nbsp;</b> @if(session('crop') != \App\Models\CropsName::CROP_TYPE_4) 6 oy @else 1 yil @endif </h2>
             </div>
             <div style="width: 40%; display: inline-block;">
-                <h2 class="main__intro"><b>Sinov bayonnomasi raqami:&nbsp; </b> {{ $application->tests->dalolatnoma->laboratory_final_results->number }} </h2>
+                <h2 class="main__intro"><b>Sinov bayonnomasi raqami:&nbsp; </b> {{ $application->tests->dalolatnoma->laboratory_final_results->number + $index }} </h2>
             </div>
         </div>
 

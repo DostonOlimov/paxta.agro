@@ -11,7 +11,7 @@
         "barryvdh/laravel-debugbar": "^3.7",
         "barryvdh/laravel-dompdf": "^2.2",
         "fruitcake/laravel-cors": "^2.0",
-        "guzzlehttp/guzzle": "^7.0.1",
+        "guzzlehttp/guzzle": "^7.9",
         "hisamu/php-xbase": "^2.1",
         "irazasyed/telegram-bot-sdk": "^3.9",
         "korridor/laravel-model-validation-rules": "^2.1",

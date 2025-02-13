@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Filters\V1\DalolatnomaFilter;
+use App\Jobs\SendCertificateNotification;
 use App\Models\Application;
 use App\Models\ClampData;
 use App\Models\CropsName;
@@ -352,9 +353,9 @@ class SertificateProtocolController extends Controller
      */
     protected function createCertificates($appId, $groupedResults, $startingNumber, $sertType, $currentYear)
     {
-        $certificates = [];
+
         foreach ($groupedResults as $index => $group) {
-            $certificates[] = [
+            SifatSertificates::create([
                 'app_id' => $appId,
                 'number' => $startingNumber + $index + 1,
                 'zavod_id' => 3,
@@ -362,10 +363,10 @@ class SertificateProtocolController extends Controller
                 'type' => $sertType,
                 'created_by' => auth()->id(),
                 'chp' => $index + 1,
-            ];
+            ]);
         }
-        SifatSertificates::insert($certificates); // Bulk insert for better performance
     }
+
 
     /**
      * Generate and save certificate files.
@@ -380,7 +381,7 @@ class SertificateProtocolController extends Controller
 
             // Generate and save the PDF file
             $pdf = Pdf::loadView('sertificate_protocol.sertificate_pdf', compact(
-                'application', 'group', 'sertNumber', 'currentYear', 'formattedDate', 'qrCode'
+                'application', 'group', 'sertNumber', 'currentYear', 'formattedDate', 'qrCode','index'
             ));
 
             $fileName = $index == 0

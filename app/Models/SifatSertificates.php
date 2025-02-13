@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Jobs\SendCertificateNotification;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -35,6 +36,13 @@ class SifatSertificates extends Model
     {
         return $this->belongsTo(PreparedCompanies::class, 'zavod_id', 'id');
     }
-
-
+//    protected static function booted()
+//    {
+//        static::created(function ($certificate) {
+//            $dalolatnoma_id = $certificate->application->tests->dalolatnoma->id;
+//            if(in_array($certificate->type, [self::PAXTA_TYPE,self::LINT_TYPE])){
+//                SendCertificateNotification::dispatch($certificate,$dalolatnoma_id)->onQueue('notifications');
+//            }
+//        });
+//    }
 }
