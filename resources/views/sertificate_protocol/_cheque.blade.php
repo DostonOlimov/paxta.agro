@@ -42,14 +42,14 @@
 
     <div style="width: 100%; display: flex; justify-content: space-between; padding-top:10px; font-size: 18px;">
         <div style="width: 74%; display: inline-block;">
-            <span> <b>Ariza beruvchining nomi:</b>{{ $test->test_program->application->organization->name }}.</span>
+            <span style="font-family: DejaVu Sans"> <b>Ariza beruvchining nomi:</b>{{ $test->test_program->application->organization->name }}.</span>
         </div>
         <div style="width: 25%; display: inline-block; text-align: right">
             <span><b>Hosil yili:</b> {{ $test->test_program->application->crops->year }} y.</span>
         </div>
     </div>
     <div style="width: 100%; display: flex; justify-content: space-between; padding-top:10px; font-size: 18px;">
-        <span><b>Ishlab chiqaruvchi nomi va kodi:</b>  {{ $test->test_program->application->prepared->name . ' - ' . str_pad($test->test_program->application->prepared->kod, 3, '0', STR_PAD_LEFT) }}</span>
+        <span style="font-family: DejaVu Sans"><b>Ishlab chiqaruvchi nomi va kodi:</b>  {{ $test->test_program->application->prepared->name . ' - ' . str_pad($test->test_program->application->prepared->kod, 3, '0', STR_PAD_LEFT) }}</span>
     </div>
     <div style="width: 100%; display: flex; justify-content: space-between; padding-top:10px; font-size: 18px;">
         <div style="width: 69%; display: inline-block;">
