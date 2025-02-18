@@ -352,6 +352,8 @@ class SifatSertificateController extends Controller
             $sertificate->amount = round($test->crops->amount * ((100 - $chigitValues['namlik'] - $chigitValues['zararkunanda']) / (100-10-0.5)),3);
             $sertificate->created_by = \auth()->user()->id;
             $sertificate->save();
+        }else{
+            $number = $test->sifat_sertificate->number;
         }
 
         $kod_middle =  ($type == 1) ? ($test->prepared->kod)*1000 : 500000;

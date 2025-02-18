@@ -128,7 +128,7 @@
                                     <td>{{ $offset + $loop->iteration }}</td>
                                     <td>{{ optional($app->crops)->party_number }}</td>
                                     <td>@if(optional($app->sifat_sertificate)->number){{ substr(10000000 + ((optional($app->sifat_sertificate)->type == 1) ? 1000 * $app->prepared->kod : 500000) + optional($app->sifat_sertificate)->number , 2)  }} @endif</td>
-                                    <td> <a href="{!! url('/sifat-sertificates/view/' . $app->id) !!}">{{ $app->date }}</a></td>
+                                    <td>{{ $app->date }}</td>
                                     <td><a href="#" class="company-link"
                                             data-id="{{ $app->organization_id }}">{{ optional($app->organization)->name }}</a>
                                     </td>
