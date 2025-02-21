@@ -24,7 +24,7 @@ class SifatContractsController extends Controller
     //search
     public function list(Request $request, SifatContractsFilter $filter,SearchService $service)
     {
-//        try {
+        try {
 
             $names = getCropsNames();
             $states = getRegions();
@@ -43,11 +43,11 @@ class SifatContractsController extends Controller
                 false
             );
 
-//        } catch (\Throwable $e) {
-//            // Log the error for debugging
-//            \Log::error($e);
-//            return $this->errorResponse('An unexpected error occurred', [], 404);
-//        }
+        } catch (\Throwable $e) {
+            // Log the error for debugging
+            \Log::error($e);
+            return $this->errorResponse('An unexpected error occurred', [], 404);
+        }
     }
 
 

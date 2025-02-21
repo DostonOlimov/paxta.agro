@@ -22,7 +22,7 @@ Route::post('/telegram/webhook', function () {
 })->name('telegram.webhook');
 
 //Dashboard
-Route::get('/home', ['middleware' => 'auth', 'uses' => '\App\Http\Controllers\HomeController@dashboard']);
+Route::get('/home', ['middleware' => 'auth', 'uses' => '\App\Http\Controllers\HomeController@dashboard'])->name('home');
 Route::get('/home2', ['middleware' => 'auth', 'uses' => '\App\Http\Controllers\HomeController@dashboard']);
 //Route::get('/', ['middleware' => 'auth','\App\Http\Controllers\DashboardController@index'])->name('home');
 Route::get('/', ['middleware' => 'auth', 'uses' => '\App\Http\Controllers\HomeController@dashboard']);

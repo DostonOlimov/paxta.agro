@@ -11,39 +11,27 @@
 		<div class="page-header">
 			<ol class="breadcrumb">
 				<li class="breadcrumb-item">
-					<i class="fe fe-life-buoy mr-1"></i>&nbsp {{trans('app.Arizalar ro\'yxati')}}
+					<i class="fe fe-life-buoy mr-1"></i>{{trans('app.Arizalar ro\'yxati')}}
 				</li>
 			</ol>
 		</div>
 
        {{--      start of message component --}}
-            <x-flash-message />
+            <x-flash-message></x-flash-message>
        {{--      end of message component --}}
 
         <div class="row">
 			<div class="col-md-12">
 				<div class="card">
 					<div class="card-body">
-						<div class="panel panel-primary">
-							<div class="tab_wrapper page-tab">
-								<ul class="tab_list">
-										<li class="active">
-											<a href="{!! url('/application/list')!!}">
-												<span class="visible-xs"></span>
-												<i class="fa fa-list fa-lg">&nbsp;</i>
-												 {{ trans('app.Ro\'yxat')}}
-											</a>
-										</li>
-										<li>
-											<a href="{!! url('/application/add')!!}">
-												<span class="visible-xs"></span>
-												<i class="fa fa-plus-circle fa-lg">&nbsp;</i> <b>
-												{{ trans('app.Qo\'shish')}}</b>
-											</a>
-										</li>
-									</ul>
-							</div>
-						</div>
+                        @php
+                            $tabs = [
+                                ['name' => "app.Ro'yxat", 'url' => 'application/list', 'icon' => 'fa-list'],
+                                ['name' => "app.Qo'shish", 'url' => 'application/add', 'icon' => 'fa-plus-circle']
+                            ];
+                        @endphp
+
+                        @include('components.tab-menu', ['tabs' => $tabs])
 
 						<div class="table-responsive">
 							<table class="table table-striped table-bordered nowrap display" style="margin-top:20px;" >
@@ -63,100 +51,27 @@
                                 </tr>
 								</thead>
 								<tbody>
-                                <tr style="background-color: #90aec6 !important;">
-                                    <td> </td>
-                                    <td>
-                                        <select class="w-100 form-control" name="status[eq]" id="status">
-                                            @if (count($all_status))
-                                                <option value="" selected>Barchasi</option>
-                                            @endif
-                                            @foreach ($all_status as $key => $name)
-                                                <option value="{{ $key }}"
-                                                        @if (isset($filterValues['status']) && $filterValues['status'] == $key)
-                                                        selected
-                                                    @endif>
-                                                    {{ $name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <form class="d-flex">
-                                            <input type="text" name="id[eq]" class="search-input form-control"
-                                                   value="{{ isset($filterValues['id']) ? $filterValues['id'] : '' }}">
-                                        </form>
-                                    </td>
-                                    <td>
-                                        <form class="d-flex">
-                                            <input type="text" name="partyNumber[lk]" class="search-input form-control"
-                                                   value="{{ isset($filterValues['partyNumber']) ? $filterValues['partyNumber'] : '' }}">
-                                        </form>
-                                    </td>
-                                    <td></td>
-                                    <td>
-                                        <select class="w-100 form-control name_of_corn custom-select" name="stateId"
-                                                id="stateId">
-                                                <option value="" selected>Viloyat nomini tanlang</option>
-                                            @if (!empty($states))
-                                                @foreach ($states as $name)
-                                                    <option value="{{ $name->id }}"
-                                                            @if (isset($filterValues['stateId']) && $filterValues['stateId'] == $name->id)
-                                                            selected
-                                                        @endif>
-                                                        {{ $name->name }} </option>
-                                                @endforeach
-                                            @endif
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <select id="organization" class="form-control owner_search" name="organization">
-                                            @if (!empty($organization))
-                                                <option selected value="{{ $organization->id }}">
-                                                    {{ $organization->name }}</option>
-                                            @endif
-                                        </select>
-                                        @if ($organization)
-                                            <i class="fa fa-trash" style="color:red"
-                                               onclick="changeDisplay('companyId[eq]')"></i>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        <select class="w-100 form-control name_of_corn custom-select" name="name"
-                                                id="crops_name">
-                                            @if (count($names))
-                                                <option value="" selected>
-                                                    Mahsulot turini tanlang</option>
-                                            @endif
-                                            @if (!empty($names))
-                                                @foreach ($names as $name)
-                                                    <option value="{{ $name->id }}"
-                                                            @if (isset($filterValues['nameId']) && $filterValues['nameId'] == $name->id)
-                                                                selected
-                                                            @endif>
-                                                        {{ $name->name }} </option>
-                                                @endforeach
-                                            @endif
-                                        </select>
-                                    </td>
-                                    <td>
-                                    </td>
-                                    <td>
-                                        <select class="w-100 form-control" name="year" id="year">
-                                            <option value="" selected>Hosil yilini tanlang</option>
-                                            @foreach ($years as $key => $name)
-                                                <option value="{{ $key }}"
-                                                        @if (isset($filterValues['year']) && $filterValues['year'] == $key)
-                                                            selected
-                                                        @endif>
-                                                    {{ $name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </td>
-                                    <td></td>
-                                </tr>
                                 @php
-                                    $offset = (request()->get('page', 1) - 1) * 50;
+                                $filterArray =
+                                    [
+                                        [],
+                                        ['type' => 'select', 'name' => 'status[eq]','fname' => 'status', 'options' => $all_status, 'placeholder' => 'Barchasi'],
+                                        ['type' => 'text', 'name' => 'id[eq]', 'fname' => 'id','placeholder' => 'Ariza raqamini kiriting'],
+                                        ['type' => 'text', 'name' => 'partyNumber[lk]','fname' => 'partyNumber', 'placeholder' => 'Partiya raqami'],
+                                        [],
+                                        ['type' => 'select', 'name' => 'stateId', 'options' => $states->pluck('name', 'id'), 'placeholder' => 'Viloyat nomi'],
+                                        ['type' => 'select', 'name' => 'organization', 'options' => [$organization->id ?? 1 => $organization->name ?? ''], 'placeholder' => 'Tashkilot'],
+                                        ['type' => 'select', 'name' => 'nameId', 'options' => $names->pluck('name', 'id'), 'placeholder' => 'Mahsulot turi'],
+                                        [],
+                                        ['type' => 'select', 'name' => 'year', 'options' => $years, 'placeholder' => 'Hosil yili'],
+                                        [],
+                                    ];
+                                @endphp
+                                    <x-filter-row
+                                        :filters="$filterArray"
+                                        :filterValues="$filterValues"></x-filter-row>
+                                    @php
+                                        $offset = (request()->get('page', 1) - 1) * 50;
                                 @endphp
 
 									@foreach($apps as $app)

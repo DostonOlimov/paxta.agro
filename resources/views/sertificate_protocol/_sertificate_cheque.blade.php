@@ -2,9 +2,15 @@
     <img class="background_image" src="{{ public_path('/img/dashboard/dm_logo.jpg') }}" alt="Background Image">
 
     <div class="content">
-        <div class="container head_image" >
-            <img src="{{ asset('/img/dashboard/t1.png') }}" alt="image" >
-        </div>
+        @if(!isset($t))
+            <div class="container head_image" >
+                <img src="{{ public_path('/img/dashboard/t1.jpg') }}" alt="image" >
+            </div>
+        @else
+            <div class="container head_image" >
+                <img src="{{ asset('/img/dashboard/t1.jpg') }}" alt="image" >
+            </div>
+        @endif
 
         <h2 class="header__title">O‘ZBEKISTON RESPUBLIKASI VAZIRLAR MAHKAMASI HUZURIDAGI<br>
             AGROSANOAT MAJMUI USTIDAN NAZORAT QILISH INSPEKSIYASI<br>

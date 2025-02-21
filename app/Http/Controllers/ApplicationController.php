@@ -13,6 +13,7 @@ use App\Models\Laboratories;
 use App\Models\OrganizationCompanies;
 use App\Models\TestPrograms;
 use App\Services\SearchService;
+use App\Services\Telegram\TelegramService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -23,7 +24,7 @@ class ApplicationController extends Controller
 {
     public function applicationList(Request $request, ApplicationFilter $filter,SearchService $service)
     {
-        try {
+//        try {
             $names = getCropsNames();
             $states = getRegions();
             $years = getCropYears();
@@ -49,11 +50,18 @@ class ApplicationController extends Controller
                     []
                 );
 
-        } catch (\Throwable $e) {
-            // Log the error for debugging
-            \Log::error($e);
-            return $this->errorResponse('An unexpected error occurred', [], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
+//        } catch (\Throwable $e) {
+//            // Log the error for debugging
+//            $message = $e->getMessage();
+//            \Log::error('Error in applicationList: ' . $message, [ 'exception' => $e ]);
+//
+//            // Send an error message via Telegram
+//            $telegramService = new TelegramService();
+//            $telegramService->sendErrorMessage("⚠️ *Error in applicationList!* \n\n 📌 *Message:* \"{$message}\"");
+//
+//            return response()->view('errors.500', [], Response::HTTP_INTERNAL_SERVER_ERROR);
+//        }
+
     }
 
 

@@ -115,14 +115,14 @@ class SifatSertificateController extends Controller
             'sxeme_number'  => 7,
         ]);
 
-        $zavod_id = $user->zavod_id;
+        $zavodId = $user->zavod_id;
         if($lab_id = $request->input('laboratory')){
-            $zavod_id = ChigitLaboratories::findOrFail($lab_id)->zavod->id;
+            $zavodId = ChigitLaboratories::findOrFail($lab_id)->zavod->id;
         }
         $application = Application::create([
             'crop_data_id'     => $crop->id,
             'organization_id'  => $request->input('organization'),
-            'prepared_id'      => $zavod_id ,
+            'prepared_id'      => $zavodId ,
             'type'             => Application::TYPE_1,
             'date'             => $request->input('dob') ? date('Y-m-d', strtotime($request->input('dob'))) : date('Y-m-d'),
             'status'           => Application::STATUS_FINISHED,
@@ -325,14 +325,14 @@ class SifatSertificateController extends Controller
         $formattedDate = formatUzbekDateInLatin($test->date);
 
         $currentYear =date("Y", strtotime($test->date));
-        $zavod_id = $test->prepared_id;
+        $zavodId = $test->prepared_id;
         $number = 0;
 
         $sertQuery = SifatSertificates::where('year', $currentYear)
             ->where('type',$type);
 
         if($type == SifatSertificates::CIGIT_TYPE_XARIDORLI){
-            $sertQuery = $sertQuery->where('zavod_id', $zavod_id);
+            $sertQuery = $sertQuery->where('zavod_id', $zavodId);
         }
 
         $number = $sertQuery->max('number');
@@ -345,7 +345,7 @@ class SifatSertificateController extends Controller
             $sertificate = new SifatSertificates();
             $sertificate->app_id = $id;
             $sertificate->number = $number;
-            $sertificate->zavod_id = $zavod_id;
+            $sertificate->zavod_id = $zavodId;
             $sertificate->year = $currentYear;
             $sertificate->type = $type;
             $sertificate->quality = $chigitValues['quality'];
