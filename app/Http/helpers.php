@@ -1,11 +1,13 @@
 <?php
 
 use App\Models\Application;
+use App\Models\CropsName;
 use App\Models\DefaultModels\tbl_settings;
 use \Illuminate\Database\Eloquent\Model;
 use \Illuminate\Http\Request;
 use \Illuminate\Http\JsonResponse;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 const USER_DATE_FORMAT = 'd-m-Y';
 const USER_DOT_DATE_FORMAT = 'd.m.Y';
@@ -211,6 +213,12 @@ function settings()
 
     return $val;
 }
+if(!function_exists('formatDate')){
+    function formatDate($date)
+    {
+        return $date ? date('Y-m-d', strtotime($date)) : null;
+    }
+}
 
 if (! function_exists('getAppStatus')) {
     function getAppStatus()
@@ -233,6 +241,14 @@ if (! function_exists('getSelections')) {
     {
         return \App\Models\CropsSelection::all();
 
+    }
+}
+if (! function_exists('getCountries')) {
+    function getCountries()
+    {
+        return \Illuminate\Support\Facades\Cache::remember('countries', 60*60, function () {
+            return DB::table('tbl_countries')->get()->toArray();
+        });
     }
 }
 
@@ -259,5 +275,26 @@ if (! function_exists('getCropYears')) {
         return \Illuminate\Support\Facades\Cache::remember('crop_data_years', 60*60, function () {
             return \App\Models\CropData::getYear();
         });
+    }
+}
+if (!function_exists('getCurrentYear')) {
+    function getCurrentYear()
+    {
+        return session('year', 2024);
+    }
+}
+if (!function_exists('getCropType')) {
+    function getCropType()
+    {
+        return session('crop', 1);
+    }
+}
+if (!function_exists('isSifatSertificate')) {
+    function isSifatSertificate()
+    {
+        if (session('crop') == CropsName::CROP_TYPE_3 || session('crop') == CropsName::CROP_TYPE_4) {
+            return true;
+        }
+        return false;
     }
 }
