@@ -4,6 +4,7 @@
 namespace App\Models;
 
 
+use App\Observers\ApplicationObserver;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -143,13 +144,15 @@ class Application extends Model
         return $new_date->format('Y');
     }
 
-    protected static function boot()
+    protected static function booted()
     {
+
         parent::boot(); // Always call the parent boot first
+        static::observe(ApplicationObserver::class);
 
         // Retrieve year and crop from session or use defaults
-        $year = session('year', 2024);
-        $crop = session('crop', 1);
+        $year = getCurrentYear();
+        $crop =getApplicationType();
 
         // Ensure the user is authenticated
         if ($user = auth()->user()) {
@@ -172,4 +175,5 @@ class Application extends Model
                 });
         });
     }
+
 }

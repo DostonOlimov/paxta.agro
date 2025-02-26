@@ -47,7 +47,7 @@ class ApplicationService
                 'status'           => Application::STATUS_FINISHED,
                 'data'             => $request->input('data'),
                 'created_by'       => $user->id,
-                'app_type'         => getCropType()
+                'app_type'         => getApplicationType()
             ]);
         });
     }

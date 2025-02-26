@@ -3,13 +3,11 @@
 namespace App\Observers;
 
 use App\Models\Application;
-use App\Models\CropsName;
 use App\Models\Decision;
 use App\Repositories\ActivityRepository;
 use App\Repositories\DecisionRepository;
 use App\Repositories\LaboratoryRepository;
 use App\Repositories\TestProgramRepository;
-use Illuminate\Support\Facades\Auth;
 
 class ApplicationObserver
 {
@@ -49,9 +47,9 @@ class ApplicationObserver
             'time'        => now(),
         ]);
 
+
         if (isSifatSertificate()) {
             $stateId = optional($application->prepared)->state_id;
-
             if ($lab = $this->laboratoryRepository->findLaboratoryByStateId($stateId)) {
                 $this->decisionRepository->create([
                     'app_id'       => $application->id,

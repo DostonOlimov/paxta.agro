@@ -224,7 +224,7 @@
                 </svg>
             </div>
             <div class="odometer-container">
-                <span class="odometer" id="odometer">000,000,000.000</span>
+                <span class="odometer" id="odometer">000,000,000</span>
                 <p>{{ trans('message.kg') }}</p>
             </div>
         </div>
@@ -1074,10 +1074,10 @@
                 }
             });
 
-            const amountOfCotton = {{ $sumAmount }};
+            const amountOfCotton = {{ round($sumAmount) }};
             const od = new Odometer({
                 el: document.getElementById("odometer"),
-                format: "(,ddd).dd",
+                format: "(,ddd)",
                 duration: 1000,
                 theme: "default"
             });

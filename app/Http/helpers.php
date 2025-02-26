@@ -283,8 +283,8 @@ if (!function_exists('getCurrentYear')) {
         return session('year', 2024);
     }
 }
-if (!function_exists('getCropType')) {
-    function getCropType()
+if (!function_exists('getApplicationType')) {
+    function getApplicationType()
     {
         return session('crop', 1);
     }
