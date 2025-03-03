@@ -152,10 +152,10 @@
                                         <div class="form-group overflow-hidden">
                                             <label class="form-label">{{trans('app.Hosil yili')}}<label class="text-danger">*</label></label>
                                             <select class="w-100 form-control" name="year" required>
-                                                @if(count($year))
+                                                @if(count($years))
                                                     <option value="">{{trans('app.Hosil yilini tanlang')}}</option>
                                                 @endif
-                                                @foreach($year as $key=>$name)
+                                                @foreach($years as $key=>$name)
                                                     <option value="{{ $key }}"
                                                             @if($key == $app->crops->year) selected @endif
                                                     >{{$name}}

@@ -8,6 +8,7 @@ use App\Repositories\ActivityRepository;
 use App\Repositories\DecisionRepository;
 use App\Repositories\LaboratoryRepository;
 use App\Repositories\TestProgramRepository;
+use Illuminate\Support\Facades\Auth;
 
 class ApplicationObserver
 {
@@ -47,7 +48,6 @@ class ApplicationObserver
             'time'        => now(),
         ]);
 
-
         if (isSifatSertificate()) {
             $stateId = optional($application->prepared)->state_id;
             if ($lab = $this->laboratoryRepository->findLaboratoryByStateId($stateId)) {
@@ -67,7 +67,6 @@ class ApplicationObserver
                 ]);
             }
         }
-
     }
 
     /**
@@ -78,7 +77,27 @@ class ApplicationObserver
      */
     public function updated(Application $application)
     {
-        //
+        $user = Auth::user();
+        $this->activityRepository->logActivity([
+            'ip_adress'   => request()->ip(),
+            'user_id'     => $user->id,
+            'action_id'   => $application->id,
+            'action_type' => 'app_edit',
+            'action'      => "Ariza O'zgartirildi",
+            'time'        => now(),
+        ]);
+
+        if (isSifatSertificate() and $application->decision) {
+            $stateId = optional($application->prepared)->state_id;
+            if ($lab = $this->laboratoryRepository->findLaboratoryByStateId($stateId)) {
+                $this->decisionRepository->update(
+                    $application->decision->id,
+                    [
+                    'director_id'  => $lab->director_id,
+                    'laboratory_id'=> $lab->id,
+                ]);
+            }
+        }
     }
 
     /**

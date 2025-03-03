@@ -2,207 +2,197 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Filters\V1\ApplicationFilter;
 use App\Models\Application;
-use App\Models\AppStatusChanges;
 use App\Models\CropData;
-use App\Models\CropsName;
-use App\Models\Decision;
-use App\Models\Laboratories;
-use App\Models\OrganizationCompanies;
-use App\Models\TestPrograms;
-use App\Services\ApplicationService;
+use App\Services\ModelServices\ApplicationService;
+use App\Http\Requests\StoreApplicationRequest;
+use App\Http\Requests\UpdateApplicationRequest;
+use App\Http\Requests\RejectApplicationRequest;
 use App\Services\SearchService;
 use App\Services\Telegram\TelegramService;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use App\Models\DefaultModels\tbl_activities;
 use Symfony\Component\HttpFoundation\Response;
 
 class ApplicationController extends Controller
 {
-    protected $applicationService;
+    protected ApplicationService $applicationService;
 
     public function __construct(ApplicationService $applicationService)
     {
+        parent::__construct();
         $this->applicationService = $applicationService;
     }
 
-    public function applicationList(Request $request, ApplicationFilter $filter,SearchService $service)
+    /**
+     * Display a listing of applications with filtering and search.
+     * @param Request $request
+     * @param ApplicationFilter $filter
+     * @param SearchService $service
+     * @return \Illuminate\Contracts\Foundation\Application|Factory|View|\Illuminate\Http\Response
+     */
+    public function applicationList(Request $request, ApplicationFilter $filter, SearchService $service)
     {
-//        try {
+        try {
+            $data = $this->getCommonViewData();
+            $data['all_status'] = getAppStatus();
             $names = getCropsNames();
             $states = getRegions();
+            $all_status = $all_status = getAppStatus();
             $years = getCropYears();
-            $all_status = getAppStatus();
 
-                return $service->search(
-                    $request,
-                    $filter,
-                    Application::class,
-                    [
-                        'crops',
-                        'organization',
-                        'prepared',
-                        'crops.name',
-                        'organization.area.region'
-                    ],
-                    compact('names', 'states', 'years','all_status'),
-                    'application.list',
-                    [],
-                    false,
-                    null,
-                    null,
-                    []
-                );
-
-//        } catch (\Throwable $e) {
-//            // Log the error for debugging
-//            $message = $e->getMessage();
-//            \Log::error('Error in applicationList: ' . $message, [ 'exception' => $e ]);
-//
-//            // Send an error message via Telegram
-//            $telegramService = new TelegramService();
-//            $telegramService->sendErrorMessage("⚠️ *Error in applicationList!* \n\n 📌 *Message:* \"{$message}\"");
-//
-//            return response()->view('errors.500', [], Response::HTTP_INTERNAL_SERVER_ERROR);
-//        }
-
+            return $service->search(
+                $request,
+                $filter,
+                Application::class,
+                ['crops', 'organization', 'prepared', 'crops.name', 'organization.area.region'],
+                compact('data','states','all_status','names','years'),
+                'application.list',
+                [],
+                false,
+                null,
+                null,
+                []
+            );
+        } catch (\Throwable $e) {
+            Log::error('Error in applicationList: ' . $e->getMessage(), ['exception' => $e]);
+            $telegramService = new TelegramService();
+            $telegramService->sendErrorMessage("⚠️ *Error in applicationList!* \n\n 📌 *Message:* \"{$e->getMessage()}\"");
+            return response()->view('errors.500', [], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
-    // Application add form
+    /**
+     * Show the form for creating a new application.
+     */
     public function addapplication()
     {
-        return view('application.add', [
+        return view('application.add', $this->getCommonViewData(['year' => getCurrentYear()]));
+    }
+
+    /**
+     * Store a newly created application.
+     * @param StoreApplicationRequest $request
+     * @return RedirectResponse
+     */
+    public function store(StoreApplicationRequest $request)
+    {
+        try {
+            $this->authorize('create', Application::class);
+            $this->applicationService->storeApplication($request);
+            return redirect()->route('application.list')->with('message', 'Successfully Submitted');
+        } catch (\Exception $e) {
+            Log::error('Error storing application: ' . $e->getMessage(), ['exception' => $e]);
+            $telegramService = new TelegramService();
+            $telegramService->sendErrorMessage("⚠️ *Error in applicationStore!* \n\n 📌 *Message:* \"{$e->getMessage()}\"");
+            return redirect()->back()->withErrors(['error' => 'Failed to submit application: ' . $e->getMessage()]);
+        }
+    }
+
+    /**
+     * Show the form for editing an application.
+     */
+    public function edit($id)
+    {
+        $app = Application::findOrFail($id);
+        return view('application.edit', array_merge(
+            ['app' => $app],
+            $this->getCommonViewData()
+        ));
+    }
+
+    /**
+     * Update an existing application.
+     * @param $id
+     * @param UpdateApplicationRequest $request
+     * @return RedirectResponse
+     */
+    public function update($id, UpdateApplicationRequest $request)
+    {
+        try {
+            $this->authorize('update', Application::findOrFail($id));
+            $this->applicationService->updateApplication($id, $request);
+            return redirect()->route('application.list')->with('message', 'Successfully Updated');
+        } catch (\Exception $e) {
+            Log::error('Error updating application: ' . $e->getMessage(), ['exception' => $e]);
+            $telegramService = new TelegramService();
+            $telegramService->sendErrorMessage("⚠️ *Error in applicationUpdate!* \n\n 📌 *Message:* \"{$e->getMessage()}\"");
+            return redirect()->back()->withErrors(['error' => 'Failed to update application: ' . $e->getMessage()]);
+        }
+    }
+
+    /**
+     * Display a specific application.
+     */
+    public function showapplication($id)
+    {
+        $app = Application::with('organization.city')->findOrFail($id);
+        return view('application.show', ['app' => $app, 'company' => $app->organization]);
+    }
+
+    /**
+     * Accept an application.
+     */
+    public function accept($id)
+    {
+        try {
+            $app = Application::findOrFail($id);
+            $this->authorize('update', $app);
+            $this->applicationService->acceptApplication($app);
+            return redirect()->route('application.list')->with('message', 'Successfully Accepted');
+        } catch (\Exception $e) {
+            Log::error('Error accepting application: ' . $e->getMessage(), ['exception' => $e]);
+            $telegramService = new TelegramService();
+            $telegramService->sendErrorMessage("⚠️ *Error in applicationAccept!* \n\n 📌 *Message:* \"{$e->getMessage()}\"");
+            return redirect()->back()->withErrors(['error' => 'Failed to accept application']);
+        }
+    }
+
+    /**
+     * Show the rejection form for an application.
+     */
+    public function reject($id)
+    {
+        $app = Application::findOrFail($id);
+        return view('application.reject', compact('app'));
+    }
+
+    /**
+     * Reject an application with a reason.
+     * @param RejectApplicationRequest $request
+     * @return RedirectResponse
+     */
+    public function reject_store(RejectApplicationRequest $request)
+    {
+        try {
+            $app = Application::findOrFail($request->input('app_id'));
+            $this->authorize('accept', $app);
+            $this->applicationService->rejectApplication($app, $request->input('reason'));
+            return redirect()->route('application.list')->with('message', 'Application Rejected Successfully');
+        } catch (\Exception $e) {
+            Log::error('Error rejecting application: ' . $e->getMessage(), ['exception' => $e]);
+            $telegramService = new TelegramService();
+            $telegramService->sendErrorMessage("⚠️ *Error in applicationReject!* \n\n 📌 *Message:* \"{$e->getMessage()}\"");
+            return redirect()->back()->withErrors(['error' => 'Failed to reject application']);
+        }
+    }
+
+    /**
+     * Get common data for views to avoid duplication.
+     * @param array $extra
+     * @return array
+     */
+    protected function getCommonViewData(array $extra = []): array
+    {
+        return array_merge([
             'names' => getCropsNames(),
             'countries' => getCountries(),
             'measure_types' => CropData::getMeasureType(),
             'years' => CropData::getYear(),
-            'year' => getCurrentYear(),
-        ]);
+        ], $extra);
     }
-
-
-    // application store
-    public function store(Request $request)
-    {
-        $this->authorize('create', Application::class);
-
-        $this->applicationService->storeApplication($request);
-
-        return redirect()->route('application.list')->with('message', 'Successfully Submitted');
-    }
-
-    // application edit
-
-    public function edit($id)
-    {
-        $title = "Arizani o'zgartirish";
-        $app = Application::findOrFail($id); // Use findOrFail to handle missing records
-
-        $type = Application::getType();
-        $crop = session('crop', 1);
-        $names = getCropsNames();
-        $countries = DB::table('tbl_countries')->get();
-        $measure_types = CropData::getMeasureType();
-        $year = CropData::getYear();
-
-        return view('application.edit', compact('app', 'type', 'names', 'countries', 'measure_types', 'year', 'title'));
-    }
-
-
-// application update
-
-    public function update($id, Request $request)
-    {
-        $user = Auth::user();
-        $app = Application::findOrFail($id); // Use findOrFail for better error handling
-
-        $app->update([
-            'organization_id' => $request->input('organization'),
-            'prepared_id'     => $request->input('prepared'),
-            'date'            => $request->input('dob') ? date('Y-m-d', strtotime($request->input('dob'))) : null,
-            'data'            => $request->input('data'),
-        ]);
-
-        $crop = CropData::findOrFail($app->crop_data_id); // Same for CropData
-
-        $crop->update([
-            'name_id'       => $request->input('name'),
-            'country_id'    => $request->input('country'),
-            'kodtnved'      => $request->input('tnved'),
-            'party_number'  => $request->input('party_number'),
-            'measure_type'  => $request->input('measure_type'),
-            'amount'        => $request->input('amount'),
-            'year'          => $request->input('year'),
-            'toy_count'     => $request->input('toy_count'),
-            'sxeme_number'     => $request->input('sxeme_number'),
-        ]);
-
-        tbl_activities::create([
-            'ip_adress'   => request()->ip(),
-            'user_id'     => $user->id,
-            'action_id'   => $app->id,
-            'action_type' => 'app_edit',
-            'action'      => "Ariza O'zgartirildi",
-            'time'        => now(),
-        ]);
-
-        return redirect()->route('application.list')->with('message', 'Successfully Updated');
-    }
-
-    public function showapplication($id)
-    {
-        $app = Application::findOrFail($id);
-        $company = OrganizationCompanies::with('city')->findOrFail($app->organization_id);
-
-        return view('application.show', compact('app', 'company'));
-    }
-
-    //accept online applications
-    public function accept($id)
-    {
-        $app = Application::findOrFail($id);
-        $this->authorize('update', $app);
-
-        $app->update([
-            'status'       => Application::STATUS_ACCEPTED,
-            'progress'     => Application::PROGRESS_ANSWERED,
-            'accepted_date'=> now(),
-            'accepted_id'  => Auth::id(),
-        ]);
-
-        return redirect()->route('application.list')->with('message', 'Successfully Accepted');
-    }
-
-    //reject online applications
-    public function reject($id)
-    {
-        $app = Application::findOrFail($id);
-
-        return view('application.reject', compact('app'));
-    }
-
-    public function reject_store(Request $request)
-    {
-        $app = Application::findOrFail($request->input('app_id'));
-        $this->authorize('accept', $app);
-
-        $app->update([
-            'status' => Application::STATUS_REJECTED,
-        ]);
-
-        AppStatusChanges::create([
-            'app_id'  => $app->id,
-            'status'  => Application::STATUS_REJECTED,
-            'comment' => $request->input('reason'),
-            'user_id' => Auth::id(),
-        ]);
-
-        return redirect()->route('application.list')->with('message', 'Application Rejected Successfully');
-    }
-
 }
 

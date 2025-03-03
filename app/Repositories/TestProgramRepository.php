@@ -2,12 +2,22 @@
 
 namespace App\Repositories;
 
+use App\Models\Contracts\TestProgramInterface;
 use App\Models\TestPrograms;
+use App\Repositories\Contracts\TestProgramRepositoryInterface;
 
-class TestProgramRepository
+class TestProgramRepository implements TestProgramRepositoryInterface
 {
-    public function create(array $data): TestPrograms
+    protected string $model = TestPrograms::class;
+
+    public function create(array $data): TestProgramInterface
     {
-        return TestPrograms::create($data);
+        return $this->model::create($data);
+    }
+
+    public function delete(int $id): bool
+    {
+        $app = $this->model::findOrFail($id);
+        return $app->delete();
     }
 }

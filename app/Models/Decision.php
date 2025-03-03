@@ -2,29 +2,31 @@
 
 namespace App\Models;
 
-use App\Models\Traits\LogsActivity;
+use App\Models\Contracts\DecisionInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Area
  * @package App\Models
  *
  * @property int $id
- * @property string $name
- * @property int $crop_id
+ * @property int $number
+ * @property int $app_id
  */
-class Decision extends Model
+class Decision extends Model implements DecisionInterface
 {
-    use  LogsActivity;
+    // Constants grouped by category with type hints in PHPDoc
+    /** @var int Status codes */
+    public const STATUS_DELETED = 0;
+    public const STATUS_NEW = 1;
+    public const STATUS_ACCEPTED = 2;
 
-    const STATUS_DELETED = 0;
-    const STATUS_NEW = 1;
-    const STATUS_ACCEPTED = 2;
 
+    /** @var string Table name */
     protected $table = 'decisions';
 
+    /** @var array Mass assignable fields */
     protected $fillable = [
         'director_id',
         'app_id',
@@ -35,6 +37,7 @@ class Decision extends Model
         'created_by',
     ];
 
+    // Relationships
     public function application(): BelongsTo
     {
         return $this->belongsTo(Application::class, 'app_id', 'id');
@@ -48,10 +51,6 @@ class Decision extends Model
     public function laboratory(): BelongsTo
     {
         return $this->belongsTo(Laboratories::class, 'laboratory_id', 'id');
-    }
-    public function city(): BelongsTo
-    {
-        return $this->belongsTo(Area::class, 'city_id', 'id');
     }
 
 }

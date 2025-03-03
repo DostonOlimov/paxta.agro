@@ -21,6 +21,10 @@ Route::post('/telegram/webhook', function () {
     return response()->json(['message' => 'Webhook is working']);
 })->name('telegram.webhook');
 
+Route::get('/access-denied', function () {
+    return view('errors.access-denied');
+})->name('access.denied');
+
 //Dashboard
 Route::get('/home', ['middleware' => 'auth', 'uses' => '\App\Http\Controllers\HomeController@dashboard'])->name('home');
 Route::get('/home2', ['middleware' => 'auth', 'uses' => '\App\Http\Controllers\HomeController@dashboard']);

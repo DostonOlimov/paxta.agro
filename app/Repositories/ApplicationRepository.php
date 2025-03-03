@@ -3,11 +3,36 @@
 namespace App\Repositories;
 
 use App\Models\Application;
+use App\Models\Contracts\ApplicationInterface;
+use App\Repositories\Contracts\ApplicationRepositoryInterface;
 
-class ApplicationRepository
+class ApplicationRepository implements ApplicationRepositoryInterface
 {
-    public function create(array $data): Application
+    protected string $model = Application::class;
+
+    public function create(array $data): ApplicationInterface
     {
-        return Application::create($data);
+        return $this->model::create($data);
+    }
+
+    public function update(int $id, array $data): ?ApplicationInterface
+    {
+        $app = $this->model::find($id);
+        if (!$app) {
+            return null;
+        }
+        $app->update($data);
+        return $app;
+    }
+
+    public function find(int $id): ?ApplicationInterface
+    {
+        return $this->model::find($id);
+    }
+
+    public function delete(int $id): bool
+    {
+        $app = $this->model::findOrFail($id);
+        return $app->delete();
     }
 }

@@ -6,6 +6,8 @@ use App\Models\Application;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Support\Facades\Redirect;
 
 class ApplicationPolicy
 {
@@ -21,22 +23,24 @@ class ApplicationPolicy
     /**
      * Determine whether the user can view any models.
      *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Auth\Access\Response|bool
+     * @param User $user
+     * @return Response|bool
      */
     public function viewAny(User $user)
     {
-        return ($user->role != User::ROLE_CUSTOMER)
-            ? Response::allow()
-            : Response::deny('Sizga ushbu sahifadan foydalanishga ruxsat berilmagan.');
+        if ($user->role == User::ROLE_CUSTOMER) {
+            throw new AuthorizationException('Sizga ushbu sahifadan foydalanishga ruxsat berilmagan.');
+        }
+
+        return Response::allow();
     }
 
     /**
      * Determine whether the user can view the model.
      *
-     * @param  \App\Models\User  $user
+     * @param User $user
      * @param  \App\Models\Application  $application
-     * @return \Illuminate\Auth\Access\Response|bool
+     * @return Response|bool
      */
     public function view(User $user)
     {
@@ -49,8 +53,8 @@ class ApplicationPolicy
     /**
      * Determine whether the user can create models.
      *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Auth\Access\Response|bool
+     * @param User $user
+     * @return Response|bool
      */
     public function create(User $user)
     {
@@ -61,8 +65,8 @@ class ApplicationPolicy
     /**
      * Determine whether the user can create models.
      *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Auth\Access\Response|bool
+     * @param User $user
+     * @return Response|bool
      */
     public function sertificateCreate(User $user)
     {
@@ -73,9 +77,9 @@ class ApplicationPolicy
     /**
      * Determine whether the user can update the model.
      *
-     * @param  \App\Models\User  $user
+     * @param User $user
      * @param  \App\Models\Application  $application
-     * @return \Illuminate\Auth\Access\Response|bool
+     * @return Response|bool
      */
     public function update(User $user, Application $application)
     {
@@ -86,9 +90,9 @@ class ApplicationPolicy
     /**
      * Determine whether the user can update the model.
      *
-     * @param  \App\Models\User  $user
+     * @param User $user
      * @param  \App\Models\Application  $application
-     * @return \Illuminate\Auth\Access\Response|bool
+     * @return Response|bool
      */
     public function myupdate(User $user, Application $application)
     {
@@ -100,9 +104,9 @@ class ApplicationPolicy
     /**
      * Determine whether the user can delete the model.
      *
-     * @param  \App\Models\User  $user
+     * @param User $user
      * @param  \App\Models\Application  $application
-     * @return \Illuminate\Auth\Access\Response|bool
+     * @return Response|bool
      */
     public function delete(User $user, Application $application)
     {
@@ -113,9 +117,9 @@ class ApplicationPolicy
     /**
      * Determine whether the user can delete the model.
      *
-     * @param  \App\Models\User  $user
+     * @param User $user
      * @param  \App\Models\Application  $application
-     * @return \Illuminate\Auth\Access\Response|bool
+     * @return Response|bool
      */
     public function accept(User $user, Application $application)
     {
@@ -130,9 +134,9 @@ class ApplicationPolicy
     /**
      * Determine whether the user can restore the model.
      *
-     * @param  \App\Models\User  $user
+     * @param User $user
      * @param  \App\Models\Application  $application
-     * @return \Illuminate\Auth\Access\Response|bool
+     * @return Response|bool
      */
     public function send(User $user, Application $application)
     {
@@ -144,8 +148,8 @@ class ApplicationPolicy
     /**
      * Determine whether the user can permanently delete the model.
      *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Auth\Access\Response|bool
+     * @param User $user
+     * @return Response|bool
      */
     public function mydelete(User $user)
     {
