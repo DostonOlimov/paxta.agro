@@ -81,7 +81,7 @@
                             <td>{{ str_pad($application->prepared->kod, 3, '0', STR_PAD_LEFT) }}</td>
                             <td>{{ $application->crops->party_number}}</td>
                             <td>{{ $item->count }}</td>
-                            <td>{{ $item->amount ? number_format($item->amount - $item->count * $application->tests->dalolatnoma->tara , 1, ',',''): 0 }}</td>
+                            <td>{{ $item->amount ? number_format($item->amount - $item->count * $application->tests->dalolatnoma->tara , 1, ',',' ') : 0 }}</td>
                             <td>{{ $application->tests->dalolatnoma->selection->name }}</td>
                             <td>{{ optional($application->tests->dalolatnoma->laboratory_result)->tip->name }}</td>
                             <td>{{ optional($application->tests->dalolatnoma->laboratory_result)->tip->staple }}</td>
@@ -115,7 +115,7 @@
                             <td>{{ str_pad($application->prepared->kod, 3, '0', STR_PAD_LEFT) }}</td>
                             <td>{{ $application->crops->party_number}}</td>
                             <td>{{ $item->count }}</td>
-                            <td>{{ $item->amount ? $item->amount - $item->count * $application->tests->dalolatnoma->tara : 0 }}</td>
+                            <td>{{ $item->amount ?  number_format($item->amount - $item->count * $application->tests->dalolatnoma->tara , 1, ',',' ') : 0 }}</td>
                             <td>{{ $item->sort }}</td>
                             <td>{{ optional(\App\Models\CropsGeneration::where('kod','=',$item->class)->where('crop_id','=',4)->first())->name  }}</td>
                             <td>B</td>
