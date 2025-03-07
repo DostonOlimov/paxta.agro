@@ -11,6 +11,7 @@ use App\Http\Requests\UpdateApplicationRequest;
 use App\Http\Requests\RejectApplicationRequest;
 use App\Services\SearchService;
 use App\Services\Telegram\TelegramService;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -28,160 +29,166 @@ class ApplicationController extends Controller
     }
 
     /**
-     * Display a listing of applications with filtering and search.
+     * Display a listing of applications with filtering and search capabilities
+     *
      * @param Request $request
      * @param ApplicationFilter $filter
      * @param SearchService $service
      * @return \Illuminate\Contracts\Foundation\Application|Factory|View|\Illuminate\Http\Response
+     * @throws AuthorizationException
      */
     public function applicationList(Request $request, ApplicationFilter $filter, SearchService $service)
     {
+        $this->authorize('viewAny', Application::class);
+
         try {
-            $data = $this->getCommonViewData();
-            $data['all_status'] = getAppStatus();
-            $names = getCropsNames();
-            $states = getRegions();
-            $all_status = $all_status = getAppStatus();
-            $years = getCropYears();
+            $viewData = $this->getCommonViewData();
+            $viewData['all_status'] = getAppStatus();
+            $viewData['names'] = getCropsNames();
+            $viewData['states'] = getRegions();
+            $viewData['years'] = getCropYears();
 
             return $service->search(
                 $request,
                 $filter,
                 Application::class,
                 ['crops', 'organization', 'prepared', 'crops.name', 'organization.area.region'],
-                compact('data','states','all_status','names','years'),
-                'application.list',
-                [],
-                false,
-                null,
-                null,
-                []
+                $viewData,
+                'application.list'
             );
-        } catch (\Throwable $e) {
-            Log::error('Error in applicationList: ' . $e->getMessage(), ['exception' => $e]);
-            $telegramService = new TelegramService();
-            $telegramService->sendErrorMessage("⚠️ *Error in applicationList!* \n\n 📌 *Message:* \"{$e->getMessage()}\"");
+            } catch (\Throwable $e) {
+            $this->handleException('applicationList', $e);
             return response()->view('errors.500', [], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
+            }
     }
 
     /**
-     * Show the form for creating a new application.
+     * Display form for creating a new application
+     *
+     * @throws AuthorizationException
      */
-    public function addapplication()
+    public function addApplication()
     {
+        $this->authorize('create', Application::class);
         return view('application.add', $this->getCommonViewData(['year' => getCurrentYear()]));
     }
 
     /**
-     * Store a newly created application.
+     * Store a newly created application
      * @param StoreApplicationRequest $request
      * @return RedirectResponse
      */
-    public function store(StoreApplicationRequest $request)
+    public function store(StoreApplicationRequest $request): RedirectResponse
     {
         try {
             $this->authorize('create', Application::class);
             $this->applicationService->storeApplication($request);
-            return redirect()->route('application.list')->with('message', 'Successfully Submitted');
-        } catch (\Exception $e) {
-            Log::error('Error storing application: ' . $e->getMessage(), ['exception' => $e]);
-            $telegramService = new TelegramService();
-            $telegramService->sendErrorMessage("⚠️ *Error in applicationStore!* \n\n 📌 *Message:* \"{$e->getMessage()}\"");
-            return redirect()->back()->withErrors(['error' => 'Failed to submit application: ' . $e->getMessage()]);
+            return redirect()->route('application.list')
+                ->with('message', 'Application successfully submitted');
+        } catch (\Throwable $e) {
+            return $this->handleRedirectException('applicationStore', $e, 'Failed to submit application');
         }
     }
 
     /**
-     * Show the form for editing an application.
+     * Display form for editing an application
+     *
+     * @param Application $application
+     * @return \Illuminate\Contracts\Foundation\Application|Factory|View
+     * @throws AuthorizationException
      */
-    public function edit($id)
+    public function edit(Application $application)
     {
-        $app = Application::findOrFail($id);
+        $this->authorize('edit', $application);
         return view('application.edit', array_merge(
-            ['app' => $app],
+            ['app' => $application],
             $this->getCommonViewData()
         ));
     }
 
     /**
-     * Update an existing application.
+     * Update an existing application
      * @param $id
      * @param UpdateApplicationRequest $request
      * @return RedirectResponse
      */
-    public function update($id, UpdateApplicationRequest $request)
+    public function update($id, UpdateApplicationRequest $request): RedirectResponse
     {
         try {
-            $this->authorize('update', Application::findOrFail($id));
             $this->applicationService->updateApplication($id, $request);
-            return redirect()->route('application.list')->with('message', 'Successfully Updated');
-        } catch (\Exception $e) {
-            Log::error('Error updating application: ' . $e->getMessage(), ['exception' => $e]);
-            $telegramService = new TelegramService();
-            $telegramService->sendErrorMessage("⚠️ *Error in applicationUpdate!* \n\n 📌 *Message:* \"{$e->getMessage()}\"");
-            return redirect()->back()->withErrors(['error' => 'Failed to update application: ' . $e->getMessage()]);
+            return redirect()->route('application.list')
+                ->with('message', 'Application successfully updated');
+        } catch (\Throwable $e) {
+            return $this->handleRedirectException('applicationUpdate', $e, 'Failed to update application');
         }
     }
 
     /**
-     * Display a specific application.
+     * Display a specific application
+     *
+     * @param $id
+     * @return \Illuminate\Contracts\Foundation\Application|Factory|View
+     * @throws AuthorizationException
      */
-    public function showapplication($id)
+    public function showApplication($id)
     {
-        $app = Application::with('organization.city')->findOrFail($id);
-        return view('application.show', ['app' => $app, 'company' => $app->organization]);
+        $this->authorize('view', Application::class);
+        $application = Application::with('organization.city')->findOrFail($id);
+        return view('application.show', [
+            'app' => $application,
+            'company' => $application->organization
+        ]);
     }
 
     /**
-     * Accept an application.
+     * Accept an application
+     * @param Application $application
+     * @return RedirectResponse
      */
-    public function accept($id)
+    public function accept(Application $application): RedirectResponse
     {
         try {
-            $app = Application::findOrFail($id);
-            $this->authorize('update', $app);
-            $this->applicationService->acceptApplication($app);
-            return redirect()->route('application.list')->with('message', 'Successfully Accepted');
-        } catch (\Exception $e) {
-            Log::error('Error accepting application: ' . $e->getMessage(), ['exception' => $e]);
-            $telegramService = new TelegramService();
-            $telegramService->sendErrorMessage("⚠️ *Error in applicationAccept!* \n\n 📌 *Message:* \"{$e->getMessage()}\"");
-            return redirect()->back()->withErrors(['error' => 'Failed to accept application']);
+            $this->authorize('update', $application);
+            $this->applicationService->acceptApplication($application);
+            return redirect()->route('application.list')
+                ->with('message', 'Application successfully accepted');
+        } catch (\Throwable $e) {
+            return $this->handleRedirectException('applicationAccept', $e, 'Failed to accept application');
         }
     }
 
     /**
-     * Show the rejection form for an application.
+     * Display rejection form for an application
+     *
+     * @param Application $application
+     * @return \Illuminate\Contracts\Foundation\Application|Factory|View
+     * @throws AuthorizationException
      */
-    public function reject($id)
+    public function reject(Application $application)
     {
-        $app = Application::findOrFail($id);
-        return view('application.reject', compact('app'));
+        $this->authorize('update', $application);
+        return view('application.reject', ['app' => $application]);
     }
 
     /**
-     * Reject an application with a reason.
+     * Process application rejection with reason
      * @param RejectApplicationRequest $request
      * @return RedirectResponse
      */
-    public function reject_store(RejectApplicationRequest $request)
+    public function rejectStore(RejectApplicationRequest $request): RedirectResponse
     {
         try {
-            $app = Application::findOrFail($request->input('app_id'));
-            $this->authorize('accept', $app);
-            $this->applicationService->rejectApplication($app, $request->input('reason'));
-            return redirect()->route('application.list')->with('message', 'Application Rejected Successfully');
-        } catch (\Exception $e) {
-            Log::error('Error rejecting application: ' . $e->getMessage(), ['exception' => $e]);
-            $telegramService = new TelegramService();
-            $telegramService->sendErrorMessage("⚠️ *Error in applicationReject!* \n\n 📌 *Message:* \"{$e->getMessage()}\"");
-            return redirect()->back()->withErrors(['error' => 'Failed to reject application']);
+            $application = Application::findOrFail($request->input('app_id'));
+            $this->applicationService->rejectApplication($application, $request->input('reason'));
+            return redirect()->route('application.list')
+                ->with('message', 'Application rejected successfully');
+        } catch (\Throwable $e) {
+            return $this->handleRedirectException('applicationReject', $e, 'Failed to reject application');
         }
     }
 
     /**
-     * Get common data for views to avoid duplication.
+     * Get common view data to avoid repetition
      * @param array $extra
      * @return array
      */
@@ -193,6 +200,32 @@ class ApplicationController extends Controller
             'measure_types' => CropData::getMeasureType(),
             'years' => CropData::getYear(),
         ], $extra);
+    }
+
+    /**
+     * Handle exceptions with logging and Telegram notification
+     * @param string $method
+     * @param \Throwable $e
+     */
+    private function handleException(string $method, \Throwable $e): void
+    {
+        \Log::error("Error in {$method}: " . $e->getMessage(), ['exception' => $e]);
+        (new TelegramService())->sendErrorMessage(
+            "⚠️ *Error in {$method}!* \n\n 📌 *Message:* \"{$e->getMessage()}\""
+        );
+    }
+
+    /**
+     * Handle exceptions for redirect responses
+     * @param string $method
+     * @param \Throwable $e
+     * @param string $errorMessage
+     * @return RedirectResponse
+     */
+    private function handleRedirectException(string $method, \Throwable $e, string $errorMessage): RedirectResponse
+    {
+        $this->handleException($method, $e);
+        return redirect()->back()->withErrors(['error' => "{$errorMessage}: {$e->getMessage()}"]);
     }
 }
 

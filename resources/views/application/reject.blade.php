@@ -1,6 +1,5 @@
 @extends('layouts.app')
 @section('content')
-    @can('update', $app)
         <div class="section">
             <div class="page-header">
                 <ol class="breadcrumb">
@@ -9,17 +8,7 @@
                     </li>
                 </ol>
             </div>
-            <div class="clearfix"></div>
-            @if(session('message'))
-                <div class="row massage">
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <div class="alert alert-success danger text-center">
 
-                            <label for="checkbox-10 colo_success"> {{ trans('app.Duplicate Data')}} </label>
-                        </div>
-                    </div>
-                </div>
-            @endif
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
@@ -75,16 +64,6 @@
                 </div>
             </div>
         </div>
-    @else
-        <div class="section" role="main">
-            <div class="card">
-                <div class="card-body text-center">
-                    <span class="titleup text-danger"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp {{ trans('app.You Are Not Authorize This page.')}}</span>
-                </div>
-            </div>
-        </div>
-
-    @endcan
     <script src="{{ URL::asset('vendors/jquery/dist/jquery.min.js') }}"></script>
     <script type="text/javascript">
         $(document).ready(function () {

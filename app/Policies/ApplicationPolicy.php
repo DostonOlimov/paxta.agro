@@ -20,16 +20,18 @@ class ApplicationPolicy
         }
         return null;
     }
+
     /**
      * Determine whether the user can view any models.
      *
      * @param User $user
      * @return Response|bool
+     * @throws AuthorizationException
      */
     public function viewAny(User $user)
     {
         if ($user->role == User::ROLE_CUSTOMER) {
-            throw new AuthorizationException('Sizga ushbu sahifadan foydalanishga ruxsat berilmagan.');
+            throw new AuthorizationException(trans('app.You Are Not Authorize This page.'));
         }
 
         return Response::allow();
@@ -39,15 +41,17 @@ class ApplicationPolicy
      * Determine whether the user can view the model.
      *
      * @param User $user
-     * @param  \App\Models\Application  $application
      * @return Response|bool
+     * @throws AuthorizationException
      */
     public function view(User $user)
     {
 
-        return ($user->role != User::ROLE_CUSTOMER)
-            ? Response::allow()
-            : Response::deny('Sizga ushbu sahifadan foydalanishga ruxsat berilmagan.');
+        if ($user->role == User::ROLE_CUSTOMER) {
+            throw new AuthorizationException(trans('app.You Are Not Authorize This page.'));
+        }
+
+        return Response::allow();
     }
 
     /**
@@ -55,12 +59,32 @@ class ApplicationPolicy
      *
      * @param User $user
      * @return Response|bool
+     * @throws AuthorizationException
      */
     public function create(User $user)
     {
-        return ($user->role != 30 or $user->crop_branch != User::CROP_BRANCH_CHIGIT)
-            ? Response::allow()
-            : Response::deny('Sizga ushbu sahifadan foydalanishga ruxsat berilmagan.');
+        if ($user->role != User::LABORATORY_DIRECTOR or $user->role != User::STATE_EMPLOYEE) {
+            throw new AuthorizationException(trans('Sizga ushbu sahifadan foydalanishga ruxsat berilmagan.'));
+        }
+
+        return Response::allow();
+    }
+
+    /**
+     * Determine whether the user can create models.
+     *
+     * @param User $user
+     * @param Application $application
+     * @return Response|bool
+     * @throws AuthorizationException
+     */
+    public function edit(User $user,Application $application)
+    {
+        if ($application->created_by != $user->id or $application->status != Application::STATUS_FINISHED) {
+            throw new AuthorizationException(trans('app.Ushbu arizani o\'zgartirish huquqi sizda mavjud emas.'));
+        }
+
+        return Response::allow();
     }
     /**
      * Determine whether the user can create models.
@@ -74,38 +98,29 @@ class ApplicationPolicy
             ? Response::allow()
             : Response::deny('Sizga ushbu sahifadan foydalanishga ruxsat berilmagan.');
     }
+
     /**
      * Determine whether the user can update the model.
      *
      * @param User $user
-     * @param  \App\Models\Application  $application
+     * @param Application $application
      * @return Response|bool
+     * @throws AuthorizationException
      */
     public function update(User $user, Application $application)
     {
-        return ($application->created_by == $user->id && $user->role != User::ROLE_DIROCTOR)
-            ? Response::allow()
-            : Response::deny('Sizga ushbu sahifadan foydalanishga ruxsat berilmagan.');
-    }
-    /**
-     * Determine whether the user can update the model.
-     *
-     * @param User $user
-     * @param  \App\Models\Application  $application
-     * @return Response|bool
-     */
-    public function myupdate(User $user, Application $application)
-    {
-        return ($application->status == Application::STATUS_NEW && $application->created_by == $user->id)
-            ? Response::allow()
-            : Response::deny('Sizga ushbu sahifadan foydalanishga ruxsat berilmagan.');
+        if ($application->created_by != $user->id or $application->status != Application::STATUS_NEW) {
+            throw new AuthorizationException(trans('app.Ushbu arizani o\'zgartirish huquqi sizda mavjud emas.'));
+        }
+
+        return Response::allow();
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param User $user
-     * @param  \App\Models\Application  $application
+     * @param Application $application
      * @return Response|bool
      */
     public function delete(User $user, Application $application)
@@ -118,7 +133,7 @@ class ApplicationPolicy
      * Determine whether the user can delete the model.
      *
      * @param User $user
-     * @param  \App\Models\Application  $application
+     * @param Application $application
      * @return Response|bool
      */
     public function accept(User $user, Application $application)
@@ -135,7 +150,7 @@ class ApplicationPolicy
      * Determine whether the user can restore the model.
      *
      * @param User $user
-     * @param  \App\Models\Application  $application
+     * @param Application $application
      * @return Response|bool
      */
     public function send(User $user, Application $application)
@@ -145,16 +160,4 @@ class ApplicationPolicy
             : Response::deny('Sizga ushbu sahifadan foydalanishga ruxsat berilmagan.');
     }
 
-    /**
-     * Determine whether the user can permanently delete the model.
-     *
-     * @param User $user
-     * @return Response|bool
-     */
-    public function mydelete(User $user)
-    {
-        return ( $user->isAdmin())
-            ? Response::allow()
-            : Response::deny('Sizga ushbu sahifadan foydalanishga ruxsat berilmagan.');
-    }
 }

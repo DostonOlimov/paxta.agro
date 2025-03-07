@@ -49,7 +49,7 @@
             </div>
         </div>
 
-        <h2 class="main__intro"><b>Ishlab chiqaruvchi (arizachi) nomi:&nbsp; </b> {{ $application->organization->name }} </h2>
+            <h2 class="main__intro"><b>Ishlab chiqaruvchi (arizachi) nomi:&nbsp; </b><span style="font-family: 'DejaVu Serif'"> {{ $application->organization->name }} </span></h2>
         <h2 class="main__intro"><b>STIR:&nbsp;  </b> {{$application->organization->inn}}</h2>
         <h2 class="main__intro"><b>Ishlab chiqaruvchi (arizachi) manzili:&nbsp; </b> {{ $application->organization->fulladdress }} </h2>
 
@@ -58,7 +58,7 @@
             <table class="table table-border ">
                 <tr>
                     {{-- <th">T\r</th> --}}
-                    <th rowspan="2" style="font-family: DejaVu Sans"> №</th>
+                    <th rowspan="2" style="font-family: 'DejaVu Serif'"> №</th>
                     <th colspan="2"> Korxona</th>
                     <th rowspan="2"> To‘dadagi toylar soni (dona)</th>
                     <th rowspan="2"> Netto massasi (kg)</th>
@@ -96,7 +96,7 @@
             <table class="table table-border ">
                 <tr>
                     {{-- <th">T\r</th> --}}
-                    <th rowspan="2" style="font-family: DejaVu Sans"> №</th>
+                    <th rowspan="2" style="font-family: 'DejaVu Serif'"> №</th>
                     <th colspan="2"> Korxona</th>
                     <th rowspan="2"> To‘dadagi toylar soni (dona)</th>
                     <th rowspan="2"> Netto massasi (kg)</th>

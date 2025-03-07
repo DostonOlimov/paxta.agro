@@ -227,12 +227,12 @@ Route::prefix('application')->group(function () {
     Route::get('/list', [\App\Http\Controllers\ApplicationController::class, 'applicationList'])->name('application.list');
     Route::get('/add', [\App\Http\Controllers\ApplicationController::class, 'addapplication'])->name('application.add');
     Route::post('/store', [\App\Http\Controllers\ApplicationController::class, 'store'])->name('application.store');
-    Route::get('/edit/{id}', [\App\Http\Controllers\ApplicationController::class, 'edit'])->name('application.edit');
+    Route::get('/edit/{application}', [\App\Http\Controllers\ApplicationController::class, 'edit'])->name('application.edit');
     Route::patch('/update/{id}', [\App\Http\Controllers\ApplicationController::class, 'update'])->name('application.update');
     Route::get('/view/{id}', [\App\Http\Controllers\ApplicationController::class, 'showapplication'])->name('application.view');
-    Route::delete('/delete/{id}', [\App\Http\Controllers\ApplicationController::class, 'destroy'])->name('application.delete');
-    Route::get('/accept/{id}', [\App\Http\Controllers\ApplicationController::class, 'accept'])->name('application.accept');
-    Route::get('/reject/{id}', [\App\Http\Controllers\ApplicationController::class, 'reject'])->name('application.reject');
+    Route::delete('/delete/{application}', [\App\Http\Controllers\ApplicationController::class, 'destroy'])->name('application.delete');
+    Route::get('/accept/{application}', [\App\Http\Controllers\ApplicationController::class, 'accept'])->name('application.accept');
+    Route::get('/reject/{application}', [\App\Http\Controllers\ApplicationController::class, 'reject'])->name('application.reject');
     Route::post('/reject/store', [\App\Http\Controllers\ApplicationController::class, 'reject_store'])->name('application.reject.store');
 });
 

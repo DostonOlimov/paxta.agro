@@ -232,7 +232,7 @@ if (! function_exists('getAppStatus')) {
 if (! function_exists('getCropsNames')) {
     function getCropsNames()
     {
-        return \App\Models\CropsName::all();
+        return \App\Models\CropsName::get();
 
     }
 }

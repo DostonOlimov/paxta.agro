@@ -26,7 +26,7 @@
     </div>
     <h1 style="padding-top:10px" class="text-center">
         <b>
-            <span style="font-size:24px;">  SINOV BAYONNOMASI <span style="font-family: 'DejaVu Serif'"> № </span>{{ $test->laboratory_final_results->number + $i }}</span>
+            <span style="font-size:24px;">  SINOV BAYONNOMASI <span style="font-family: 'DejaVu Serif'">№</span>{{ $test->laboratory_final_results->number + $i }}</span>
         </b>
     </h1>
 
@@ -42,18 +42,18 @@
 
     <div style="width: 100%; display: flex; justify-content: space-between; padding-top:10px; font-size: 18px;">
         <div style="width: 74%; display: inline-block;">
-            <span style="font-family: DejaVu Sans"> <b>Ariza beruvchining nomi:</b> <span style="font-family: DejaVu Sans">{{ $test->test_program->application->organization->name }}.</span> </span>
+             <b>Ariza beruvchining nomi:</b> <span style="font-family: 'DejaVu Serif'">{{ $test->test_program->application->organization->name }}.</span>
         </div>
         <div style="width: 25%; display: inline-block; text-align: right">
             <span><b>Hosil yili:</b> {{ $test->test_program->application->crops->year }} y.</span>
         </div>
     </div>
     <div style="width: 100%; display: flex; justify-content: space-between; padding-top:10px; font-size: 18px;">
-        <span><b>Ishlab chiqaruvchi nomi va kodi:</b> <span style="font-family: DejaVu Sans">{{ $test->test_program->application->prepared->name . ' - ' . str_pad($test->test_program->application->prepared->kod, 3, '0', STR_PAD_LEFT) }}</span> </span>
+        <span><b>Ishlab chiqaruvchi nomi va kodi:</b> {{ $test->test_program->application->prepared->name . ' - ' . str_pad($test->test_program->application->prepared->kod, 3, '0', STR_PAD_LEFT) }}</span>
     </div>
     <div style="width: 100%; display: flex; justify-content: space-between; padding-top:10px; font-size: 18px;">
         <div style="width: 69%; display: inline-block;">
-            <span> <b>Namuna olish dalolatnomasi raqami <span style="font-family: 'DejaVu Serif'"> № </span> </b>{{ $test->number }}.</span>
+            <span> <b>Namuna olish dalolatnomasi raqami <span style="font-family: 'DejaVu Serif'">№</span> </b>{{ $test->number }}.</span>
         </div>
         <div style="width: 30%; display: inline-block; text-align: left">
             <span> {{ $formattedDate2}} y.</span>
@@ -76,7 +76,7 @@
         <table class="table table-border " style="border: 1px solid black ;text-align: center;font-size: 18px;">
             <tr>
                 {{-- <th">T\r</th> --}}
-                <th rowspan="2"> <span style="font-family: 'DejaVu Serif'"> № </span></th>
+                <th rowspan="2"> <span style="font-family: 'DejaVu Serif'">№</span></th>
                 <th colspan="2"> Korxona</th>
                 <th rowspan="2"> To‘dadagi toylar soni (dona)</th>
                 <th rowspan="2"> Netto massasi (kg)</th>
@@ -117,7 +117,7 @@
         <table class="table table-border " style="border: 1px solid black ;text-align: center;font-size: 18px;">
             <tr>
                 {{-- <th">T\r</th> --}}
-                <th rowspan="2"> <span style="font-family: 'DejaVu Serif'"> № </span></th>
+                <th rowspan="2"> <span style="font-family: 'DejaVu Serif'">№</span></th>
                 <th colspan="2"> Korxona</th>
                 <th rowspan="2"> To‘dadagi toylar soni (dona)</th>
                 <th rowspan="2"> Netto massasi (kg)</th>

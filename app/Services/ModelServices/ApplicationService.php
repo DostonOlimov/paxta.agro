@@ -28,30 +28,31 @@ class ApplicationService
 
     public function storeApplication($request)
     {
-        $user = Auth::user();
+        $userId = Auth::user()->id;
 
-        return DB::transaction(function () use ($user, $request) {
+        return DB::transaction(function () use ($userId, $request) {
             $crop = $this->cropDataRepository->create([
                 'name_id'       => $request->input('name'),
-                'country_id'    => $request->input('country'),
                 'kodtnved'      => $request->input('tnved'),
                 'party_number'  => $request->input('party_number'),
                 'measure_type'  => $request->input('measure_type'),
                 'amount'        => $request->input('amount'),
                 'year'          => $request->input('year'),
-                'toy_count'     => $request->input('toy_count'),
                 'sxeme_number'  => $request->input('sxeme_number'),
+                'toy_count'     => $request->input('toy_count'),
+                'country_id'    => $request->input('country'),
             ]);
 
             return $application = $this->applicationRepository->create([
                 'crop_data_id'     => $crop->id,
                 'organization_id'  => $request->input('organization'),
                 'prepared_id'      => $request->input('prepared'),
+                'type'             => Application::TYPE_1,
                 'date'             => formatDate($request->input('dob')),
-                'status'           => Application::STATUS_FINISHED,
                 'data'             => $request->input('data'),
-                'created_by'       => $user->id,
-                'app_type'         => getApplicationType()
+                'status'           => Application::STATUS_FINISHED,
+                'app_type'         => getApplicationType(),
+                'created_by'       => $userId,
             ]);
         });
     }

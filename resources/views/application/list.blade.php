@@ -5,7 +5,6 @@
     $sortService = new \App\Services\SortService('application.list');
 @endphp
 
-@can('viewAny', \App\Models\Application::class)
    <div class="section">
 			<!-- PAGE-HEADER -->
 		<div class="page-header">
@@ -89,8 +88,8 @@
 										<td>{{ optional($app->crops)->amount_name }}</td>
                                         <td>{{ optional($app->crops)->year }}</td>
 										<td>
-                                            <a href="{!! url('/application/view/'.$app->id) !!}"><button type="button" class="btn btn-round btn-info">{{ trans('app.View')}}</button></a>
-                                            <a href="{!! url('/application/edit/'.$app->id) !!}" ><button type="button" class="btn btn-round btn-success">{{ trans('app.Edit')}}</button></a>
+                                            <a href="{!! url('/application/view/'. $app->id) !!}"><button type="button" class="btn btn-round btn-info">{{ trans('app.View')}}</button></a>
+                                            <a href="{!! url('/application/edit/'. $app->id) !!}" ><button type="button" class="btn btn-round btn-success">{{ trans('app.Edit')}}</button></a>
 										</td>
 									</tr>
 								@endforeach
@@ -104,15 +103,6 @@
 			</div>
 		</div>
     </div>
-@else
-	<div class="section" role="main">
-		<div class="card">
-			<div class="card-body text-center">
-				<span class="titleup text-danger"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp {{ trans('app.You Are Not Authorize This page.')}}</span>
-			</div>
-		</div>
-	</div>
-@endcan
 @endsection
 @section('scripts')
     <script>

@@ -89,6 +89,6 @@ class Kernel extends HttpKernel
 
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('telescope:prune')->daily(); // or another frequency
+      //  $schedule->command('telescope:prune')->daily(); // or another frequency
     }
 }

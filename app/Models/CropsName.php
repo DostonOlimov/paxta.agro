@@ -27,6 +27,7 @@ class CropsName extends Model
     protected $fillable = [
         'id', 'name',
     ];
+
     public function crop_data()
     {
         return $this->hasMany(CropData::class,'name_id','id');

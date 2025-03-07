@@ -9,7 +9,7 @@
 					</li>
 				</ol>
 			</div>
-           @can('update', $app)
+
 			<div class="row">
 				<div class="col-md-12">
 					<div class="card">
@@ -218,150 +218,19 @@
 				</div>
 				</div>
 			</div>
-@else
-    <div class="section" role="main">
-        <div class="card">
-            <div class="card-body text-center">
-                <span class="titleup text-danger"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp {{trans('app.Ushbu arizani o\'zgartirish huquqi sizda mavjud emas')}}</span>
-            </div>
-        </div>
-    </div>
-@endcan
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="{{ URL::asset('vendors/moment/min/moment.min.js') }}"></script>
-<script src="{{ URL::asset('vendors/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
-<script src="{{ URL::asset('vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') }}"></script>
-<script type="text/javascript">
-    $("input.dob").datetimepicker({
-        format: "dd-mm-yyyy",
-        autoclose: 1,
-        minView: 2,
-        startView:'decade',
-        endDate: new Date(),
-    });
-    function disableButton() {
-        var button = document.getElementById('submitter');
-        button.disabled = true;
-        button.innerText = 'Yuklanmoqda...'; // Optionally, change the text to indicate processing
-        setTimeout(function() {
-            button.disabled = false;
-            button.innerText = 'Saqlash'; // Restore the button text
-        }, 1000);
-    }
-
-</script>
-<script>
-    $(document).ready(function () {
-        $('select.owner_search').select2({
-            ajax: {
-                url: '/organization/search_by_name',
-                delay: 300,
-                dataType: 'json',
-                data: function (params) {
-                    return {
-                        search: params.term
-                    }
-                },
-                processResults: function (data) {
-                    data = data.map((name, index) => {
-                        return {
-                            id: name.id,
-                            text: capitalize(name.name + (name.name ? ' - STiR:' + name.inn : ''))
-                        }
-                    });
-                    return {
-                        results: data
-                    }
-                }
-            },
-            language: {
-                inputTooShort: function () {
-                    return 'Korxona (nomi), STIR ini kiritib izlang';
-                },
-                searching: function () {
-                    return 'Izlanmoqda...';
-                },
-                noResults: function () {
-                    return "Natija topilmadi"
-                },
-                errorLoading: function () {
-                    return "Natija topilmadi"
-                }
-            },
-            placeholder: 'Korxona nomini kiriting',
-            minimumInputLength: 2
-        })
-        $('select.owner_search2').select2({
-            ajax: {
-                url: '/prepared/search_by_name',
-                delay: 300,
-                dataType: 'json',
-                data: function (params) {
-                    return {
-                        search: params.term
-                    }
-                },
-                processResults: function (data) {
-                    data = data.map((name, index) => {
-                        return {
-                            id: name.id,
-                            text: capitalize(name.name )
-                        }
-                    });
-                    return {
-                        results: data
-                    }
-                }
-            },
-            language: {
-                inputTooShort: function () {
-                    return 'Korxona nomini kiritib izlang';
-                },
-                searching: function () {
-                    return 'Izlanmoqda...';
-                },
-                noResults: function () {
-                    return "Natija topilmadi"
-                },
-                errorLoading: function () {
-                    return "Natija topilmadi"
-                }
-            },
-            placeholder: 'Korxona nomini kiriting',
-            minimumInputLength: 2
-        })
-        function capitalize(text) {
-            var words = text.split(' ');
-            for (var i = 0; i < words.length; i++) {
-                if (words[i][0] == null) {
-                    continue;
-                } else {
-                    words[i] = words[i][0].toUpperCase() + words[i].substring(1).toLowerCase();
-                }
-
-            }
-            return words.join(' ');
-        }
-    });
-</script>
-<script >
-    $(document).ready(function () {
-        $('.states').select2({
-            minimumResultsForSearch: Infinity
-        });
-    })
-    // get kod tn ved from corn's id crops_name
-    const kodtnved = document.getElementById('kodtnved');
-    const stateDropdown = document.getElementById('crops_name');
-
-    stateDropdown.addEventListener('change', () => {
-        const stateId = stateDropdown.value;
-        if(stateId){
-            fetch(`/getkodtnved/${stateId}`)
-                .then(response => response.json())
-                .then(data => kodtnved.value = data.code);
-        }
-    });
-</script>
-
+@endsection
+@section('scripts')
+    <script>
+        var translations = {
+            inputTooShort: '{{ trans('app.Korxona (nomi), STIR ini kiritib izlang') }}',
+            searching: '{{ trans('app.Izlanmoqda...') }}',
+            noResults: '{{ trans('app.Natija topilmadi') }}',
+            errorLoading: '{{ trans('app.Natija topilmadi') }}',
+            placeholder: '{{ trans('app.Korxona nomini kiriting') }}'
+        };
+    </script>
+    <script src="{{ asset('js/my_js_files/date.js') }}"></script>
+    <script src="{{ asset('js/my_js_files/disable_button.js') }}"></script>
+    <script src="{{ asset('js/my_js_files/get_kd_tnved.js') }}"></script>
+    <script src="{{ asset('js/my_js_files/get_company.js') }}"></script>
 @endsection
