@@ -63,7 +63,7 @@ class ApplicationPolicy
      */
     public function create(User $user)
     {
-        if ($user->role != User::LABORATORY_DIRECTOR or $user->role != User::STATE_EMPLOYEE) {
+        if ($user->role != User::LABORATORY_DIRECTOR and $user->role != User::STATE_EMPLOYEE) {
             throw new AuthorizationException(trans('Sizga ushbu sahifadan foydalanishga ruxsat berilmagan.'));
         }
 
@@ -80,7 +80,7 @@ class ApplicationPolicy
      */
     public function edit(User $user,Application $application)
     {
-        if ($application->created_by != $user->id or $application->status != Application::STATUS_FINISHED) {
+        if ($application->created_by != $user->id and $application->status != Application::STATUS_FINISHED) {
             throw new AuthorizationException(trans('app.Ushbu arizani o\'zgartirish huquqi sizda mavjud emas.'));
         }
 
@@ -109,7 +109,7 @@ class ApplicationPolicy
      */
     public function update(User $user, Application $application)
     {
-        if ($application->created_by != $user->id or $application->status != Application::STATUS_NEW) {
+        if ($application->created_by != $user->id and $application->status != Application::STATUS_NEW) {
             throw new AuthorizationException(trans('app.Ushbu arizani o\'zgartirish huquqi sizda mavjud emas.'));
         }
 
