@@ -376,7 +376,7 @@ class ReportController extends Controller
             'dalolatnoma.test_program.application.crops.name',
             'dalolatnoma.test_program.application.crops.type',
             'dalolatnoma.test_program.application.decision',
-            'dalolatnoma.test_program.application.tests.result.certificate'
+
         ]);
 
 
