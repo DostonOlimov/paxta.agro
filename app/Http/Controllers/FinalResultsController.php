@@ -226,6 +226,7 @@ class FinalResultsController extends Controller
 
         $counts = ClampData::select('sort', 'class', DB::raw('count(*) as count'))
             ->groupBy('sort', 'class')
+            ->orderBy('gin_bale')
             ->where('dalolatnoma_id',$id)
             ->get();
         $mic = ClampData::where('dalolatnoma_id',$id)->avg('mic');
@@ -257,6 +258,7 @@ class FinalResultsController extends Controller
             ->join('clamp_data', 'clamp_data.gin_bale', '=', 'akt_amount.shtrix_kod')
             ->where('clamp_data.dalolatnoma_id', $id)
             ->where('akt_amount.dalolatnoma_id', $id)
+            ->orderBy('akt_amount.shtrix_kod')
             ->get()
             ->chunk(50);
 
