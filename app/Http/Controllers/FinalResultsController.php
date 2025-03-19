@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Filters\V1\DalolatnomaFilter;
+use App\Models\AktAmount;
 use App\Models\Application;
 use App\Models\ClampData;
 use App\Models\Dalolatnoma;
@@ -247,13 +248,13 @@ class FinalResultsController extends Controller
     {
         $dalolatnoma = Dalolatnoma::findOrFail($id);
 
-        $data = ClampData::select(
+        $data = AktAmount::select(
             'akt_amount.amount as amount',
             'clamp_data.gin_bale as gin_bale',
             'clamp_data.sort as sort',
             'clamp_data.class as class'
         )
-            ->join('akt_amount', 'clamp_data.gin_bale', '=', 'akt_amount.shtrix_kod')
+            ->join('clamp_data', 'clamp_data.gin_bale', '=', 'akt_amount.shtrix_kod')
             ->where('clamp_data.dalolatnoma_id', $id)
             ->where('akt_amount.dalolatnoma_id', $id)
             ->get()
