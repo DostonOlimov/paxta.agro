@@ -218,7 +218,7 @@ class FinalResultsController extends Controller
     public function view($id)
     {
         $dalolatnoma = Dalolatnoma::find($id);
-        $tests = ClampData::where('dalolatnoma_id',$id)->get()->toArray();
+        $tests = ClampData::where('dalolatnoma_id',$id)->orderBy('gin_bale')->get()->toArray();
         $data1 = [];
         if($tests){
             $data1 =  array_chunk($tests, ceil(count($tests)/4));
