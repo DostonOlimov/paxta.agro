@@ -64,7 +64,7 @@
                                 </ul>
                             </div>
                         </div>
-                        @if($results)
+                        @if($data->isNotEmpty())
                            @foreach($counts as $count)
                                 <div class="py-3">
                                     <a href="{{url()->previous()}}" class="btn btn-primary"><i class="fa fa-arrow-left"></i> {{ trans("app.Ortga") }}</a>
@@ -100,7 +100,7 @@
                                                     <table style="border:1px black; margin-top:5px; text-align: center; font-size: 14px;" >
                                                         <thead>
                                                         <tr>
-                                                            @foreach($results as $data)
+                                                            @foreach($data as $dat)
                                                                 <th style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.08rem 0.08rem;" >№</th>
                                                                 <th style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.08rem 0.08rem;">Og'irligi</th>
                                                             @endforeach
@@ -109,13 +109,15 @@
                                                         <tbody>
                                                         @for($i = 0; $i < 50; $i++)
                                                             <tr>
-                                                                @foreach($results as $data)
-                                                                    <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.08rem 0.08rem;">{{ 50 * ($loop->iteration-1) + $i +1 }}</td>
-                                                                    @if(isset($data[$i]))
-                                                                        @if($data[$i]['class'] == $count->class and $data[$i]['sort'] == $count->sort)
-                                                                            @if($data[$i]['amount'])
+                                                                @foreach($data as $dat)
+                                                                    @php $index = 50 * ($loop->iteration-1) + $i; @endphp
+
+                                                                    <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.08rem 0.08rem;">{{ $index +1 }}</td>
+                                                                    @if(isset($dat[$index]))
+                                                                        @if($dat[$index]['class'] == $count->class and $dat[$index]['sort'] == $count->sort)
+                                                                            @if($dat[$index]['amount'])
                                                                                 <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.08rem 0.08rem;" >
-                                                                                    {{$data[$i]['amount']}} kg
+                                                                                    {{$dat[$index]['amount']}} kg
                                                                                 </td>
                                                                             @else
                                                                                 <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.08rem 0.08rem;">

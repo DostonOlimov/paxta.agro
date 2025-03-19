@@ -245,41 +245,37 @@ class FinalResultsController extends Controller
 
     public function aktAmount($id)
     {
-        $dalolatnoma = Dalolatnoma::find($id);
+        $dalolatnoma = Dalolatnoma::findOrFail($id);
+
         $data = ClampData::select(
             'akt_amount.amount as amount',
             'clamp_data.gin_bale as gin_bale',
             'clamp_data.sort as sort',
             'clamp_data.class as class'
         )
-            ->join('akt_amount','clamp_data.gin_bale','=','akt_amount.shtrix_kod')
-            ->where('clamp_data.dalolatnoma_id',$id)
-            ->where('akt_amount.dalolatnoma_id',$id)
+            ->join('akt_amount', 'clamp_data.gin_bale', '=', 'akt_amount.shtrix_kod')
+            ->where('clamp_data.dalolatnoma_id', $id)
+            ->where('akt_amount.dalolatnoma_id', $id)
             ->get()
-            ->toArray();
-
-        $data1 = !empty($data) ? array_chunk($data, 50) : [];
+            ->chunk(50);
 
         $counts = ClampData::select(
             'sort',
             'class',
-            DB::raw('SUM(amount) as total_amount'), // Replace 'amount_column' with the actual column name for the amount
+            DB::raw('SUM(akt_amount.amount) as total_amount'),
             DB::raw('COUNT(*) as count')
         )
-            ->join('akt_amount','clamp_data.gin_bale','=','akt_amount.shtrix_kod')
+            ->join('akt_amount', 'clamp_data.gin_bale', '=', 'akt_amount.shtrix_kod')
             ->where('clamp_data.dalolatnoma_id', $id)
-            ->where('akt_amount.dalolatnoma_id',$id)
+            ->where('akt_amount.dalolatnoma_id', $id)
             ->groupBy('sort', 'class')
             ->orderBy('class')
             ->orderBy('sort')
             ->get();
 
-        return view('final_results.akt_amount', [
-            'results' => $data1,
-            'counts' => $counts,
-            'dalolatnoma'=>$dalolatnoma
-        ]);
+        return view('final_results.akt_amount', compact('data', 'counts', 'dalolatnoma'));
     }
+
     public function update($id)
     {
        $result = FinalResult::find($id);
