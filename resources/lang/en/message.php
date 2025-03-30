@@ -5,8 +5,14 @@ return [
     'Welcome' => 'Xush kelibsiz',
     'Inventory' => 'Inventarizatsiya',
     'Home' => 'Home',
-    'Paxta tolasini sertifikatlashtirish avtomatlashtirilgan axborot tizimi' => 'Cotton fiber certification automated information system                          ',
+    'Paxta tolasini sertifikatlashtirish avtomatlashtirilgan axborot tizimi' => 'Automated information system for certification of cotton products.',
     'Page title' => 'Cotton Product Certification System',
+    'Muvofiqlik sertifikati berilgan paxta tolasi miqdori' => 'Amount of cotton fiber certified for compliance',
+    'Sifat sertifikati berilgan paxta tolasi miqdori' => 'Amount of cotton fiber certified for quality',
+    'Sifat sertifikati berilgan texnik chigit miqdori' => 'Amount of technical seed certified for quality',
+    'Sifat sertifikati berilgan paxta momig\'i miqdori' => 'Amount of cotton dust certified for quality',
+    'Sertifikatlash uchun kelgan jami mahsulot miqdori' => 'Total amount of products received for certification',
+    'Paxta mahsulotlari to\'g\'risida ma\'lumot' => 'Information about cotton products',
 
     //Dashbord page
     'AGROINSPEKSIYA' => 'AGROINSPECTION',
@@ -138,7 +144,7 @@ return [
     "Toshkent viloyati" => "Tashkent Region",
     "Toshkent shahri" => "Tashkent City",
 
-    "Korxonalar kesimda ma'lumot"=>"Information in the section of enterprises",
+    "Korxonalar kesimda ma'lumot" => "Information in the section of enterprises",
 
-    "Ishlab chiqaruvchi zavodlar kesimda ma'lumot"=>"Information in the manufacturing plants section",
+    "Ishlab chiqaruvchi zavodlar kesimda ma'lumot" => "Information in the manufacturing plants section",
 ];

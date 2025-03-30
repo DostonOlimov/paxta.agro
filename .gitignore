@@ -21,4 +21,4 @@ storage/*.key
 .env.development
 .env.dusk.local
 .env.dusk.testing
-
+.osp

@@ -5,8 +5,14 @@ return [
     'Welcome' => 'Добро пожаловать',
     'Inventory' => 'Inventarizatsiya',
     'Home' => 'Home',
-    'Paxta tolasini sertifikatlashtirish avtomatlashtirilgan axborot tizimi' => 'Автоматизированная информационная система сертификации хлопкового волокна.',
+    'Paxta tolasini sertifikatlashtirish avtomatlashtirilgan axborot tizimi' => 'Автоматизированная информационная система сертификации хлопковой продукции.',
     'Page title' => 'Система сертификации хлопчатобумажной продукции',
+    'Muvofiqlik sertifikati berilgan paxta tolasi miqdori' => 'Количество хлопкового волокна, сертифицированного на соответствие',
+    'Sifat sertifikati berilgan paxta tolasi miqdori' => 'Количество хлопкового волокна, сертифицированного по качеству',
+    'Sifat sertifikati berilgan texnik chigit miqdori' => 'Количество технического семени, сертифицированного по качеству',
+    'Sifat sertifikati berilgan paxta momig\'i miqdori' => 'Количество хлопковой пыли, сертифицированного по качеству',
+    'Sertifikatlash uchun kelgan jami mahsulot miqdori' => 'Общее количество продукции, поступившей на сертификацию',
+    'Paxta mahsulotlari to\'g\'risida ma\'lumot' => 'Информация о хлопковых продуктах',
 
     //Dashbord page
     'AGROINSPEKSIYA' => 'АГРОИНСПЕКЦИЯ',
@@ -138,7 +144,7 @@ return [
     "Toshkent viloyati" => "Ташкентская обл.",
     "Toshkent shahri" => "Город Ташкент",
 
-    "Korxonalar kesimda ma'lumot"=>"Информация в разделе предприятий",
+    "Korxonalar kesimda ma'lumot" => "Информация в разделе предприятий",
 
-    "Ishlab chiqaruvchi zavodlar kesimda ma'lumot"=>"Информация в разделе заводы-производители",
+    "Ishlab chiqaruvchi zavodlar kesimda ma'lumot" => "Информация в разделе заводы-производители",
 ];

@@ -22,9 +22,16 @@ return [
     'Inventory' => 'Inventarizatsiya',
     'Home' => 'Home',
 
-    'Paxta tolasini sertifikatlashtirish avtomatlashtirilgan axborot tizimi' => 'Paxta tolasini sertifikatlashtirish avtomatlashtirilgan axborot tizimi',
+    'Paxta tolasini sertifikatlashtirish avtomatlashtirilgan axborot tizimi' => 'Paxta mahsulotlarini sertifikatlashtirish avtomatlashtirilgan axborot tizimi',
     'Page title' => 'Paxta mahsulotlarini sertifikatlashtirish tizimi',
 
+    'Muvofiqlik sertifikati berilgan paxta tolasi miqdori'=> 'Muvofiqlik sertifikati berilgan paxta tolasi miqdori',
+    'Sifat sertifikati berilgan paxta tolasi miqdori'=> 'Sifat sertifikati berilgan paxta tolasi miqdori',
+    'Sifat sertifikati berilgan texnik chigit miqdori'=> 'Sifat sertifikati berilgan texnik chigit miqdori',
+    'Sifat sertifikati berilgan paxta momig\'i miqdori'=> 'Sifat sertifikati berilgan paxta momig\'i miqdori',
+    'Sertifikatlash uchun kelgan jami mahsulot miqdori'=> 'Sertifikatlash uchun kelgan jami mahsulot miqdori',
+    'Paxta mahsulotlari to\'g\'risida ma\'lumot' => 'Paxta mahsulotlari to\'g\'risida ma\'lumot',
+    
     //Dashbord page
     'AGROINSPEKSIYA' => 'AGROINSPEKSIYA',
     'Dashboard' => 'Asboblar paneli',

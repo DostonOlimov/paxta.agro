@@ -19,8 +19,15 @@ return [
     'Welcome' => 'Xush kelibsiz',
     'Inventory' => 'Inventarizatsiya',
     'Home' => 'Home',
-    'Paxta tolasini sertifikatlashtirish avtomatlashtirilgan axborot tizimi' => 'Пахта толасини сертификатлаштириш автоматлаштирилган ахборот тизими',
+    'Paxta tolasini sertifikatlashtirish avtomatlashtirilgan axborot tizimi' => 'Пахта маҳсулотларини сертификатлаштириш автоматлаштирилган ахборот тизими',
     'Page title' => 'Пахта маҳсулотларини сертификатлаштириш тизими',
+    'Muvofiqlik sertifikati berilgan paxta tolasi miqdori' => 'Мувофиқлик сертификати берилган пахта толаси миқдори',
+    'Sifat sertifikati berilgan paxta tolasi miqdori' => 'Сифат сертификати берилган пахта толаси миқдори',
+    'Sifat sertifikati berilgan texnik chigit miqdori' => 'Сифат сертификати берилган техник чигит миқдори',
+    'Sifat sertifikati berilgan paxta momig\'i miqdori' => 'Сифат сертификати берилган пахта момиғи миқдори',
+    'Sertifikatlash uchun kelgan jami mahsulot miqdori' => 'Сертификатлаш учун келган жами маҳсулот миқдори',
+    'Paxta mahsulotlari to\'g\'risida ma\'lumot' => 'Пахта маҳсулотлари тўғрисида маълумот',
+    
     //Dashbord page
     'AGROINSPEKSIYA' => 'АГРОИНСПЕКЦИЯ',
     'Dashboard' => 'Aсбоблар панели',
@@ -151,7 +158,7 @@ return [
     "Toshkent viloyati" => "Тошкент вилояти",
     "Toshkent shahri" => "Тошкент шаҳри",
 
-    "Korxonalar kesimda ma'lumot"=>"Корхоналар кесимда маълумот",
+    "Korxonalar kesimda ma'lumot" => "Корхоналар кесимда маълумот",
 
-    "Ishlab chiqaruvchi zavodlar kesimda ma'lumot"=>"Ишлаб чиқарувчи заводлар кесимда маълумот",
+    "Ishlab chiqaruvchi zavodlar kesimda ma'lumot" => "Ишлаб чиқарувчи заводлар кесимда маълумот",
 ];

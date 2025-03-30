@@ -10,12 +10,15 @@
             'bgThird' => '#343a40',
             'hover' => '#d336f6',
 
+            'Dashboard_title' => 'message.Sifat sertifikati berilgan texnik chigit miqdori'
+
         ],
         3 => [
             'bgDefault' => '#4eba69',
             'bgSecond' => '#198754',
             'bgThird' => '#4eba69',
             'hover' => '#ed3957',
+            'Dashboard_title' => 'message.Sifat sertifikati berilgan paxta tolasi miqdori'
 
         ],
          4 => [
@@ -23,6 +26,7 @@
             'bgSecond' => '#198754',
             'bgThird' => '#4eba69',
             'hover' => '#ed72e3',
+            'Dashboard_title' => 'message.Sifat sertifikati berilgan paxta momig\'i miqdori'
 
         ],
         'default' => [
@@ -30,11 +34,13 @@
             'bgSecond' => '#387ADF',
             'bgThird' => '#11009E',
             'hover' => '#23db64',
+            'Dashboard_title' => 'message.Muvofiqlik sertifikati berilgan paxta tolasi miqdori'
         ],
     ];
 
     $crop = session('crop');
     $currentColors = $colors[$crop] ?? $colors['default'];
+    $dashboardTitle = $currentColors['Dashboard_title'];
 @endphp
 @section('content')
     <div class="map_statistcs-container">
@@ -169,7 +175,7 @@
                               d="M 312.5,332.5 C 313.458,332.953 314.292,333.619 315,334.5C 317.279,341.724 320.612,348.391 325,354.5C 334.458,362.283 341.125,371.95 345,383.5C 351.198,370.628 359.698,359.462 370.5,350C 378.151,343.834 386.817,340.501 396.5,340C 400.485,353.801 400.319,367.634 396,381.5C 392.348,392.149 385.514,399.983 375.5,405C 383.582,405.347 391.582,406.347 399.5,408C 419.659,410.386 434.659,420.219 444.5,437.5C 446.323,443.371 446.823,449.371 446,455.5C 445.107,456.081 444.107,456.415 443,456.5C 429.699,449.605 415.532,445.938 400.5,445.5C 389.926,447.412 379.593,446.578 369.5,443C 363,439.185 358.5,433.685 356,426.5C 351.341,443.15 341.508,455.65 326.5,464C 320.381,467.394 314.048,470.228 307.5,472.5C 303.946,471.751 300.28,470.918 296.5,470C 288.601,467.271 284.267,461.771 283.5,453.5C 301.723,449.09 315.89,439.09 326,423.5C 327.892,419.825 329.392,415.991 330.5,412C 310.584,395.97 302.417,375.136 306,349.5C 306.488,344.393 307.488,339.393 309,334.5C 309.71,333.027 310.876,332.36 312.5,332.5 Z" />
                     </g>
                 </svg>
-                <p>@if($branchCrop == 2) {{ trans('message.Texnik chigit miqdori') }} @else {{ trans('message.Paxta tolasi miqdori') }} @endif</p>
+                <p style="font-size: 18px;"> {{ trans($dashboardTitle) }}</p>
                 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 512 512"
                      style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
                      xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -273,7 +279,7 @@
                         d="M0 0 C6.875 1.875 6.875 1.875 8 3 C8.04063832 4.66617115 8.042721 6.33388095 8 8 C6.85073734 7.04578192 5.70569459 6.08647955 4.5625 5.125 C3.92441406 4.59132813 3.28632812 4.05765625 2.62890625 3.5078125 C1 2 1 2 0 0 Z "
                         fill="#40814b" transform="translate(74,288)" />
                 </svg>
-                <p style="font-size: 23px">{{ trans('message.Paxta tolasi kesimida ma\'lumot') }}</p>
+                <p style="font-size: 23px">{{ trans('message.Paxta mahsulotlari to\'g\'risida ma\'lumot') }}</p>
                 <svg viewBox="0 0 520 520" xmlns="http://www.w3.org/2000/svg"
                      style="
                   shape-rendering: geometricPrecision;
@@ -565,7 +571,7 @@
                         <path style="fill:#3763ce"
                               d="M397.392 298.242c-.218-3.754 2.158-6.899 4.99-6.899h-59.956c-3.765 0-6.925 3.145-6.635 6.899 3.52 45.577 41.617 81.462 88.096 81.462 7.856 0 15.443-1.103 22.694-3.027-26.809-9.459-46.99-40.562-49.189-78.435M220.657 476.903c0-9.761 7.913-17.672 17.672-17.672h-79.525c-9.759 0-17.672 7.912-17.672 17.672 0 9.759 7.913 17.672 17.672 17.672h79.525c-9.76 0-17.672-7.913-17.672-17.672" />
                     </svg>
-                    <p>@if($branchCrop == 2) {{ trans('message.Texnik chigit miqdori') }} @else {{ trans('message.Paxta tolasi miqdori') }} @endif:</p>
+                    <p> {{ trans('message.Sertifikatlash uchun kelgan jami mahsulot miqdori') }}:</p>
                     <span class="text-success">{{ round($sumAmount / 1000) }} {{ trans('message.tonna') }}</span>
                 </li>
                 <hr />
@@ -1074,7 +1080,7 @@
                 }
             });
 
-            const amountOfCotton = {{ round($sumAmount) }};
+            const amountOfCotton = {{ round($sumFinalResult) }};
             const od = new Odometer({
                 el: document.getElementById("odometer"),
                 format: "(,ddd)",
