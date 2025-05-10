@@ -37,6 +37,8 @@
                 <div class="dropdown">
                     <div id="currentYear" class="menu-year">@php echo session('year') ?  session('year') : date('Y'); @endphp </div>
                     <div class="my-dropdown-year">
+                        <a href="#" onclick="changeYear('2021')"><b>2021</b></a>
+                        <a href="#" onclick="changeYear('2022')"><b>2022</b></a>
                         <a href="#" onclick="changeYear('2023')"><b>2023</b></a>
                         <a href="#" onclick="changeYear('2024')"><b>2024</b></a>
                         <a href="#" onclick="changeYear('2025')"><b>2025</b></a>

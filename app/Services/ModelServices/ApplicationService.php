@@ -43,7 +43,7 @@ class ApplicationService
                 'country_id'    => $request->input('country'),
             ]);
 
-            return $application = $this->applicationRepository->create([
+            return $this->applicationRepository->create([
                 'crop_data_id'     => $crop->id,
                 'organization_id'  => $request->input('organization'),
                 'prepared_id'      => $request->input('prepared'),
