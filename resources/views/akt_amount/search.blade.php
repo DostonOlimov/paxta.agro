@@ -123,8 +123,8 @@
                                             <td class="text-center">{{ $app->tara }}<br><a href="{!! url('/dalolatnoma/tara_edit/'.$app->id) !!}"><button type="button" class="btn btn-round btn-success">{{ trans('app.Edit')}}</button></a>
                                             </td>
                                             <td>
-                                                <a href="{!! url('/akt_amount/view/'.$app->id) !!}"><button type="button" class="btn btn-round btn-info">{{ trans('app.View')}}</button></a>
-                                                <a href="{!! url('/akt_amount/edit/'.$app->id) !!}"><button type="button" class="btn btn-round btn-warning">{{ trans('app.Edit')}}</button></a>
+                                                <a href="{!! url('/akt_amount/view', $app) !!}"><button type="button" class="btn btn-round btn-info">{{ trans('app.View')}}</button></a>
+                                                <a href="{!! url('/akt_amount/edit', $app) !!}"><button type="button" class="btn btn-round btn-warning">{{ trans('app.Edit')}}</button></a>
                                             </td>
                                         </tr>
                                     @endforeach

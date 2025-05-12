@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AktAmountController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Telegram\Bot\Laravel\Facades\Telegram;
@@ -341,16 +342,11 @@ Route::group(['prefix' => 'sifat-sertificates2'], function () {
 //Akt amount
 Route::group(['prefix' => 'akt_amount', 'middleware' => 'auth'], function () {
     Route::get('/search', '\App\Http\Controllers\AktAmountController@search')->name('akt_amount.search');
-    Route::get('/add/{id}', '\App\Http\Controllers\AktAmountController@add');
-    Route::get('/list', '\App\Http\Controllers\AktAmountController@list');
-    Route::get('/list/delete/{id}', '\App\Http\Controllers\AktAmountController@destory');
-    Route::get('/edit/{id}', '\App\Http\Controllers\AktAmountController@edit');
-    Route::post('/edit/update/{id}', '\App\Http\Controllers\AktAmountController@update');
-    Route::get('/view/{id}', '\App\Http\Controllers\AktAmountController@view')->name('akt_amount.view');
+    Route::get('/edit/{dalolatnoma}', '\App\Http\Controllers\AktAmountController@edit');
+    Route::get('/view/{dalolatnoma}', '\App\Http\Controllers\AktAmountController@view')->name('akt_amount.view');
     Route::post('/store', '\App\Http\Controllers\AktAmountController@store')->name('akt_amount.store');
-    Route::post('/save-amount', [\App\Http\Controllers\AktAmountController::class, 'save_amount'])->name('save.amount');
-
-    Route::get('/excel/{id}', '\App\Http\Controllers\AktAmountController@excel');
+    Route::post('/save-amount', [AktAmountController::class, 'save_amount'])->name('save.amount');
+    Route::get('/excel/{dalolatnoma}', '\App\Http\Controllers\AktAmountController@excel');
     Route::get('/excel_store', '\App\Http\Controllers\AktAmountController@excelStore');
 
 });

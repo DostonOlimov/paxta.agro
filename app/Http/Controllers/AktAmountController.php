@@ -5,17 +5,21 @@ namespace App\Http\Controllers;
 use App\Filters\V1\DalolatnomaFilter;
 use App\Models\AktAmount;
 use App\Models\Dalolatnoma;
-use App\Models\GinBalles;
-use App\Models\TestPrograms;
 use App\Services\SearchService;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\DB;
 
 class AktAmountController extends Controller
 {
     //search
-    public function search(Request $request, DalolatnomaFilter $filter,SearchService $service)
+    public function search(Request $request, DalolatnomaFilter $filter,SearchService $service): View|Factory|JsonResponse|Application
     {
         try {
             $names = getCropsNames();
@@ -46,42 +50,36 @@ class AktAmountController extends Controller
 
         } catch (\Throwable $e) {
             // Log the error for debugging
-            \Log::error($e);
             return $this->errorResponse('An unexpected error occurred', [], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
-    // Add
-    public function add($id)
-    {
-        $test = TestPrograms::findOrFail($id);
-        return view('akt_amount.add', compact('test'));
-    }
-
     // Edit
-    public function edit($id)
+    public function edit(Dalolatnoma $dalolatnoma): Factory|View|Application
     {
-        $tests = AktAmount::where('dalolatnoma_id', $id)->get()->toArray();
-        $balls = GinBalles::where('dalolatnoma_id', $id)->get();
+        $tests = $dalolatnoma->akt_amount()->get()->toArray();
+        $balls = $dalolatnoma->gin_balles()->get();
 
         if (empty($tests)) {
-            $amounts = $this->generateAmounts($id, $balls);
+            $amounts = $this->generateAmounts($dalolatnoma->id, $balls);
             DB::transaction(function () use ($amounts) {
                 AktAmount::insert($amounts);
             });
 
-            $tests = AktAmount::where('dalolatnoma_id', $id)->get()->toArray();
+            $tests =  $dalolatnoma->akt_amount()->get()->toArray();
         }
 
         $this->populateCreatedAt($tests, $balls);
 
         $data1 = array_chunk($tests, 50);
 
+        $id = $dalolatnoma->id;
+
         return view('akt_amount.edit', compact('data1', 'id', 'balls'));
     }
 
     // Save amount
-    public function save_amount(Request $request)
+    public function save_amount(Request $request): JsonResponse
     {
         $id = $request->input('id');
         $amount = (double) $request->input('amount');
@@ -97,67 +95,43 @@ class AktAmountController extends Controller
     }
 
     // View
-    public function view($id)
+    public function view(Dalolatnoma $dalolatnoma): Factory|View|Application
     {
-        $tests = AktAmount::where('dalolatnoma_id', $id)->get()->toArray();
-        $sum_amount = AktAmount::where('dalolatnoma_id', $id)->sum('amount');
-        $count = AktAmount::where('dalolatnoma_id', $id)->count();
-        $tara = optional(Dalolatnoma::find($id))->tara;
-
+        $tests = $dalolatnoma->akt_amount()->get()->toArray();
+        $sum_amount = $dalolatnoma->akt_amount()->sum('amount');
+        $count = $dalolatnoma->akt_amount()->count();
+        $tara = $dalolatnoma->tara;
         $data1 = !empty($tests) ? array_chunk($tests, 50) : [];
+        $id = $dalolatnoma->id;
 
         return view('akt_amount.show', compact('data1', 'id', 'sum_amount', 'count', 'tara'));
     }
 
-    // Helper methods
-    private function generateAmounts($dalolatnomaId, $balls)
+    // Excel export
+    public function excel(Dalolatnoma $dalolatnoma): Factory|View|Application
     {
-        $amounts = [];
-        foreach ($balls as $ball) {
-            for ($j = $ball->from_number; $j <= $ball->to_number; $j++) {
-                $amounts[] = [
-                    'dalolatnoma_id' => $dalolatnomaId,
-                    'shtrix_kod' => $j,
-                ];
-            }
-        }
-        return $amounts;
-    }
-
-    private function populateCreatedAt(&$tests, $balls)
-    {
-        $i = 0;
-        foreach ($balls as $ball) {
-            for ($j = $ball->from_toy; $j <= $ball->to_toy; $j++) {
-                $tests[$i]['created_at'] = $j;
-                $i++;
-            }
-        }
-    }
-
-    // Edit
-    public function excel($id)
-    {
-        $tests = AktAmount::where('dalolatnoma_id', $id)->get()->toArray();
-        $balls = GinBalles::where('dalolatnoma_id', $id)->get();
+        $tests = $dalolatnoma->akt_amount()->get()->toArray();
+        $balls = $dalolatnoma->gin_balles()->get();
 
         if (empty($tests)) {
-            $amounts = $this->generateAmounts($id, $balls);
+            $amounts = $this->generateAmounts($$dalolatnoma->id, $balls);
             DB::transaction(function () use ($amounts) {
                 AktAmount::insert($amounts);
             });
 
-            $tests = AktAmount::where('dalolatnoma_id', $id)->get()->toArray();
+            $tests = $dalolatnoma->akt_amount()->get()->toArray();
         }
 
         $this->populateCreatedAt($tests, $balls);
 
         $data1 = array_chunk($tests, 50);
 
+        $id = $dalolatnoma->id;
+
         return view('akt_amount.excel', compact('data1', 'id', 'balls'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): Redirector|Application|RedirectResponse
     {
 
         $id = $request->input('id');
@@ -182,6 +156,33 @@ class AktAmountController extends Controller
         }
 
         return redirect('/akt_amount/search')->with('message', 'Successfully saved');
+    }
+
+    // Helper methods
+    private function generateAmounts($dalolatnomaId, $balls): array
+    {
+        $amounts = [];
+        foreach ($balls as $ball) {
+            for ($j = $ball->from_number; $j <= $ball->to_number; $j++) {
+                $amounts[] = [
+                    'dalolatnoma_id' => $dalolatnomaId,
+                    'shtrix_kod' => $j,
+                ];
+            }
+        }
+        return $amounts;
+    }
+
+    // sorting gin balles
+    private function populateCreatedAt(&$tests, $balls): void
+    {
+        $i = 0;
+        foreach ($balls as $ball) {
+            for ($j = $ball->from_toy; $j <= $ball->to_toy; $j++) {
+                $tests[$i]['created_at'] = $j;
+                $i++;
+            }
+        }
     }
 
 }
