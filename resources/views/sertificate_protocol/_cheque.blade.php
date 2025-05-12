@@ -154,21 +154,11 @@
                 Sinov natijalari, sinovdan o'tkazilgan namunalarga tegishlidir.
             </p>
         </div>
-        <tr>
-            <td colspan="4">
-                <b>Alohida yozuvlar:</b>
-
-                @if (!empty($test->comment))
-                    <div style="font-family: DejaVuSans; font-size: 14px; border-bottom: 1px solid black; padding-bottom: 5px;">
-                        {{ $test->comment }}
-                    </div>
-                @else
-                    <div style="border-bottom: 1px solid black; margin-top: 5px;"></div>
-                    <div style="border-bottom: 1px solid black; margin-top: 10px;"></div>
-                    <div style="border-bottom: 1px solid black; margin-top: 10px;"></div>
-                @endif
-            </td>
-        </tr>
+        <div class="comments-section">
+            <div style=" border-bottom: 1px solid black; margin: 25px 0;">Izoh:</div>
+            <div style=" border-bottom: 1px solid black; margin: 25px 0;"></div>
+            <div style=" border-bottom: 1px solid black; margin: 25px 0;"></div>
+        </div>
     <div style="width: 100%; display: flex; justify-content: space-between; padding-top:10px;font-size: 18px;">
         <div style="width: 49%; display: inline-block;">
             <span> <b>Paxta tolasi, paxta momig'ini tasniflash bo'yicha mutaxassis  </b></span>
