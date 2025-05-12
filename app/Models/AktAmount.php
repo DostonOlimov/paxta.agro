@@ -13,6 +13,8 @@ class AktAmount  extends Model
 {
     protected $table = 'akt_amount';
 
+    public $timestamps = false;
+
     protected $fillable = [
         'dalolatnoma_id',
         'shtrix_kod',
@@ -20,7 +22,7 @@ class AktAmount  extends Model
         // Add other fields that you want to allow mass assignment
     ];
 
-    public function dalolatnoma()
+    public function dalolatnoma(): BelongsTo
     {
         return $this->belongsTo(Dalolatnoma::class, 'dalolatnoma_id', 'id');
     }
