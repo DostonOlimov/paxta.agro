@@ -441,15 +441,15 @@ Route::group(['prefix' => 'laboratory-protocol', 'middleware' => 'auth'], functi
 //Sertificate protocol
 Route::group(['prefix' => 'sertificate-protocol', 'middleware' => 'auth'], function () {
     Route::get('/list', '\App\Http\Controllers\SertificateProtocolController@list')->name('sertificate_protocol.list');
-    Route::get('/add/{id}', '\App\Http\Controllers\SertificateProtocolController@add');
-    Route::get('/view/{id}', '\App\Http\Controllers\SertificateProtocolController@view')->name('sertificate_protocol.view');
-    Route::get('/sertificate-view/{id}', '\App\Http\Controllers\SertificateProtocolController@sertificateView')->name('sertificate_protocol.sertificate_view');
-    Route::get('/accept/{id}', '\App\Http\Controllers\SertificateProtocolController@accept');
-    Route::post('/store', '\App\Http\Controllers\SertificateProtocolController@store');
-    Route::get('/change/{id}', '\App\Http\Controllers\SertificateProtocolController@change_status');
-    Route::get('/refresh/{id}', '\App\Http\Controllers\SertificateProtocolController@refresh');
+    Route::get('/add/{dalolatnoma}', '\App\Http\Controllers\SertificateProtocolController@add');
+    Route::get('/view/{dalolatnoma}', '\App\Http\Controllers\SertificateProtocolController@view')->name('sertificate_protocol.view');
+    Route::get('/sertificate-view/{dalolatnoma}', '\App\Http\Controllers\SertificateProtocolController@sertificateView')->name('sertificate_protocol.sertificate_view');
+    Route::get('/accept/{dalolatnoma}', '\App\Http\Controllers\SertificateProtocolController@accept');
+    Route::post('/store/{dalolatnoma}', '\App\Http\Controllers\SertificateProtocolController@store');
+    Route::get('/change/{dalolatnoma}', '\App\Http\Controllers\SertificateProtocolController@change_status');
+    Route::get('/refresh/{dalolatnoma}', '\App\Http\Controllers\SertificateProtocolController@refresh');
 });
-Route::get('/protocol/{id}/download', '\App\Http\Controllers\SertificateProtocolController@download')->name('laboratory_protocol.download');
+Route::get('/protocol/{dalolatnoma}/download', '\App\Http\Controllers\SertificateProtocolController@download')->name('laboratory_protocol.download');
 //Laboratory results
 Route::group(['prefix' => 'sifat-contracts', 'middleware' => 'auth'], function () {
     Route::get('/list', '\App\Http\Controllers\Front\SifatContractsController@list')->name('sifat_contracts.list');

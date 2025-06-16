@@ -17,7 +17,12 @@ use App\Models\Tips;
 use App\Services\SearchService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -26,7 +31,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 class SertificateProtocolController extends Controller
 {
     //search
-    public function list(Request $request, DalolatnomaFilter $filter,SearchService $service)
+    public function list(Request $request, DalolatnomaFilter $filter,SearchService $service): View|Factory|JsonResponse|\Illuminate\Contracts\Foundation\Application
     {
         try {
             $names = getCropsNames();
@@ -63,18 +68,10 @@ class SertificateProtocolController extends Controller
             return $this->errorResponse('An unexpected error occurred', [], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
     //add
-    public function add($id)
+    public function add(Dalolatnoma $dalolatnoma)
     {
-        $user = Auth::user();
-
-        // Fetch the Dalolatnoma with required relationships
-        $dalolatnoma = Dalolatnoma::with([
-            'test_program.application.decision.laboratory.city',
-            'gin_balles',
-            'clamp_data'
-        ])->findOrFail($id);
-
         // Fetch laboratory operators based on laboratory ID
         $laboratoryId = $dalolatnoma->test_program->application->decision->laboratory_id ?? null;
         $operators = $laboratoryId
@@ -82,7 +79,7 @@ class SertificateProtocolController extends Controller
             : collect();
 
         // Fetch ClampData with Klassiyor relationship
-        $clampData = ClampData::with('klassiyor')->where('dalolatnoma_id', $id)->first();
+        $clampData = $dalolatnoma->clamp_data()->first();
 
         // Redirect if Klassiyor is missing
         if ($clampData && !$clampData->klassiyor) {
@@ -96,105 +93,78 @@ class SertificateProtocolController extends Controller
         return view('sertificate_protocol.add', compact('dalolatnoma', 'clampData', 'operators'));
     }
 
-    public function store(Request $request)
+    public function store(Dalolatnoma $dalolatnoma, Request $request)
     {
         $this->authorize('create', Application::class);
 
         $user = Auth::user();
-        $data = $request->all();
+        $formData = $request->all();
 
-        // Set klassiyor_id to user ID if not provided
-        $data['klassiyor_id'] = $data['klassiyor_id'] ?? $user->id;
+        // Default klassiyor_id to current user if not provided
+        $formData['klassiyor_id'] = $formData['klassiyor_id'] ?? $user->id;
 
-        // Fetch average clamp data
-        $clampData = ClampData::selectRaw('
-        AVG(mic) as mic,
-        AVG(staple) as staple,
-        AVG(strength) as strength,
-        AVG(uniform) as uniform,
-        AVG(fiblength) as fiblength
-    ')
-            ->where('dalolatnoma_id', $data['dalolatnoma_id'])
-            ->first();
+        // Fetch lab-related data
+        $clampData = $dalolatnoma->averageClampData();
+        $tip = $dalolatnoma->findTipByAverageFiberLength();
 
-        // Calculate fiber length
-        $fiberLength = round($clampData->fiblength / 100, 2);
+        // Save lab result
+        $this->storeLaboratoryResult($dalolatnoma, $clampData, $tip);
 
-        // Find appropriate tip based on fiber length
-        $tip = Tips::where('max', '>=', $fiberLength)
-            ->where('min', '<=', $fiberLength)
-            ->first();
+        // Save final results if not exists
+        $this->saveFinalResults($dalolatnoma);
 
-        // Store Laboratory Result
-        $this->storeLaboratoryResult($data['dalolatnoma_id'], $clampData, $tip, 5.1);
+        // Parse and set date
+        $formData['dalolatnoma_id'] = $dalolatnoma->id;
+        $formData['date'] = Carbon::createFromFormat('d-m-Y', $request->input('date'))->toDateString();
 
-        // Check if FinalResult exists, otherwise create it
-        if (!FinalResult::where('dalolatnoma_id', $data['dalolatnoma_id'])->exists()) {
-            $this->storeFinalResults($data['dalolatnoma_id']);
-        }
-
-        // Parse and format date
-        $data['date'] = Carbon::createFromFormat('d-m-Y', $request->input('date'))->format('Y-m-d');
-
-        // Create Laboratory Final Results
-        LaboratoryFinalResults::create($data);
+        LaboratoryFinalResults::create($formData);
 
         return redirect('/sertificate-protocol/list')->with('message', 'Successfully Submitted');
     }
 
-    public function refresh($id)
+    public function refresh(Dalolatnoma $dalolatnoma)
     {
         $this->authorize('create', Application::class);
 
-        $dalolatnoma = Dalolatnoma::findOrFail($id);
+        $clampData = $dalolatnoma->averageClampData();
 
-        if ($dalolatnoma->laboratory_final_results) {
-            if (!$dalolatnoma->laboratory_result) {
-                // Fetch average clamp data
-                $clampData = ClampData::selectRaw('
-                AVG(mic) as mic,
-                AVG(staple) as staple,
-                AVG(strength) as strength,
-                AVG(uniform) as uniform,
-                AVG(fiblength) as fiblength
-            ')
-                    ->where('dalolatnoma_id', $id)
-                    ->first();
+        if($clampData?->mic){
+            $tip = $dalolatnoma->findTipByAverageFiberLength();
 
-                // Calculate fiber length
-                $fiberLength = round($clampData->fiblength / 100, 2);
+            // Store Laboratory Result
+            $this->storeLaboratoryResult($dalolatnoma, $clampData, $tip);
 
-                // Find appropriate tip based on fiber length
-                $tip = Tips::where('max', '>=', $fiberLength)
-                    ->where('min', '<=', $fiberLength)
-                    ->first();
-
-                // Store Laboratory Result
-                $this->storeLaboratoryResult($id, $clampData, $tip, 5.1);
-            }
-
-            // Update or create Final Results
-            if (!FinalResult::where('dalolatnoma_id', $id)->exists()) {
-                $this->storeFinalResults($id);
-            } else {
-                $this->updateFinalResults($id);
-            }
+            // Update final result
+            $this->saveFinalResults($dalolatnoma);
         }
 
         return redirect('/sertificate-protocol/list')->with('message', 'Successfully Submitted');
     }
 
     //sertificate protocol view
-    public function view($id)
+    public function view(Dalolatnoma $dalolatnoma)
     {
-        $test = $this->fetchDalolatnoma($id);
+        $test = $dalolatnoma->load(
+            'laboratory_result',
+            'result',
+            'selection',
+            'laboratory_final_results.operator',
+            'laboratory_final_results.klassiyor',
+            'laboratory_final_results.director',
+            'test_program.application.decision.laboratory.city.region',
+            'test_program.application.crops.name',
+            'test_program.application.organization.city',
+            'test_program.application.prepared.region',
+        );
 
         $formattedDate = $this->formatDates($test->laboratory_final_results->date);
         $formattedDate2 = $this->formatDates($test->date);
 
-        $labResults = $this->groupResultsBySort($id);
+        $labResults = $test->result()->get()
+            ->groupBy('sort')
+            ->values();
 
-        $type = $this->determineCropType($id);
+        $type = $this->determineCropType($dalolatnoma);
         $t = 1;
 
         return view('sertificate_protocol.view', compact(
@@ -203,13 +173,25 @@ class SertificateProtocolController extends Controller
     }
 
     //saving sertificate protocol
-    public function change_status($id)
+    public function change_status(Dalolatnoma $dalolatnoma)
     {
-        $test = Dalolatnoma::findOrFail($id);
-        $lab = LaboratoryFinalResults::where('dalolatnoma_id', $id)->firstOrFail();
+        $test = $dalolatnoma->load(
+            'laboratory_result',
+            'result',
+            'selection',
+            'laboratory_final_results.operator',
+            'laboratory_final_results.klassiyor',
+            'laboratory_final_results.director',
+            'test_program.application.decision.laboratory.city.region',
+            'test_program.application.crops.name',
+            'test_program.application.organization.city',
+            'test_program.application.prepared.region',
+        );
 
-        $type = $this->determineCropType($id);
-        $groupedResults = $this->groupResultsBySort($id);
+        $type = $this->determineCropType($dalolatnoma);
+        $groupedResults = $test->result()->get()
+            ->groupBy('sort')
+            ->values();
         $sortCount = count($groupedResults);
 
         $formattedDate = $this->formatDates($test->laboratory_final_results->date);
@@ -218,40 +200,40 @@ class SertificateProtocolController extends Controller
         // Generate PDFs for each group
         foreach ($groupedResults as $index => $group) {
             $qrCode = $this->generateQrCode(route('laboratory_protocol.download', [
-                'id' => $id,
+                'dalolatnoma' => $test,
                 'type' => $index,
             ]));
 
-            $this->generatePdf($id, $group, $test, $type, $formattedDate, $formattedDate2, $qrCode, $index);
+            $this->generatePdf($test->id, $group, $test, $type, $formattedDate, $formattedDate2, $qrCode, $index);
         }
 
         // Update lab status and chp count
-        $lab->chp = $sortCount;
-        $lab->status = 1;
-        $lab->save();
+        $test->laboratory_final_results->chp = $sortCount;
+        $test->laboratory_final_results->status = 1;
+        $test->laboratory_final_results->save();
 
-        return redirect('/sertificate-protocol/list?generatedAppId=' . $id)
+        return redirect('/sertificate-protocol/list?generatedAppId=' . $test->id)
             ->with('message', 'Protocol saved!');
     }
 
 
-    public function sertificateView ($id)
+    public function sertificateView(Dalolatnoma $dalolatnoma)
     {
-        $dalolatnoma = $this->fetchDalolatnoma($id);
         $application = $dalolatnoma->test_program->application;
         $formattedDate = $this->formatDates($dalolatnoma->laboratory_final_results->date);
         $t = 1;
 
-        $labResults = $this->groupResultsBySort($id);
+        $labResults =  $dalolatnoma->result()->get()
+            ->groupBy('sort')
+            ->values();
 
         return view('sertificate_protocol.sertificate_view', compact('application', 'dalolatnoma','labResults','formattedDate','t'));
     }
 
 
     // Accept online applications
-    public function accept($id)
+    public function accept(Dalolatnoma $dalolatnoma)
     {
-        $dalolatnoma = $this->fetchDalolatnoma($id);
         $application = $dalolatnoma->test_program->application;
         $appId = $application->id;
 
@@ -260,7 +242,9 @@ class SertificateProtocolController extends Controller
             ? SifatSertificates::LINT_TYPE
             : SifatSertificates::PAXTA_TYPE;
 
-        $groupedResults = $this->groupResultsBySort($id);
+        $groupedResults = $dalolatnoma->result()->get()
+            ->groupBy('sort')
+            ->values();;
         $currentYear = date('Y');
 
         // Fetch the starting number for certificates
@@ -283,12 +267,12 @@ class SertificateProtocolController extends Controller
             ->with('message', 'Certificate saved!');
     }
 
-    public function download($id, Request $request)
+    public function download(Dalolatnoma $dalolatnoma, Request $request)
     {
         // Determine the file path based on the request type
         $fileName = $request->input('type') >= 1
-            ? 'protocol_' . $id . '_' . $request->input('type') . '.pdf'
-            : 'protocol_' . $id . '.pdf';
+            ? 'protocol_' . $dalolatnoma->id . '_' . $request->input('type') . '.pdf'
+            : 'protocol_' . $dalolatnoma->id . '.pdf';
 
         $filePath = storage_path('app/public/protocols/' . $fileName);
 
@@ -301,26 +285,6 @@ class SertificateProtocolController extends Controller
         return response()->download($filePath);
     }
 
-
-
-    /**
-     * Fetch Dalolatnoma with relationships.
-     */
-    private function fetchDalolatnoma($id)
-    {
-        return Dalolatnoma::with([
-            'laboratory_result',
-            'result',
-            'selection',
-            'laboratory_final_results.operator',
-            'laboratory_final_results.klassiyor',
-            'laboratory_final_results.director',
-            'test_program.application.decision.laboratory.city.region',
-            'test_program.application.crops.name',
-            'test_program.application.organization.city',
-            'test_program.application.prepared.region',
-        ])->findOrFail($id);
-    }
     /**
      * Generate a QR code for a given route.
      */
@@ -337,17 +301,6 @@ class SertificateProtocolController extends Controller
         return $date ? formatUzbekDateInLatin($date) : null;
     }
 
-    /**
-     * Group final results by sort.
-     */
-    private function groupResultsBySort($id)
-    {
-        return FinalResult::with('dalolatnoma.laboratory_result')
-            ->where('dalolatnoma_id', $id)
-            ->get()
-            ->groupBy('sort')
-            ->values();
-    }
     /**
      * Create certificates in bulk.
      */
@@ -366,7 +319,6 @@ class SertificateProtocolController extends Controller
             ]);
         }
     }
-
 
     /**
      * Generate and save certificate files.
@@ -394,10 +346,10 @@ class SertificateProtocolController extends Controller
     /**
      * Determine crop type based on ClampData.
      */
-    private function determineCropType($id)
+    private function determineCropType(Dalolatnoma $dalolatnoma): int
     {
-        $clampData = ClampData::where('dalolatnoma_id', $id)->first();
-        return ($clampData && $clampData->croptype == "Á") ? 2 : 1;
+        $clampData = $dalolatnoma->clamp_data()->first();
+        return ($clampData && $clampData->croptype === "Á") ? 2 : 1;
     }
 
     /**
@@ -419,10 +371,10 @@ class SertificateProtocolController extends Controller
     /**
      * Store LaboratoryResult data.
      */
-    private function storeLaboratoryResult($dalolatnomaId, $clampData, $tip, $humidityResult)
+    private function storeLaboratoryResult(Dalolatnoma $dalolatnoma, $clampData, $tip): void
     {
         LaboratoryResult::updateOrCreate(
-            ['dalolatnoma_id' => $dalolatnomaId,],
+            ['dalolatnoma_id' => $dalolatnoma->id,],
             [
                 'tip_id' => optional($tip)->id ?? 11,
                 'mic' => $clampData->mic,
@@ -430,101 +382,36 @@ class SertificateProtocolController extends Controller
                 'strength' => $clampData->strength,
                 'uniform' => $clampData->uniform,
                 'fiblength' => $clampData->fiblength,
-                'humidity' => $humidityResult,
+                'humidity' => 5.1,
             ]
         );
     }
 
     /**
-     * Store FinalResults if they don't exist.
-     */
-    private function storeFinalResults($dalolatnomaId)
-    {
-        $results = $this->getAggregatedClampData($dalolatnomaId);
-        $data = $this->getAggregatedData($dalolatnomaId);
-
-        foreach ($results as $result) {
-            FinalResult::create([
-                'dalolatnoma_id' => $dalolatnomaId,
-                'test_program_id' => $dalolatnomaId,
-                'sort' => $result->sort,
-                'class' => $result->class,
-                'count' => $result->count,
-                'amount' => $result->total_amount,
-                'mic' => $data->mic,
-                'staple' => $data->staple,
-                'strength' => $data->strength,
-                'uniform' => $data->uniform,
-                'humidity' => 5,
-            ]);
-        }
-    }
-
-    /**
      * Update FinalResults.
      */
-    private function updateFinalResults($dalolatnomaId)
+    private function saveFinalResults(Dalolatnoma $dalolatnoma): void
     {
-        $results = $this->getAggregatedClampData($dalolatnomaId);
-        $data = $this->getAggregatedData($dalolatnomaId);
+        $results = $dalolatnoma->summarizeClampData();
+        $data = $dalolatnoma->averageClampData();
 
         foreach ($results as $result) {
             FinalResult::updateOrCreate(
                 [
-                    'dalolatnoma_id' => $dalolatnomaId,
+                    'dalolatnoma_id' => $dalolatnoma->id,
                     'sort' => $result->sort,
                     'class' => $result->class,
                 ],
                 [
                     'count' => $result->count,
                     'amount' => $result->total_amount,
-                    'mic' => $data->mic,
-                    'staple' => $data->staple,
-                    'strength' => $data->strength,
-                    'uniform' => $data->uniform,
+                    'mic' => $data?->mic,
+                    'staple' => $data?->staple,
+                    'strength' => $data?->strength,
+                    'uniform' => $data?->uniform,
                     'humidity' => 5,
                 ]
             );
         }
     }
-
-    /**
-     * Get aggregated clamp data.
-     */
-    private function getAggregatedClampData($dalolatnomaId)
-    {
-        return ClampData::selectRaw('
-        sort, class,
-        COUNT(*) as count,
-        SUM(akt_amount.amount) as total_amount,
-        AVG(mic) as mic,
-        AVG(staple) as staple,
-        AVG(strength) as strength,
-        AVG(uniform) as uniform,
-        AVG(humidity) as humidity
-    ')
-            ->join('akt_amount', function ($join) use ($dalolatnomaId) {
-                $join->on('akt_amount.shtrix_kod', '=', 'clamp_data.gin_bale')
-                    ->on('akt_amount.dalolatnoma_id', '=', 'clamp_data.dalolatnoma_id');
-            })
-            ->where('clamp_data.dalolatnoma_id', $dalolatnomaId)
-            ->groupBy('sort', 'class')
-            ->get();
-    }
-    /**
-     * Get aggregated clamp data.
-     */
-    private function getAggregatedData($dalolatnomaId)
-    {
-        return ClampData::select(
-            DB::raw('AVG(clamp_data.mic) as mic'),
-            DB::raw('AVG(clamp_data.staple) as staple'),
-            DB::raw('AVG(clamp_data.strength) as strength'),
-            DB::raw('AVG(clamp_data.uniform) as uniform'),
-            DB::raw('AVG(clamp_data.fiblength) as fiblength')
-        )
-            ->where('clamp_data.dalolatnoma_id', $dalolatnomaId)
-            ->first();
-    }
-
 }

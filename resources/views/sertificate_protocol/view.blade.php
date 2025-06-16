@@ -41,7 +41,7 @@
                             </a>
                         </li>
                         <li class="btn-success">
-                            <a class="text-light sa-warning" url="{!! url('/sertificate-protocol/change/'. $test->id)!!}">
+                            <a class="text-light sa-warning" url="{!! url('/sertificate-protocol/change', $test)!!}">
                                 <span class="visible-xs"></span>
                                 <i class="fa fa-check fa-lg">&nbsp;</i> Tasdiqlash
                             </a>

@@ -7,6 +7,7 @@ use App\Models\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -82,6 +83,65 @@ class Dalolatnoma  extends Model
         return $this->hasOne(LaboratoryResult::class,'dalolatnoma_id','id');
     }
 
+    /**
+     * Get aggregated clamp data.
+     */
+    public function averageClampData(): ?object
+    {
+        return ClampData::selectRaw('
+            AVG(mic) as mic,
+            AVG(staple) as staple,
+            AVG(strength) as strength,
+            AVG(uniform) as uniform,
+            AVG(fiblength) as fiblength
+        ')
+            ->where('dalolatnoma_id', $this->id)
+            ->first();
+    }
+
+    public function averageFiberLength(): ?float
+    {
+        $data = $this->averageClampData();
+        return $data?->fiblength ? $data?->fiblength / 100 : null;
+    }
+
+    /**
+     * Get tip.
+     */
+    public function findTipByAverageFiberLength(): ?Tips
+    {
+        $length = $this->averageFiberLength();
+
+        return $length === null ? null : Tips::where('min', '<=', $length)
+            ->where('max', '>=', $length)
+            ->first();
+    }
+
+    /**
+     * Get aggregated clamp data.
+     */
+    public function summarizeClampData(): Collection
+    {
+        return ClampData::query()
+            ->selectRaw("
+            clamp_data.sort,
+            clamp_data.class,
+            COUNT(*) as count,
+            SUM(akt_amount.amount) as total_amount,
+            AVG(clamp_data.mic) as mic,
+            AVG(clamp_data.staple) as staple,
+            AVG(clamp_data.strength) as strength,
+            AVG(clamp_data.uniform) as uniform,
+            AVG(clamp_data.humidity) as humidity
+        ")
+            ->join('akt_amount', function ($join) {
+                $join->on('akt_amount.shtrix_kod', '=', 'clamp_data.gin_bale')
+                    ->on('akt_amount.dalolatnoma_id', '=', 'clamp_data.dalolatnoma_id');
+            })
+            ->where('clamp_data.dalolatnoma_id', $this->id)
+            ->groupBy('clamp_data.sort', 'clamp_data.class')
+            ->get();
+    }
 
     /**
      * Calculate standard deviation for specified columns.
@@ -107,7 +167,8 @@ class Dalolatnoma  extends Model
     /**
      * Calculate standard deviation for a given column data.
      *
-     * @param  array  $columnData
+     * @param array $columnData
+     * @param int $key
      * @return float|null
      */
     protected static function calculateStandardDeviation(array $columnData,int $key)

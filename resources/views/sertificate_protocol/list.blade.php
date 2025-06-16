@@ -155,7 +155,7 @@
                                         <tr>
                                             <td style="white-space: nowrap;">
                                                 {{ $offset + $loop->iteration }}.&nbsp;
-                                                <a href="{!! url('sertificate-protocol/refresh/' . $app->id) !!}">
+                                                <a href="{!! url('sertificate-protocol/refresh' , $app) !!}">
                                                     <span class="fa fa-refresh"></span>
                                                 </a>
                                             </td>
@@ -168,24 +168,24 @@
                                             <td>{{ optional($app->test_program)->application->crops->name->name }}</td>
                                                 <td>
                                                     @if (!isset($app->laboratory_final_results))
-                                                        <a href="{!! url('sertificate-protocol/add/' . $app->id) !!}"> <button type="button"
+                                                        <a href="{!! url('sertificate-protocol/add' ,$app) !!}"> <button type="button"
                                                             class="btn btn-round btn-warning "><i
                                                                 class="fa fa-plus-circle"></i>
                                                             {{ trans('app.Qo\'shish') }}</button></a>
                                                     @else
                                                         @if($app->laboratory_final_results->status != 1)
-                                                                <a href="{!! url('sertificate-protocol/view/' . $app->id) !!}"><button type="button"
+                                                                <a href="{!! url('sertificate-protocol/view' , $app) !!}"><button type="button"
                                                                     class="btn btn-round btn-info">
                                                                     <i class="fa fa-eye"></i> {{ trans('app.View') }}</button></a>
                                                         @else
-                                                            <a href="{{ route('laboratory_protocol.download', $app->id) }}" class="text-azure">
+                                                            <a href="{{ route('laboratory_protocol.download', $app) }}" class="text-azure">
                                                                 <button type="button"
                                                                         class="btn btn-round btn-info"> <i class="fa fa-download"></i> Bayonnoma fayli</button>
 
                                                             </a>
                                                             @if($app->laboratory_final_results->chp >=2 )
                                                                 @for($j = 1; $j < $app->laboratory_final_results->chp; $j++)
-                                                                    <a href="{{ route('laboratory_protocol.download', ['id' => $app->id, 'type' => $j ]) }}" class="text-azure">
+                                                                    <a href="{{ route('laboratory_protocol.download', ['dalolatnoma' => $app, 'type' => $j ]) }}" class="text-azure">
                                                                         <button type="button"
                                                                                 class="btn btn-round btn-info"> <i class="fa fa-download"></i> Bayonnoma fayli( {{ $j+1 }} )</button>
 
@@ -198,7 +198,7 @@
                                             <td>
                                                 @if(isset($app->laboratory_final_results))
                                                     @if (!$app->test_program->application->sifat_sertificate)
-                                                        <a href="{!! url('sertificate-protocol/sertificate-view/' . $app->id) !!}"><button type="button"
+                                                        <a href="{!! url('sertificate-protocol/sertificate-view', $app) !!}"><button type="button"
                                                                                                                                class="btn btn-round btn-info">
                                                                 <i class="fa fa-eye"></i> {{ trans('app.View') }}</button></a>
                                                     @else

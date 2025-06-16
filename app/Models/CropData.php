@@ -68,8 +68,9 @@ class CropData extends Model implements CropDataInterface
      * Get measure types as an array or a specific type's name
      *
      * @param int|null $type
+     * @return array|string|null
      */
-    public static function getMeasureType(?int $type = null)
+    public static function getMeasureType(?int $type = null): array|string|null
     {
         $measures = [
             self::MEASURE_TYPE_TONNA => 'tonna',

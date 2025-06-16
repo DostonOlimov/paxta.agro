@@ -33,12 +33,10 @@
                                     </ul>
                                 </div>
                             </div>
-                            <form id="invoice-form" method="post" action="{!! url('sertificate-protocol/store') !!}" enctype="multipart/form-data"
+                            <form id="invoice-form" method="post" action="{!! url('sertificate-protocol/store', $dalolatnoma) !!}" enctype="multipart/form-data"
                                   data-parsley-validate class="form-horizontal form-label-left">
                                 @csrf
                                 <div class="row" >
-                                    @csrf
-                                    <input type="hidden"  name="dalolatnoma_id" value="{{  $dalolatnoma->id}}" >
 
                                     <div class="col-md-4 form-group has-feedback {{ $errors->has('number') ? ' has-error' : '' }}">
                                         <label for="number" class="form-label certificate">{{trans('app.Sinov bayonnoma raqami')}}<label class="text-danger">*</label></label>
