@@ -110,10 +110,16 @@ class Dalolatnoma  extends Model
      */
     public function findTipByAverageFiberLength(): ?Tips
     {
-        $length = $this->averageFiberLength();
+        $length = round($this->averageFiberLength(), 2);
 
-        return $length === null ? null : Tips::where('min', '<=', $length)
-            ->where('max', '>=', $length)
+        if ($length === null) {
+            return null;
+        }
+
+        $tolerance = 0.001;
+
+        return Tips::where('min', '<=', $length + $tolerance)
+            ->where('max', '>=', $length - $tolerance)
             ->first();
     }
 
