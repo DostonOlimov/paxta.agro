@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <!-- page content -->
-    <?php $userid = Auth::user()->id; ?>
+    <?php $user = Auth::user(); ?>
     @can('viewAny', \App\Models\User::class)
         <div class="section">
             <!-- PAGE-HEADER -->
@@ -26,6 +26,10 @@
                                     <thead>
                                     <tr>
                                         <th class="border-bottom-0 border-top-0">#</th>
+                                        @if($user->id == 1)
+                                            <th>Ariza id</th>
+                                            <th>D id</th>
+                                        @endif
                                         <th class="border-bottom-0 border-top-0">
                                             <a href="{{ route('sertificate_protocol.list', ['sort_by' => 'number', 'sort_order' => ($sort_by === 'number' && $sort_order === 'asc') ? 'desc' : 'asc']) }}">
                                                 {{ trans('app.Dalolatnoma raqami') }}
@@ -85,6 +89,10 @@
                                     </thead>
                                     <tbody>
                                     <tr style="background-color: #90aec6 !important;">
+                                        @if($user->id == 1)
+                                            <td></td>
+                                            <td></td>
+                                        @endif
                                         <td></td>
                                         <td>
                                             <form class="d-flex">
@@ -153,12 +161,17 @@
                                     @endphp
                                     @foreach($apps as $app)
                                         <tr>
+                                            
                                             <td style="white-space: nowrap;">
                                                 {{ $offset + $loop->iteration }}.&nbsp;
                                                 <a href="{!! url('sertificate-protocol/refresh' , $app) !!}">
                                                     <span class="fa fa-refresh"></span>
                                                 </a>
                                             </td>
+                                            @if($user->id == 1)
+                                                <th>{{ $app->test_program->application->id }}</th>
+                                                <th>{{ $app->id }}</th>
+                                            @endif
                                             <td class="text-center">{{ $app->number }}</td>
                                             <td>{{ optional($app->test_program->application->crops)->party_number }}</td>
                                             <td>{{ $app->date }}</td>
