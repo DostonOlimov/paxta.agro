@@ -233,6 +233,18 @@
                                                     @endif
                                                 @endif
                                             </td>
+                                            @if($user->id == 1)
+                                                <td>  
+                                                    <a href="{!! url('/sertificate-protocol/change', $app) !!}" class="text-azure">
+                                                        <button type="button"
+                                                                class="btn btn-round btn-success"> <i class="fa fa-check fa-lg"></i> P </button>
+                                                    </a>
+                                                     <a href="{!! url('/sertificate-protocol/accept', $app)!!}" class="text-azure">
+                                                        <button type="button"
+                                                                class="btn btn-round btn-success"> <i class="fa fa-check fa-lg"></i> A </button>
+                                                    </a>
+                                                </td>
+                                            @endif
                                             </tr>
                                         @endforeach
                                     </tbody>
