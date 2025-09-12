@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class SifatContracts  extends Model
 
 {
-    use  LogsActivity,HasAttachment;
+    use  LogsActivity,HasAttachment,SoftDeletes;
 
     protected $table = 'sifat_contracts';
 
