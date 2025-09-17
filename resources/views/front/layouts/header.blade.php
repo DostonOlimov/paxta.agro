@@ -158,6 +158,18 @@ $currentFlag = "/img/flags/united-kingdom.png";
                             <a href="#" onclick="changeLanguage('ru')"><img src="/img/flags/russia.png" class="flag">Русский</a>
                         </div>
                     </div>
+                    <div>
+                    <div class="dropdown">
+                    <div id="currentYear" class="menu-year">@php echo session('year') ?  session('year') : date('Y'); @endphp </div>
+                    <div class="my-dropdown-year">
+                        <a href="#" onclick="changeYear('2021')"><b>2021</b></a>
+                        <a href="#" onclick="changeYear('2022')"><b>2022</b></a>
+                        <a href="#" onclick="changeYear('2023')"><b>2023</b></a>
+                        <a href="#" onclick="changeYear('2024')"><b>2024</b></a>
+                        <a href="#" onclick="changeYear('2025')"><b>2025</b></a>
+                    </div>
+                </div>
+                    </div>
                     <div class="tizimdan-chiqish">
                         <a href="#" title="Logout" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                             <svg width="20px" height="20px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
