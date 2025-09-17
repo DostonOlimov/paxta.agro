@@ -115,7 +115,7 @@ class DalolatnomaFilter extends ApiFilter
         $joinColumnMap = [
             'nameId' => 'crop_data.name_id',
             'partyNumber' => 'crop_data.party_number',
-            'stateId' => 'cities.state_id',
+            'stateId' => 'prepared_companies.state_id',
             'companyId' => 'prepared_companies.organization_id'
         ];
 
