@@ -280,7 +280,7 @@ if (! function_exists('getCropYears')) {
 if (!function_exists('getCurrentYear')) {
     function getCurrentYear()
     {
-        return session('year', 2024);
+        return session('year', 2025);
     }
 }
 if (!function_exists('getApplicationType')) {

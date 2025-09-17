@@ -78,8 +78,8 @@ class FactoryByReportController extends Controller
      */
     private function buildBaseQuery(Request $request)
     {
-        $year = session('year', 2024);
-        $branchCrop = session('crop', 1);
+        $year = getCurrentYear();
+        $branchCrop = getApplicationType();
         $start_date = $request->input('start_date');
         $end_date = $request->input('end_date');
         $stateId = $request->input('stateId');

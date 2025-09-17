@@ -204,8 +204,8 @@ class Dalolatnoma  extends Model
 
         // Ensure the user is authenticated
         $user = auth()->user();
-        $year = session('year', 2024);
-        $crop = session('crop', 1);
+        $year = getCurrentYear();
+        $crop = getApplicationType();
 
         if ($user) {
             // Add global scope for filtering by user's state

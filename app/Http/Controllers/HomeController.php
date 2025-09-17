@@ -33,8 +33,8 @@ class HomeController extends Controller
             return redirect('/sifat-sertificates/list');
         }
 
-        $branchCrop = session('crop', 1);
-        $year = session('year', 2024);
+        $year = getCurrentYear();
+        $branchCrop = getApplicationType();
 
         // Filter parameters
         $filters = [
@@ -112,11 +112,12 @@ class HomeController extends Controller
             $sumFinalResult = $applicationQuery2->selectRaw('SUM(final_results.amount - (final_results.count * dalolatnoma.tara)) as total')->value('total');
         } else {
             $applicationQuery2 = $applicationQuery->clone()
-                ->join('sifat_sertificates', 'applications.id', '=', 'sifat_sertificates.app_id');
+                ->with('sifat_sertificate')
+                ->withCount('sifat_sertificate');
 
-            $finishedApplicationsCount = $applicationQuery2->count('sifat_sertificates.id');
+            $finishedApplicationsCount = $applicationQuery2->get()->sum('sifat_sertificate_count');
             $sertificatesCount = $finishedApplicationsCount;
-            $sumFinalResult = $applicationQuery2->sum('crop_data.amount');
+            $sumFinalResult = $applicationQuery2->sum('crop_data.amount');    
         }
 
         $toyCount = $branchCrop == 2 ? 0 : $applicationQuery->sum('dalolatnoma.toy_count');
@@ -127,6 +128,7 @@ class HomeController extends Controller
 
         $cropNames = getCropsNames();
         $states = getRegions();
+        
 
         return view('dashboard.dashboard', compact(
             'appStates', 'states', 'cropNames', 'applicationsCount',
