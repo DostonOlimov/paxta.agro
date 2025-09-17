@@ -117,7 +117,7 @@
                                                             @foreach($data1 as $data)
                                                                 <td>
                                                                     @if(isset($data[$i]))
-                                                                        {{ $data[$i]['id'] }}
+                                                                        {{ $data[$i]['created_at'] }}
                                                                     @endif
                                                                 </td>
                                                                 <td>
