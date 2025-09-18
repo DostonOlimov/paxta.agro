@@ -110,7 +110,7 @@ class SifatSertificateController extends Controller
             'measure_type'  => $request->input('measure_type'),
             'amount'        => $request->input('amount'),
             'selection_code' => $request->input('selection_code'),
-            'year'          => 2024,
+            'year'          => getCurrentYear(),
             'toy_count'     => 1,
             'sxeme_number'  => 7,
         ]);

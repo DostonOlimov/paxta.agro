@@ -69,10 +69,20 @@ class SifatContractsController extends Controller
     //  store
     public function store(Request $request)
     {
+        $request->validate([
+            'organization'      => 'required|exists:organization_companies,id',
+            'number'            => 'required|string|max:255',
+            'given_date'        => 'required|date',
+            'reason-file'       => 'nullable|file|mimes:pdf,doc,docx,jpg,png|max:2048',
+        ]);
+
+        // Delete existing SifatContracts with the same organization_id
+        SifatContracts::where('organization_id', $request->input('organization'))->delete();
+
         $sert = SifatContracts::create([
-            'organization_id'       => $request->input('organization'),
-            'number'    => $request->input('number'),
-            'date'      => join('-', array_reverse(explode('-', $request->input('given_date')))),
+            'organization_id' => $request->input('organization'),
+            'number'          => $request->input('number'),
+            'date'            => join('-', array_reverse(explode('-', $request->input('given_date')))),
         ]);
 
         if ($request->hasFile('reason-file')) {
