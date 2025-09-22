@@ -110,4 +110,12 @@ class ApplicationService
             ]);
         });
     }
+
+    public function deleteApplication(Application $application)
+    {
+        if($application->sifat_sertificate){
+            $application->sifat_sertificate->delete();
+        }
+        return $application->delete();
+    }
 }

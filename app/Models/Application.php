@@ -10,9 +10,11 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Observers\ApplicationObserver;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Application extends Model implements ApplicationInterface
 {
+    use SoftDeletes;
 // Constants grouped by category with type hints in PHPDoc
     /** @var int Application types */
     public const TYPE_1 = 1; // Local production

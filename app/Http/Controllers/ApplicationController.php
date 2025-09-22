@@ -187,6 +187,19 @@ class ApplicationController extends Controller
         }
     }
 
+    public function destroy(Application $application): RedirectResponse
+    {
+        try {
+            $this->authorize('delete', $application);
+            $this->applicationService->deleteApplication($application);
+            
+            return redirect()->route('application.list')
+                ->with('message', 'Application successfully deleted');
+        } catch (\Throwable $e) {
+            return $this->handleRedirectException('applicationDelete', $e, 'Failed to delete application');
+        }
+    }
+
     /**
      * Get common view data to avoid repetition
      * @param array $extra

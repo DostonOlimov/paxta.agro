@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\DefaultModels\tbl_activities;
+use App\Services\ModelServices\ApplicationService;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Symfony\Component\HttpFoundation\Response;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -348,6 +349,7 @@ class SifatSertificate2Controller extends Controller
 
     public function download($id)
     {
+        $application = Application::findOrFail($id);
         $filePath = storage_path('app/public/sifat_sertificates/certificate_' . $id . '.pdf');
 
         if (file_exists($filePath)) {
@@ -362,6 +364,20 @@ class SifatSertificate2Controller extends Controller
     {
         $evaluator = new ChigitQualityEvaluator($application);
         return $evaluator->getResults();
+    }
+
+    public function destroy(Application $application,ApplicationService $applicationService)
+    {
+        try {
+            $this->authorize('delete', $application);
+
+            $applicationService->deleteApplication($application);
+           
+             return redirect()->route('/sifat-sertificates2/list')
+                ->with('message', 'Application successfully deleted');
+        } catch (\Throwable $e) {
+            return $this->handleRedirectException('applicationDelete', $e, 'Failed to delete application');
+        }
     }
 }
 

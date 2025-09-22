@@ -48,6 +48,9 @@
                             <thead>
                             <tr>
                                 <th>#</th>
+                                @if(auth()->user()->id == 1)
+                                <th>ID</th>
+                                @endif
                                 <th>{!! $sortService->sortable('party_number', 'app.Toʼda (partiya) raqami') !!}</th>
                                 <th> Sertifikat raqami </th>
                                 <th>{!! $sortService->sortable('date', 'app.Ariza sanasi') !!}</th>
@@ -63,6 +66,9 @@
                             <tbody>
                                 <tr style="background-color: #90aec6 !important;">
                                     <td> </td>
+                                    @if(auth()->user()->id == 1)
+                                    <td></td>
+                                    @endif
                                     <td>
                                         <form class="d-flex">
                                             <input type="text" name="partyNumber[lk]"
@@ -135,6 +141,9 @@
                                         @endif" style="display:inline-block; border-radius: 50%; height: 20px;width: 20px;">
                                         </div>
                                     </td>
+                                    @if(auth()->user()->id == 1)
+                                        <td>{{ $app->id }}</td>
+                                    @endif
 
                                     <td>{{ optional($app->crops)->party_number }}</td>
                                     <td>
@@ -165,6 +174,18 @@
                                             </a>
                                         @endif
                                     </td>
+                                  
+                                    @if (auth()->user()->id == 1)
+                                        <td>
+                                            <form action="{{ url('/sifat-sertificates2/delete/' . $app->id) }}" method="POST" style="display:inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-round btn-danger" onclick="return confirm('Are you sure?')">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    @endif
                                 </tr>
                                 @endforeach
                             </tbody>

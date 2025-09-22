@@ -235,6 +235,7 @@ Route::prefix('application')->group(function () {
     Route::get('/accept/{application}', [\App\Http\Controllers\ApplicationController::class, 'accept'])->name('application.accept');
     Route::get('/reject/{application}', [\App\Http\Controllers\ApplicationController::class, 'reject'])->name('application.reject');
     Route::post('/reject/store', [\App\Http\Controllers\ApplicationController::class, 'reject_store'])->name('application.reject.store');
+    Route::delete('/delete/{application}', [\App\Http\Controllers\ApplicationController::class, 'destroy'])->name('application.destroy');
 });
 
 //sifat sertificates online
@@ -287,6 +288,8 @@ Route::group(['prefix' => 'sifat-sertificates2'], function () {
     Route::post('/result-update', '\App\Http\Controllers\SifatSertificate2Controller@resultUpdate')->name('sifat_sertificate2/result_update');
 
     Route::get('/sertificate/{id}/download', '\App\Http\Controllers\SifatSertificate2Controller@download')->name('sifat_sertificate2.download');
+
+    Route::delete('/delete/{application}', [\App\Http\Controllers\SifatSertificate2Controller::class, 'destroy'])->name('sifat_sertificate2.delete');
 
 });
 

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class SifatSertificates extends Model
 {
+    use \Illuminate\Database\Eloquent\SoftDeletes;
 
     const CIGIT_TYPE_XARIDORLI = 1;
     const CIGIT_TYPE_XARIDORSIZ = 2;

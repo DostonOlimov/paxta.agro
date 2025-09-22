@@ -91,6 +91,17 @@
                                             <a href="{!! url('/application/view/'. $app->id) !!}"><button type="button" class="btn btn-round btn-info">{{ trans('app.View')}}</button></a>
                                             <a href="{!! url('/application/edit/'. $app->id) !!}" ><button type="button" class="btn btn-round btn-success">{{ trans('app.Edit')}}</button></a>
 										</td>
+                                         @if (auth()->user()->id == 1)
+                                        <td>
+                                            <form action="{{ url('/application/delete/' . $app->id) }}" method="POST" style="display:inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-round btn-danger" onclick="return confirm('Are you sure?')">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    @endif
 									</tr>
 								@endforeach
 								</tbody>
