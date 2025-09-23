@@ -93,7 +93,8 @@ class FactoryByReportController extends Controller
             ->join('crop_data', 'applications.crop_data_id', '=', 'crop_data.id')
             ->where('crop_data.year', $year)
             ->where('applications.app_type', $branchCrop)
-            ->where('prepared_companies.state_id',$stateId);
+            ->where('prepared_companies.state_id',$stateId)
+            ->whereNull('applications.deleted_at');
 
         // Apply date filters
         if ($start_date) {

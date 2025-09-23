@@ -2,7 +2,7 @@
     <router-view></router-view> <!-- Renders the routed component -->
     <div class="state-report">
         <div class="filters">
-            <label for="start-date">Boshlanish sanasi:</label>
+            <label for="start-date">Boshlaniasdsh sanasi:</label>
             <Datepicker
                 v-model="startDate"
                 :format="'yyyy-MM-dd'"

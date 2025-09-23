@@ -91,7 +91,8 @@ class StateByReportController extends Controller
             ->join('applications', 'prepared_companies.id', '=', 'applications.prepared_id')
             ->join('crop_data', 'applications.crop_data_id', '=', 'crop_data.id')
             ->where('crop_data.year', $year)
-            ->where('applications.app_type', $branchCrop);
+            ->where('applications.app_type', $branchCrop)
+            ->whereNull('applications.deleted_at');
 
         // Apply date filters
         if ($start_date) {

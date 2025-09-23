@@ -47,7 +47,12 @@
         @endif
     </button>
 
-        <h2 style="font-size: 20px; color: white; margin: 6px 6px 5px -11px; !important;">{{ trans('message.AGROINSPEKSIYA') }}</h2>
+    
+        <h2 style="font-size: 20px; color: white; margin: 6px 6px 5px -11px; !important;">
+            @if(auth()->user()->id != 1)
+                {{ trans('message.AGROINSPEKSIYA') }}
+            @endif
+        </h2>
     </div>
     <ul class="sidebar-nav" data-coreui="navigation" data-simplebar="">
         <li class="nav-item"><a class="nav-link {{ \Illuminate\Support\Facades\Request::is('home') ? 'active1' : ''}}" href="/home">

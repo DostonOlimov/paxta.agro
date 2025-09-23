@@ -28,11 +28,13 @@
                     </div>
                 </div>
             </div>
-            <div class="title title-dashboard" style="width: 100%; text-align: center;">
-                <h1 style="text-transform: uppercase; font-size: 1.7rem; margin: 7px 15px">
-                    {{ trans('message.Paxta tolasini sertifikatlashtirish avtomatlashtirilgan axborot tizimi') }}
-                </h1>
-            </div>
+            @if(auth()->user()->id != 1)
+                <div class="title title-dashboard" style="width: 100%; text-align: center;">
+                    <h1 style="text-transform: uppercase; font-size: 1.7rem; margin: 7px 15px">
+                        {{ trans('message.Paxta tolasini sertifikatlashtirish avtomatlashtirilgan axborot tizimi') }}
+                    </h1>
+                </div>
+            @endif
             <div>
                 <div class="dropdown">
                     <div id="currentYear" class="menu-year">@php echo session('year') ?  session('year') : date('Y'); @endphp </div>

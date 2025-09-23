@@ -19708,15 +19708,13 @@ var _hoisted_2 = {
 var _hoisted_3 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
     "for": "start-date"
-  }, "Boshlanish sanasi:", -1 /* HOISTED */);
+  }, "Boshlaniasdsh sanasi:", -1 /* HOISTED */);
 });
-var _hoisted_4 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
-    "for": "end-date"
-  }, "Tugash sanasi:", -1 /* HOISTED */);
-});
-var _hoisted_5 = {
+var _hoisted_4 = {
   "class": "state-table"
+};
+var _hoisted_5 = {
+  key: 0
 };
 var _hoisted_6 = {
   key: 0
@@ -19730,22 +19728,19 @@ var _hoisted_8 = {
 var _hoisted_9 = {
   key: 0
 };
-var _hoisted_10 = {
-  key: 0
-};
-var _hoisted_11 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_10 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Samaradorlik", -1 /* HOISTED */);
 });
-var _hoisted_12 = {
+var _hoisted_11 = {
   "class": "name_row"
 };
-var _hoisted_13 = {
+var _hoisted_12 = {
   "class": "total-row",
   style: {
     "background-color": "#ffeeba"
   }
 };
-var _hoisted_14 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_13 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "Jami")], -1 /* HOISTED */);
 });
 function render(_ctx, _cache, $props, $setup, $data, $options) {
@@ -19758,40 +19753,42 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return $data.startDate = $event;
     }),
     format: 'yyyy-MM-dd',
-    onChange: $options.onDateChange,
+    onChange: _cache[1] || (_cache[1] = function ($event) {
+      return $options.onDateChange();
+    }),
     placeholder: "Boshlanish sanasini tanlang"
-  }, null, 8 /* PROPS */, ["modelValue", "onChange"]), _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Datepicker, {
+  }, null, 8 /* PROPS */, ["modelValue"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Datepicker, {
     modelValue: $data.endDate,
-    "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
+    "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
       return $data.endDate = $event;
     }),
-    format: 'dd-MM-yyyy',
+    format: 'yyyy-MM-dd',
     onChange: $options.onDateChange,
     placeholder: "Tugash sanasini tanlang"
-  }, null, 8 /* PROPS */, ["modelValue", "onChange"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
-    onClick: _cache[2] || (_cache[2] = function ($event) {
+  }, null, 8 /* PROPS */, ["modelValue", "onChange"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+    onClick: _cache[3] || (_cache[3] = function ($event) {
       return $options.sortTable('name');
     })
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Hududlar "), $data.sortKey === 'name' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.sortOrder === 'asc' ? '↑' : '↓'), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
-    onClick: _cache[3] || (_cache[3] = function ($event) {
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Hududlar "), $data.sortKey === 'name' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.sortOrder === 'asc' ? '↑' : '↓'), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+    onClick: _cache[4] || (_cache[4] = function ($event) {
       return $options.sortTable('apps_count');
     })
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Jami arizalar soni "), $data.sortKey === 'apps_count' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.sortOrder === 'asc' ? '↑' : '↓'), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
-    onClick: _cache[4] || (_cache[4] = function ($event) {
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Jami arizalar soni "), $data.sortKey === 'apps_count' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.sortOrder === 'asc' ? '↑' : '↓'), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+    onClick: _cache[5] || (_cache[5] = function ($event) {
       return $options.sortTable('apps_sum_amount');
     })
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Taqdim etilgan sertifikatlar soni "), $data.sortKey === 'apps_sum_amount' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.sortOrder === 'asc' ? '↑' : '↓'), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
-    onClick: _cache[5] || (_cache[5] = function ($event) {
-      return $options.sortTable('certified_application_count');
-    })
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Sertifikatlangan miqdor(kg) "), $data.sortKey === 'certified_application_count' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.sortOrder === 'asc' ? '↑' : '↓'), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Taqdim etilgan sertifikatlar soni "), $data.sortKey === 'apps_sum_amount' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.sortOrder === 'asc' ? '↑' : '↓'), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
     onClick: _cache[6] || (_cache[6] = function ($event) {
       return $options.sortTable('certified_application_count');
     })
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Sertifikatlangan miqdor(tonna) "), $data.sortKey === 'certified_application_count' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.sortOrder === 'asc' ? '↑' : '↓'), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), _hoisted_11])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.sortedStates, function (state) {
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Sertifikatlangan miqdor(kg) "), $data.sortKey === 'certified_application_count' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.sortOrder === 'asc' ? '↑' : '↓'), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+    onClick: _cache[7] || (_cache[7] = function ($event) {
+      return $options.sortTable('certified_application_count');
+    })
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Sertifikatlangan miqdor(tonna) "), $data.sortKey === 'certified_application_count' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.sortOrder === 'asc' ? '↑' : '↓'), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), _hoisted_10])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.sortedStates, function (state) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
       key: state.id
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
       to: {
         name: 'FactoryReport',
         params: {
@@ -19804,7 +19801,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }),
       _: 2 /* DYNAMIC */
     }, 1032 /* PROPS, DYNAMIC_SLOTS */, ["to"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(state.apps_count), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(state.certificates_count), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(state.apps_sum_amount.toFixed()), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((state.apps_sum_amount / 1000).toFixed()), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(state.apps_count > 0 ? (state.certified_application_count / state.apps_count * 100).toFixed(2) + '%' : '0%'), 1 /* TEXT */)]);
-  }), 128 /* KEYED_FRAGMENT */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", _hoisted_13, [_hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.totalAppsCount), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.totalCertifiedCount), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.totalAppsSumAmount.toFixed()), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(($options.totalAppsSumAmount / 1000).toFixed()), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.totalAppsCount > 0 ? ($options.totalCertifiedAppCount / $options.totalAppsCount * 100).toFixed(2) + '%' : '0%'), 1 /* TEXT */)])])])])], 64 /* STABLE_FRAGMENT */);
+  }), 128 /* KEYED_FRAGMENT */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", _hoisted_12, [_hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.totalAppsCount), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.totalCertifiedCount), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.totalAppsSumAmount.toFixed()), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(($options.totalAppsSumAmount / 1000).toFixed()), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.totalAppsCount > 0 ? ($options.totalCertifiedAppCount / $options.totalAppsCount * 100).toFixed(2) + '%' : '0%'), 1 /* TEXT */)])])])])], 64 /* STABLE_FRAGMENT */);
 }
 
 /***/ }),
@@ -19914,7 +19911,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.state-summary[data-v-722900fa] {\n        padding: 20px;\n        background: #f7f9fc;\n        border-radius: 8px;\n}\n.component-title[data-v-722900fa] {\n        font-size: 1.8rem;\n        margin-bottom: 15px;\n        color: #333;\n        text-align: center;\n}\n.state-table[data-v-722900fa] {\n        width: 100%;\n        border-collapse: collapse;\n}\n.state-table th[data-v-722900fa],\n    .state-table td[data-v-722900fa] {\n        padding: 10px;\n        border: 1px solid #ddd;\n        text-align: left;\n}\n.state-table th[data-v-722900fa] {\n        background-color: #f53535;\n        font-weight: bold;\n}\n.state-table tr[data-v-722900fa]:nth-child(even) {\n        background-color: #f9f9f9;\n}\n.state-table tr[data-v-722900fa]:hover {\n        background-color: #e9f5ff;\n}\n.total-row[data-v-722900fa] {\n        font-weight: bold;\n        background-color: #5aa2f8; /* Light grey background */\n        color: #333; /* Dark text for contrast */\n}\n.total-row td[data-v-722900fa] {\n        border-top: 2px solid #ccc; /* Distinct border above the total row */\n        padding: 10px; /* Add padding for better readability */\n        text-align: center; /* Center-align the text */\n}\n.filters[data-v-722900fa] {\n        margin-bottom: 20px;\n        display: flex;\n        gap: 10px;\n        align-items: center;\n}\n.filters label[data-v-722900fa] {\n        font-weight: bold;\n}\n.filters input[type=\"date\"][data-v-722900fa] {\n        padding: 5px;\n        border: 1px solid #ccc;\n        border-radius: 4px;\n}\n.name_row[data-v-722900fa]{\n        background-color: #929395;\n        color:white;\n        font-weight: bolder;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.state-summary[data-v-722900fa] {\r\n        padding: 20px;\r\n        background: #f7f9fc;\r\n        border-radius: 8px;\n}\n.component-title[data-v-722900fa] {\r\n        font-size: 1.8rem;\r\n        margin-bottom: 15px;\r\n        color: #333;\r\n        text-align: center;\n}\n.state-table[data-v-722900fa] {\r\n        width: 100%;\r\n        border-collapse: collapse;\n}\n.state-table th[data-v-722900fa],\r\n    .state-table td[data-v-722900fa] {\r\n        padding: 10px;\r\n        border: 1px solid #ddd;\r\n        text-align: left;\n}\n.state-table th[data-v-722900fa] {\r\n        background-color: #f53535;\r\n        font-weight: bold;\n}\n.state-table tr[data-v-722900fa]:nth-child(even) {\r\n        background-color: #f9f9f9;\n}\n.state-table tr[data-v-722900fa]:hover {\r\n        background-color: #e9f5ff;\n}\n.total-row[data-v-722900fa] {\r\n        font-weight: bold;\r\n        background-color: #5aa2f8; /* Light grey background */\r\n        color: #333; /* Dark text for contrast */\n}\n.total-row td[data-v-722900fa] {\r\n        border-top: 2px solid #ccc; /* Distinct border above the total row */\r\n        padding: 10px; /* Add padding for better readability */\r\n        text-align: center; /* Center-align the text */\n}\n.filters[data-v-722900fa] {\r\n        margin-bottom: 20px;\r\n        display: flex;\r\n        gap: 10px;\r\n        align-items: center;\n}\n.filters label[data-v-722900fa] {\r\n        font-weight: bold;\n}\n.filters input[type=\"date\"][data-v-722900fa] {\r\n        padding: 5px;\r\n        border: 1px solid #ccc;\r\n        border-radius: 4px;\n}\n.name_row[data-v-722900fa]{\r\n        background-color: #929395;\r\n        color:white;\r\n        font-weight: bolder;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -19938,7 +19935,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.state-summary[data-v-24fa758a] {\n        padding: 20px;\n        background: #f7f9fc;\n        border-radius: 8px;\n}\n.component-title[data-v-24fa758a] {\n        font-size: 1.8rem;\n        margin-bottom: 15px;\n        color: #333;\n        text-align: center;\n}\n.state-table[data-v-24fa758a] {\n        width: 100%;\n        border-collapse: collapse;\n}\n.state-table th[data-v-24fa758a]{\n        color:white;\n}\n.state-table th[data-v-24fa758a],\n    .state-table td[data-v-24fa758a] {\n        padding: 10px;\n        border: 1px solid #ddd;\n        text-align: left;\n}\n.state-table th[data-v-24fa758a] {\n        background-color: #f53535;\n        font-weight: bold;\n}\n.state-table tr[data-v-24fa758a]:nth-child(even) {\n        background-color: #f9f9f9;\n}\n.state-table tr[data-v-24fa758a]:hover {\n        background-color: #e9f5ff;\n}\n.total-row[data-v-24fa758a] {\n        font-weight: bold;\n        background-color: #5aa2f8; /* Light grey background */\n        color: #333; /* Dark text for contrast */\n}\n.total-row td[data-v-24fa758a] {\n        border-top: 2px solid #ccc; /* Distinct border above the total row */\n        padding: 10px; /* Add padding for better readability */\n        text-align: center; /* Center-align the text */\n}\n.filters[data-v-24fa758a] {\n        margin-bottom: 20px;\n        display: flex;\n        gap: 10px;\n        align-items: center;\n}\n.filters label[data-v-24fa758a] {\n        font-weight: bold;\n}\n.filters input[type=\"date\"][data-v-24fa758a] {\n        padding: 5px;\n        border: 1px solid #ccc;\n        border-radius: 4px;\n}\n.name_row[data-v-24fa758a]{\n        background-color: #929395;\n        color:white;\n        font-weight: bolder;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.state-summary[data-v-24fa758a] {\r\n        padding: 20px;\r\n        background: #f7f9fc;\r\n        border-radius: 8px;\n}\n.component-title[data-v-24fa758a] {\r\n        font-size: 1.8rem;\r\n        margin-bottom: 15px;\r\n        color: #333;\r\n        text-align: center;\n}\n.state-table[data-v-24fa758a] {\r\n        width: 100%;\r\n        border-collapse: collapse;\n}\n.state-table th[data-v-24fa758a]{\r\n        color:white;\n}\n.state-table th[data-v-24fa758a],\r\n    .state-table td[data-v-24fa758a] {\r\n        padding: 10px;\r\n        border: 1px solid #ddd;\r\n        text-align: left;\n}\n.state-table th[data-v-24fa758a] {\r\n        background-color: #f53535;\r\n        font-weight: bold;\n}\n.state-table tr[data-v-24fa758a]:nth-child(even) {\r\n        background-color: #f9f9f9;\n}\n.state-table tr[data-v-24fa758a]:hover {\r\n        background-color: #e9f5ff;\n}\n.total-row[data-v-24fa758a] {\r\n        font-weight: bold;\r\n        background-color: #5aa2f8; /* Light grey background */\r\n        color: #333; /* Dark text for contrast */\n}\n.total-row td[data-v-24fa758a] {\r\n        border-top: 2px solid #ccc; /* Distinct border above the total row */\r\n        padding: 10px; /* Add padding for better readability */\r\n        text-align: center; /* Center-align the text */\n}\n.filters[data-v-24fa758a] {\r\n        margin-bottom: 20px;\r\n        display: flex;\r\n        gap: 10px;\r\n        align-items: center;\n}\n.filters label[data-v-24fa758a] {\r\n        font-weight: bold;\n}\n.filters input[type=\"date\"][data-v-24fa758a] {\r\n        padding: 5px;\r\n        border: 1px solid #ccc;\r\n        border-radius: 4px;\n}\n.name_row[data-v-24fa758a]{\r\n        background-color: #929395;\r\n        color:white;\r\n        font-weight: bolder;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
