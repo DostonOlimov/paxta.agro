@@ -99,7 +99,7 @@ class DecisionController extends Controller
         // Create new decision
         $decision = Decision::create([
             'app_id'       => $app_id,
-            'director_id'  => 27, // Hardcoded, but ideally fetched dynamically
+            'director_id'  => 42, // Hardcoded, but ideally fetched dynamically
             'number'       => $number,
             'laboratory_id'=> $laboratory_id,
             'created_by'   => $user->id,
@@ -120,7 +120,7 @@ class DecisionController extends Controller
         // Create test program entry
         TestPrograms::create([
             'app_id'      => $app_id,
-            'director_id' => 27, // Hardcoded, but same suggestion as above
+            'director_id' => 42, // Hardcoded, but same suggestion as above
         ]);
 
         return redirect()->route('decision.search')->with('message', 'Successfully Submitted');

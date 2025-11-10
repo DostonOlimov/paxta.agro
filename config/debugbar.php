@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'enabled' => true,
+    'enabled' => env('DEBUGBAR_ENABLED', false),
     'users' => env('DEBUGBAR_ENABLED_USERS', 'admin@uzteh'),
 
     'except' => [
