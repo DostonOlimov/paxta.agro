@@ -349,6 +349,7 @@ class SifatSertificate2Controller extends Controller
 
     public function download($id)
     {
+        $application = Application::findOrFail($id);
         $filePath = storage_path('app/public/sifat_sertificates/certificate_' . $id . '.pdf');
 
         if (file_exists($filePath)) {
