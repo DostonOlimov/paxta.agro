@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Area;
 use App\Models\Region;
-use App\tbl_states;
-use App\User;
 use Illuminate\Http\Request;
-use App\Http\Requests;
+use App\Models\DefaultModels\tbl_cities;
+use App\Models\DefaultModels\tbl_states as DefaultModelsTbl_states;
+use App\Models\DefaultModels\User as DefaultModelsUser;
 use Illuminate\Support\Facades\DB;
 
 class StatesController extends Controller
@@ -33,7 +33,7 @@ class StatesController extends Controller
         $region = $request->input('region');
         $count = DB::table('tbl_cities')->where('name', '=', $city)->count();
         if ($count == 0) {
-            $cityname = new tbl_cities;
+            $cityname = new tbl_cities();
             $cityname->name = $city;
             $cityname->state_id = $region;
             $cityname->save();
@@ -46,7 +46,7 @@ class StatesController extends Controller
 
     public function destory($id)
     {
-        $this->authorize('setting_delete', User::class);
+        $this->authorize('setting_delete', DefaultModelsUser::class);
         Area::destroy($id);
         return redirect('cities/list')->with('message', 'Successfully Deleted');
     }
@@ -62,7 +62,7 @@ class StatesController extends Controller
     // vehiclebrand update
     public function update(Request $request, $id)
     {
-        $state = tbl_states::findOrFail($id);
+        $state = DefaultModelsTbl_states::findOrFail($id);
         $state->name = $request->input('state');
         $state->save();
 

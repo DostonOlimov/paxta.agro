@@ -48,8 +48,8 @@ class StateByReportController extends Controller
             DB::raw('COUNT(CASE WHEN sifat_sertificates.id IS NOT NULL THEN applications.id END) as certified_application_count')
         ])
             ->leftJoin('sifat_sertificates', 'applications.id', '=', 'sifat_sertificates.app_id')
-            ->groupBy('tbl_states.id', 'tbl_states.name')
-            ->orderByDesc('application_count')
+            ->groupBy('tbl_states.id', 'tbl_states.name','tbl_states.list_id')
+            ->orderBy('tbl_states.list_id')
             ->get();
     }
 
