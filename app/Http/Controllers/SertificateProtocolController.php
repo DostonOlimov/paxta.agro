@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Filters\V1\DalolatnomaFilter;
-use App\Jobs\SendCertificateNotification;
 use App\Models\Application;
-use App\Models\ClampData;
 use App\Models\CropsName;
 use App\Models\Dalolatnoma;
 use App\Models\FinalResult;
@@ -13,19 +11,15 @@ use App\Models\LaboratoryFinalResults;
 use App\Models\LaboratoryOperator;
 use App\Models\LaboratoryResult;
 use App\Models\SifatSertificates;
-use App\Models\Tips;
 use App\Services\SearchService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Redirector;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class SertificateProtocolController extends Controller
@@ -267,12 +261,12 @@ class SertificateProtocolController extends Controller
             ->with('message', 'Certificate saved!');
     }
 
-    public function download(Dalolatnoma $dalolatnoma, Request $request)
+    public function download( $dalolatnoma_id, Request $request)
     {
         // Determine the file path based on the request type
         $fileName = $request->input('type') >= 1
-            ? 'protocol_' . $dalolatnoma->id . '_' . $request->input('type') . '.pdf'
-            : 'protocol_' . $dalolatnoma->id . '.pdf';
+            ? 'protocol_' . $dalolatnoma_id . '_' . $request->input('type') . '.pdf'
+            : 'protocol_' . $dalolatnoma_id . '.pdf';
 
         $filePath = storage_path('app/public/protocols/' . $fileName);
 

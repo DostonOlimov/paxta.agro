@@ -13,7 +13,6 @@ use App\Models\CropData;
 use App\Models\CropsSelection;
 use App\Models\Indicator;
 use App\Models\OrganizationCompanies;
-use App\Models\PreparedCompanies;
 use App\Models\SifatSertificates;
 use App\Services\SearchService;
 use Illuminate\Support\Facades\Auth;
@@ -349,7 +348,8 @@ class SifatSertificate2Controller extends Controller
 
     public function download($id)
     {
-        $application = Application::findOrFail($id);
+        $application = Application::find($id);
+        
         $filePath = storage_path('app/public/sifat_sertificates/certificate_' . $id . '.pdf');
 
         if (file_exists($filePath)) {

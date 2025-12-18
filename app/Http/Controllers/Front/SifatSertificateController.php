@@ -378,7 +378,6 @@ class SifatSertificateController extends Controller
 
     public function download($id, Request $request)
     {
-        $application = Application::findOrFail($id);
         if($request->input('type') >= 1){
             $type = $request->input('type');
             $filePath = storage_path('app/public/sifat_sertificates/certificate_' . $id . '_' . $type .'.pdf');
