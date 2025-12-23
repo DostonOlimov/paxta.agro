@@ -36,6 +36,7 @@
                                         <th>{{ trans('app.Zavod nomi va kodi') }}</th>
                                         <th>{{ trans('app.Sertifikatlanuvchi mahsulot') }}</th>
                                         <th>{{ trans('app.Sof og\'irligi (kg)') }}</th>
+                                        <th>Og'irlik farqi</th>
                                         <th>{{ trans('app.Action') }}</th>
                                         <th></th>
                                     </tr>
@@ -103,6 +104,7 @@
                                             </select>
                                         </td>
                                         <td></td>
+                                        <td></td>
                                     </tr>
                                     @php
                                         $offset = (request()->get('page', 1) - 1) * 50;
@@ -118,6 +120,9 @@
                                             <td>{{ optional($app->test_program)->application->prepared->name }} - {{ optional($app->test_program)->application->prepared->kod }}</td>
                                             <td>{{ optional($app->test_program)->application->crops->name->name }}</td>
                                             <td @if(! $app->result_sum_amount) class="text-danger" @endif>{{ $app->result_sum_amount ? round($app->result_sum_amount - $app->toy_count * $app->tara) : 0 }} kg</td>
+                                            <td @if(round(optional($app->test_program->application->crops)->amount) - round($app->result_sum_amount - $app->toy_count * $app->tara) != 0) class="text-danger" @endif>
+                                                {{ round(optional($app->test_program->application->crops)->amount) - round($app->result_sum_amount - $app->toy_count * $app->tara) }} kg
+                                            </td>
                                             {{-- <td @if(! $app->result_sum_amount) class="text-danger" @endif>{{ $app->result_sum_amount ? round($app->result_sum_amount - $app->toy_count * $app->tara) - round(optional($app->test_program)->application->crops->amount) : 0 }} kg</td> --}}
                                             <td>
                                                 @if( isset($app->laboratory_result))
