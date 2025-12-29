@@ -128,7 +128,7 @@
             <tr>
                 <th rowspan="1">kodi</th>
                 <th rowspan="1"> to‘da raqami</th>
-                <th rowspan="1"> A <br>7-8 va unda yuqori</th>
+                <th rowspan="1"> A <br>7-8 va undan yuqori</th>
                 <th rowspan="1"> B <br>6-7 va undan kam</th>
             </tr>
             @if ($group)
