@@ -74,26 +74,21 @@
 
             <div class="row">
                 <div class="col-sm-3 pt-2" style=" margin-top: -46px; margin-bottom: 13px;">
-                    <a class="btn btn-success" style="color: white"
-                       href="{{ route('excel.export', [
-                            'from' => $from?? ($_GET['from']??''),
-                            'till' => $till?? ($_GET['till']??''),
-                            'city' => $city?? ($_GET['city']??''),
-                            'crop' => $crop?? ($_GET['crop']??''),
-                            'city'=>$city?? ($_GET['city']??''),
-                            'region'=>$region?? ($_GET['region']??''),
-                            'organization'=>$organization?? ($_GET['organization']??''),
-                            'prepared'=>$prepared?? ($_GET['prepared']??''),
-                            'number'=>$number?? ($_GET['number']??''),
-                            'resster_number'=>$resster_number?? ($_GET['resster_number']??''),
-                            'party_number'=>$party_number?? ($_GET['party_number']??''),
-                            'sort'=>$sort?? ($_GET['sort']??''),
-                            'class'=>$class?? ($_GET['class']??''),
-                            'selection'=>$selection?? ($_GET['selection']??''),
-                        ]) }}">
+                    <button class="btn btn-success" style="color: white" id="export-excel-btn">
                         <i class="fa fa-file-excel-o"
-                           style="margin-right: 6px; color: white;"></i>{{ trans('app.Excel fayl') }}</a>
+                           style="margin-right: 6px; color: white;"></i>{{ trans('app.Excel fayl') }}</button>
+                    <div id="export-status" style="margin-top: 10px; display: none;">
+                        <span class="text-info">Eksport jarayonida...</span>
+                    </div>
+                    
+                    <!-- Export History Section -->
                 </div>
+                 <div id="export-history" style="margin-top: 15px;">
+                        <h5>So'nggi eksportlar</h5>
+                        <div id="export-history-list">
+                            <!-- Export tarixi bu yerda yuklanadi -->
+                        </div>
+                    </div>
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
@@ -674,6 +669,246 @@
                 return words.join(' ');
             }
         });
+        
+        // Handle Excel export button click
+        $(document).on('click', '#export-excel-btn', function() {
+            // Show loading status
+            $('#export-status').show();
+            
+            // Get current URL parameters
+            var currentUrl = window.location.href;
+            var url = new URL(currentUrl);
+            
+            // Build query parameters object
+            var params = {
+                from: url.searchParams.get('from') || '',
+                till: url.searchParams.get('till') || '',
+                city: url.searchParams.get('city') || '',
+                crop: url.searchParams.get('crop') || '',
+                region: url.searchParams.get('region') || '',
+                organization: url.searchParams.get('organization') || '',
+                prepared: url.searchParams.get('prepared') || '',
+                number: url.searchParams.get('number') || '',
+                resster_number: url.searchParams.get('resster_number') || '',
+                party_number: url.searchParams.get('party_number') || '',
+                sort: url.searchParams.get('sort') || '',
+                class: url.searchParams.get('class') || '',
+                selection: url.searchParams.get('selection') || '',
+            };
+            
+            // Make AJAX request
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            
+            $.ajax({
+                url: '{{ route("excel.export") }}',
+                method: 'GET',
+                data: params,
+                success: function(response) {
+                    // Hide loading status
+                    $('#export-status').hide();
+                    
+                    // Show success message
+                    alert('Eksport boshlandi. Tayyor bo\'lganda sizga xabar beriladi. Bildirishnomalaringizni tekshiring.');
+                    
+                    // Reload export history to show the new request
+                    loadExportHistory();
+                    
+                    // Optional: Implement download functionality when file is ready
+                    // This would require polling or WebSocket implementation to check file availability
+                },
+                complete: function() {
+                    // Hide loading status in any case
+                    $('#export-status').hide();
+                },
+                error: function(xhr, status, error) {
+                    // Hide loading status
+                    $('#export-status').hide();
+                    
+                    // Show error message
+                    var errorMessage = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : 'Noma\'lum xatolik';
+                    alert('Eksport qilishda xatolik yuz berdi: ' + errorMessage);
+                    console.error('Export error:', xhr, status, error);
+                }
+            });
+        });
+        
+        // Load export history
+        function loadExportHistory() {
+            $.ajax({
+                url: '{{ route("excel.history") }}',
+                method: 'GET',
+                success: function(response) {
+                    var html = '<ul class="list-group">';
+                    
+                    if (response.data.data.length === 0) {
+                        html += '<div class="alert alert-info"><i class="fas fa-info-circle"></i> Hisobotlar tarixi topilmadi</div>';
+                    } else {
+                        html += '<div class="table-responsive"><table class="table table-bordered table-hover">';
+                        html += '<thead class="thead-light"><tr><th>Fayl nomi</th><th>Holati</th><th>Yaratilgan</th><th>Amallar</th></tr></thead><tbody>';
+                        
+                        response.data.data.forEach(function(request) {
+                            var statusClass = '';
+                            var statusText = '';
+                            
+                            switch(request.status) {
+                                case 'completed':
+                                    statusClass = 'text-success';
+                                    statusText = 'Tayyor';
+                                    break;
+                                case 'processing':
+                                    statusClass = 'text-info';
+                                    statusText = 'Jarayonda';
+                                    break;
+                                case 'failed':
+                                    statusClass = 'text-danger';
+                                    statusText = 'Bajarilmadi';
+                                    break;
+                                default:
+                                    statusClass = 'text-warning';
+                                    statusText = 'Kutilmoqda';
+                            }
+                            
+                            html += '<tr>';
+                            html += '<td><i class="fas fa-file-excel text-success"></i> ' + request.filename + '</td>';
+                            html += '<td><span class="badge ' + statusClass + ' badge-pill">' + statusText + '</span></td>';
+                            html += '<td><small class="text-muted">' + new Date(request.created_at).toLocaleString() + '</small></td>';
+                            html += '<td>';
+                            if (request.status === 'completed' && request.download_url) {
+                                html += '<a href="' + request.download_url + '" class="btn btn-sm btn-success btn-block"><i class="fa fa-download"></i> Yuklab olish</a>';
+                            } else {
+                                html += '<span class="text-muted">Mavjud emas</span>';
+                            }
+                            html += '</td>';
+                            html += '</tr>';
+                        });
+                        html += '</tbody></table></div>';
+                    }
+                    
+                    html += '</ul>';
+                    
+                    // Add pagination if available
+                    if (response.data.links && response.data.links.length > 0) {
+                        html += '<nav aria-label="Export history pagination">';
+                        html += '<ul class="pagination pagination-sm">';
+                        
+                        response.data.links.forEach(function(link) {
+                            if (link.url) {
+                                html += '<li class="page-item ' + (link.active ? 'active' : '') + '">' +
+                                        '<a class="page-link" href="javascript:void(0);" onclick="loadExportHistoryPage(\'' + link.url + '\')">' +
+                                        link.label + '</a></li>';
+                            } else {
+                                html += '<li class="page-item disabled">' +
+                                        '<span class="page-link">' + link.label + '</span></li>';
+                            }
+                        });
+                        
+                        html += '</ul>';
+                        html += '</nav>';
+                    }
+                    
+                    $('#export-history-list').html(html);
+                },
+                error: function(xhr, status, error) {
+                    console.error('Eksport tarixini yuklashda xatolik:', xhr, status, error);
+                    // Foydalanuvchiga xato to'g'risida bildirishnoma ko'rsatish mumkin
+                    // alert('Eksport tarixini yuklashda xatolik: ' + (xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : 'Noma'lum xatolik'));
+                }
+            });
+        }
+        
+        // Load export history on page load
+        $(document).ready(function() {
+            loadExportHistory();
+            
+            // Refresh history every 30 seconds
+            setInterval(loadExportHistory, 30000);
+        });
+        
+        // Function to load specific page of export history
+        function loadExportHistoryPage(url) {
+            $.ajax({
+                url: url,
+                method: 'GET',
+                success: function(response) {
+                    var html = '';
+                    
+                    if (response.data.data.length === 0) {
+                        html += '<div class="alert alert-info"><i class="fas fa-info-circle"></i> Eksport tarixi topilmadi</div>';
+                    } else {
+                        html += '<div class="table-responsive"><table class="table table-bordered table-hover">';
+                        html += '<thead class="thead-light"><tr><th>Fayl nomi</th><th>Holati</th><th>Yaratilgan</th><th>Amallar</th></tr></thead><tbody>';
+                        
+                        response.data.data.forEach(function(request) {
+                            var statusClass = '';
+                            var statusText = '';
+                            
+                            switch(request.status) {
+                                case 'completed':
+                                    statusClass = 'text-success';
+                                    statusText = 'Tayyor';
+                                    break;
+                                case 'processing':
+                                    statusClass = 'text-info';
+                                    statusText = 'Jarayonda';
+                                    break;
+                                case 'failed':
+                                    statusClass = 'text-danger';
+                                    statusText = 'Bajarilmadi';
+                                    break;
+                                default:
+                                    statusClass = 'text-warning';
+                                    statusText = 'Kutilmoqda';
+                            }
+                            
+                            html += '<tr>';
+                            html += '<td><i class="fas fa-file-excel text-success"></i> ' + request.filename + '</td>';
+                            html += '<td><span class="badge ' + statusClass + ' badge-pill">' + statusText + '</span></td>';
+                            html += '<td><small class="text-muted">' + new Date(request.created_at).toLocaleString() + '</small></td>';
+                            html += '<td>';
+                            if (request.status === 'completed' && request.download_url) {
+                                html += '<a href="' + request.download_url + '" class="btn btn-sm btn-success btn-block"><i class="fas fa-download"></i> Yuklab olish</a>';
+                            } else {
+                                html += '<span class="text-muted">Mavjud emas</span>';
+                            }
+                            html += '</td>';
+                            html += '</tr>';
+                        });
+                        html += '</tbody></table></div>';
+                    }
+                    
+                    // Add pagination
+                    if (response.data.links && response.data.links.length > 0) {
+                        html += '<nav aria-label="Export history pagination">';
+                        html += '<ul class="pagination pagination-sm">';
+                        
+                        response.data.links.forEach(function(link) {
+                            if (link.url) {
+                                html += '<li class="page-item ' + (link.active ? 'active' : '') + '">' +
+                                        '<a class="page-link" href="javascript:void(0);" onclick="loadExportHistoryPage(\'' + link.url + '\')">' +
+                                        link.label + '</a></li>';
+                            } else {
+                                html += '<li class="page-item disabled">' +
+                                        '<span class="page-link">' + link.label + '</span></li>';
+                            }
+                        });
+                        
+                        html += '</ul>';
+                        html += '</nav>';
+                    }
+                    
+                    $('#export-history-list').html(html);
+                },
+                error: function(xhr, status, error) {
+                    console.error('Eksport tarixi sahifasini yuklashda xatolik:', xhr, status, error);
+                    // Foydalanuvchiga xato to'g'risida bildirishnoma ko'rsatish mumkin
+                    // alert('Eksport tarixi sahifasini yuklashda xatolik: ' + (xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : 'Noma'lum xatolik'));
+                }
+            });
+        }
     </script>
 
 

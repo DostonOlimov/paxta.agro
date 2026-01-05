@@ -2,20 +2,77 @@
 
 namespace App\Exports;
 
-
-use Maatwebsite\Excel\Concerns\WithHeadings;
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithStyles;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
 
-class ReportExport implements FromCollection, WithHeadings, WithStyles
+class ReportExport implements FromCollection, WithHeadings, WithStyles, WithEvents, ShouldAutoSize
 {
-    protected $data;
+    protected $query;
+    protected $chunkSize = 500;
 
-    public function __construct($data)
+    public function __construct($query)
     {
-        $this->data = $data;
+        // Accept query builder instead of collection to enable chunking
+        $this->query = $query;
+    }
+
+    public function collection()
+    {
+        $rows = new Collection();
+        
+        // Process data in chunks to reduce memory usage
+        $this->query->chunk($this->chunkSize, function ($results) use ($rows) {
+            foreach ($results as $result) {
+                $rows->push($this->mapResultToRow($result));
+            }
+        });
+        
+        return $rows;
+    }
+
+    protected function mapResultToRow($result): array
+    {
+        return [
+            $result->date ?? '',
+            $result->dalolatnoma->number ?? '',
+            $result->certificate->reestr_number ?? '',
+            data_get($result, 'dalolatnoma.test_program.application.organization.city.region.name', ''),
+            data_get($result, 'dalolatnoma.test_program.application.organization.city.name', ''),
+            data_get($result, 'dalolatnoma.test_program.application.organization.name', ''),
+            data_get($result, 'dalolatnoma.test_program.application.prepared.name', ''),
+            data_get($result, 'dalolatnoma.test_program.application.crops.name.name', ''),
+            data_get($result, 'dalolatnoma.test_program.application.crops.selection.name', ''),
+            data_get($result, 'dalolatnoma.test_program.application.crops.party_number', ''),
+            data_get($result, 'dalolatnoma.test_program.application.crops.year', ''),
+            optional($result->dalolatnoma->akt_amount)->count() ?? '',
+            optional($result->dalolatnoma->akt_amount)->sum('amount') ?? '',
+            $this->calculateNetWeight($result),
+            $result->type ?? '',
+            $result->sort ?? '',
+            $result->class ?? '',
+            $result->staple_length ?? '',
+            $result->micronaire ?? '',
+            $result->strength ?? '',
+            $result->uniformity ?? '',
+            $result->moisture ?? '',
+        ];
+    }
+
+    protected function calculateNetWeight($result)
+    {
+        $aktAmount = optional($result->dalolatnoma->akt_amount)->sum('amount');
+        $tara = $result->dalolatnoma->tara ?? 0;
+        
+        return $aktAmount ? ($aktAmount - $tara) : '';
     }
 
     public function headings(): array
@@ -49,148 +106,125 @@ class ReportExport implements FromCollection, WithHeadings, WithStyles
         ];
     }
 
-    public function collection()
-    {
-        $data = collect($this->data);
-        $firstRow = [
-            'Sanasi' => '',
-        ];
-
-        return collect([$firstRow])->concat($data->map(function ($result) {
-            return [
-                $result->dalolatnoma->test_program->application->date ?? 'N/A',
-                optional($result->dalolatnoma)->number ?? 'N/A',
-                (optional($result->certificate)->reestr_number)??'',
-               (isset($result->dalolatnoma->test_program->application))?  optional($result->dalolatnoma->test_program->application->organization)->city->region->name ?? 'N/A':'',
-               (isset($result->dalolatnoma->test_program->application))?  optional($result->dalolatnoma->test_program->application->organization)->city->name ?? 'N/A':'',
-               (isset($result->dalolatnoma->test_program->application))?  optional($result->dalolatnoma->test_program->application->organization)->name ?? 'N/A':'',
-               (isset($result->dalolatnoma->test_program->application))?  optional($result->dalolatnoma->test_program->application->prepared)->name ?? 'N/A':'',
-               (isset($result->dalolatnoma->test_program->application))?  optional($result->dalolatnoma->test_program->application->crops->name)->name ?? 'N/A':'',
-               optional($result->dalolatnoma->selection)->name,
-               (isset($result->dalolatnoma->test_program->application))?  optional($result->dalolatnoma->test_program->application->crops)->party_number ?? 'N/A':'',
-                (isset($result->dalolatnoma->test_program->application))? optional($result->dalolatnoma->test_program->application->crops)->year ?? 'N/A':'',
-                optional($result)->count ?? 'N/A',
-                optional($result)->amount ?? '',
-                (optional($result)->amount)?optional($result)->amount - optional($result)->count * optional(optional($result->dalolatnoma->test_program->application)->prepared)->tara ?? 'N/A':'',
-                4,
-                optional($result)->sort ?? 'N/A',
-                optional(\App\Models\CropsGeneration::where('kod','=',$result->class)->first())->name ?? 'N/A',
-                round($result->staple) ?? 'N/A',
-                round($result->mic, 1) ?? 'N/A',
-                round($result->strength, 1) ?? 'N/A',
-                round($result->uniform, 1) ?? 'N/A',
-                round($result->humidity, 2) ?? 'N/A'
-            ];
-        })
-    );
-    }
-
     public function styles(Worksheet $sheet)
     {
-        $totalRows = count($this->data) + 3;
+        $rowCount = $this->query->count();
+        $totalRows = $rowCount + 3; // +3 for header rows
 
-        $styleArray = [
+        // Apply borders to all cells
+        $sheet->getStyle("A1:V{$totalRows}")->applyFromArray([
             'borders' => [
                 'allBorders' => [
-                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'borderStyle' => Border::BORDER_THIN,
                     'color' => ['argb' => 'FF000000'],
                 ],
             ],
-        ];
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ]);
+
+        // Merge header cells
+        $this->mergeHeaderCells($sheet);
+
+        // Apply header styling
+        $this->styleHeaders($sheet);
+
+        // Set dimensions
+        $this->setDimensions($sheet);
+
+        return [];
+    }
+
+    protected function mergeHeaderCells(Worksheet $sheet): void
+    {
+        // Title row
         $sheet->mergeCells('A1:V1');
 
-        $sheet->mergeCells('A2:A3');
-        $sheet->mergeCells('B2:B3');
-        $sheet->mergeCells('C2:C3');
-        $sheet->mergeCells('D2:D3');
-        $sheet->mergeCells('E2:E3');
-        $sheet->mergeCells('F2:F3');
-        $sheet->mergeCells('G2:G3');
-        $sheet->mergeCells('H2:H3');
-        $sheet->mergeCells('I2:I3');
-        $sheet->mergeCells('J2:J3');
-        $sheet->mergeCells('K2:K3');
-        $sheet->mergeCells('L2:L3');
-        $sheet->mergeCells('M2:M3');
-        $sheet->mergeCells('N2:N3');
+        // Main headers (rows 2-3)
+        $singleColumnHeaders = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N'];
+        foreach ($singleColumnHeaders as $col) {
+            $sheet->mergeCells("{$col}2:{$col}3");
+        }
 
+        // Quality control section header
         $sheet->mergeCells('O2:V2');
+    }
 
-        $sheet->setCellValue('A1', 'PAXTA TOLASINI SERTIFIKATLASHTIRISH AVTOMATLASHTIRILGAN AXBOROT TIZIMI');
+    protected function styleHeaders(Worksheet $sheet): void
+    {
+        // Title styling
+        $sheet->getStyle('A1:V1')->applyFromArray([
+            'font' => ['bold' => true, 'size' => 12],
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'startColor' => ['argb' => 'FFFF00'],
+            ],
+        ]);
+
+        // Header rows styling
+        $sheet->getStyle('A2:V3')->applyFromArray([
+            'font' => ['bold' => true, 'size' => 10],
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'startColor' => ['argb' => '33A2FF'],
+            ],
+        ]);
+
+        // Set header values
+        $this->setHeaderValues($sheet);
+    }
+
+    protected function setHeaderValues(Worksheet $sheet): void
+    {
         $sheet->setCellValue('O2', 'Sifat nazorati natijalari');
+        
+        $headers = [
+            'O3' => 'Tip',
+            'P3' => 'Sort',
+            'Q3' => 'Sinf',
+            'R3' => 'Shtaple uzunligi',
+            'S3' => 'Mikroneyr',
+            'T3' => 'Solishtirma uzunlik kuchi',
+            'U3' => "Uzunligi bo'yicha bir xillik ko'rsatkichi, %",
+            'V3' => "Namlik ko'rsatkichi, %",
+        ];
 
-        $sheet->getStyle('P2:V3')->getAlignment()->setHorizontal('center');
+        foreach ($headers as $cell => $value) {
+            $sheet->setCellValue($cell, $value);
+        }
+    }
 
-        $sheet->setCellValue('A2', 'Ariza sanasi');
-        $sheet->setCellValue('B2', 'Dalolatnoma raqami');
-        $sheet->setCellValue('C2', 'Sertifikat reestr raqami');
-        $sheet->setCellValue('D2', 'Na\'muna olingan viloyat');
-        $sheet->setCellValue('E2', 'Na\'muna olingan shahar yoki tuman');
-        $sheet->setCellValue('F2', 'Buyurtmachi korxona yoki tashkilot nomi');
-        $sheet->setCellValue('G2', 'Tayorlangan shaxobcha yoki sexning nomi');
-
-        $sheet->setCellValue('H2', 'Ishlab chiqargan davlat');
-
-        $sheet->setCellValue('H2', 'Nomi');
-        $sheet->setCellValue('I2', 'Seleksiya nomi');
-        $sheet->setCellValue('J2', 'Toʼda (partiya) raqami');
-        $sheet->setCellValue('K2', 'Hosil yili');
-        $sheet->setCellValue('L2', 'To\'dadagi toylar soni (dona)');
-        $sheet->setCellValue('M2', 'Jami og\'irlik(kg)');
-        $sheet->setCellValue('N2', 'Sof Og\'irlik(kg)');
-
-        $sheet->setCellValue('O3', 'Tip');
-        $sheet->setCellValue('P3', 'Sort');
-        $sheet->setCellValue('Q3', 'Sinf');
-        $sheet->setCellValue('R3', 'Shtaple uzunligi');
-        $sheet->setCellValue('S3', 'Mikroneyr');
-        $sheet->setCellValue('T3', 'Solishtirma uzunlik kuchi');
-        $sheet->setCellValue('U3', 'Uzunligi bo\'yicha bir xillik ko\'rsatkichi, %');
-        $sheet->setCellValue('V3', 'Namlik ko\'rsatkichi, %');
-
-        $sheet->getStyle('A2:O2')->getFont()->setBold(true);
-        $sheet->getStyle('A1:V1')->getFont()->setBold(true);
-        $sheet->getStyle('O2:V2')->getFont()->setBold(true);
-        $sheet->getStyle('O3:V3')->getFont()->setBold(true);
-
-        $sheet->getStyle('A1:V1')->getFill()->setFillType(Fill::FILL_SOLID);
-        $sheet->getStyle('A1:V1')->getFill()->getStartColor()->setARGB('FFFF00');
-
-        $sheet->getStyle('A2:V3')->getFill()->setFillType(Fill::FILL_SOLID);
-        $sheet->getStyle('A2:V3')->getFill()->getStartColor()->setARGB('33A2FF');
-        $sheet->getStyle("A1:V{$totalRows}")->applyFromArray($styleArray);
-
-        $sheet->getStyle("A1:V{$totalRows}")->getAlignment()->setHorizontal('center')->setVertical('center');
-
+    protected function setDimensions(Worksheet $sheet): void
+    {
+        // Row heights
         $sheet->getRowDimension(1)->setRowHeight(30);
         $sheet->getRowDimension(2)->setRowHeight(25);
         $sheet->getRowDimension(3)->setRowHeight(20);
-
-        $sheet->getColumnDimension('A')->setWidth(15);
-        $sheet->getColumnDimension('B')->setWidth(25);
-        $sheet->getColumnDimension('C')->setWidth(30);
-        $sheet->getColumnDimension('D')->setWidth(40);
-        $sheet->getColumnDimension('E')->setWidth(40);
-        $sheet->getColumnDimension('F')->setWidth(50);
-        $sheet->getColumnDimension('G')->setWidth(50);
-        $sheet->getColumnDimension('H')->setWidth(30);
-        $sheet->getColumnDimension('I')->setWidth(30);
-        $sheet->getColumnDimension('J')->setWidth(30);
-
-        $sheet->getColumnDimension('K')->setWidth(20);
-        $sheet->getColumnDimension('L')->setWidth(40);
-        $sheet->getColumnDimension('M')->setWidth(25);
-        $sheet->getColumnDimension('N')->setWidth(20);
-        $sheet->getColumnDimension('O')->setWidth(20);
-        $sheet->getColumnDimension('P')->setWidth(25);
-        $sheet->getColumnDimension('Q')->setWidth(25);
-        $sheet->getColumnDimension('R')->setWidth(25);
-        $sheet->getColumnDimension('S')->setWidth(30);
-        $sheet->getColumnDimension('T')->setWidth(35);
-        $sheet->getColumnDimension('U')->setWidth(50);
-        $sheet->getColumnDimension('V')->setWidth(30);
-
         $sheet->getDefaultRowDimension()->setRowHeight(20);
+
+        // Column widths
+        $columnWidths = [
+            'A' => 15, 'B' => 25, 'C' => 30, 'D' => 40, 'E' => 40,
+            'F' => 50, 'G' => 50, 'H' => 30, 'I' => 30, 'J' => 30,
+            'K' => 20, 'L' => 40, 'M' => 25, 'N' => 20, 'O' => 20,
+            'P' => 25, 'Q' => 25, 'R' => 25, 'S' => 30, 'T' => 35,
+            'U' => 50, 'V' => 30,
+        ];
+
+        foreach ($columnWidths as $col => $width) {
+            $sheet->getColumnDimension($col)->setWidth($width);
+        }
     }
 
+    public function registerEvents(): array
+    {
+        return [
+            AfterSheet::class => function(AfterSheet $event) {
+                // Additional formatting can be added here if needed
+            },
+        ];
+    }
 }

@@ -3,14 +3,17 @@
 namespace App\Http\Controllers;
 
 
+use App\Jobs\ExportReportJob;
 use App\Models\Application;
 use App\Models\Area;
+use App\Models\ExportRequest;
 use App\Models\FinalResult;
 use App\Models\Region;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Models\CropsSelection;
 use App\Models\OrganizationCompanies;
 use App\Models\PreparedCompanies;
@@ -21,11 +24,70 @@ class ReportController extends Controller
 {
     public function excel_export(Request $request)
     {
-        $data = $this->getReport($request);
-        $data = $data->orderBy('id', 'desc')
-            ->get();
-        return \Maatwebsite\Excel\Facades\Excel::download(new \App\Exports\ReportExport($data), 'hisobot.xlsx');
+        try {
+            // Create an export request record first
+            $exportRequest = ExportRequest::create([
+                'user_id' => Auth::id(),
+                'filename' => 'hisobot_' . time() . '.xlsx',
+                'status' => 'pending',
+                'filters' => $request->all(),
+            ]);
+            
+            // Dispatch the job to handle the export
+            // Pass the request parameters instead of the full data set to avoid memory issues
+            ExportReportJob::dispatch($exportRequest, $request->all());
+            
+            // Return a response indicating the export is in progress
+            return response()->json(['message' => 'Export started successfully. You will be notified when it is ready.', 'status' => 'success']);
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Export failed: ' . $e->getMessage(), [
+                'user_id' => Auth::id(),
+                'filters' => $request->all(),
+            ]);
+            
+            return response()->json(['message' => 'Export failed: ' . $e->getMessage(), 'status' => 'error'], 500);
+        }
     }
+    
+    public function download_export($filename)
+    {
+        $userId = Auth::id();
+        
+        // Find the export request for this user and filename
+        $exportRequest = ExportRequest::where('user_id', $userId)
+            ->where('filename', $filename)
+            ->first();
+        
+        if (!$exportRequest || $exportRequest->status !== 'completed') {
+            return response()->json(['error' => 'File not found or not ready'], 404);
+        }
+        
+        if (Storage::exists($exportRequest->file_path)) {
+            return Storage::download($exportRequest->file_path, $filename);
+        }
+        
+        return response()->json(['error' => 'File not found'], 404);
+    }
+    
+    public function export_history(Request $request)
+    {
+        $userId = Auth::id();
+        
+        $exportRequests = ExportRequest::where('user_id', $userId)
+            ->orderBy('created_at', 'desc')
+            ->paginate(5);
+        
+        // Add download URL to each export request
+        $exportRequests->getCollection()->transform(function ($exportRequest) {
+            $exportRequest->download_url = $exportRequest->status === 'completed' 
+                ? route('excel.download', ['filename' => $exportRequest->filename]) 
+                : null;
+            return $exportRequest;
+        });
+            
+        return response()->json(['data' => $exportRequests]);
+    }
+    
     public function excel_prepared(Request $request)
     {
         $user = Auth::user();
@@ -449,16 +511,6 @@ class ReportController extends Controller
                 $query->where('id', '=', $prepared);
             });
         }
-        // if ($crop) {
-        //     $results = $results->whereHas('test_program.application.crops', function ($query) use ($crop) {
-        //         $query->where('name_id', $crop);
-        //     });
-        // }
-
-        $results = $results;
-        // ->whereHas('test_program.application', function ($q) use ($year) {
-        //     $q->whereYear('date', $year);
-        // });
 
         return $results;
     }

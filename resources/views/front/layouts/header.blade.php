@@ -167,6 +167,7 @@ $currentFlag = "/img/flags/united-kingdom.png";
                         <a href="#" onclick="changeYear('2023')"><b>2023</b></a>
                         <a href="#" onclick="changeYear('2024')"><b>2024</b></a>
                         <a href="#" onclick="changeYear('2025')"><b>2025</b></a>
+                        <a href="#" onclick="changeYear('2026')"><b>2026</b></a>
                     </div>
                 </div>
                     </div>
