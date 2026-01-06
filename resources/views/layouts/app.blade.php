@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+
 <head>
     <!-- Character Encoding -->
     <meta charset="utf-8">
@@ -47,6 +48,14 @@
     @php
         // Define style settings for different 'crop' values
         $styles = [
+             1 => [
+                'header' => '#0E46A3',
+                'sidebar' => '#0d6efd',
+                'navgroupBg' => '#4eb6ba',
+                'activeLinkBg' => '#31a5f1',
+                'hoverLinkBg' => '#31a5f1',
+                'stickyHeader' => '#b9e6f1',
+            ],
             2 => [
                 'header' => '#343a40',
                 'sidebar' => '#495057',
@@ -63,7 +72,7 @@
                 'hoverLinkBg' => '#1cbd53',
                 'stickyHeader' => '#d9f1e4',
             ],
-              4 => [
+            4 => [
                 'header' => '#0a786d',
                 'sidebar' => '#319e92',
                 'navgroupBg' => '#319e92',
@@ -71,183 +80,207 @@
                 'hoverLinkBg' => '#29bfd6',
                 'stickyHeader' => '#a8ede6',
             ],
-            'default' => [
-                'header' => '#0E46A3',
-                'sidebar' => '#0d6efd',
-                'navgroupBg' => '#4eb6ba',
-                'activeLinkBg' => '#31a5f1',
-                'hoverLinkBg' => '#31a5f1',
-                'stickyHeader' => '#b9e6f1',
-            ],
+            5 => [
+                'header'        => '#5a2ca0', // deep purple
+                'sidebar'       => '#7b49c3', // lighter purple
+                'navgroupBg'    => '#7b49c3', // matching sidebar
+                'activeLinkBg'  => '#f2a93b', // warm contrasting accent
+                'hoverLinkBg'   => '#f7c35f', // lighter accent for hover
+                'stickyHeader'  => '#e8d9f7', // soft tint of purple
+            ]
         ];
 
         // Get the current crop from session, or default if not set
-        $crop = session('crop', 'default');
-        $currentStyles = $styles[$crop] ?? $styles['default'];
+        $crop = getApplicationType();
+        $currentStyles = $styles[$crop];
     @endphp
 
     <style>
         .page-header {
             background-color: {{ $currentStyles['header'] }};
         }
+
         .sidebar-toggler,
         .sidebar-brand,
         #myBtn {
             background-color: {{ $currentStyles['header'] }};
         }
+
         .sidebar-nav {
             background-color: {{ $currentStyles['sidebar'] }};
         }
+
         .sidebar-nav .nav-link.active1 {
             color: var(--cui-sidebar-nav-link-active-color);
             background: {{ $currentStyles['activeLinkBg'] }} !important;
         }
+
         .sidebar-nav .nav-link:hover {
             color: var(--cui-sidebar-nav-link-hover-color);
             text-decoration: none;
             background: {{ $currentStyles['hoverLinkBg'] }};
         }
+
         .nav-group .nav-group-items {
             background-color: {{ $currentStyles['navgroupBg'] }};
         }
+
         .header-sticky {
             background-color: {{ $currentStyles['stickyHeader'] }};
         }
     </style>
 
-@yield('styles')
-@stack('styles') <!-- For Vue-specific styles -->
+    @yield('styles')
+    @stack('styles') <!-- For Vue-specific styles -->
 </head>
-<body class="app">
-@php $settings = settings(); @endphp
 
-@if(!in_array(Auth::User()->role, [\App\Models\User::ROLE_CITY_CHIGIT, \App\Models\User::ROLE_STATE_CHIGIT_BOSHLIQ, \App\Models\User::ROLE_STATE_CHIGI_XODIM]))
-    <!-- Sidebar and Navbar -->
-    @include('layouts.blocks.sidebar')
-    <div class="wrapper d-flex flex-column min-vh-100 bg-light" style="padding-right: 0!important;">
-        @include('layouts.blocks.navbar')
-        <div class="body flex-grow-1 px-3">
-            @yield('content')
+<body class="app">
+    @php $settings = settings(); @endphp
+
+    @if (
+        !in_array(Auth::User()->role, [
+            \App\Models\User::ROLE_CITY_CHIGIT,
+            \App\Models\User::ROLE_STATE_CHIGIT_BOSHLIQ,
+            \App\Models\User::ROLE_STATE_CHIGI_XODIM,
+        ]))
+        <!-- Sidebar and Navbar -->
+        @include('layouts.blocks.sidebar')
+        <div class="wrapper d-flex flex-column min-vh-100 bg-light" style="padding-right: 0!important;">
+            @include('layouts.blocks.navbar')
+            <div class="body flex-grow-1 px-3">
+                @yield('content')
+            </div>
         </div>
-    </div>
-@else
-    <!-- Unauthorized Access Message -->
-    <div class="section" role="main">
-        <div class="card">
-            <div class="card-body text-center">
+    @else
+        <!-- Unauthorized Access Message -->
+        <div class="section" role="main">
+            <div class="card">
+                <div class="card-body text-center">
                     <span class="titleup text-danger">
                         <i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp;
                         {{ trans('app.You Are Not Authorized To Access This Page.') }}
                     </span>
+                </div>
             </div>
         </div>
-    </div>
-@endif
+    @endif
 
-<!-- JQUERY SCRIPTS JS -->
-<script src="{{ asset('resources/assets/plugins/hyperform/dist/hyperform.js') }}"></script>
-<script>hyperform(window)</script>
-<script src="{{ asset('resources/assets/js/vendors/jquery-3.2.1.min.js') }}"></script>
-<script src="{{ asset('resources/assets/plugins/date-picker/jquery-ui.js') }}"></script>
+    <!-- JQUERY SCRIPTS JS -->
+    <script src="{{ asset('resources/assets/plugins/hyperform/dist/hyperform.js') }}"></script>
+    <script>
+        hyperform(window)
+    </script>
+    <script src="{{ asset('resources/assets/js/vendors/jquery-3.2.1.min.js') }}"></script>
+    <script src="{{ asset('resources/assets/plugins/date-picker/jquery-ui.js') }}"></script>
 
-<!-- Input Mask -->
-<script src="{{ asset('resources/assets/plugins/input-mask/input-mask.min.js') }}"></script>
+    <!-- Input Mask -->
+    <script src="{{ asset('resources/assets/plugins/input-mask/input-mask.min.js') }}"></script>
 
-<!-- Select2 -->
-<script src="{{ asset('resources/assets/plugins/select2/dist/js/select2.min.js') }}"></script>
+    <!-- Select2 -->
+    <script src="{{ asset('resources/assets/plugins/select2/dist/js/select2.min.js') }}"></script>
 
-<!-- Date Picker -->
-<script src="{{ asset('resources/assets/plugins/date-picker/date-picker.js') }}"></script>
+    <!-- Date Picker -->
+    <script src="{{ asset('resources/assets/plugins/date-picker/date-picker.js') }}"></script>
 
-<!-- Bootstrap Bundle -->
-<script src="{{ asset('resources/assets/js/vendors/bootstrap.bundle.min.js') }}"></script>
-<script src="{{ asset('vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') }}"></script>
+    <!-- Bootstrap Bundle -->
+    <script src="{{ asset('resources/assets/js/vendors/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') }}"></script>
 
-<!-- SweetAlert2 and Multi Select -->
-<script src="{{ asset('resources/assets/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
-<script src="{{ asset('resources/assets/plugins/multipleselect/multiple-select.js') }}"></script>
-<script src="{{ asset('resources/assets/plugins/multipleselect/multi-select.js') }}"></script>
+    <!-- SweetAlert2 and Multi Select -->
+    <script src="{{ asset('resources/assets/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('resources/assets/plugins/multipleselect/multiple-select.js') }}"></script>
+    <script src="{{ asset('resources/assets/plugins/multipleselect/multi-select.js') }}"></script>
 
-<!-- Moment.js -->
-<script src="{{ asset('resources/assets/js/moment.js') }}"></script>
+    <!-- Moment.js -->
+    <script src="{{ asset('resources/assets/js/moment.js') }}"></script>
 
-<!-- Print Button -->
-<script src="{{ asset('resources/assets/plugins/print/dist/jQuery.print.min.js') }}"></script>
+    <!-- Print Button -->
+    <script src="{{ asset('resources/assets/plugins/print/dist/jQuery.print.min.js') }}"></script>
 
-<!-- Custom Scripts -->
-<script src="{{ asset('resources/assets/js/custom.js') }}"></script>
-<script src="{{ asset('resources/assets/js/myjs.js') }}"></script>
+    <!-- Custom Scripts -->
+    <script src="{{ asset('resources/assets/js/custom.js') }}"></script>
+    <script src="{{ asset('resources/assets/js/myjs.js') }}"></script>
 
-<!-- CoreUI and Necessary Plugins -->
-<script src="{{ asset('/assets/vendors/@coreui/coreui/js/coreui.bundle.min.js') }}"></script>
-<script src="{{ asset('/assets/vendors/simplebar/js/simplebar.min.js') }}"></script>
+    <!-- CoreUI and Necessary Plugins -->
+    <script src="{{ asset('/assets/vendors/@coreui/coreui/js/coreui.bundle.min.js') }}"></script>
+    <script src="{{ asset('/assets/vendors/simplebar/js/simplebar.min.js') }}"></script>
 
-{{-- Data table js files--}}
-<script src="{{ asset('resources/assets/plugins/datatable/js/jquery.dataTables.js') }}"></script>
-<script src="{{ asset('resources/assets/plugins/datatable/js/dataTables.bootstrap4.js') }}"></script>
-<script src="{{ asset('resources/assets/plugins/datatable/js/dataTables.buttons.min.js') }}"></script>
+    {{-- Data table js files --}}
+    <script src="{{ asset('resources/assets/plugins/datatable/js/jquery.dataTables.js') }}"></script>
+    <script src="{{ asset('resources/assets/plugins/datatable/js/dataTables.bootstrap4.js') }}"></script>
+    <script src="{{ asset('resources/assets/plugins/datatable/js/dataTables.buttons.min.js') }}"></script>
 
-<script src="{{ asset('resources/assets/plugins/datatable/js/buttons.bootstrap4.min.js') }}"></script>
-<script src="{{ asset('resources/assets/plugins/datatable/js//vfs_fonts.js') }}"></script>
-<script src="{{ asset('resources/assets/plugins/datatable/js/buttons.html5.min.js') }}"></script>
-<script src="{{ asset('resources/assets/plugins/datatable/js/buttons.print.min.js') }}"></script>
-<script src="{{ asset('resources/assets/plugins/datatable/js/buttons.colVis.min.js') }}"></script>
-<script src="{{ asset('resources/assets/plugins/datatable/dataTables.responsive.min.js') }}"></script>
-<script src="{{ asset('resources/assets/plugins/datatable/responsive.bootstrap4.min.js') }}"></script>
-<script src="{{ asset('resources/assets/plugins/datatable/datatable.js') }}"></script>
+    <script src="{{ asset('resources/assets/plugins/datatable/js/buttons.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('resources/assets/plugins/datatable/js//vfs_fonts.js') }}"></script>
+    <script src="{{ asset('resources/assets/plugins/datatable/js/buttons.html5.min.js') }}"></script>
+    <script src="{{ asset('resources/assets/plugins/datatable/js/buttons.print.min.js') }}"></script>
+    <script src="{{ asset('resources/assets/plugins/datatable/js/buttons.colVis.min.js') }}"></script>
+    <script src="{{ asset('resources/assets/plugins/datatable/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('resources/assets/plugins/datatable/responsive.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('resources/assets/plugins/datatable/datatable.js') }}"></script>
 
-<!-- Vue-Specific Scripts -->
-@stack('scripts') <!-- Push Vue-specific scripts here -->
+    <!-- Vue-Specific Scripts -->
+    @stack('scripts') <!-- Push Vue-specific scripts here -->
 
-@yield('scripts')
+    @yield('scripts')
 
-<script src="{{ asset('js/languageChange.js') }}"></script>
-<script>
-    function changeLanguage(language) {
-        var token = "{{ csrf_token() }}";
-        $.ajax({
-            type: 'POST',
-            url: '/change-language',
-            data: { language: language, _token: token },
-            success: function (data) {
-                location.reload();
-            },
-            error: function (error) {
-                console.error('Error changing language', error);
-            }
-        });
-    }
+    <script src="{{ asset('js/languageChange.js') }}"></script>
+    <script>
+        function changeLanguage(language) {
+            var token = "{{ csrf_token() }}";
+            $.ajax({
+                type: 'POST',
+                url: '/change-language',
+                data: {
+                    language: language,
+                    _token: token
+                },
+                success: function(data) {
+                    location.reload();
+                },
+                error: function(error) {
+                    console.error('Error changing language', error);
+                }
+            });
+        }
 
-    // Function to change year
-    function changeYear(year) {
-        $.ajax({
-            type: 'POST',
-            url: '/change-year',
-            data: { year: year, _token: "{{ csrf_token() }}" },
-            success: function () {
-                location.reload();
-            },
-            error: function (error) {
-                console.error('Error changing year', error);
-            }
-        });
-    }
+        // Function to change year
+        function changeYear(year) {
+            $.ajax({
+                type: 'POST',
+                url: '/change-year',
+                data: {
+                    year: year,
+                    _token: "{{ csrf_token() }}"
+                },
+                success: function() {
+                    location.reload();
+                },
+                error: function(error) {
+                    console.error('Error changing year', error);
+                }
+            });
+        }
 
-    // Function to change crop
-    function changeCrop(year) {
-        $.ajax({
-            type: 'POST',
-            url: '/change-crop',
-            data: { crop: year, _token: "{{ csrf_token() }}" },
-            success: function () {
-                window.location.href = '/home';
-            },
-            error: function (error) {
-                console.error('Error changing crop', error);
-            }
-        });
-    }
-</script>
+        // Function to change crop
+        function changeCrop(year) {
+            $.ajax({
+                type: 'POST',
+                url: '/change-crop',
+                data: {
+                    crop: year,
+                    _token: "{{ csrf_token() }}"
+                },
+                success: function() {
+                    window.location.href = '/home';
+                },
+                error: function(error) {
+                    console.error('Error changing crop', error);
+                }
+            });
+        }
+    </script>
 
 </body>
+
 </html>

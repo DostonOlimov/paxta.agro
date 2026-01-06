@@ -18,7 +18,7 @@ class StateByReportController extends Controller
     public function getReportByState(Request $request)
     {
         try {
-            $crop = session('crop', 1);
+            $crop = getApplicationType();
 
             // Determine the data retrieval method based on the crop type
             $data = $crop == 1

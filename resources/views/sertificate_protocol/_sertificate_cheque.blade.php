@@ -42,7 +42,7 @@
         </div>
         <div style="width: 100%; display: flex; justify-content: space-between;">
             <div style="width: 50%; display: inline-block;">
-                <h2 class="main__intro"><b>Amal qilish muddati:&nbsp;</b> @if(session('crop') != \App\Models\CropsName::CROP_TYPE_4) 6 oy @else 1 yil @endif </h2>
+                <h2 class="main__intro"><b>Amal qilish muddati:&nbsp;</b> @if(getApplicationType() != \App\Models\CropsName::CROP_TYPE_4) 6 oy @else 1 yil @endif </h2>
             </div>
             <div style="width: 40%; display: inline-block;">
                 <h2 class="main__intro"><b>Sinov bayonnomasi raqami:&nbsp; </b> {{ $application->tests->dalolatnoma->laboratory_final_results->number + $index }} </h2>
@@ -54,7 +54,7 @@
         <h2 class="main__intro"><b>Ishlab chiqaruvchi (arizachi) manzili:&nbsp; </b> {{ $application->organization->fulladdress }} </h2>
 
         <h1 class="header__intro" style="margin-top: 10px;"> IJROCHINING MA’LUMOTLARI</h1>
-        @if(session('crop') != \App\Models\CropsName::CROP_TYPE_4)
+        @if(getApplicationType() != \App\Models\CropsName::CROP_TYPE_4)
             <table class="table table-border ">
                 <tr>
                     {{-- <th">T\r</th> --}}

@@ -232,7 +232,7 @@ class SertificateProtocolController extends Controller
         $appId = $application->id;
 
         // Determine certificate type based on session
-        $sertType = session('crop') == CropsName::CROP_TYPE_4
+        $sertType = getApplicationType() == CropsName::CROP_TYPE_4
             ? SifatSertificates::LINT_TYPE
             : SifatSertificates::PAXTA_TYPE;
 

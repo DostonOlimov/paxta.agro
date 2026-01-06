@@ -59,7 +59,7 @@
             <span> {{ $formattedDate2}} y.</span>
         </div>
     </div>
-    @if(session('crop') != \App\Models\CropsName::CROP_TYPE_4)
+    @if(getApplicationType() != \App\Models\CropsName::CROP_TYPE_4)
         <div style="width: 100%; display: flex; justify-content: space-between; padding-top:10px; font-size: 18px;">
             <div style="width: 49%; display: inline-block;">
                 <span> <b>Seleksiya nomi:  </b>{{ $test->selection->name  }}.</span>
@@ -72,7 +72,7 @@
 
 
         <span style="padding: 10px 0;">Sinov natijasi:</span>
-    @if(session('crop') != \App\Models\CropsName::CROP_TYPE_4)
+    @if(getApplicationType() != \App\Models\CropsName::CROP_TYPE_4)
         <table class="table table-border " style="border: 1px solid black ;text-align: center;font-size: 18px;">
             <tr>
                 {{-- <th">T\r</th> --}}
@@ -169,7 +169,7 @@
             </span>
         </div>
     </div>
-    @if(session('crop',1) != \App\Models\CropsName::CROP_TYPE_4)
+    @if(getApplicationType() != \App\Models\CropsName::CROP_TYPE_4)
         <div style="width: 100%; display: flex; justify-content: space-between; padding-top:10px; font-size: 18px;">
             <div style="width: 49%; display: inline-block;">
                 <span> <b>Texnologik qurilmalar

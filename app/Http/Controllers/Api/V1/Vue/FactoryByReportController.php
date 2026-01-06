@@ -19,7 +19,7 @@ class FactoryByReportController extends Controller
     public function getReportByFactory(Request $request)
     {
         try {
-            $crop = session('crop', 1);
+            $crop = getApplicationType();
 
             // Determine the data retrieval method based on the crop type
             $data = $crop == 1

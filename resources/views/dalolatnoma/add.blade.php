@@ -118,7 +118,7 @@
                                     </div>
                                     <div class="row">
                                         {{-- select start --}}
-                                        @if(session('crop') != \App\Models\CropsName::CROP_TYPE_4)
+                                        @if(getApplicationType() != \App\Models\CropsName::CROP_TYPE_4)
                                             <div class="col-md-4 form-group has-feedback {{ $errors->has('selection_code') ? ' has-error' : '' }}">
                                                 <label for="number" class="form-label ">Seleksion navining kodi<label class="text-danger">*</label> </label>
                                                 <select id="selection_code" class="form-control owner_search" name="selection_code" required>
@@ -168,7 +168,7 @@
                                                 </span>
                                             @endif
                                         </div>
-                                        @if(session('crop') != \App\Models\CropsName::CROP_TYPE_4)
+                                        @if(getApplicationType() != \App\Models\CropsName::CROP_TYPE_4)
                                             <div class="col-md-3 form-group has-feedback {{ $errors->has('nav') ? ' has-error' : '' }}">
                                                 <label for="number" class="form-label ">Nav p/x № </label>
                                                 <input type="number" class="form-control" max="6" value="{{ old('nav')}}"  name="nav">

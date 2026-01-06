@@ -105,7 +105,7 @@ class DalolatnomaController extends Controller
                 'tara' => $data['tara'],
             ]);
 
-            if(session('crop',1) == CropsName::CROP_TYPE_1){
+            if(getApplicationType() == CropsName::CROP_TYPE_1){
                 // Create Humidity
                 Humidity::create([
                     'dalolatnoma_id' => $dal->id,

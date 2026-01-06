@@ -147,4 +147,13 @@ return [
     "Korxonalar kesimda ma'lumot" => "Информация в разделе предприятий",
 
     "Ishlab chiqaruvchi zavodlar kesimda ma'lumot" => "Информация в разделе заводы-производители",
+    
+    // Crop names for modal
+    'Paxta tolasi' => 'Хлопковое волокно',
+    'Muvofiqlik sertifikati' => 'Сертификат соответствия',
+    'Sifat sertifikati' => 'Сертификат качества',
+    'Texnik chigit' => 'Техническое семя',
+    'Paxta momig\'i' => 'Хлопковая пыль',
+    'Paxta tolasidan' => 'Из хлопкового волокна',
+    'Olinadigan mahsulotlar' => 'Получаемые продукты',
 ];

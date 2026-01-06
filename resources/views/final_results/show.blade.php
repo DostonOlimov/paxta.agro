@@ -179,7 +179,7 @@
                                                         </span>
                                                     </div>
                                                 </div>
-                                                @if(session('crop',1) != \App\Models\CropsName::CROP_TYPE_4)
+                                                @if(getApplicationType() != \App\Models\CropsName::CROP_TYPE_4)
                                                     <div style="font-family: 'Arial Black';width: 100%; display: flex; justify-content: space-between; padding-top:10px; font-size: 16px;">
                                                         <div style="width: 55%; display: inline-block;">
                                                             <span> <b>Texnologik qurilmalar operatori (HVI)  </b></span>

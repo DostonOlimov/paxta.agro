@@ -38,7 +38,7 @@
         ],
     ];
 
-    $crop = session('crop');
+    $crop = getApplicationType();
     $currentColors = $colors[$crop] ?? $colors['default'];
     $dashboardTitle = $currentColors['Dashboard_title'];
 @endphp

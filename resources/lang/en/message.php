@@ -147,4 +147,13 @@ return [
     "Korxonalar kesimda ma'lumot" => "Information in the section of enterprises",
 
     "Ishlab chiqaruvchi zavodlar kesimda ma'lumot" => "Information in the manufacturing plants section",
+    
+    // Crop names for modal
+    'Paxta tolasi' => 'Cotton fiber',
+    'Muvofiqlik sertifikati' => 'Compliance certificate',
+    'Sifat sertifikati' => 'Quality certificate',
+    'Texnik chigit' => 'Technical seed',
+    'Paxta momig\'i' => 'Cotton dust',
+    'Paxta tolasidan' => 'From cotton fiber',
+    'Olinadigan mahsulotlar' => 'Obtained products',
 ];

@@ -117,7 +117,7 @@ class HviController extends Controller
             $gin_balles = $this->getGinBalles($state_id);
 
             $filePath = $this->storeFile($file, $state_id);
-            if(session('crop') == CropsName::CROP_TYPE_4){
+            if(getApplicationType() == CropsName::CROP_TYPE_4){
                 $this->processGinBallesForLClassLint($gin_balles, $filePath, $state_id);
 
             }else{

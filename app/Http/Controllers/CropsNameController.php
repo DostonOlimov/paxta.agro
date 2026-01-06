@@ -33,14 +33,15 @@ class CropsNameController extends Controller
     // vehiclebrand store
     public function store(Request $request)
     {
-        $name = $request->input('name');
+        $tnved = $request->input('tnved');
         $count = DB::table('crops_name')
-            ->where('name', '=', $name)
+            ->where('kodtnved', '=', $tnved)
             ->count();
         if ($count == 0) {
             $crop = new CropsName();
-            $crop->name = $name;
-            $crop->kodtnved = $request->input('tnved');
+            $crop->name = $request->input('name');
+            $crop->kodtnved = $tnved;
+            $crop->crop_type = getApplicationType();
             $crop->save();
             return redirect('crops_name/list')->with('message', 'Successfully Submitted');
         } else {

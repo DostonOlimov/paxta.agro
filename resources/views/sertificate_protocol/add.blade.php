@@ -65,7 +65,7 @@
                                         @endif
                                     </div>
 
-                                        <div class="col-12 col-md-4" @if(session('crop',1) == \App\Models\CropsName::CROP_TYPE_4) style="display: none" @endif>
+                                        <div class="col-12 col-md-4" @if(getApplicationType() == \App\Models\CropsName::CROP_TYPE_4) style="display: none" @endif>
                                             <div class="form-group">
                                                 <label class="form-label"
                                                        for="first-name">{{ trans('app.Operator nomi')}} <label

@@ -161,4 +161,13 @@ return [
     "Korxonalar kesimda ma'lumot" => "Корхоналар кесимда маълумот",
 
     "Ishlab chiqaruvchi zavodlar kesimda ma'lumot" => "Ишлаб чиқарувчи заводлар кесимда маълумот",
+    
+    // Crop names for modal
+    'Paxta tolasi' => 'Пахта толаси',
+    'Muvofiqlik sertifikati' => 'Мувофиқлик сертификати',
+    'Sifat sertifikati' => 'Сифат сертификати',
+    'Texnik chigit' => 'Техник чигит',
+    'Paxta momig\'i' => 'Пахта момиғи',
+    'Paxta tolasidan' => 'Пахта толасидан',
+    'Olinadigan mahsulotlar' => 'Олинадиган маҳсулотлар',
 ];

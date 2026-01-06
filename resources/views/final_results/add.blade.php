@@ -82,7 +82,7 @@
                                                         @foreach ($counts as $count)
                                                             <tr>
                                                                 <td>
-                                                                    @if(session('crop') == 1)
+                                                                    @if(getApplicationType() == \App\Models\CropsName::CROP_TYPE_1)
                                                                         @if(!$count->certificate)
                                                                             <a href="{!! url('/final_results/add2/'. $count->id) !!}"><button type="button" class="btn btn-round btn-success">{{ trans('app.Qo\'shish')}}</button></a>
                                                                         @else

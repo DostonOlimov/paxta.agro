@@ -33,7 +33,7 @@
                                         <th>{{trans("app.Faylni yuklagan xodim")}}</th>
                                         <th>{{trans("app.Oxirgi yangilangan sanasi")}}</th>
                                         <th>{{trans("app.Ma'lumot miqdori")}}</th>
-                                        @if(session('crop') != 4)
+                                        @if(getApplicationType() != \App\Models\CropsName::CROP_TYPE_4)
                                             <th>HVI ma'lumotlari</th>
                                         @endif
                                         <th>Lclass ma'lumotlari</th>
@@ -52,7 +52,7 @@
                                             <td>{{ optional(optional($state->hvi_file)->user)->name }} {{ optional(optional($state->hvi_file)->user)->lastname }}</td>
                                             <td>{{ optional($state->hvi_file)->date }}</td>
                                             <td>{{ optional($state->hvi_file)->count }}</td>
-                                            @if(session('crop') != 4)
+                                            @if(getApplicationType() != \App\Models\CropsName::CROP_TYPE_4)
                                                 <td>
                                                     <a href="{!! url('/hvi/add/'.$state->id) !!}"><button type="button" class="btn btn-round btn-success"><i class="fa fa-refresh"></i>{{trans('app.Yangilash')}}</button></a>
                                                     <a href="{!! url('/hvi/view/'.$state->id) !!}"><button type="button" class="btn btn-round btn-info"><i class="fa fa-eye"></i>{{ trans('app.View')}}</button></a>
