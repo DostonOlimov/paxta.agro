@@ -32,11 +32,11 @@ class ReportController extends Controller
                 'status' => 'pending',
                 'filters' => $request->all(),
             ]);
-            
+
             // Dispatch the job to handle the export
             // Pass the request parameters instead of the full data set to avoid memory issues
             ExportReportJob::dispatch($exportRequest, $request->all());
-            
+
             // Return a response indicating the export is in progress
             return response()->json(['message' => 'Export started successfully. You will be notified when it is ready.', 'status' => 'success']);
         } catch (\Exception $e) {
@@ -44,56 +44,56 @@ class ReportController extends Controller
                 'user_id' => Auth::id(),
                 'filters' => $request->all(),
             ]);
-            
+
             return response()->json(['message' => 'Export failed: ' . $e->getMessage(), 'status' => 'error'], 500);
         }
     }
-    
+
     public function download_export($filename)
     {
         $userId = Auth::id();
-        
+
         // Find the export request for this user and filename
         $exportRequest = ExportRequest::where('user_id', $userId)
             ->where('filename', $filename)
             ->first();
-        
+
         if (!$exportRequest || $exportRequest->status !== 'completed') {
             return response()->json(['error' => 'File not found or not ready'], 404);
         }
-        
+
         if (Storage::exists($exportRequest->file_path)) {
             return Storage::download($exportRequest->file_path, $filename);
         }
-        
+
         return response()->json(['error' => 'File not found'], 404);
     }
-    
+
     public function export_history(Request $request)
     {
         $userId = Auth::id();
-        
+
         $exportRequests = ExportRequest::where('user_id', $userId)
             ->orderBy('created_at', 'desc')
             ->paginate(5);
-        
+
         // Add download URL to each export request
         $exportRequests->getCollection()->transform(function ($exportRequest) {
-            $exportRequest->download_url = $exportRequest->status === 'completed' 
-                ? route('excel.download', ['filename' => $exportRequest->filename]) 
+            $exportRequest->download_url = $exportRequest->status === 'completed'
+                ? route('excel.download', ['filename' => $exportRequest->filename])
                 : null;
             return $exportRequest;
         });
-            
+
         return response()->json(['data' => $exportRequests]);
     }
-    
+
     public function excel_prepared(Request $request)
     {
         $user = Auth::user();
         $s = $request->input('s') ?? null;
         $data = $this->getReport($request);
-        if(empty($city) && $user->branch_id == \App\Models\User::BRANCH_MAIN){
+        if (empty($city) && $user->branch_id == \App\Models\User::BRANCH_MAIN) {
             $user_city = 4012;
             $data = $data->whereHas('dalolatnoma.test_program.application.organization.city', function ($query) use ($user_city) {
                 $query->where('state_id', $user_city);
@@ -158,24 +158,22 @@ class ReportController extends Controller
         return \Maatwebsite\Excel\Facades\Excel::download(new \App\Exports\CompanyExport($companies), 'hisobot.xlsx');
     }
 
-    private function reportData(Request $request)
-    {
-        $reportPeriod = [
-            Carbon::createFromFormat(USER_DATE_FORMAT, $request->input('date_from', now()->startOfQuarter()->format(USER_DATE_FORMAT)))->startOfDay(),
-            Carbon::createFromFormat(USER_DATE_FORMAT, $request->input('date_to', now()->format(USER_DATE_FORMAT)))->endOfDay(),
-        ];
-
-        $regions = Region::get();
-        return compact(
-            //   'paymentCategories',
-            'regions'
-        ) + ['reportData' => Application::get()];
-    }
-
     public function report(Request $request)
     {
         $requestData = $request->only([
-            'crop', 'city', 'region', 'from', 'till', 'organization', 'prepared', 'number', 'reester_number', 'party_number', 'sort', 'class', 'selection'
+            'crop',
+            'city',
+            'region',
+            'from',
+            'till',
+            'organization',
+            'prepared',
+            'number',
+            'reester_number',
+            'party_number',
+            'sort',
+            'class',
+            'selection'
         ]);
         $city = $requestData['city'] ?? null;
         $region = $requestData['region'] ?? null;
@@ -230,14 +228,17 @@ class ReportController extends Controller
     public function company_report(Request $request)
     {
         $user = Auth::user();
-        $city = $request->input('city') ?? null;
-        $crop = $request->input('crop') ?? null;
-        $from = $request->input('from') ?? null;
-        $till = $request->input('till') ?? null;
-        $s = $request->input('s') ?? null;
 
-        $year =  session('year') ?  session('year') : 2024;
+        // Filters
+        $city  = $request->input('city');
+        $crop  = getApplicationType();      // original crop input is overridden, removed duplication
+        $from  = $request->input('from');
+        $till  = $request->input('till');
+        $s     = $request->input('s');
 
+        $year = getCurrentYear();
+
+        // Base query
         $companiesQuery = DB::table('dalolatnoma AS d')
             ->join('akt_amount AS akt', 'd.id', '=', 'akt.dalolatnoma_id')
             ->join('test_programs AS tp', 'd.test_program_id', '=', 'tp.id')
@@ -246,41 +247,68 @@ class ReportController extends Controller
             ->join('tbl_cities AS city', 'oc.city_id', '=', 'city.id')
             ->join('tbl_states AS state', 'city.state_id', '=', 'state.id')
             ->join('prepared_companies AS pc', 'app.prepared_id', '=', 'pc.id')
-            ->join('crop_data','app.crop_data_id','=','crop_data.id')
+            ->join('crop_data', 'app.crop_data_id', '=', 'crop_data.id')
             ->where('crop_data.year', $year)
-            ->select('oc.id', 'pc.kod', 'oc.name', DB::raw('count(akt.shtrix_kod) as kip'), DB::raw('sum(akt.amount - d.tara) as netto'))
+            ->where('app.app_type', $crop)
+            ->select(
+                'oc.id',
+                'pc.kod',
+                'oc.name',
+                DB::raw('COUNT(akt.shtrix_kod) AS kip'),
+                DB::raw('SUM(akt.amount - d.tara) AS netto')
+            )
             ->groupBy('oc.id', 'pc.kod', 'oc.name');
 
+        // Filter: state restriction based on logged-in user
         if ($user->branch_id == \App\Models\User::BRANCH_STATE) {
-            $user_state = $user->state_id;
-            $companiesQuery = $companiesQuery->where('state.id', $user_state);
+            $companiesQuery->where('state.id', $user->state_id);
         }
 
+        // Filter: date range
         if ($from && $till) {
-            $from = Carbon::createFromFormat('d-m-Y', $from)->format('Y-m-d');
-            $till = Carbon::createFromFormat('d-m-Y', $till)->format('Y-m-d');
+            try {
+                $fromDate = Carbon::createFromFormat('d-m-Y', $from)->format('Y-m-d');
+                $tillDate = Carbon::createFromFormat('d-m-Y', $till)->format('Y-m-d');
 
-            $companiesQuery = $companiesQuery->whereBetween('d.date', [$from, $till]);
+                $companiesQuery->whereBetween('d.date', [$fromDate, $tillDate]);
+            } catch (\Exception $e) {
+                // Invalid date format, ignore the filter
+            }
         }
 
+        // Filter: company name
         if ($s) {
-            $companiesQuery = $companiesQuery->where('oc.name', 'like', '%' . $s . '%');
+            $companiesQuery->where('oc.name', 'like', "%{$s}%");
         }
 
+        // Filter: city selection
         if ($city) {
-            $companiesQuery = $companiesQuery->where('state.id', $city);
+            $companiesQuery->where('state.id', $city);
         }
 
-        $companies = $companiesQuery->get();
-        $kipTotal = $companies->sum('kip');
-        $nettoTotal = $companies->sum(function ($company) {
-            return ($company->netto) ? round(($company->netto / 1000), 4) : 0;
+        // Clone query before pagination to calculate totals
+        $companiesForTotals = $companiesQuery->get();
+
+        $kipTotal = $companiesForTotals->sum('kip');
+
+        $nettoTotal = $companiesForTotals->sum(function ($company) {
+            return $company->netto ? round($company->netto / 1000, 4) : 0;
         });
 
-        $companies = $companiesQuery->paginate(50)
+        // Paginate
+        $companies = $companiesQuery
+            ->paginate(50)
             ->appends($request->except('page'));
 
-        return view('reports.company_report', compact('companies', 'from', 'till', 'crop', 'city', 'kipTotal', 'nettoTotal'));
+        return view('reports.company_report', compact(
+            'companies',
+            'from',
+            'till',
+            'crop',
+            'city',
+            'kipTotal',
+            'nettoTotal'
+        ));
     }
 
     public function prepared_report(Request $request)
@@ -294,7 +322,7 @@ class ReportController extends Controller
 
 
         $prepareds = $this->getReport($request);
-        if(empty($city) && $user->branch_id == \App\Models\User::BRANCH_MAIN){
+        if (empty($city) && $user->branch_id == \App\Models\User::BRANCH_MAIN) {
             $user_city = 4012;
             $prepareds = $prepareds->whereHas('dalolatnoma.test_program.application.organization.city', function ($query) use ($user_city) {
                 $query->where('state_id', $user_city);
@@ -309,7 +337,7 @@ class ReportController extends Controller
         $prepareds = $prepareds->get()
             ->groupBy(['dalolatnoma.test_program.application.prepared.name', 'dalolatnoma.test_program.application.prepared.kod']);
 
-        return view('reports.prepared_report', compact('prepareds', 'from', 'till', 'crop', 'city', 's','totalSum'));
+        return view('reports.prepared_report', compact('prepareds', 'from', 'till', 'crop', 'city', 's', 'totalSum'));
     }
 
 
@@ -480,9 +508,9 @@ class ReportController extends Controller
             $from = Carbon::createFromFormat('d-m-Y', $from)->format('Y-m-d');
             $till = Carbon::createFromFormat('d-m-Y', $till)->format('Y-m-d');
 
-            $results = $results->whereHas('dalolatnoma', function ($query) use ($from,$till) {
+            $results = $results->whereHas('dalolatnoma', function ($query) use ($from, $till) {
                 $query->whereDate('date', '>=', $from)
-                ->whereDate('date', '<=', $till);
+                    ->whereDate('date', '<=', $till);
             });
         }
 
