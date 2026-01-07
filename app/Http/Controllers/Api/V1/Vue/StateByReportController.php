@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers\Api\V1\Vue;
 
-use App\Filters\V1\ApplicationFilter;
 use App\Http\Controllers\Api\V1\Controller;
 use App\Http\Resources\V1\Vue\StateByReportCollection;
-use App\Http\Resources\V1\Vue\StateByReportResource;
 use App\Models\Region;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -78,6 +76,7 @@ class StateByReportController extends Controller
     private function buildBaseQuery(Request $request)
     {
         $year = getCurrentYear();
+        $crop = getApplicationType();
         $branchCrop = getApplicationType();
         $start_date = $request->input('start_date');
         $end_date = $request->input('end_date');
@@ -91,7 +90,7 @@ class StateByReportController extends Controller
             ->join('applications', 'prepared_companies.id', '=', 'applications.prepared_id')
             ->join('crop_data', 'applications.crop_data_id', '=', 'crop_data.id')
             ->where('crop_data.year', $year)
-            ->where('applications.app_type', $branchCrop)
+            ->where('applications.app_type', $crop)
             ->whereNull('applications.deleted_at');
 
         // Apply date filters
