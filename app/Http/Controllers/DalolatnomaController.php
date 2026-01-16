@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DalolatnomaController extends Controller
 {
-    public function search(Request $request, ApplicationFilter $filter,SearchService $service)
+    public function search(Request $request, ApplicationFilter $filter, SearchService $service)
     {
         try {
             $names = getCropsNames();
@@ -44,12 +44,11 @@ class DalolatnomaController extends Controller
                     'crops.name',
                     'organization.area.region'
                 ],
-                compact('names', 'states', 'years','all_status'),
+                compact('names', 'states', 'years', 'all_status'),
                 'dalolatnoma.search',
                 [Application::STATUS_ACCEPTED, Application::STATUS_FINISHED],
                 true
             );
-
         } catch (\Throwable $e) {
             // Log the error for debugging
             \Log::error($e);
@@ -61,15 +60,17 @@ class DalolatnomaController extends Controller
     public function add($id)
     {
         $test = TestPrograms::findOrFail($id);
-        $crop_id = $test->application->crops->name_id;
         $selection = CropsSelection::get();
         $tara = optional(optional($test->application)->prepared)->tara;
 
-        if($crop_id == 2){
-            return view('dalolatnoma.add2', compact('test', 'selection','tara'));
+        switch ($test->application->app_type) {
+            case CropsName::CROP_TYPE_2:
+                return view('dalolatnoma.chigit.add', compact('test', 'selection', 'tara'));
+            case CropsName::CROP_TYPE_5:
+                return view('dalolatnoma.conclusion.add', compact('test', 'selection', 'tara'));
+            default:
+                return view('dalolatnoma.add', compact('test', 'selection', 'tara'));
         }
-
-        return view('dalolatnoma.add', compact('test', 'selection','tara'));
     }
     public function store(Request $request)
     {
@@ -85,7 +86,16 @@ class DalolatnomaController extends Controller
         $this->authorize('create', Application::class);
 
         $data = $request->only([
-            'test_id', 'number', 'selection_code', 'toy_count', 'amount', 'party_number', 'nav', 'sinf', 'tara', 'date'
+            'test_id',
+            'number',
+            'selection_code',
+            'toy_count',
+            'amount',
+            'party_number',
+            'nav',
+            'sinf',
+            'tara',
+            'date'
         ]);
 
         $date = $this->formatDate($data['date']);
@@ -99,13 +109,13 @@ class DalolatnomaController extends Controller
                 'selection_code' => isset($data['selection_code']) ? $data['selection_code'] : 99,
                 'toy_count' => $data['toy_count'],
                 'amount' => $data['amount'],
-                'party' => $data['party_number'],
-                'nav' => isset($data['nav']) ? $data['nav'] : 1 ,
-                'sinf' => isset($data['sinf']) ? $data['sinf'] : 1,
-                'tara' => $data['tara'],
+                'party' => $data['party_number'] ?? '',
+                'nav' => $data['nav'] ?? 1,
+                'sinf' => $data['sinf'] ?? 1,
+                'tara' => $data['tara'] ?? 1,
             ]);
 
-            if(getApplicationType() == CropsName::CROP_TYPE_1){
+            if (getApplicationType() == CropsName::CROP_TYPE_1) {
                 // Create Humidity
                 Humidity::create([
                     'dalolatnoma_id' => $dal->id,
@@ -134,30 +144,6 @@ class DalolatnomaController extends Controller
 
         return redirect('/akt_amount/search');
     }
-    public function store2(Request $request)
-    {
-        $data = $request->only([
-            'test_id', 'number', 'selection_code', 'toy_count', 'amount', 'amount2','party_number', 'nav', 'sinf', 'tara', 'date'
-        ]);
-
-        $date = $this->formatDate($data['date']);
-
-        $dal = Dalolatnoma::create([
-            'test_program_id' => $data['test_id'],
-            'number' => $data['number'],
-            'date' => $date,
-            'selection_code' => $data['selection_code'],
-            'toy_count' => $data['toy_count'],
-            'amount' => $data['amount2'],
-            'amount2' => $data['amount'],
-            'party' => $data['party_number'],
-            'nav' => 1,
-            'sinf' => 1,
-            'tara' => 1,
-        ]);
-
-        return redirect('/dalolatnoma/search')->with('message', 'Successfully Created');
-    }
 
 
     //update
@@ -169,14 +155,17 @@ class DalolatnomaController extends Controller
         $gin_balles = GinBalles::where('dalolatnoma_id', $id)->get();
         $selection = CropsSelection::get();
 
-        $crop_id = $test->application->crops->name_id;
-        if($crop_id == 2){
-            return view('dalolatnoma.edit2',  compact('test', 'result', 'certificate', 'gin_balles','selection'));
+        switch ($test->application->app_type) {
+            case CropsName::CROP_TYPE_2:
+                return view('dalolatnoma.chigit.edit', compact('test', 'result', 'certificate', 'gin_balles', 'selection'));
+            case CropsName::CROP_TYPE_5:
+                return view('dalolatnoma.conclusion.edit', compact('test', 'result', 'certificate', 'gin_balles', 'selection'));
+            default:
+                return view('dalolatnoma.edit', compact('test', 'result', 'certificate', 'gin_balles', 'selection'));
         }
-
-        return view('dalolatnoma.edit', compact('test', 'result', 'certificate', 'gin_balles','selection'));
     }
-    public function update2($id,Request $request)
+
+    public function update2($id, Request $request)
     {
         $dalolatnoma = Dalolatnoma::findOrFail($id);
 
@@ -186,11 +175,11 @@ class DalolatnomaController extends Controller
             $dalolatnoma->date = $this->formatDate($request->input('date'));
         }
 
-        $dalolatnoma->selection_code = $request->input('selection_code');
+        $dalolatnoma->selection_code = $request->input('selection_code') ?? 99;
         $dalolatnoma->toy_count = $request->input('toy_count');
         $dalolatnoma->amount = $request->input('amount');
-        $dalolatnoma->party = $request->input('party_number');
-        $dalolatnoma->amount2 = $request->input('amount2');
+        $dalolatnoma->party = $request->input('party_number') ?? '';
+        // $dalolatnoma->amount2 = $request->input('amount2');
         $dalolatnoma->save();
 
 
@@ -223,7 +212,7 @@ class DalolatnomaController extends Controller
 
             // Delete existing AktAmount and insert new amounts
             AktAmount::where('dalolatnoma_id', $id)->delete();
-            $amounts = $this->prepareAktAmount($id, $kod_toy,true);
+            $amounts = $this->prepareAktAmount($id, $kod_toy, true);
 
             DB::transaction(function () use ($amounts) {
                 AktAmount::insert($amounts);
@@ -257,29 +246,27 @@ class DalolatnomaController extends Controller
             '12' => 'dekabr'
         ];
 
-        $my_date = $date->isoFormat("D") . ' - ' . $uzbekMonthNames[$date->isoFormat("MM")] . ' '. $date->isoFormat("Y") ;
-        $crop_id = $tests->test_program->application->crops->name_id;
-        if($crop_id == 2){
-            return view('dalolatnoma.show2', [
-                'result' => $tests,
-                'date' => $my_date
-            ]);
+        $my_date = $date->isoFormat("D") . ' - ' . $uzbekMonthNames[$date->isoFormat("MM")] . ' ' . $date->isoFormat("Y");
+
+         switch ($tests->test_program->application->app_type) {
+            case CropsName::CROP_TYPE_2:
+                return view('dalolatnoma.chigit.show', ['result'=>$tests, 'date'=>$my_date]);
+            case CropsName::CROP_TYPE_5:
+                return view('dalolatnoma.conclusion.show', ['result'=>$tests, 'date'=>$my_date]);
+            default:
+                return view('dalolatnoma.show', ['result'=>$tests, 'date'=>$my_date]);
         }
-        return view('dalolatnoma.show', [
-            'result' => $tests,
-            'date' => $my_date
-        ]);
     }
     public function myadd()
     {
         $amounts = [];
 
-            for ($j =70575 ; $j <=70634  ; $j++) {
-                $amounts[] = [
-                    'dalolatnoma_id' => 415,
-                    'shtrix_kod' => $j,
-                ];
-            }
+        for ($j = 70575; $j <= 70634; $j++) {
+            $amounts[] = [
+                'dalolatnoma_id' => 415,
+                'shtrix_kod' => $j,
+            ];
+        }
 
         DB::transaction(function () use ($amounts) {
             AktAmount::insert($amounts);
@@ -304,7 +291,6 @@ class DalolatnomaController extends Controller
         $result->save();
 
         return redirect('/akt_amount/search')->with('message', 'Successfully Updated');
-
     }
 
     private function formatDate(string $date): string
@@ -333,14 +319,14 @@ class DalolatnomaController extends Controller
     {
         $amounts = [];
         foreach ($kod_toy as $toy) {
-            if($updated){
+            if ($updated) {
                 for ($j = $toy[1]; $j <= $toy[2]; $j++) {
                     $amounts[] = [
                         'dalolatnoma_id' => $dalolatnomaId,
                         'shtrix_kod' => $j,
                     ];
                 }
-            }else{
+            } else {
                 for ($j = $toy[0]; $j <= $toy[1]; $j++) {
                     $amounts[] = [
                         'dalolatnoma_id' => $dalolatnomaId,
@@ -348,7 +334,6 @@ class DalolatnomaController extends Controller
                     ];
                 }
             }
-
         }
         return $amounts;
     }

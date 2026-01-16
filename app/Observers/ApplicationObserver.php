@@ -48,7 +48,7 @@ class ApplicationObserver
             'time'        => now(),
         ]);
 
-        if (isSifatSertificate()) {
+        if (isSifatSertificate() or isProductConclusion()) {
             $stateId = optional($application->prepared)->state_id;
             if ($lab = $this->laboratoryRepository->findLaboratoryByStateId($stateId)) {
                 $this->decisionRepository->create([

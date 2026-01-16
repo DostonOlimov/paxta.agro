@@ -34,12 +34,13 @@ class CropsNameController extends Controller
     public function store(Request $request)
     {
         $tnved = $request->input('tnved');
+        $name = $request->input('name');
         $count = DB::table('crops_name')
-            ->where('kodtnved', '=', $tnved)
+            ->where('name', '=', $name)
             ->count();
         if ($count == 0) {
             $crop = new CropsName();
-            $crop->name = $request->input('name');
+            $crop->name = $name;
             $crop->kodtnved = $tnved;
             $crop->crop_type = getApplicationType();
             $crop->save();

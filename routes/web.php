@@ -464,6 +464,19 @@ Route::group(['prefix' => 'sifat-contracts', 'middleware' => 'auth'], function (
     Route::get('/change/{id}', '\App\Http\Controllers\Front\SifatContractsController@change_status');
 });
 
+Route::group(['prefix' => 'product-conclusion', 'middleware' => 'auth'], function () {
+    Route::get('/list', '\App\Http\Controllers\ProductConclusionController@list')->name('product_conclusion.list');
+    Route::get('/add/{dalolatnoma}', '\App\Http\Controllers\ProductConclusionController@add');
+    Route::get('/view/{dalolatnoma}', '\App\Http\Controllers\ProductConclusionController@view')->name('product_conclusion.view');
+    Route::get('/sertificate-view/{dalolatnoma}', '\App\Http\Controllers\ProductConclusionController@sertificateView')->name('product_conclusion.sertificate_view');
+    Route::get('/accept/{dalolatnoma}', '\App\Http\Controllers\ProductConclusionController@accept');
+    Route::post('/store/{dalolatnoma}', '\App\Http\Controllers\ProductConclusionController@store');
+    Route::get('/change/{dalolatnoma}', '\App\Http\Controllers\ProductConclusionController@change_status');
+    Route::get('/refresh/{dalolatnoma}', '\App\Http\Controllers\ProductConclusionController@refresh');
+});
+Route::get('/protocol/{dalolatnoma}/download', '\App\Http\Controllers\ProductConclusionController@download')->name('laboratory_protocol.download');
+
+
 //Operators
 Route::middleware(['auth'])->group(function() {
     Route::get('/laboratory_operators', [LaboratoryOperatorController::class, 'index'])->name('laboratory_operators.index');

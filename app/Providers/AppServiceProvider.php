@@ -28,5 +28,6 @@ class  AppServiceProvider extends ServiceProvider
     {
         Paginator::useBootstrap();
         ResponseFactory::mixin(new ResponseMixin());
+        $this->app->singleton(\App\Services\MenuService::class);
     }
 }

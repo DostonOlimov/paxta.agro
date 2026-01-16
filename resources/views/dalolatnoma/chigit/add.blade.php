@@ -84,7 +84,7 @@
                                     </ul>
                                 </div>
                             </div>
-                            <form id="invoice-form" method="post" action="{!! url('dalolatnoma/store2') !!}" enctype="multipart/form-data"
+                            <form id="invoice-form" method="post" action="{!! url('dalolatnoma/store') !!}" enctype="multipart/form-data"
                                   data-parsley-validate class="form-horizontal form-label-left">
                                 @csrf
                                 <div class="row" >

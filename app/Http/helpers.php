@@ -298,3 +298,13 @@ if (!function_exists('isSifatSertificate')) {
         return false;
     }
 }
+if (!function_exists('isProductConclusion')) {
+    function isProductConclusion()
+    {
+        if (session('crop') == CropsName::CROP_TYPE_5) {
+            return true;
+        }
+        return false;
+    }
+}
+

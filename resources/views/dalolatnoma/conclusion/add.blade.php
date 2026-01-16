@@ -128,32 +128,9 @@
                                         @endif
                                     </div>
                                     <div class="row">
-                                        {{-- select start --}}
-                                        @if (getApplicationType() != \App\Models\CropsName::CROP_TYPE_4)
-                                            <div
-                                                class="col-md-4 form-group has-feedback {{ $errors->has('selection_code') ? ' has-error' : '' }}">
-                                                <label for="number" class="form-label ">Seleksion navining kodi<label
-                                                        class="text-danger">*</label> </label>
-                                                <select id="selection_code" class="form-control owner_search"
-                                                    name="selection_code" required>
-                                                    @if (!empty($selection))
-                                                        @foreach ($selection as $select)
-                                                            <option selected value="{{ $select->id }}">{{ $select->name }}
-                                                            </option>
-                                                        @endforeach
-                                                    @endif
-                                                </select>
-                                                @if ($errors->has('selection_code'))
-                                                    <span class="help-block">
-                                                        <strong>
-                                                            Seleksiya kodi noto'g'ri shaklda kiritilgan</strong>
-                                                    </span>
-                                                @endif
-                                            </div>
-                                        @endif
                                         {{-- select end --}}
                                         <div
-                                            class="col-md-4 form-group has-feedback {{ $errors->has('toy_count') ? ' has-error' : '' }}">
+                                            class="col-md-6 form-group has-feedback {{ $errors->has('toy_count') ? ' has-error' : '' }}">
                                             <label for="number" class="form-label ">Jami na'munalar soni<label
                                                     class="text-danger">*</label> </label>
                                             <input type="number" class="form-control" value="{{ old('toy_count') }}"
@@ -165,7 +142,7 @@
                                             @endif
                                         </div>
                                         <div
-                                            class="col-md-4 form-group has-feedback {{ $errors->has('amount') ? ' has-error' : '' }}">
+                                            class="col-md-6 form-group has-feedback {{ $errors->has('amount') ? ' has-error' : '' }}">
                                             <label for="number" class="form-label ">Olingan na'munaning og'irligi(kg)<label
                                                     class="text-danger">*</label></label>
                                             <input type="number" step="0.01" class="form-control"
@@ -177,59 +154,6 @@
                                                 </span>
                                             @endif
                                         </div>
-                                    </div>
-                                    <div class="certificate row">
-                                        <div
-                                            class="col-md-3 form-group has-feedback {{ $errors->has('party_number') ? ' has-error' : '' }}">
-                                            <label for="number" class="form-label ">To'da p/x №</label>
-                                            <input type="text" class="form-control" maxlength="10"
-                                                value="{{ old('party_number') }}" name="party_number">
-                                            @if ($errors->has('party_number'))
-                                                <span class="help-block">
-                                                    <strong>
-                                                        To'da raqami noto'g'ri shaklda kiritilgan</strong>
-                                                </span>
-                                            @endif
-                                        </div>
-                                        @if (getApplicationType() != \App\Models\CropsName::CROP_TYPE_4)
-                                            <div
-                                                class="col-md-3 form-group has-feedback {{ $errors->has('nav') ? ' has-error' : '' }}">
-                                                <label for="number" class="form-label ">Nav p/x № </label>
-                                                <input type="number" class="form-control" max="6"
-                                                    value="{{ old('nav') }}" name="nav">
-                                                @if ($errors->has('nav'))
-                                                    <span class="help-block">
-                                                        <strong>
-                                                            Nav noto'g'ri shaklda kiritilgan</strong>
-                                                    </span>
-                                                @endif
-                                            </div>
-                                            <div
-                                                class="col-md-3 form-group has-feedback {{ $errors->has('nav') ? ' has-error' : '' }}">
-                                                <label for="number" class="form-label ">Sinf p/x №</label>
-                                                <input type="number" class="form-control" max="6"
-                                                    value="{{ old('sinf') }}" name="sinf" required>
-                                                @if ($errors->has('sinf'))
-                                                    <span class="help-block">
-                                                        <strong>
-                                                            Sinf no'g'ri shaklda kiritilgan</strong>
-                                                    </span>
-                                                @endif
-                                            </div>
-                                        @endif
-                                        <div
-                                            class="col-md-3 form-group has-feedback {{ $errors->has('nav') ? ' has-error' : '' }}">
-                                            <label for="number" class="form-label ">Tara (kg)</label>
-                                            <input type="number" class="form-control" step="0.001"
-                                                value="{{ old('tara') ? old('tara') : $tara }}" name="tara" required>
-                                            @if ($errors->has('tara'))
-                                                <span class="help-block">
-                                                    <strong>
-                                                        Tara no'g'ri shaklda kiritilgan</strong>
-                                                </span>
-                                            @endif
-                                        </div>
-
                                     </div>
                                     {{-- start --}}
                                     <div class="certificate row" id="forms">
@@ -273,12 +197,6 @@
                                                         class="fa fa-plus-circle fa-lg">&nbsp;</i>
                                                     <b>{{ trans('app.Qo\'shish') }}</b>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-3 file-input-container">
-                                                <span class="file-label"><i class="fa fa-file-excel-o"></i> Fayl
-                                                    yuklash</span>
-                                                <input type="file" class="file-input" id="excelFile" name="excelFile"
-                                                    accept=".xlsx, .xls">
                                             </div>
                                         </div>
                                         @if (old('kod_toy'))

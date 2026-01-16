@@ -65,7 +65,7 @@
 										</span>
                                         @endif
                                     </div>
-                                    @if($apps->test_program->application->crops->name_id ==1)
+                                    @if($apps->test_program->application->crops->name_id == 1)
                                     <div class="col-md-4 form-group has-feedback {{ $errors->has('from') ? ' has-error' : '' }}">
                                         <label for="from" class="form-label certificate">{{trans("app.Namuna tanlab olish joyi")}}<label class="text-danger">*</label></label>
                                         <select name="from" class="form-control" required>
@@ -138,7 +138,7 @@
                                             </select>
                                         </div>
                                     </div> --}}
-                                    @if($apps->test_program->application->crops->name_id ==1)
+                                    @if($apps->test_program->application->crops->name_id == 1)
                                     <div class="col-12 col-md-4">
                                         <div class="form-group">
                                             <label class="form-label"
