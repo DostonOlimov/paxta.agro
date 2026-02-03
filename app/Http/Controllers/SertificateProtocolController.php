@@ -328,7 +328,13 @@ class SertificateProtocolController extends Controller
             // Generate and save the PDF file
             $pdf = Pdf::loadView('sertificate_protocol.sertificate_pdf', compact(
                 'application', 'group', 'sertNumber', 'currentYear', 'formattedDate', 'qrCode','index'
-            ));
+            ))
+                ->setPaper('A4')
+                ->setOptions([
+                    'isFontSubsettingEnabled' => true,
+                    'isRemoteEnabled'         => true,
+                    'chroot'                  => [public_path()],
+                ]);
 
             $fileName = $index == 0
                 ? "certificate_{$appId}.pdf"
@@ -353,7 +359,12 @@ class SertificateProtocolController extends Controller
     {
         $pdf = Pdf::loadView('sertificate_protocol.protocol_pdf', compact(
             'test', 'type', 'formattedDate', 'formattedDate2', 'qrCode', 'group', 'i'
-        ));
+        ))->setPaper('A4')
+            ->setOptions([
+                'isFontSubsettingEnabled' => true,
+                'isRemoteEnabled'         => true,
+                'chroot'                  => [public_path()],
+            ]);
 
         $fileName = $i === 0
             ? 'protocol_' . $id . '.pdf'

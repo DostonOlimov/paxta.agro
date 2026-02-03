@@ -83,8 +83,8 @@
                                             {{ trans('app.Zavod nomi va kodi') }}
                                         </th>
                                         <th>{{trans('app.Sertifikatlanuvchi mahsulot')}}</th>
-                                        <th>Sinov bayonnomasi</th>
-                                        <th>Sifat sertifikati</th>
+                                        <th>Mahsus xulosalar</th>
+                                        <th>Actions</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -191,57 +191,20 @@
                                                                     class="btn btn-round btn-info">
                                                                     <i class="fa fa-eye"></i> {{ trans('app.View') }}</button></a>
                                                         @else
-                                                            <a href="{{ route('laboratory_protocol.download', $app) }}" class="text-azure">
+                                                            <a href="{{ route('product_conclusion.download', $app) }}" class="text-azure">
                                                                 <button type="button"
-                                                                        class="btn btn-round btn-info"> <i class="fa fa-download"></i> Bayonnoma fayli</button>
+                                                                        class="btn btn-round btn-info"> <i class="fa fa-download"></i> Xulosa fayli</button>
 
                                                             </a>
-                                                            @if($app->laboratory_final_results->chp >=2 )
-                                                                @for($j = 1; $j < $app->laboratory_final_results->chp; $j++)
-                                                                    <a href="{{ route('laboratory_protocol.download', ['dalolatnoma' => $app, 'type' => $j ]) }}" class="text-azure">
-                                                                        <button type="button"
-                                                                                class="btn btn-round btn-info"> <i class="fa fa-download"></i> Bayonnoma fayli( {{ $j+1 }} )</button>
-
-                                                                    </a>
-                                                                @endfor
-                                                            @endif
                                                         @endif
                                                     @endif
                                                 </td>
-                                            <td>
-                                                @if(isset($app->laboratory_final_results))
-                                                    @if (!$app->test_program->application->sifat_sertificate)
-                                                        <a href="{!! url('product-conclusion/sertificate-view', $app) !!}"><button type="button"
-                                                                                                                               class="btn btn-round btn-info">
-                                                                <i class="fa fa-eye"></i> {{ trans('app.View') }}</button></a>
-                                                    @else
-                                                        <a href="{{ route('sifat_sertificate.download',  optional(optional($app->test_program)->application)->id )}}" class="text-azure">
-                                                            <button type="button"
-                                                                    class="btn btn-round btn-info"> <i class="fa fa-download"></i> Sertifikat fayli </button>
 
-                                                        </a>
-                                                        @if($app->laboratory_final_results->chp >=2 )
-                                                            @for($j = 1; $j < $app->laboratory_final_results->chp; $j++)
-                                                                <a href="{{ route('sifat_sertificate.download', ['id'=>optional(optional($app->test_program)->application)->id,'type'=>$j]  )}}" class="text-azure">
-                                                                    <button type="button"
-                                                                            class="btn btn-round btn-info"> <i class="fa fa-download"></i> Sertifikat fayli( {{ $app->laboratory_final_results->chp }} )</button>
-
-                                                                </a>
-                                                            @endfor
-                                                        @endif
-
-                                                    @endif
-                                                @endif
-                                            </td>
                                             @if($user->id == 1)
                                                 <td>  
                                                     <a href="{!! url('/product-conclusion/change', $app) !!}" class="text-azure">
                                                         <button type="button"
                                                                 class="btn btn-round btn-success"> <i class="fa fa-check fa-lg"></i> P </button>
-                                                    </a>
-                                                     <a href="{!! url('/product-conclusion/accept', $app)!!}" class="text-azure">
-                                                        <button type="button"
-                                                                class="btn btn-round btn-success"> <i class="fa fa-check fa-lg"></i> A </button>
                                                     </a>
                                                 </td>
                                             @endif

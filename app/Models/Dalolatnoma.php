@@ -82,6 +82,10 @@ class Dalolatnoma  extends Model
     {
         return $this->hasOne(LaboratoryResult::class,'dalolatnoma_id','id');
     }
+    public function final_conclusion_result()
+    {
+        return $this->hasOne(FinalConclusionResult::class,'dalolatnoma_id','id');
+    }
 
     /**
      * Get aggregated clamp data.

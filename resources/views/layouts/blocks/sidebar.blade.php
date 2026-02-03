@@ -33,15 +33,13 @@
                             <br>{{ trans('message.Sifat sertifikati') }}</span>
                     </a>
                 </div>
-                @if (auth()->user()->id == 1)
-                    <div class="select_col-md-4">
-                        <a href="#" onclick="changeCrop('5')">
-                            <img class="selectCropImage" src="/resources/assets/images/product.png">
-                            <span class="selectCropText">{{ trans('message.Paxta tolasidan') }}
-                                <br>{{ trans('message.Olinadigan mahsulotlar') }}</span>
-                        </a>
-                    </div>
-                @endif
+                <div class="select_col-md-4">
+                    <a href="#" onclick="changeCrop('5')">
+                        <img class="selectCropImage" src="/resources/assets/images/product.png">
+                        <span class="selectCropText">{{ trans('message.Paxta tolasidan') }}
+                            <br>{{ trans('message.Olinadigan mahsulotlar') }}</span>
+                    </a>
+                </div>
             </div>
         </div>
     </div>

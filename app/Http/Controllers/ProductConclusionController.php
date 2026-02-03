@@ -21,12 +21,13 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\URL;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class ProductConclusionController extends Controller
 {
     //search
-    public function list(Request $request, DalolatnomaFilter $filter,SearchService $service): View|Factory|JsonResponse
+    public function list(Request $request, DalolatnomaFilter $filter, SearchService $service): View|Factory|JsonResponse
     {
         try {
             $names = getCropsNames();
@@ -56,7 +57,6 @@ class ProductConclusionController extends Controller
                 [],
                 false
             );
-
         } catch (\Throwable $e) {
             // Log the error for debugging
             \Log::error($e);
@@ -90,6 +90,7 @@ class ProductConclusionController extends Controller
 
     public function store(Dalolatnoma $dalolatnoma, Request $request)
     {
+        URL::forceScheme('https');
         $this->authorize('create', Application::class);
 
         $user = Auth::user();
@@ -126,7 +127,7 @@ class ProductConclusionController extends Controller
 
         $clampData = $dalolatnoma->averageClampData();
 
-        if($clampData?->mic){
+        if ($clampData?->mic) {
 
             // Store Laboratory Result
             $this->storeLaboratoryResult($dalolatnoma);
@@ -145,6 +146,7 @@ class ProductConclusionController extends Controller
             'laboratory_result',
             'result',
             'selection',
+            'final_conclusion_result',
             'laboratory_final_results.operator',
             'laboratory_final_results.klassiyor',
             'laboratory_final_results.director',
@@ -160,12 +162,15 @@ class ProductConclusionController extends Controller
         $labResults = $test->result()->get()
             ->groupBy('sort')
             ->values();
-
-        $type = $this->determineCropType($dalolatnoma);
         $t = 1;
 
         return view('product_conclusion.view', compact(
-            'labResults', 'test', 'type', 'formattedDate', 'formattedDate2','t'
+            'labResults',
+            'test',
+            't',
+            'formattedDate',
+            'formattedDate2',
+            't'
         ));
     }
 
@@ -176,6 +181,7 @@ class ProductConclusionController extends Controller
             'laboratory_result',
             'result',
             'selection',
+            'final_conclusion_result',
             'laboratory_final_results.operator',
             'laboratory_final_results.klassiyor',
             'laboratory_final_results.director',
@@ -185,27 +191,26 @@ class ProductConclusionController extends Controller
             'test_program.application.prepared.region',
         );
 
-        $type = $this->determineCropType($dalolatnoma);
-        $groupedResults = $test->result()->get()
-            ->groupBy('sort')
-            ->values();
-        $sortCount = count($groupedResults);
-
         $formattedDate = $this->formatDates($test->laboratory_final_results->date);
         $formattedDate2 = $this->formatDates($test->date);
 
+        $labResults = $test->result()->get()
+            ->groupBy('sort')
+            ->values();
+        $t = 1;
+
         // Generate PDFs for each group
-        foreach ($groupedResults as $index => $group) {
-            $qrCode = $this->generateQrCode(route('laboratory_protocol.download', [
+        foreach ($labResults as $index => $group) {
+            $qrCode = $this->generateQrCode(route('product_conclusion.download', [
                 'dalolatnoma' => $test,
                 'type' => $index,
             ]));
 
-            $this->generatePdf($test->id, $group, $test, $type, $formattedDate, $formattedDate2, $qrCode, $index);
+            $this->generatePdf($test->id, $group, $test,  $formattedDate, $formattedDate2, $qrCode);
         }
 
         // Update lab status and chp count
-        $test->laboratory_final_results->chp = $sortCount;
+        $test->laboratory_final_results->chp = 0;
         $test->laboratory_final_results->status = 1;
         $test->laboratory_final_results->save();
 
@@ -214,64 +219,12 @@ class ProductConclusionController extends Controller
     }
 
 
-    public function sertificateView(Dalolatnoma $dalolatnoma)
-    {
-        $application = $dalolatnoma->test_program->application;
-        $formattedDate = $this->formatDates($dalolatnoma->laboratory_final_results->date);
-        $t = 1;
-
-        $labResults =  $dalolatnoma->result()->get()
-            ->groupBy('sort')
-            ->values();
-
-        return view('product_conclusion.sertificate_view', compact('application', 'dalolatnoma','labResults','formattedDate','t'));
-    }
-
-
-    // Accept online applications
-    public function accept(Dalolatnoma $dalolatnoma)
-    {
-        $application = $dalolatnoma->test_program->application;
-        $appId = $application->id;
-
-        // Determine certificate type based on session
-        $sertType = getApplicationType() == CropsName::CROP_TYPE_4
-            ? SifatSertificates::LINT_TYPE
-            : SifatSertificates::PAXTA_TYPE;
-
-        $groupedResults = $dalolatnoma->result()->get()
-            ->groupBy('sort')
-            ->values();;
-        $currentYear = date('Y');
-
-        // Fetch the starting number for certificates
-        $startingNumber = SifatSertificates::where('year', $currentYear)
-                ->where('type', $sertType)
-                ->max('number') ?? 0;
-
-        // Create certificates if they don't exist
-        if (!$application->sifat_sertificate) {
-            $this->createCertificates($appId, $groupedResults, $startingNumber, $sertType, $currentYear);
-        } else {
-            $startingNumber = $application->sifat_sertificate->number - 1;
-        }
-
-        // Prepare and save certificate files
-        $formattedDate = $this->formatDates($dalolatnoma->laboratory_final_results->date);
-        $this->generateCertificateFiles($appId, $groupedResults, $startingNumber, $currentYear, $formattedDate);
-
-        return redirect()->route('product_conclusion.list', ['generatedAppId' => $appId])
-            ->with('message', 'Certificate saved!');
-    }
-
-    public function download( $dalolatnoma_id, Request $request)
+    public function download($dalolatnoma_id)
     {
         // Determine the file path based on the request type
-        $fileName = $request->input('type') >= 1
-            ? 'protocol_' . $dalolatnoma_id . '_' . $request->input('type') . '.pdf'
-            : 'protocol_' . $dalolatnoma_id . '.pdf';
+        $fileName = 'conclusion_' . $dalolatnoma_id . '.pdf';
 
-        $filePath = storage_path('app/public/protocols/' . $fileName);
+        $filePath = storage_path('app/public/product_conclusions/' . $fileName);
 
         // Check if the file exists
         if (!file_exists($filePath)) {
@@ -316,53 +269,29 @@ class ProductConclusionController extends Controller
             ]);
         }
     }
-
-    /**
-     * Generate and save certificate files.
-     */
-    protected function generateCertificateFiles($appId, $groupedResults, $startingNumber, $currentYear, $formattedDate)
-    {
-        $application = Application::find($appId);
-        foreach ($groupedResults as $index => $group) {
-            $sertNumber = (($currentYear - 2000) * 1000000) + $startingNumber + $index + 1;
-            $route = route('sifat_sertificate.download', ['id' => $appId, 'type' => $index]);
-            $qrCode = $this->generateQrCode($route);
-
-            // Generate and save the PDF file
-            $pdf = Pdf::loadView('sertificate_protocol.sertificate_pdf', compact(
-                'application', 'group', 'sertNumber', 'currentYear', 'formattedDate', 'qrCode','index'
-            ));
-
-            $fileName = $index == 0
-                ? "certificate_{$appId}.pdf"
-                : "certificate_{$appId}_{$index}.pdf";
-
-            $pdf->save(storage_path("app/public/sifat_sertificates/{$fileName}"));
-        }
-    }
-    /**
-     * Determine crop type based on ClampData.
-     */
-    private function determineCropType(Dalolatnoma $dalolatnoma): int
-    {
-        $clampData = $dalolatnoma->clamp_data()->first();
-        return ($clampData && $clampData->croptype === "Á") ? 2 : 1;
-    }
-
     /**
      * Generate pdf file for protocol
      */
-    private function generatePdf($id, $group, $test, $type, $formattedDate, $formattedDate2, $qrCode, $i)
+    private function generatePdf($id, $group, $test,  $formattedDate, $formattedDate2, $qrCode)
     {
-        $pdf = Pdf::loadView('sertificate_protocol.protocol_pdf', compact(
-            'test', 'type', 'formattedDate', 'formattedDate2', 'qrCode', 'group', 'i'
-        ));
+        $pdf = Pdf::loadView('product_conclusion.pdf', compact(
+            'test',
+            'formattedDate',
+            'formattedDate2',
+            'qrCode',
+            'group'
+        ))->setPaper('A4')
+            ->setOptions([
+                'isFontSubsettingEnabled' => true,
+                'isRemoteEnabled'         => true,
+                'chroot'                  => [public_path()],
+            ]);
 
-        $fileName = $i === 0
-            ? 'protocol_' . $id . '.pdf'
-            : 'protocol_' . $id . '_' . $i . '.pdf';
+        $fileName = 'conclusion_' . $id . '.pdf';
 
-        $filePath = storage_path('app/public/protocols/' . $fileName);
+        $filePath = storage_path('app/public/product_conclusions/' . $fileName);
+        // return $pdf->stream('conclusion.pdf');
+
         $pdf->save($filePath);
     }
     /**

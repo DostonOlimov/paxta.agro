@@ -363,7 +363,13 @@ class SifatSertificateController extends Controller
         $qrCode = base64_encode(QrCode::format('png')->size(100)->generate(route('sifat_sertificate.download', $id)));
 
         // Load the view and pass data to it
-        $pdf = Pdf::loadView('sifat_sertificate.pdf', compact('test','sert_number','formattedDate', 'company', 'qrCode') + $chigitValues);
+        $pdf = Pdf::loadView('sifat_sertificate.pdf', compact('test','sert_number','formattedDate', 'company', 'qrCode') + $chigitValues)
+            ->setPaper('A4')
+                ->setOptions([
+                    'isFontSubsettingEnabled' => true,
+                    'isRemoteEnabled'         => true,
+                    'chroot'                  => [public_path()],
+                ]);
 
 //        return $pdf->stream('sdf');
         // Save the PDF file

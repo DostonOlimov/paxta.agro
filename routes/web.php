@@ -474,7 +474,7 @@ Route::group(['prefix' => 'product-conclusion', 'middleware' => 'auth'], functio
     Route::get('/change/{dalolatnoma}', '\App\Http\Controllers\ProductConclusionController@change_status');
     Route::get('/refresh/{dalolatnoma}', '\App\Http\Controllers\ProductConclusionController@refresh');
 });
-Route::get('/protocol/{dalolatnoma}/download', '\App\Http\Controllers\ProductConclusionController@download')->name('laboratory_protocol.download');
+Route::get('/protocol-conclusion/{dalolatnoma}/download', '\App\Http\Controllers\ProductConclusionController@download')->name('product_conclusion.download');
 
 
 //Operators
@@ -517,3 +517,10 @@ Route::get('/vue/{any}', function () {
         return view('reports.state_report');
     }
 })->where('any', '.*');
+
+Route::group(['prefix' => 'api', 'middleware' => 'auth'], function () {
+    Route::post('/tests/{test}/field', [\App\Http\Controllers\Api\TestInlineEditController::class, 'saveField'])
+        ->name('api.tests.field');
+    Route::post('/tests/{test}/conclusion', [\App\Http\Controllers\Api\TestInlineEditController::class, 'saveConclusion'])
+        ->name('api.tests.conclusion');
+});
