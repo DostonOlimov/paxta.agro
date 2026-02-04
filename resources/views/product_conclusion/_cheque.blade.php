@@ -76,7 +76,7 @@
         <table class="section-table">
             <tr>
                 <td style="width:50%;" class="left">
-                    <span class="bold">To'da og'irligi:</span> {{ number_format($test->amount, 0, '.', ' ') }} kg
+                    <span class="bold">To'da og'irligi(netto):</span> {{ number_format($test->amount, 0, '.', ' ') }} kg
                 </td>
                 <td class="right">
                     <span class="bold">CMR №:</span>

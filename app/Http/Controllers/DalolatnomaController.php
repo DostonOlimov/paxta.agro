@@ -75,16 +75,16 @@ class DalolatnomaController extends Controller
     public function store(Request $request)
     {
         $kod_toy = $request->input('kod_toy');
-
+        
         if(getApplicationType() != CropsName::CROP_TYPE_5){
             $request->validate([
                 'kod_toy.*.1' => 'required|numeric',
                 'kod_toy.*.2' => ['required', 'numeric', new DifferentsShtrixKod(), new EqualToyCount()],
                 'toy_count' => ['required', 'numeric', new EqualToyCount()],
-                'kod_toy.*.4' => ['required', 'numeric', new EqualToyCount()],
+                // 'kod_toy.*.4' => ['required', 'numeric', new EqualToyCount()],
             ]);
         }
-
+   
         $this->authorize('create', Application::class);
 
         $data = $request->only([
