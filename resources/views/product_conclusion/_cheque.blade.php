@@ -89,6 +89,7 @@
             <tr class="editable-row" data-part="conclusion_part_1" data-test-id="{{ $test->id }}">
                 <td>
                     <div class="editable-wrapper">
+                        <span> {{ $formattedDate2 }}</span>
                         <span class="editable-content">{{ $test->final_conclusion_result->conclusion_part_1 }}</span>
                         <button class="edit-icon no-print" title="Tahrirlash">✏️</button>
                     </div>

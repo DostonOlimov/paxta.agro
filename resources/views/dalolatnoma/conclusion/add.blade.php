@@ -156,7 +156,7 @@
                                         </div>
                                     </div>
                                     {{-- start --}}
-                                    <div class="certificate row" id="forms">
+                                    {{-- <div class="certificate row" id="forms">
                                         <div class="col-md-4 row">
                                             <label for="number" class="form-label">Shtrix kod raqami:<label
                                                     class="text-danger">*</label></label>
@@ -227,7 +227,7 @@
                                                 </div>
                                             @endfor
                                         @endif
-                                    </div>
+                                    </div> --}}
                                     <div id="numbersContainer" class="row"></div>
                                     <div class="form-group col-md-12 col-sm-12 mt-2">
                                         <div class="col-md-4 col-sm-6">

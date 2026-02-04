@@ -76,12 +76,14 @@ class DalolatnomaController extends Controller
     {
         $kod_toy = $request->input('kod_toy');
 
-        $request->validate([
-            'kod_toy.*.0' => 'required|numeric',
-            'kod_toy.*.1' => ['required', 'numeric', new DifferentsShtrixKod(), new EqualToyCount()],
-            'toy_count' => ['required', 'numeric', new EqualToyCount()],
-            'kod_toy.*.3' => ['required', 'numeric', new EqualToyCount()],
-        ]);
+        if(getApplicationType() != CropsName::CROP_TYPE_5){
+            $request->validate([
+                'kod_toy.*.1' => 'required|numeric',
+                'kod_toy.*.2' => ['required', 'numeric', new DifferentsShtrixKod(), new EqualToyCount()],
+                'toy_count' => ['required', 'numeric', new EqualToyCount()],
+                'kod_toy.*.4' => ['required', 'numeric', new EqualToyCount()],
+            ]);
+        }
 
         $this->authorize('create', Application::class);
 
@@ -130,18 +132,24 @@ class DalolatnomaController extends Controller
                 ]);
             }
 
-            // Process GinBalles and AktAmount
-            $balls = $this->prepareGinBalles($dal->id, $kod_toy);
-            $amounts = $this->prepareAktAmount($dal->id, $kod_toy);
+            if(getApplicationType() != CropsName::CROP_TYPE_5){
+                // Process GinBalles and AktAmount
+                $balls = $this->prepareGinBalles($dal->id, $kod_toy);
+                $amounts = $this->prepareAktAmount($dal->id, $kod_toy);
 
-            // Insert GinBalles and AktAmount in batches
-            GinBalles::insert($balls);
-            AktAmount::insert($amounts);
-
-            // Log user activity
-            $this->logActivity($dal->id, Auth::user()->id);
+                // Insert GinBalles and AktAmount in batches
+                GinBalles::insert($balls);
+                AktAmount::insert($amounts);
+                
+            }
+            
+                // Log user activity
+                $this->logActivity($dal->id, Auth::user()->id);
         });
 
+        if(getApplicationType() == CropsName::CROP_TYPE_5){
+            return redirect('/product-conclusion/list')->with('message', 'Successfully Created');
+        }
         return redirect('/akt_amount/search');
     }
 

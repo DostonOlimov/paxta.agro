@@ -90,7 +90,7 @@
     <table class="conclusion-table">
         @if ($test->final_conclusion_result->conclusion_part_1)
             <tr>
-                <td>{{ $test->final_conclusion_result->conclusion_part_1 }}</td>
+                <td> <span> {{ $formattedDate2 }}</span> {{ $test->final_conclusion_result->conclusion_part_1 }}</td>
             </tr>
         @endif
 
