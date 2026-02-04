@@ -1,8 +1,10 @@
 <div id="invoice-cheque">
         <!-- Organization Header -->
         <h2 class="bold">
-            "QISHLOQ XO'JALIGI MAHSULOTLARI SIFATINI BAHOLASH <br>
-            MARKAZI" DAVLAT MUASSASASI
+            O‘ZBEKISTON RESPUBLIKASI VAZIRLAR MAHKAMASI HUZURIDAGI<br>
+            AGROSANOAT MAJMUI USTIDAN NAZORAT QILISH INSPEKSIYASI<br>
+            QOSHIDAGI “QISHLOQ XO‘JALIGI MAHSULOTLARI SIFATINI<br>
+            BAHOLASH MARKAZI” DAVLAT MUASSASASI
         </h2>
 
         <!-- Document Title -->
@@ -28,11 +30,11 @@
         <table class="section-table">
             <tr>
                 <td style="width:65%;">
-                    <span class="bold">Ariza beruvchining nomi:</span>
+                    <span class="bold">Buyurtma beruvchining nomi:</span>
                     <span class="serif">{{ $test->test_program->application->organization->name }}</span>
                 </td>
                 <td style="width:35%;" class="right">
-                    <span class="bold">Ariza raqami:</span>
+                    <span class="bold">Buyurtma raqami:</span>
                     {{ $test->test_program->application->id }} {{ $formattedDate }} y.
                 </td>
             </tr>
@@ -61,14 +63,11 @@
         <!-- Batch info -->
         <table class="section-table batch-info-table">
             <tr>
-                <td style="width:33%;">
+                <td style="width:50%;">
                     <span class="bold">To'da raqami:</span> {{ $test->number }}
                 </td>
-                <td style="width:33%;" class="center">
+                <td style="width:50%;" class="right">
                     <span class="bold">Toy soni:</span> {{ $test->toy_count }}
-                </td>
-                <td style="width:34%;" class="right">
-                    <span class="bold">To'da og'irligi:</span> {{ number_format($test->weight, 0, '.', ' ') }} kg
                 </td>
             </tr>
         </table>
@@ -76,9 +75,12 @@
         <!-- Amount -->
         <table class="section-table">
             <tr>
-                <td>
-                    <span class="bold">Mahsulotni yo'nalgan miqdori:</span> 
-                    {{ number_format($test->amount, 0, '.', ' ') }} kg
+                <td style="width:50%;" class="left">
+                    <span class="bold">To'da og'irligi:</span> {{ number_format($test->amount, 0, '.', ' ') }} kg
+                </td>
+                <td class="right">
+                    <span class="bold">CMR №:</span>
+                    {{ $test->final_conclusion_result?->cmr_number }}
                 </td>
             </tr>
         </table>

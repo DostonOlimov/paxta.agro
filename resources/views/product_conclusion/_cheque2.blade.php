@@ -34,11 +34,11 @@
     <table class="row">
         <tr>
             <td class="left w-65">
-                <span class="bold">Ariza beruvchining nomi:</span>
+                <span class="bold">Buyurtma beruvchining nomi:</span>
                 <span>{{ $test->test_program->application->organization->name }}</span>
             </td>
             <td class="right w-35">
-                <span class="bold">Ariza raqami:</span>
+                <span class="bold">Buyurtma raqami:</span>
                 {{ $test->test_program->application->id }}
             </td>
         </tr>
@@ -61,17 +61,13 @@
     <!-- Batch info -->
     <table class="row">
         <tr>
-            <td class="left w-33">
+            <td class="left w-50">
                 <span class="bold">To'da raqami:</span>
                 {{ $test->number }}
             </td>
-            <td class="center w-33">
+            <td class="right w-50">
                 <span class="bold">Toy soni:</span>
                 {{ $test->toy_count }}
-            </td>
-            <td class="right w-34">
-                <span class="bold">To'da og'irligi:</span>
-                {{ number_format($test->weight, 0, '.', ' ') }} kg
             </td>
         </tr>
     </table>
@@ -79,9 +75,13 @@
     <!-- Amount -->
     <table class="row">
         <tr>
-            <td class="left">
-                <span class="bold">Mahsulotni yo'nalgan miqdori:</span>
+             <td class="left">
+                <span class="bold">To'da og'irligi(netto):</span>
                 {{ number_format($test->amount, 0, '.', ' ') }} kg
+            </td>
+            <td class="right">
+                <span class="bold">CMR №:</span>
+                {{ $test->final_conclusion_result?->cmr_number ?? '—' }}
             </td>
         </tr>
     </table>

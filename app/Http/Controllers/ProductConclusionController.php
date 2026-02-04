@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Filters\V1\DalolatnomaFilter;
 use App\Models\Application;
-use App\Models\CropsName;
 use App\Models\Dalolatnoma;
 use App\Models\FinalConclusionResult;
 use App\Models\FinalResult;
@@ -110,9 +109,10 @@ class ProductConclusionController extends Controller
             'dalolatnoma_id' => $dalolatnoma->id,
             'invoice_number' => $request->input('invoice_number'),
             'vehicle_number' => $request->input('vehicle_number'),
+            'cmr_number' => $request->input('cmr_number'),
             'conclusion_part_1' => "- yildagi namuna tanlab olish dalolatnomasi bilan taqdim qilingan oʼralgan holdagi namunalar ochilib, namunalar klassyorlik usulida, orgonoleptik baho berish yoʼli bilan paxta mahsuloti va uni qayta ishlashdan olingan (ikkilamchi) mahsulotlar tashqi koʼrinish boʼyicha amaldagi standartlarga muvofiq belgilangan tartibda solishtirildi.",
             'conclusion_part_2' => "Solishtirish natijasida ushbu mahsulot: Orgonoleptik baho berishilishiga asosan taqdim qilingan namunalar O‘z DSt 604:2016 Paxta tolasi texnikaviy shartlar. O‘zMSt 456:2024 (O‘z DSt 645:2010) Paxta momigʼi texnikaviy shartlar. O‘z DSt 1029:2014 Kiyim kechak va mebelbop momiq paxta texnikaviy shartlar. Davlat standartlariga tashqi koʼrinish boʼyicha tugʼri kelmasligi aniqlandi.",
-            'conclusion_part_3' => "Ushbu maxsulot O‘zDSt 1216:2015 Oqartirilgan gigroskopik paxta maxsulotlari texnikaviy shartlarining. Oqartirilgan Gigroskopik momiq (Vata otbelennaya gigroskopicheskaya) turiga toʼgʼri kelishini maʼlum qilamiz.",
+            'conclusion_part_3' => "Ushbu maxsulot O‘zDSt 1216:2015 ". $dalolatnoma->test_program->application->crops->name->name.  " turiga toʼgʼri kelishini maʼlum qilamiz.",
             'type' => $request->input('type') ?? 1,
         ]);
 
