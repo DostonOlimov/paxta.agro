@@ -14,7 +14,7 @@
 
     <!-- Document Title -->
     <h2 class="head__title2">
-        Paxta mahsuloti va uni qayta ishlashdan olingan (ikkilamchi) mahsulotlarni sinash natijalari bo'yicha <br>
+        <span>Paxta mahsuloti va uni qayta ishlashdan olingan (ikkilamchi) mahsulotlarni sinash natijalari bo'yicha</span><br>
         <span class="head__title">XULOSA № {{ $test->laboratory_final_results->number }}</span>
     </h2>
 
@@ -33,13 +33,17 @@
     <!-- Applicant + Application ID -->
     <table class="row">
         <tr>
-            <td class="left w-65">
+            <td class="left">
                 <span class="bold">Buyurtma beruvchining nomi:</span>
                 <span>{{ $test->test_program->application->organization->name }}</span>
             </td>
-            <td class="right w-35">
+        </tr>
+    </table>
+    <table class="row">
+        <tr>
+            <td class="left">
                 <span class="bold">Buyurtma raqami:</span>
-                {{ $test->test_program->application->id }}
+                 {{ $test->test_program->application->id }} {{ date_format(date_create($test->test_program->application->date), 'd.m.Y') }} y.
             </td>
         </tr>
     </table>
@@ -63,11 +67,11 @@
         <tr>
             <td class="left w-50">
                 <span class="bold">To'da raqami:</span>
-                {{ $test->number }}
+                {{ $test->test_program->application->crops->party_number }}
             </td>
             <td class="right w-50">
                 <span class="bold">Toy soni:</span>
-                {{ $test->toy_count }}
+                {{ $test->test_program->application->crops->toy_count }} ta
             </td>
         </tr>
     </table>
@@ -77,7 +81,7 @@
         <tr>
              <td class="left">
                 <span class="bold">To'da og'irligi(netto):</span>
-                {{ number_format($test->amount, 0, '.', ' ') }} kg
+                {{ number_format($test->test_program->application->crops->amount, 0, '.', ' ') }} kg
             </td>
             <td class="right">
                 <span class="bold">CMR №:</span>
@@ -102,7 +106,7 @@
 
         @if ($test->final_conclusion_result->conclusion_part_3)
             <tr>
-                <td>{{ $test->final_conclusion_result->conclusion_part_3 }}</td>
+                <td><b>{{ $test->final_conclusion_result->conclusion_part_3 }}</b></td>
             </tr>
         @endif
     </table>

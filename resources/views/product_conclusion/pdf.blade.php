@@ -1,6 +1,9 @@
 @extends('layouts.pdf')
 @section('styles')
    <style>
+     @page {
+        margin: 0.3cm 1.2cm; /* top/bottom left/right */
+    }
     body {
         font-family: DejaVu Sans, sans-serif;
         font-size: 14px;
@@ -64,7 +67,7 @@
             max-width: 100%;
             /* Optional: To make sure the image is responsive */
             height: 150px;
-            padding-left: 70px;
+            padding-left: 60px;
         }
 
    /* Width helpers */
@@ -115,21 +118,23 @@
             font-weight: bold;
             color:#0a52de;
             font-size: 20px;
-            margin:0;
             text-align: center;
-            line-height: normal;
+            line-height: 1.5;
         }
     .header__title {
             font-size: 16px;
             text-align: center;
-            margin-top: 0.8px;
+            margin-top: 1.2px;
             text-transform: uppercase;
             line-height: normal;
+            padding-bottom: 8px;
+            padding-top: 12px;
         }
     .head__title2{
             font-weight: bold;
             text-align: center;
             line-height: normal;
+
         }
 </style>
 

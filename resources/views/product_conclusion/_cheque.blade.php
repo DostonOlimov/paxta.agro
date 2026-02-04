@@ -29,13 +29,15 @@
         <!-- Applicant + Application ID -->
         <table class="section-table">
             <tr>
-                <td style="width:65%;">
+                <td>
                     <span class="bold">Buyurtma beruvchining nomi:</span>
                     <span class="serif">{{ $test->test_program->application->organization->name }}</span>
                 </td>
-                <td style="width:35%;" class="right">
+            </tr>
+            <tr>
+                 <td>
                     <span class="bold">Buyurtma raqami:</span>
-                    {{ $test->test_program->application->id }} {{ $formattedDate }} y.
+                    {{ $test->test_program->application->id }} {{ date_format(date_create($test->test_program->application->date), 'd.m.Y') }} y.
                 </td>
             </tr>
         </table>
@@ -64,10 +66,10 @@
         <table class="section-table batch-info-table">
             <tr>
                 <td style="width:50%;">
-                    <span class="bold">To'da raqami:</span> {{ $test->number }}
+                    <span class="bold">To'da raqami:</span> {{ $test->test_program->application->crops->party_number }}
                 </td>
                 <td style="width:50%;" class="right">
-                    <span class="bold">Toy soni:</span> {{ $test->toy_count }}
+                    <span class="bold">Toy soni:</span>  {{ $test->test_program->application->crops->toy_count }} ta
                 </td>
             </tr>
         </table>
@@ -76,7 +78,7 @@
         <table class="section-table">
             <tr>
                 <td style="width:50%;" class="left">
-                    <span class="bold">To'da og'irligi(netto):</span> {{ number_format($test->amount, 0, '.', ' ') }} kg
+                    <span class="bold">To'da og'irligi(netto):</span> {{ number_format($test->test_program->application->crops->amount, 0, '.', ' ') }} kg
                 </td>
                 <td class="right">
                     <span class="bold">CMR №:</span>
