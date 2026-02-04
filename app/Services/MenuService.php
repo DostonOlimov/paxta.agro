@@ -150,7 +150,7 @@ class MenuService
                 'icon' => 'cil-balance-scale',
                 'route' => '/akt_amount/search',
                 'activePattern' => 'akt_amount/*',
-                'visible' => $this->inGroup('certification'),
+               'visible' => $this->inGroup('sertificate_protocol'),
             ],
             [
                 'type' => 'item',

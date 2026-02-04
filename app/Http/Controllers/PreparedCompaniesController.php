@@ -59,8 +59,8 @@ class PreparedCompaniesController extends Controller
             $cityname = new PreparedCompanies();
             $cityname->name = $name;
             $cityname->state_id = $region;
-            $cityname->kod = $kod;
-            $cityname->tara = $tara;
+            $cityname->kod = $kod ?? 10000;
+            $cityname->tara = $tara ?? 0;
             $cityname->save();
             if($request->input('redirect_id') == 2){
                 return redirect('application/add')->with('message', 'Successfully Submitted');

@@ -91,7 +91,7 @@
                                                                for="first-name">{{trans('app.Zavod kodi')}} <label
                                                                 class="text-danger">*</label>
                                                         </label>
-                                                        <input type="number" required="required" name="kod" min="0" max="1000"
+                                                        <input type="number" name="kod" min="0" max="1000"
                                                                class="form-control">
                                                     </div>
                                                 </div>
@@ -101,7 +101,7 @@
                                                                for="first-name">Tara og'irligi <label
                                                                 class="text-danger">*</label>
                                                         </label>
-                                                        <input type="number" required="required" name="tara" step="0.001"
+                                                        <input type="number" name="tara" step="0.001"
                                                                class="form-control">
                                                     </div>
                                                 </div>
