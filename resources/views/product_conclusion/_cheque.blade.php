@@ -80,10 +80,12 @@
                 <td style="width:50%;" class="left">
                     <span class="bold">To'da og'irligi(netto):</span> {{ number_format($test->test_program->application->crops->amount, 0, '.', ' ') }} kg
                 </td>
-                <td class="right">
-                    <span class="bold">CMR №:</span>
-                    {{ $test->final_conclusion_result?->cmr_number }}
-                </td>
+                @if($test->final_conclusion_result?->cmr_number)
+                    <td class="right">
+                        <span class="bold">CMR №:</span>
+                        {{ $test->final_conclusion_result?->cmr_number }}
+                    </td>
+                @endif
             </tr>
         </table>
 
