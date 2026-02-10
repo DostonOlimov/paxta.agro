@@ -2,16 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Area;
 use App\Models\CropData;
 use App\Models\CropsGeneration;
 use App\Models\CropsType;
-use App\Models\Region;
 use App\Models\CropsName;
-use App\tbl_states;
-use App\User;
+use App\Models\DefaultModels\User;
 use Illuminate\Http\Request;
-use App\Http\Requests;
 use Illuminate\Support\Facades\DB;
 
 class CropsNameController extends Controller

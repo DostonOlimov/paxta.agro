@@ -15,6 +15,7 @@ class FinalConclusionResult extends Model
         'dalolatnoma_id',
         'invoice_number',
         'vehicle_number',
+        'order_number',
         'cmr_number',
         'conclusion_part_1',
         'conclusion_part_2',

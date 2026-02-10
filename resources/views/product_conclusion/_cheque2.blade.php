@@ -43,7 +43,7 @@
         <tr>
             <td class="left">
                 <span class="bold">Buyurtma raqami:</span>
-                 {{ $test->test_program->application->id }} {{ date_format(date_create($test->test_program->application->date), 'd.m.Y') }} y.
+                 {{ $test->final_conclusion_result?->order_number }} {{ date_format(date_create($test->test_program->application->date), 'd.m.Y') }} y.
             </td>
         </tr>
     </table>

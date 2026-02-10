@@ -79,15 +79,19 @@
                                             </div>
                                         </div>
 
-                                    <div class="col-md-4 form-group">
+                                    <div class="col-md-6 form-group">
                                         <label for="invoice_number" class="form-label certificate">Invoys raqami</label>
                                         <input type="text" class="form-control" name="invoice_number" value="{{ old('invoice_number') }}">
                                     </div>
-                                    <div class="col-md-4 form-group">
+                                    <div class="col-md-6 form-group">
                                         <label for="vehicle_number" class="form-label certificate">Avtotransport raqami</label>
                                         <input type="text" class="form-control" name="vehicle_number" value="{{ old('vehicle_number') }}">
                                     </div>
-                                     <div class="col-md-4 form-group">
+                                     <div class="col-md-6 form-group">
+                                        <label for="order_number" class="form-label certificate">Buyurtma raqami<label class="text-danger">*</label></label>
+                                        <input type="number" class="form-control" name="order_number" value="{{ old('order_number') }}" required>
+                                    </div>
+                                    <div class="col-md-6 form-group">
                                         <label for="cmr_number" class="form-label certificate">CMR №</label>
                                         <input type="text" class="form-control" name="cmr_number" value="{{ old('cmr_number') }}">
                                     </div>
