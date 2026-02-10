@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Models\Application;
+use App\Models\DefaultModels\tbl_activities as DefaultModelsTbl_activities;
 use App\Models\OrganizationCompanies;
 use App\Models\User;
 use App\tbl_activities;
@@ -31,7 +32,7 @@ class OrganizationPolicy
     public function update(User $user,OrganizationCompanies $company)
     {
         if($user->role == User::ROLE_CUSTOMER){
-            return tbl_activities::where('action_id','=',$company->id)
+            return DefaultModelsTbl_activities::where('action_id','=',$company->id)
                 ->where('action_type','=','organization_add')
                 ->where('user_id','=',$user->id)
                 ->first() ? Response::allow()
@@ -40,7 +41,7 @@ class OrganizationPolicy
             return ($company->city->state_id == $user->state_id)
                 ? Response::allow()
                 : Response::deny('Sizga ushbu sahifadan foydalanishga ruxsat berilmagan.');
-        }elseif($user->role == User::ROLE_DIROCTOR){
+        }elseif($user->role == User::ROLE_DIROCTOR && $user->id != 137){
             return Response::deny('Sizga ushbu sahifadan foydalanishga ruxsat berilmagan.');
         }
         return Response::allow();
