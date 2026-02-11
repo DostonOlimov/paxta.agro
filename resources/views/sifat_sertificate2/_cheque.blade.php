@@ -146,7 +146,7 @@
         <tbody>
         <tr>
             <td>{{ $test->crops->name->name }}</td>
-            <td>{{ optional($test->crops->selection)->name }}</td>
+            <td><span style="font-family: 'DejaVu Serif'">{{ optional($test->crops->selection)->name }}</span></td>
             <td>{{ $test->crops->amount }}</td>
             <td>{{ round ($test->crops->amount * (100 - $namlik - $zararkunanda) / (100 - 10 - 0.5)) }}</td>
         </tr>

@@ -62,7 +62,7 @@
     @if(getApplicationType() != \App\Models\CropsName::CROP_TYPE_4)
         <div style="width: 100%; display: flex; justify-content: space-between; padding-top:10px; font-size: 18px;">
             <div style="width: 49%; display: inline-block;">
-                <span> <b>Seleksiya nomi:  </b>{{ $test->selection->name  }}.</span>
+                <span> <b>Seleksiya nomi:  </b><span style="font-family: 'DejaVu Serif'">{{ $test->selection->name  }}</span>.</span>
             </div>
             <div style="width: 50%; display: inline-block;">
                 <span> <b>Laboratoriya kodi:  </b> {{  str_pad($test->test_program->application->decision->laboratory->kod, 2, '0', STR_PAD_LEFT) }} </span>

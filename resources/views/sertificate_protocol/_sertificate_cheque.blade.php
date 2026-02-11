@@ -82,7 +82,7 @@
                             <td>{{ $application->crops->party_number}}</td>
                             <td>{{ $item->count }}</td>
                             <td>{{ $item->amount ? number_format($item->amount - $item->count * $application->tests->dalolatnoma->tara , 1, ',',' ') : 0 }}</td>
-                            <td>{{ $application->tests->dalolatnoma->selection->name }}</td>
+                            <td><span style="font-family: 'DejaVu Serif'">{{ $application->tests->dalolatnoma->selection->name }}</span></td>
                             <td>{{ optional($application->tests->dalolatnoma->laboratory_result)->tip->name }}</td>
                             <td>{{ optional($application->tests->dalolatnoma->laboratory_result)->tip->staple }}</td>
                             <td>{{ $item->sort }}</td>
