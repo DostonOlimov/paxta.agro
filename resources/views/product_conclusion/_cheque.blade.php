@@ -11,7 +11,7 @@
         <h1>
             Paxta mahsuloti va uni qayta ishlashdan olingan (ikkilamchi) <br>
             mahsulotlarni sinash natijalari bo'yicha <br>
-            XULOSA <span class="serif">№</span>{{ $test->laboratory_final_results->number + $i }}
+            TAHLIL NATIJASI <span class="serif">№</span>{{ $test->laboratory_final_results->number + $i }}
         </h1>
 
         <!-- Region + Date -->

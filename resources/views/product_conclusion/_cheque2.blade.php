@@ -15,7 +15,7 @@
     <!-- Document Title -->
     <h2 class="head__title2">
         <span>Paxta mahsuloti va uni qayta ishlashdan olingan (ikkilamchi) mahsulotlarni sinash natijalari bo'yicha</span><br>
-        <span class="head__title">XULOSA № {{ $test->laboratory_final_results->number }}</span>
+        <span class="head__title">TAHLIL NATIJASI № {{ $test->laboratory_final_results->number }}</span>
     </h2>
 
     <!-- Region + Date -->
