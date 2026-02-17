@@ -168,6 +168,6 @@ return [
     'Sifat sertifikati' => 'Сифат сертификати',
     'Texnik chigit' => 'Техник чигит',
     'Paxta momig\'i' => 'Пахта момиғи',
-    'Paxta tolasidan' => 'Пахта толасидан',
-    'Olinadigan mahsulotlar' => 'Олинадиган маҳсулотлар',
+    'Paxta tolasidan' => 'Пахта махсулотларидан',
+    'Olinadigan mahsulotlar' => 'Олинадиган иккилмаси махсулотлар',
 ];

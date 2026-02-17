@@ -232,6 +232,6 @@ return [
     'Muvofiqlik sertifikati' => 'Muvofiqlik sertifikati',
     'Sifat sertifikati' => 'Sifat sertifikati',
     'Paxta momig\'i' => 'Paxta momig\'i',
-    'Paxta tolasidan' => 'Paxta tolasidan',
-    'Olinadigan mahsulotlar' => 'Olinadigan mahsulotlar',
+    'Paxta tolasidan' => 'Paxta maxsulotlaridan',
+    'Olinadigan mahsulotlar' => 'Olinadigan ikkilamchi maxsulotlar',
 ];
