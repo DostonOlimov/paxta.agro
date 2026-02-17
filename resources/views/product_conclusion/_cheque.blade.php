@@ -46,7 +46,7 @@
         <table class="section-table">
             <tr>
                 <td style="width:65%;">
-                    <span class="bold">Invoys raqami:</span>
+                    <span class="bold">Invoys raqami/sanasi:</span>
                     <span class="editable-wrapper editable-field" data-field="invoice_number" data-test-id="{{ $test->id }}">
                         <span class="editable-content serif">{{ $test->final_conclusion_result?->invoice_number }}</span>
                         <button class="edit-icon no-print" title="Tahrirlash">✏️</button>

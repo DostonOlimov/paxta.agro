@@ -80,7 +80,7 @@
                                         </div>
 
                                     <div class="col-md-6 form-group">
-                                        <label for="invoice_number" class="form-label certificate">Invoys raqami</label>
+                                        <label for="invoice_number" class="form-label certificate">Invoys raqami/sanasi</label>
                                         <input type="text" class="form-control" name="invoice_number" value="{{ old('invoice_number') }}">
                                     </div>
                                     <div class="col-md-6 form-group">

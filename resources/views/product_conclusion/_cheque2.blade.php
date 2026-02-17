@@ -52,7 +52,7 @@
     <table class="row">
         <tr>
             <td class="left w-35">
-                <span class="bold">Invoys raqami:</span>
+                <span class="bold">Invoys raqami/sanasi:</span>
                 {{ $test->final_conclusion_result?->invoice_number ?? '—' }}
             </td>
             <td class="right w-65">
