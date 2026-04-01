@@ -97,11 +97,27 @@ class AktAmountController extends Controller
     // View
     public function view(Dalolatnoma $dalolatnoma): Factory|View|Application
     {
-        $tests = $dalolatnoma->akt_amount()->get()->toArray();
+        $aktAmounts = $dalolatnoma->akt_amount()->get();
+        $ginBalles = $dalolatnoma->gin_balles()->get();
+
+        $i = 0;
+        $results = $aktAmounts->map(function ($akt) use ($ginBalles, &$i) {
+            // Find matching gin_balles row
+            $match = $ginBalles->first(function ($ball) use ($akt) {
+                return $akt->shtrix_kod >= $ball->from_number &&
+                    $akt->shtrix_kod <= $ball->to_number;
+            });
+
+            // Add new field
+            $akt->order_number = $match ? $match->from_toy + $i : null;
+            $i++;
+            return $akt;
+        })->toArray();
+   
         $sum_amount = $dalolatnoma->akt_amount()->sum('amount');
         $count = $dalolatnoma->akt_amount()->count();
         $tara = $dalolatnoma->tara;
-        $data1 = !empty($tests) ? array_chunk($tests, 50) : [];
+        $data1 = !empty($results) ? array_chunk($results, 50) : [];
         $id = $dalolatnoma->id;
 
         return view('akt_amount.show', compact('data1', 'id', 'sum_amount', 'count', 'tara'));

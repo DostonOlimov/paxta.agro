@@ -112,7 +112,7 @@
                                                                 @foreach($data as $dat)
                                                                     @php $index = 50 * ($loop->iteration-1) + $i; @endphp
 
-                                                                    <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.08rem 0.08rem;">{{ $index +1 }}</td>
+                                                                    <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.08rem 0.08rem;"> @if(isset($dat[$index])){{ $dat[$index]['order_number'] }}@endif</td>
                                                                     @if(isset($dat[$index]))
                                                                         @if($dat[$index]['class'] == $count->class and $dat[$index]['sort'] == $count->sort)
                                                                             @if($dat[$index]['amount'])
@@ -127,6 +127,8 @@
                                                                         @else
                                                                             <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.08rem 0.08rem;"></td>
                                                                         @endif
+                                                                    @else
+                                                                        <td style=" font-family: 'Arial Black'; border: 1px solid black;  padding: 0.08rem 0.08rem;"></td>
                                                                     @endif
                                                                 @endforeach
                                                             </tr>

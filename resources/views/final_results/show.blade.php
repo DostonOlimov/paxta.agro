@@ -113,18 +113,18 @@
                                                         @php $count = count($results[0]); @endphp
                                                         @for($i = 0; $i < $count; $i++)
                                                             <tr>
-                                                                <td style=" font-family: 'Arial Black'; border: 1px solid black; padding: 0.06rem 0.08rem;" class="nuber_column">{{ $i+1}}</td>
+                                                                <td style=" font-family: 'Arial Black'; border: 1px solid black; padding: 0.06rem 0.08rem;" class="nuber_column">{{  $results[0][$i]['order_number'] }}</td>
                                                                 <td style=" font-family: 'Arial Black'; border: 1px solid black; padding: 0.06rem 0.08rem; font-weight: bold;">{{ $results[0][$i]['gin_bale'] }}</td>
                                                                 <td style=" font-family: 'Arial Black'; border: 1px solid black; padding: 0.06rem 0.08rem; font-weight: bold;">{{ $results[0][$i]['sort'] }}</td>
                                                                 <td style=" font-family: 'Arial Black'; border: 1px solid black; padding: 0.06rem 0.08rem; font-weight: bold;">{{ $results[0][$i]['class'] }}</td>
 
-                                                                <td style=" font-family: 'Arial Black'; border: 1px solid black; padding: 0.06rem 0.08rem; font-weight: bold;" class="nuber_column">{{ $count + $i+1 }}</td>
+                                                                <td style=" font-family: 'Arial Black'; border: 1px solid black; padding: 0.06rem 0.08rem; font-weight: bold;" class="nuber_column">{{ $count + $results[0][$i]['order_number'] }}</td>
                                                                 <td style=" font-family: 'Arial Black'; border: 1px solid black; padding: 0.06rem 0.08rem; font-weight: bold;">{{$results[1][$i]['gin_bale']}}</td>
                                                                 <td style=" font-family: 'Arial Black'; border: 1px solid black; padding: 0.06rem 0.08rem; font-weight: bold;">{{$results[1][$i]['sort']}}</td>
                                                                 <td style=" font-family: 'Arial Black'; border: 1px solid black; padding: 0.06rem 0.08rem; font-weight: bold;">{{$results[1][$i]['class']}}</td>
 
 
-                                                                <td style=" font-family: 'Arial Black'; border: 1px solid black; padding: 0.06rem 0.08rem; font-weight: bold;" class="nuber_column">{{ 2 * $count + $i +1}}</td>
+                                                                <td style=" font-family: 'Arial Black'; border: 1px solid black; padding: 0.06rem 0.08rem; font-weight: bold;" class="nuber_column">{{ 2 * $count + $results[0][$i]['order_number']}}</td>
                                                                 <td style=" font-family: 'Arial Black'; border: 1px solid black; padding: 0.06rem 0.08rem; font-weight: bold;">@if(array_key_exists($i,$results[2]))  {{$results[2][$i]['gin_bale']}} @endif</td>
                                                                 <td style=" font-family: 'Arial Black'; border: 1px solid black; padding: 0.06rem 0.08rem; font-weight: bold;">@if(array_key_exists($i,$results[2]))  {{$results[2][$i]['sort']}} @endif</td>
                                                                 <td style=" font-family: 'Arial Black'; border: 1px solid black; padding: 0.06rem 0.08rem; font-weight: bold;">@if(array_key_exists($i,$results[2]))  {{$results[2][$i]['class']}} @endif</td>
@@ -132,7 +132,7 @@
 
 
                                                                 @if(array_key_exists(3,$results))
-                                                                    <td style=" font-family: 'Arial Black'; border: 1px solid black; padding: 0.06rem 0.08rem; font-weight: bold;" class="nuber_column">{{ 3 * $count + $i +1}}</td>
+                                                                    <td style=" font-family: 'Arial Black'; border: 1px solid black; padding: 0.06rem 0.08rem; font-weight: bold;" class="nuber_column">{{ 3 * $count + $results[0][$i]['order_number']}}</td>
 
 
                                                                     <td style=" font-family: 'Arial Black'; border: 1px solid black; padding: 0.06rem 0.08rem; font-weight: bold;">

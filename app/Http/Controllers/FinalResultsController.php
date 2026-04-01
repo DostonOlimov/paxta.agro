@@ -218,15 +218,35 @@ class FinalResultsController extends Controller
     public function view($id)
     {
         $dalolatnoma = Dalolatnoma::find($id);
-        $tests = ClampData::where('dalolatnoma_id',$id)->orderBy('gin_bale')->get()->toArray();
+        $ginBalles = $dalolatnoma->gin_balles()->get();
+        $clampData = ClampData::select('id', 'dalolatnoma_id', 'gin_bale', 'gin_id', 'sort', 'class')
+            ->where('dalolatnoma_id',$id)
+            ->orderBy('gin_bale')
+            ->get();
+
+        $i = 0;
+        $results = $clampData->map(function ($akt) use ($ginBalles, &$i) {
+            // Find matching gin_balles row
+            $match = $ginBalles->first(function ($ball) use ($akt) {
+                return $akt->gin_bale >= $ball->from_number &&
+                    $akt->gin_bale <= $ball->to_number;
+            });
+
+            // Add new field
+            $akt->order_number = $match ? $match->from_toy + $i : null;
+            $i++;
+            return $akt;
+        })->toArray();
+
         $data1 = [];
-        if($tests){
-            $data1 =  array_chunk($tests, ceil(count($tests)/4));
+        if($results){
+            $data1 =  array_chunk($results, ceil(count($results)/4));
         }
 
         $counts = ClampData::select('sort', 'class', DB::raw('count(*) as count'))
             ->groupBy('sort', 'class')
-            ->orderBy('gin_bale')
+            ->orderBy('sort')
+            ->orderBy('class')
             ->where('dalolatnoma_id',$id)
             ->get();
         $mic = ClampData::where('dalolatnoma_id',$id)->avg('mic');
@@ -248,8 +268,9 @@ class FinalResultsController extends Controller
     public function aktAmount($id)
     {
         $dalolatnoma = Dalolatnoma::findOrFail($id);
+        $ginBalles = $dalolatnoma->gin_balles()->get();
 
-        $data = AktAmount::select(
+        $aktAmounts = AktAmount::select(
             'akt_amount.amount as amount',
             'clamp_data.gin_bale as gin_bale',
             'clamp_data.sort as sort',
@@ -259,8 +280,24 @@ class FinalResultsController extends Controller
             ->where('clamp_data.dalolatnoma_id', $id)
             ->where('akt_amount.dalolatnoma_id', $id)
             ->orderBy('akt_amount.shtrix_kod')
-            ->get()
-            ->chunk(50);
+            ->get();
+            // ->chunk(50);
+
+        $i = 0;
+        $results = $aktAmounts->map(function ($akt) use ($ginBalles, &$i) {
+            // Find matching gin_balles row
+            $match = $ginBalles->first(function ($ball) use ($akt) {
+                return $akt->gin_bale >= $ball->from_number &&
+                    $akt->gin_bale <= $ball->to_number;
+            });
+
+            // Add new field
+            $akt->order_number = $match ? $match->from_toy + $i : null;
+            $i++;
+            return $akt;
+        })->toArray();
+
+        $data = collect($results)->chunk(50);
 
         $counts = ClampData::select(
             'sort',
@@ -275,7 +312,8 @@ class FinalResultsController extends Controller
             ->orderBy('class')
             ->orderBy('sort')
             ->get();
-
+        
+            // dd($data, $counts);
         return view('final_results.akt_amount', compact('data', 'counts', 'dalolatnoma'));
     }
 

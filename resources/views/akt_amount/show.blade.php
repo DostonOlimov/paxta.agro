@@ -89,7 +89,7 @@
                                                     @for($i = 0; $i < 50; $i++)
                                                         <tr>
                                                             @foreach($data1 as $data)
-                                                                <td>{{ 50 * ($loop->iteration-1) + $i +1 }}</td>
+                                                                <td>@if(isset($data[$i])) {{ $data[$i]['order_number'] }}@endif</td>
                                                                 <td>@if(isset($data[$i])) {{ $data[$i]['shtrix_kod'] }}@endif</td>
                                                                 @if(isset($data[$i]))
                                                                     @if($data[$i]['amount'])
