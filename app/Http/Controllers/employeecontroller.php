@@ -21,23 +21,27 @@ class employeecontroller extends Controller
         $this->middleware('auth');
     }
 
-    public function employeelist()
+    public function employeelist(Request $request)
     {
         $user = Auth::User();
+        $cropBranchId = $request->input('crop_branch');
 
-        $users = User::
-        select(
-            'users.*',
-            'tbl_accessrights.name as position'
-        )->
-        join('tbl_accessrights', 'tbl_accessrights.id', '=', 'users.role');
-
-        $users = $users->where('users.id', '!=', $user->id)->orderBy('id', 'DESC')->get();
-        if(auth()->user()->role=="admin"){
-            $users=User::orderBy('id', 'DESC')->get();
+        if (auth()->user()->role == "admin") {
+            $query = User::orderBy('id', 'DESC');
+        } else {
+            $query = User::select('users.*', 'tbl_accessrights.name as position')
+                ->join('tbl_accessrights', 'tbl_accessrights.id', '=', 'users.role')
+                ->where('users.id', '!=', $user->id)
+                ->orderBy('users.id', 'DESC');
         }
 
-        return view('employee.list', compact('users'));
+        if ($cropBranchId) {
+            $query->where('users.crop_branch', $cropBranchId);
+        }
+
+        $users = $query->get();
+
+        return view('employee.list', compact('users', 'cropBranchId'));
     }
 
 
@@ -47,7 +51,7 @@ class employeecontroller extends Controller
     {
         $states = DB::table('tbl_states')->get()->toArray();
         $country = DB::table('tbl_countries')->get()->toArray();
-        $roles = DB::table('tbl_accessrights')->where('status', '=', 'active')->get()->toArray();
+        $roles = \App\Models\User::roles();
 
         return view('employee.add', compact('country', 'roles', 'states'));
 
@@ -93,6 +97,8 @@ class employeecontroller extends Controller
         } else {
             $user->image = 'avtar.png';
         }
+        $user->branch_id = $request->input('branch_id');
+        $user->crop_branch = $request->input('crop_branch');
         $user->role = $request->input('role');
         $user->save();
         $last_id = DB::table('users')->orderBy('id', 'desc')->get()->first();
@@ -152,7 +158,7 @@ class employeecontroller extends Controller
         $cities=null;
 
         $position = DB::table('tbl_accessrights')->where('id', '=', intval($user->role))->get()->first();
-        $roles = DB::table('tbl_accessrights')->where('status', '=', 'active')->get()->toArray();
+        $roles = \App\Models\User::roles();
         return view('employee.edit', compact('country', 'state', 'cities', 'user', 'editid', 'roles', 'position', 'title'));
     }
 
@@ -197,6 +203,8 @@ class employeecontroller extends Controller
             $file->move(public_path() . '/employee/', $file->getClientOriginalName());
             $user->image = $filename;
         }
+        $user->branch_id = $request->input('branch_id');
+        $user->crop_branch = $request->input('crop_branch');
         $user->role = $role;
         $user->save();
 

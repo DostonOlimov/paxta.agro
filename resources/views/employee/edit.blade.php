@@ -158,11 +158,9 @@
 										<label class="form-label" for="image">{{ trans('app.Designation')}}</label>
 										<div>
 											<select class="role_search" style="width: 100% !important;" name="role">
-												@if(!empty($roles))
-													@foreach($roles as $role)
-														<option <?=($user->role != 'admin' && $user->role == $role->id)?'selected':'';  ?> value="{{$role->id}}">{{$role->name}}</option>
-													@endforeach
-												@endif
+												@foreach($roles as $id => $name)
+													<option value="{{ $id }}" {{ ($user->role != 'admin' && $user->role == $id) ? 'selected' : '' }}>{{ $name }}</option>
+												@endforeach
 											</select>
 											@if ($errors->has('designation'))
 											<span class="help-block" style="color:red;">
@@ -170,6 +168,26 @@
 											</span>
 											@endif
 										</div>
+									</div>
+
+									<div class="col-md-6 col-sm-6 form-group has-feedback">
+										<label class="form-label">{{ trans('app.Branch') }} <label class="text-danger">*</label></label>
+										<select class="form-control" name="branch_id" required>
+											<option value="">{{ trans('app.Select Branch') }}</option>
+											<option value="{{ \App\Models\User::BRANCH_MAIN }}" {{ $user->branch_id == \App\Models\User::BRANCH_MAIN ? 'selected' : '' }}>{{ trans('app.Branch Main') }}</option>
+											<option value="{{ \App\Models\User::BRANCH_STATE }}" {{ $user->branch_id == \App\Models\User::BRANCH_STATE ? 'selected' : '' }}>{{ trans('app.Branch State') }}</option>
+											<option value="{{ \App\Models\User::BRANCH_AREA }}" {{ $user->branch_id == \App\Models\User::BRANCH_AREA ? 'selected' : '' }}>{{ trans('app.Branch Area') }}</option>
+										</select>
+									</div>
+
+									<div class="col-md-6 col-sm-6 form-group has-feedback">
+										<label class="form-label">{{ trans('app.Crop Branch') }} <label class="text-danger">*</label></label>
+										<select class="form-control" name="crop_branch" required>
+											<option value="">{{ trans('app.Select Crop Branch') }}</option>
+											<option value="{{ \App\Models\User::CROP_BRANCH_TOLA }}" {{ $user->crop_branch == \App\Models\User::CROP_BRANCH_TOLA ? 'selected' : '' }}>{{ trans('app.Tola') }}</option>
+											<option value="{{ \App\Models\User::CROP_BRANCH_CHIGIT }}" {{ $user->crop_branch == \App\Models\User::CROP_BRANCH_CHIGIT ? 'selected' : '' }}>{{ trans('app.Chigit') }}</option>
+											<option value="{{ \App\Models\User::CROP_BRANCH_BOTH }}" {{ $user->crop_branch == \App\Models\User::CROP_BRANCH_BOTH ? 'selected' : '' }}>{{ trans('app.Crop Branch Both') }}</option>
+										</select>
 									</div>
 
 

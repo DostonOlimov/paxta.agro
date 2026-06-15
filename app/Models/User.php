@@ -31,6 +31,7 @@ class User extends Authenticatable
 
     const CROP_BRANCH_TOLA = 1;
     const CROP_BRANCH_CHIGIT = 2;
+    const CROP_BRANCH_BOTH = 3;
 
     const ROLE_CUSTOMER = 30;
     const STATE_EMPLOYEE = 45;
@@ -97,6 +98,21 @@ class User extends Authenticatable
     public function access(): BelongsTo
     {
         return $this->belongsTo(tbl_accessrights::class, 'role');
+    }
+
+    public static function roles(): array
+    {
+        return [
+            self::ROLE_CUSTOMER             => 'Buyurtmachi',
+            self::STATE_EMPLOYEE            => 'Viloyat xodimi',
+            self::ROLE_CITY_EMPLOYEE        => 'Shahar xodimi',
+            self::ROLE_DIROCTOR             => 'Direktor',
+            self::LABORATORY_DIRECTOR       => 'Laboratoriya direktori',
+            self::LABORATORY_EMPLOYEE       => 'Laboratoriya xodimi',
+            self::ROLE_STATE_CHIGIT_BOSHLIQ => 'Viloyat chigit boshliq',
+            self::ROLE_STATE_CHIGI_XODIM    => 'Viloyat chigit xodim',
+            self::ROLE_CITY_CHIGIT          => 'Shahar chigit',
+        ];
     }
 
     public static function getTypeId()

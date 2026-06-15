@@ -159,13 +159,31 @@
 									<label class="form-label" for="image">{{ trans('app.Designation')}} <label class="text-danger">*</label></label>
 									<div class="">
 										<select class="role_search" style="width: 100% !important;" name="role">
-											@if(!empty($roles))
-												@foreach($roles as $role)
-													<option value="{{$role->id}}">{{$role->name}}</option>
-												@endforeach
-											@endif
+											@foreach($roles as $id => $name)
+												<option value="{{ $id }}">{{ $name }}</option>
+											@endforeach
 										</select>
 									</div>
+								</div>
+
+								<div class="col-md-6 form-group has-feedback">
+									<label class="form-label">{{ trans('app.Branch') }} <label class="text-danger">*</label></label>
+									<select class="form-control" name="branch_id" required>
+										<option value="">{{ trans('app.Select Branch') }}</option>
+										<option value="{{ \App\Models\User::BRANCH_MAIN }}">{{ trans('app.Branch Main') }}</option>
+										<option value="{{ \App\Models\User::BRANCH_STATE }}">{{ trans('app.Branch State') }}</option>
+										<option value="{{ \App\Models\User::BRANCH_AREA }}">{{ trans('app.Branch Area') }}</option>
+									</select>
+								</div>
+
+								<div class="col-md-6 form-group has-feedback">
+									<label class="form-label">{{ trans('app.Crop Branch') }} <label class="text-danger">*</label></label>
+									<select class="form-control" name="crop_branch" required>
+										<option value="">{{ trans('app.Select Crop Branch') }}</option>
+										<option value="{{ \App\Models\User::CROP_BRANCH_TOLA }}">{{ trans('app.Tola') }}</option>
+										<option value="{{ \App\Models\User::CROP_BRANCH_CHIGIT }}">{{ trans('app.Chigit') }}</option>
+										<option value="{{ \App\Models\User::CROP_BRANCH_BOTH }}">{{ trans('app.Crop Branch Both') }}</option>
+									</select>
 								</div>
 
 
