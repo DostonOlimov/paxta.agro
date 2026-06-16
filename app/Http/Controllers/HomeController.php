@@ -69,6 +69,7 @@ class HomeController extends Controller
         }
 
         // Filter by year and branch crop type
+        // (Application has a global scope that already filters $applicationQuery by year/app_type)
         $appStatesQuery->where('crop_data.year', $year)
             ->where('applications.app_type', $branchCrop);
 
@@ -91,6 +92,7 @@ class HomeController extends Controller
 
         // Crop filter
         if ($filters['crop']) {
+            $applicationQuery->where('crop_data.name_id', $filters['crop']);
             $appStatesQuery->where('crop_data.name_id', $filters['crop']);
         }
 
@@ -100,30 +102,38 @@ class HomeController extends Controller
             ->get();
 
         // Application counts and calculations
-        $applicationsCount = $applicationQuery->count('applications.id');
+        $counts = $applicationQuery->clone()->selectRaw(
+            'COUNT(applications.id) as applications_count'
+            . ($branchCrop != 2 ? ', SUM(dalolatnoma.toy_count) as toy_count' : '')
+        )->first();
+        $applicationsCount = (int) $counts->applications_count;
+        $toyCount = $branchCrop == 2 ? 0 : (float) $counts->toy_count;
+
         if ($branchCrop == 1) {
-            $applicationQuery2 = $applicationQuery->clone()
+            $totals = $applicationQuery->clone()
                 ->join('final_results', 'dalolatnoma.id', '=', 'final_results.dalolatnoma_id')
-                ->join('sertificates', 'final_results.id', '=', 'sertificates.final_result_id');
+                ->join('sertificates', 'final_results.id', '=', 'sertificates.final_result_id')
+                ->selectRaw(
+                    'COUNT(applications.id) as sertificates_count, '
+                    . 'COUNT(DISTINCT applications.id) as finished_count, '
+                    . 'SUM(final_results.amount - (final_results.count * dalolatnoma.tara)) as final_result_total'
+                )->first();
 
-            $sertificatesCount = $applicationQuery2->count('applications.id');
-
-            $finishedApplicationsCount = $applicationQuery2->distinct('applications.id')->count('applications.id');
-            $sumFinalResult = $applicationQuery2->selectRaw('SUM(final_results.amount - (final_results.count * dalolatnoma.tara)) as total')->value('total');
+            $sertificatesCount = (int) $totals->sertificates_count;
+            $finishedApplicationsCount = (int) $totals->finished_count;
+            $sumFinalResult = $totals->final_result_total;
         } else {
-            $applicationQuery2 = $applicationQuery->clone()
-                ->with('sifat_sertificate')
-                ->withCount('sifat_sertificate');
-
-            $finishedApplicationsCount = $applicationQuery2->get()->sum('sifat_sertificate_count');
+            $finishedApplicationsCount = (int) $applicationQuery->clone()
+                ->join('sifat_sertificates', 'sifat_sertificates.app_id', '=', 'applications.id')
+                ->count('sifat_sertificates.id');
             $sertificatesCount = $finishedApplicationsCount;
-            $sumFinalResult = $applicationQuery2->sum('crop_data.amount');    
+            $sumFinalResult = $applicationQuery->clone()->sum('crop_data.amount');
         }
 
-        $toyCount = $branchCrop == 2 ? 0 : $applicationQuery->sum('dalolatnoma.toy_count');
         $sumAmount = $branchCrop == 2
-            ? $applicationQuery->sum('crop_data.amount')
-            : $applicationQuery->join('akt_amount', 'dalolatnoma.id', '=', 'akt_amount.dalolatnoma_id')
+            ? $sumFinalResult
+            : $applicationQuery->clone()
+                ->join('akt_amount', 'dalolatnoma.id', '=', 'akt_amount.dalolatnoma_id')
                 ->selectRaw('SUM(akt_amount.amount - dalolatnoma.tara) as total')->value('total');
 
         $cropNames = getCropsNames();
