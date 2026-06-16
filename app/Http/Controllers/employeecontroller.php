@@ -99,6 +99,7 @@ class employeecontroller extends Controller
         }
         $user->branch_id = $request->input('branch_id');
         $user->crop_branch = $request->input('crop_branch');
+        $user->state_id = $request->input('state_id');
         $user->role = $request->input('role');
         $user->save();
         $last_id = DB::table('users')->orderBy('id', 'desc')->get()->first();
@@ -156,10 +157,11 @@ class employeecontroller extends Controller
         $country = DB::table('tbl_countries')->get()->toArray();
         $state=null;
         $cities=null;
+        $states = DB::table('tbl_states')->get()->toArray();
 
         $position = DB::table('tbl_accessrights')->where('id', '=', intval($user->role))->get()->first();
         $roles = \App\Models\User::roles();
-        return view('employee.edit', compact('country', 'state', 'cities', 'user', 'editid', 'roles', 'position', 'title'));
+        return view('employee.edit', compact('country', 'state', 'cities', 'states', 'user', 'editid', 'roles', 'position', 'title'));
     }
 
 
@@ -205,6 +207,7 @@ class employeecontroller extends Controller
         }
         $user->branch_id = $request->input('branch_id');
         $user->crop_branch = $request->input('crop_branch');
+        $user->state_id = $request->input('state_id');
         $user->role = $role;
         $user->save();
 

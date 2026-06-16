@@ -99,7 +99,7 @@ return[
     //General Settings
 
 
-    'Select State' => 'Select State',
+    'Select State' => 'Выберите область',
     'Select City' => 'Select City',
     'City' => 'City',
     'Day'=>'Kun',

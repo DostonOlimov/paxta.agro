@@ -112,6 +112,7 @@ return[
     'Address'=>'Manzil',
     'Country'=>'Country',
     'State'=>'Viloyat',
+    'Select State'=>'Вилоятни танланг',
     'Town/City'=>'Tuman/Shahar',
     'Image'=>'Rasm',
 

@@ -135,6 +135,7 @@ return[
     'Landline No'=>'Shahar telefon raqami',
     'Country'=>'Country',
     'State'=>'Viloyat',
+    'Select State'=>'Viloyatni tanlang',
     'Town/City'=>'Tuman/Shahar',
     'Image'=>'Rasm',
 

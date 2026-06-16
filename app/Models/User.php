@@ -103,10 +103,10 @@ class User extends Authenticatable
     public static function roles(): array
     {
         return [
-            self::ROLE_CUSTOMER             => 'Buyurtmachi',
-            self::STATE_EMPLOYEE            => 'Viloyat xodimi',
-            self::ROLE_CITY_EMPLOYEE        => 'Shahar xodimi',
-            self::ROLE_DIROCTOR             => 'Direktor',
+            // self::ROLE_CUSTOMER             => 'Buyurtmachi',
+            // self::STATE_EMPLOYEE            => 'Viloyat xodimi',
+            // self::ROLE_CITY_EMPLOYEE        => 'Shahar xodimi',
+            // self::ROLE_DIROCTOR             => 'Direktor',
             self::LABORATORY_DIRECTOR       => 'Laboratoriya direktori',
             self::LABORATORY_EMPLOYEE       => 'Laboratoriya xodimi',
             self::ROLE_STATE_CHIGIT_BOSHLIQ => 'Viloyat chigit boshliq',

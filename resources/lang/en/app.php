@@ -109,6 +109,7 @@ return[
     'Password'=>'Parol',
     'Country'=>'Country',
     'State'=>'Viloyat',
+    'Select State'=>'Select state',
     'Town/City'=>'Tuman/Shahar',
     'Image'=>'Rasm',
 

@@ -166,7 +166,7 @@
 									</div>
 								</div>
 
-								<div class="col-md-6 form-group has-feedback">
+								{{-- <div class="col-md-6 form-group has-feedback">
 									<label class="form-label">{{ trans('app.Branch') }} <label class="text-danger">*</label></label>
 									<select class="form-control" name="branch_id" required>
 										<option value="">{{ trans('app.Select Branch') }}</option>
@@ -174,7 +174,8 @@
 										<option value="{{ \App\Models\User::BRANCH_STATE }}">{{ trans('app.Branch State') }}</option>
 										<option value="{{ \App\Models\User::BRANCH_AREA }}">{{ trans('app.Branch Area') }}</option>
 									</select>
-								</div>
+								</div> --}}
+								<input type="hidden" name="branch_id" value="{{ \App\Models\User::BRANCH_STATE }}">
 
 								<div class="col-md-6 form-group has-feedback">
 									<label class="form-label">{{ trans('app.Crop Branch') }} <label class="text-danger">*</label></label>
@@ -183,6 +184,16 @@
 										<option value="{{ \App\Models\User::CROP_BRANCH_TOLA }}">{{ trans('app.Tola') }}</option>
 										<option value="{{ \App\Models\User::CROP_BRANCH_CHIGIT }}">{{ trans('app.Chigit') }}</option>
 										<option value="{{ \App\Models\User::CROP_BRANCH_BOTH }}">{{ trans('app.Crop Branch Both') }}</option>
+									</select>
+								</div>
+
+								<div class="col-md-6 form-group has-feedback">
+									<label class="form-label">{{ trans('app.State') }} <label class="text-danger">*</label></label>
+									<select class="form-control" name="state_id" required>
+										<option value="">{{ trans('app.Select State') }}</option>
+										@foreach($states as $state)
+											<option value="{{ $state->id }}">{{ $state->name }}</option>
+										@endforeach
 									</select>
 								</div>
 

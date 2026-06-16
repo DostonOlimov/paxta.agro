@@ -170,7 +170,7 @@
 										</div>
 									</div>
 
-									<div class="col-md-6 col-sm-6 form-group has-feedback">
+									{{-- <div class="col-md-6 col-sm-6 form-group has-feedback">
 										<label class="form-label">{{ trans('app.Branch') }} <label class="text-danger">*</label></label>
 										<select class="form-control" name="branch_id" required>
 											<option value="">{{ trans('app.Select Branch') }}</option>
@@ -178,7 +178,8 @@
 											<option value="{{ \App\Models\User::BRANCH_STATE }}" {{ $user->branch_id == \App\Models\User::BRANCH_STATE ? 'selected' : '' }}>{{ trans('app.Branch State') }}</option>
 											<option value="{{ \App\Models\User::BRANCH_AREA }}" {{ $user->branch_id == \App\Models\User::BRANCH_AREA ? 'selected' : '' }}>{{ trans('app.Branch Area') }}</option>
 										</select>
-									</div>
+									</div> --}}
+									<input type="hidden" name="branch_id" value="{{ \App\Models\User::BRANCH_STATE }}">
 
 									<div class="col-md-6 col-sm-6 form-group has-feedback">
 										<label class="form-label">{{ trans('app.Crop Branch') }} <label class="text-danger">*</label></label>
@@ -187,6 +188,16 @@
 											<option value="{{ \App\Models\User::CROP_BRANCH_TOLA }}" {{ $user->crop_branch == \App\Models\User::CROP_BRANCH_TOLA ? 'selected' : '' }}>{{ trans('app.Tola') }}</option>
 											<option value="{{ \App\Models\User::CROP_BRANCH_CHIGIT }}" {{ $user->crop_branch == \App\Models\User::CROP_BRANCH_CHIGIT ? 'selected' : '' }}>{{ trans('app.Chigit') }}</option>
 											<option value="{{ \App\Models\User::CROP_BRANCH_BOTH }}" {{ $user->crop_branch == \App\Models\User::CROP_BRANCH_BOTH ? 'selected' : '' }}>{{ trans('app.Crop Branch Both') }}</option>
+										</select>
+									</div>
+
+									<div class="col-md-6 col-sm-6 form-group has-feedback">
+										<label class="form-label">{{ trans('app.State') }} <label class="text-danger">*</label></label>
+										<select class="form-control" name="state_id" required>
+											<option value="">{{ trans('app.Select State') }}</option>
+											@foreach($states as $state)
+												<option value="{{ $state->id }}" {{ $user->state_id == $state->id ? 'selected' : '' }}>{{ $state->name }}</option>
+											@endforeach
 										</select>
 									</div>
 
