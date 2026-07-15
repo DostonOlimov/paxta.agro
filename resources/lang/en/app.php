@@ -306,4 +306,10 @@ return[
     'Delete Confirm Text' => 'Deleted data cannot be recovered!',
     'Delete Confirm Button' => 'Yes, delete!',
     'Delete Cancel Button' => 'Cancel deletion',
+    'Clients' => 'Clients',
+    'Client' => 'Client',
+    'Add Client' => 'Add Client',
+    'Edit Client' => 'Edit Client',
+    'Code' => 'Code',
+    'Type' => 'Type',
 ];

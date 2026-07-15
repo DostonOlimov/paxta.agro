@@ -420,5 +420,10 @@ return[
     'Delete Confirm Text' => "O'chirilgan ma'lumotlar qayta tiklanmaydi!",
     'Delete Confirm Button' => "Ha, o'chirish!",
     'Delete Cancel Button' => "O'chirishni bekor qilish",
-
+    'Clients' => 'Mijozlar',
+    'Client' => 'Mijoz',
+    'Add Client' => "Mijoz qo'shish",
+    'Edit Client' => 'Mijozni tahrirlash',
+    'Code' => 'Kod',
+    'Type' => 'Turi',
 ];

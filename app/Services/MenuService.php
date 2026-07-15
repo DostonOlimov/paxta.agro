@@ -113,7 +113,23 @@ class MenuService
                 'activePattern' => 'sifat-sertificates2/*',
                 'visible' => $this->inGroup('quality_certificates_only'),
             ],
-            
+            [
+                'type' => 'item',
+                'label' => "Yog' moy korxonalari",
+                'icon' => 'cil-factory',
+                'route' => '/clients/list',
+                'activePattern' => 'clients/*',
+                'visible' => $this->inGroup('quality_certificates_only') || $this->hasRole('admin'),
+            ],
+            [
+                'type' => 'item',
+                'label' => "Shartnomalar ro'yxati",
+                'icon' => 'cil-description',
+                'route' => 'sifat_contracts.list',
+                'activePattern' => 'sifat-contracts/*',
+                'visible' => $this->inGroup('quality_certificates_only') || $this->hasRole('admin'),
+            ],
+
             // Certification Section (all except CROP_TYPE_2)
             [
                 'type' => 'title',

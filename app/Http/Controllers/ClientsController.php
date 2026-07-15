@@ -2,103 +2,109 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Models\Clients;
-use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ClientsController extends Controller
 {
-    public function index()
+    public function __construct()
     {
-        $title = 'Urug\' avlodini qo\'shish';
-        $crops = DB::table('crops_name')->get()->toArray();
-        return view('clients.add', compact('title','crops'));
+        $this->middleware('auth');
+        $this->middleware(function ($request, $next) {
+            $user = auth()->user();
+            if ($user->crop_branch != User::CROP_BRANCH_CHIGIT && $user->role !== 'admin') {
+                abort(403);
+            }
+            return $next($request);
+        });
     }
 
+    public function index()
+    {
+        $states = DB::table('tbl_states')->get();
+        return view('clients.add', compact('states'));
+    }
 
     public function list()
     {
-        $title = 'Uru\'glik avlodlari';
-        $types = Clients::with('state')->orderBy('id')->get();
-        return view('clients.list', compact('types','title'));
+        $clients = Clients::with('state')->orderBy('name')->get();
+        return view('clients.list', compact('clients'));
     }
-
 
     public function store(Request $request)
     {
-        $name = $request->input('name');
-        $crop = $request->input('crop');
-        $kod = $request->input('kod');
-        $count = DB::table('clients')
-            ->where('name', '=', $name)
-            ->where('crop_id','=',$crop)
-            ->count();
-        if ($count == 0) {
-            $type = new Clients();
-            $type->name = $name;
-            $type->crop_id = $crop;
-            $type->kod = $kod;
-            $type->save();
-            return redirect('clients/list')->with('message', 'Successfully Submitted');
-        } else {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'kod'  => 'required|digits:9',
+        ]);
+
+        $exists = DB::table('clients')
+            ->where('kod', $request->input('kod'))
+            ->exists();
+
+        if ($exists) {
             return redirect('clients/add')->with('message', 'Duplicate Data');
         }
+
+        $client = new Clients();
+        $client->name     = $request->input('name');
+        $client->kod      = $request->input('kod');
+        $client->state_id = $request->input('state_id');
+        $client->tipp     = 1;
+        $client->save();
+
+        return redirect('clients/list')->with('message', 'Successfully Submitted');
     }
 
     public function destory($id)
     {
-        $this->authorize('setting_delete', User::class);
-
         Clients::destroy($id);
         return redirect('clients/list')->with('message', 'Successfully Deleted');
     }
 
     public function edit($id)
     {
-        $crops = DB::table('crops_name')->get()->toArray();
-        return view('clients.edit', [
-            'type' => Clients::findOrFail($id),
-            'editid' => $id,
-            'crops' => $crops
-        ]);
+        $states = DB::table('tbl_states')->orderBy('name')->get();
+        $client = Clients::findOrFail($id);
+        return view('clients.edit', compact('client', 'states'));
     }
-
 
     public function update(Request $request, $id)
     {
-        $type = Clients::findOrFail($id);
-        $type->name = $request->input('name');
-        $type->crop_id = $request->input('crop');
-        $type->kod = $request->input('kod');
-        $type->save();
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'kod'  => 'required|digits:9',
+        ]);
+
+        $client = Clients::findOrFail($id);
+        $client->name     = $request->input('name');
+        $client->kod      = $request->input('kod');
+        $client->state_id = $request->input('state_id');
+        $client->tipp     = 1;
+        $client->save();
 
         return redirect('clients/list')->with('message', 'Successfully Updated');
     }
 
     public function search_by_name(Request $request)
     {
-
-        $user = auth()->user();
-        $ownername = $request->input('search');
-
-        if ($ownername != '') {
-            $owners = DB::table('clients')
-                ->select('id','name', 'kod');
-
-            $owners = $owners->where(function($query) use($ownername){
-                $query->where('name', 'like', '%'.$ownername.'%')
-                    ->orWhere('kod', 'like', '%'.$ownername.'%');
-            });
-            $owners = $owners->take(15)->get()->toArray();
-
-            if(!empty($owners)) {
-                echo json_encode($owners);
-            }else{
-                echo 'Nothing to show';
-            }
-
+        $search = $request->input('search', '');
+        if ($search === '') {
+            echo 'Nothing to show';
+            return;
         }
+
+        $results = DB::table('clients')
+            ->select('id', 'name', 'kod')
+            ->where(function ($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%')
+                  ->orWhere('kod', 'like', '%' . $search . '%');
+            })
+            ->limit(15)
+            ->get();
+
+        echo $results->isNotEmpty() ? json_encode($results) : 'Nothing to show';
     }
 }

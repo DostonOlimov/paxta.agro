@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers\Front;
 
-use App\Filters\V1\DalolatnomaFilter;
-use App\Filters\V1\SifatContractsFilter;
 use App\Http\Controllers\Controller;
 use App\Models\OrganizationCompanies;
 use App\Models\SifatContracts;
 use App\Services\AttachmentService;
-use App\Services\SearchService;
 use Illuminate\Http\Request;
 
 
@@ -21,33 +18,20 @@ class SifatContractsController extends Controller
         $this->attachmentService = $attachmentService;
     }
 
-    //search
-    public function list(Request $request, SifatContractsFilter $filter,SearchService $service)
+    public function list(Request $request)
     {
-        try {
+        $query = SifatContracts::with(['organization', 'attachment'])
+            ->orderByDesc('date');
 
-            $names = getCropsNames();
-            $states = getRegions();
-            $years = getCropYears();
-
-            return $service->search(
-                $request,
-                $filter,
-                SifatContracts::class,
-                [
-                    'organization'
-                ],
-                compact('names', 'states', 'years'),
-                'sifat_contracts.list',
-                [],
-                false
-            );
-
-        } catch (\Throwable $e) {
-            // Log the error for debugging
-            \Log::error($e);
-            return $this->errorResponse('An unexpected error occurred', [], 404);
+        if ($search = $request->input('search')) {
+            $query->where('number', 'like', '%' . $search . '%')
+                ->orWhereHas('organization', fn($q) => $q->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('inn', 'like', '%' . $search . '%'));
         }
+
+        $contracts = $query->paginate(50)->withQueryString();
+
+        return view('sifat_contracts.list', compact('contracts'));
     }
 
 

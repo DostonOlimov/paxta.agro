@@ -309,4 +309,10 @@ return[
     'Delete Confirm Text' => 'Удаленные данные не могут быть восстановлены!',
     'Delete Confirm Button' => 'Да, удалить!',
     'Delete Cancel Button' => 'Отменить удаление',
+    'Clients' => 'Клиенты',
+    'Client' => 'Клиент',
+    'Add Client' => 'Добавить клиента',
+    'Edit Client' => 'Редактировать клиента',
+    'Code' => 'Код',
+    'Type' => 'Тип',
 ];

@@ -298,4 +298,10 @@ return[
     'Delete Confirm Text' => 'Ўчирилган маълумотлар қайта тикланмайди!',
     'Delete Confirm Button' => 'Ҳа, ўчириш!',
     'Delete Cancel Button' => 'Ўчиришни бекор қилиш',
+    'Clients' => 'Клиентлар',
+    'Client' => 'Клиент',
+    'Add Client' => 'Мижоз қўшиш',
+    'Edit Client' => 'Мижозни таҳрирлаш',
+    'Code' => 'Код',
+    'Type' => 'Тури',
 ];
