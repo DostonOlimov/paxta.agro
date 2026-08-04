@@ -82,7 +82,7 @@
                                         <th class="border-bottom-0 border-top-0">
                                             {{ trans('app.Zavod nomi va kodi') }}
                                         </th>
-                                        <th>{{trans('app.Sertifikatlanuvchi mahsulot')}}</th>
+                                        <th>HVI ma'lumotlari</th>
                                         <th>Sinov bayonnomasi</th>
                                         <th>Sifat sertifikati</th>
                                     </tr>
@@ -135,24 +135,7 @@
                                             @endif
                                         </td>
                                         <td></td>
-                                        <td>
-                                            <select class="w-100 form-control name_of_corn custom-select" name="name"
-                                                    id="crops_name">
-                                                @if (count($names))
-                                                    <option value="" selected>
-                                                        Mahsulot turini tanlang</option>
-                                                @endif
-                                                @if (!empty($names))
-                                                    @foreach ($names as $name)
-                                                        <option value="{{ $name->id }}"
-                                                                @if (isset($filterValues['nameId']) && $filterValues['nameId'] == $name->id)
-                                                                selected
-                                                            @endif>
-                                                            {{ $name->name }} </option>
-                                                    @endforeach
-                                                @endif
-                                            </select>
-                                        </td>
+                                        <td></td>
                                         <td></td>
                                         <td></td>
                                     </tr>
@@ -178,7 +161,12 @@
                                             <td>{{ optional(optional(optional($app->test_program->application->organization)->area)->region)->name }}</td>
                                             <td><a href="#" class="company-link" data-id="{{ $app->test_program->application->organization_id }}">{{ optional($app->test_program->application->organization)->name }}</a></td>
                                             <td>{{ optional($app->test_program)->application->prepared->name }} - {{ optional($app->test_program)->application->prepared->kod }}</td>
-                                            <td>{{ optional($app->test_program)->application->crops->name->name }}</td>
+                                            <td>
+                                                <a href="{{ route('sertificate_protocol.clamp_data', $app) }}">
+                                                    <button type="button" class="btn btn-round btn-secondary">
+                                                        <i class="fa fa-table"></i> HVI ma'lumotlari</button>
+                                                </a>
+                                            </td>
                                                 <td>
                                                     @if (!isset($app->laboratory_final_results))
                                                         <a href="{!! url('sertificate-protocol/add' ,$app) !!}"> <button type="button"
@@ -190,6 +178,9 @@
                                                                 <a href="{!! url('sertificate-protocol/view' , $app) !!}"><button type="button"
                                                                     class="btn btn-round btn-info">
                                                                     <i class="fa fa-eye"></i> {{ trans('app.View') }}</button></a>
+                                                                <a href="{{ route('sertificate_protocol.edit', $app) }}"><button type="button"
+                                                                    class="btn btn-round btn-success">
+                                                                    <i class="fa fa-edit"></i> {{ trans('app.Edit') }}</button></a>
                                                         @else
                                                             <a href="{{ route('laboratory_protocol.download', $app) }}" class="text-azure">
                                                                 <button type="button"
@@ -205,6 +196,9 @@
                                                                     </a>
                                                                 @endfor
                                                             @endif
+                                                                <a href="{{ route('sertificate_protocol.edit', $app) }}"><button type="button"
+                                                                    class="btn btn-round btn-success">
+                                                                    <i class="fa fa-edit"></i> {{ trans('app.Edit') }}</button></a>
                                                         @endif
                                                     @endif
                                                 </td>

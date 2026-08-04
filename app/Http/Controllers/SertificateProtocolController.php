@@ -116,6 +116,53 @@ class SertificateProtocolController extends Controller
         return redirect('/sertificate-protocol/list')->with('message', 'Successfully Submitted');
     }
 
+    //edit
+    public function edit(Dalolatnoma $dalolatnoma)
+    {
+        $result = $dalolatnoma->laboratory_final_results;
+
+        if (!$result) {
+            return redirect('/sertificate-protocol/list')->with('message', 'Sinov bayonnomasi hali qo\'shilmagan');
+        }
+
+        // Once the protocol files are generated only an admin may change them
+        if ($result->status == 1 && !Auth::user()->isAdmin()) {
+            return redirect('/sertificate-protocol/list')
+                ->with('message', 'Bayonnoma fayli yaratilgan, tahrirlab bo\'lmaydi');
+        }
+
+        $laboratoryId = $dalolatnoma->test_program->application->decision->laboratory_id ?? null;
+        $operators = $laboratoryId
+            ? LaboratoryOperator::where('laboratory_id', $laboratoryId)->get()
+            : collect();
+
+        return view('sertificate_protocol.edit', compact('dalolatnoma', 'result', 'operators'));
+    }
+
+    public function update(Dalolatnoma $dalolatnoma, Request $request)
+    {
+        $this->authorize('create', Application::class);
+
+        $result = $dalolatnoma->laboratory_final_results;
+
+        if (!$result) {
+            return redirect('/sertificate-protocol/list')->with('message', 'Sinov bayonnomasi hali qo\'shilmagan');
+        }
+
+        if ($result->status == 1 && !Auth::user()->isAdmin()) {
+            return redirect('/sertificate-protocol/list')
+                ->with('message', 'Bayonnoma fayli yaratilgan, tahrirlab bo\'lmaydi');
+        }
+
+        $result->update([
+            'number' => $request->input('number'),
+            'date' => Carbon::createFromFormat('d-m-Y', $request->input('date'))->toDateString(),
+            'operator_id' => $request->input('operator_id') ?? $result->operator_id,
+        ]);
+
+        return redirect('/sertificate-protocol/list')->with('message', 'Successfully Updated');
+    }
+
     public function refresh(Dalolatnoma $dalolatnoma)
     {
         $this->authorize('create', Application::class);
@@ -259,6 +306,29 @@ class SertificateProtocolController extends Controller
 
         return redirect()->route('sertificate_protocol.list', ['generatedAppId' => $appId])
             ->with('message', 'Certificate saved!');
+    }
+
+    //clamp (HVI) data of the dalolatnoma
+    public function clampData(Dalolatnoma $dalolatnoma)
+    {
+        $dalolatnoma->load(
+            'gin_balles',
+            'test_program.application.crops.name',
+            'test_program.application.organization',
+            'test_program.application.prepared',
+        );
+
+        $clampData = $dalolatnoma->clamp_data()
+            ->with('klassiyor')
+            ->orderBy('gin_bale')
+            ->get();
+
+        $averages = $dalolatnoma->averageClampData();
+        $summary = $dalolatnoma->summarizeClampData();
+
+        return view('sertificate_protocol.clamp_data', compact(
+            'dalolatnoma', 'clampData', 'averages', 'summary'
+        ));
     }
 
     public function download( $dalolatnoma_id, Request $request)

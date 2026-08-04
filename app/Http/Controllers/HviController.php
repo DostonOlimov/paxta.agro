@@ -8,6 +8,7 @@ use App\Models\AktAmount;
 use App\Models\Area;
 use App\Models\ClampData;
 use App\Models\CropsName;
+use App\Models\Dalolatnoma;
 use Carbon\Carbon;
 use App\Models\GinBalles;
 use Illuminate\Support\Facades\DB;
@@ -75,6 +76,48 @@ class HviController extends Controller
             }
         }
         return redirect('hvi/list')->with('message', 'Successfully Submitted');
+    }
+
+    //store HVI data of a single dalolatnoma
+    public function storeForDalolatnoma(Dalolatnoma $dalolatnoma, Request $request)
+    {
+        if (!$request->hasFile('file')) {
+            return redirect()->back()->with('message', 'Fayl yuklanmadi');
+        }
+
+        $prepared = optional(optional($dalolatnoma->test_program)->application)->prepared;
+        $state_id = optional($prepared)->state_id;
+
+        if (!$state_id) {
+            return redirect()->back()->with('message', 'Zavodning viloyati aniqlanmadi');
+        }
+
+        $gin_balles = GinBalles::with('dalolatnoma.test_program.application.prepared')
+            ->where('dalolatnoma_id', $dalolatnoma->id)
+            ->get();
+
+        if ($gin_balles->isEmpty()) {
+            return redirect()->back()->with('message', 'Ushbu dalolatnoma uchun shtrix kodlar kiritilmagan');
+        }
+
+        $filePath = $this->storeFile($request->file('file'), $state_id);
+        $this->processGinBalles($gin_balles, $filePath,$dalolatnoma->toy_count,$state_id);
+
+        return redirect()->route('sertificate_protocol.clamp_data', $dalolatnoma)
+            ->with('message', 'Successfully Submitted');
+    }
+
+    //delete HVI data of a single dalolatnoma (admin only)
+    public function destroyForDalolatnoma(Dalolatnoma $dalolatnoma)
+    {
+        abort_unless(Auth::user()->isAdmin(), 403);
+
+        $count = DB::table('clamp_data')
+            ->where('dalolatnoma_id', $dalolatnoma->id)
+            ->delete();
+
+        return redirect()->route('sertificate_protocol.clamp_data', $dalolatnoma)
+            ->with('message', $count . ' ta HVI ma\'lumoti o\'chirildi');
     }
 
     public function view($id)

@@ -374,6 +374,8 @@ Route::group(['prefix' => 'hvi', 'middleware' => 'auth'], function () {
     Route::get('/view/{id}', '\App\Http\Controllers\HviController@view');
     Route::post('/store', '\App\Http\Controllers\HviController@store')->name('hvi.store');
     Route::post('/store2', '\App\Http\Controllers\HviController@storeLclass')->name('hvi.store2');
+    Route::post('/store-dalolatnoma/{dalolatnoma}', '\App\Http\Controllers\HviController@storeForDalolatnoma')->name('hvi.store_dalolatnoma');
+    Route::post('/delete-dalolatnoma/{dalolatnoma}', '\App\Http\Controllers\HviController@destroyForDalolatnoma')->name('hvi.delete_dalolatnoma');
 });
     //Final results
     Route::group(['prefix' => 'final_results', 'middleware' => 'auth'], function () {
@@ -447,12 +449,15 @@ Route::group(['prefix' => 'laboratory-protocol', 'middleware' => 'auth'], functi
 Route::group(['prefix' => 'sertificate-protocol', 'middleware' => 'auth'], function () {
     Route::get('/list', '\App\Http\Controllers\SertificateProtocolController@list')->name('sertificate_protocol.list');
     Route::get('/add/{dalolatnoma}', '\App\Http\Controllers\SertificateProtocolController@add');
+    Route::get('/edit/{dalolatnoma}', '\App\Http\Controllers\SertificateProtocolController@edit')->name('sertificate_protocol.edit');
+    Route::post('/update/{dalolatnoma}', '\App\Http\Controllers\SertificateProtocolController@update')->name('sertificate_protocol.update');
     Route::get('/view/{dalolatnoma}', '\App\Http\Controllers\SertificateProtocolController@view')->name('sertificate_protocol.view');
     Route::get('/sertificate-view/{dalolatnoma}', '\App\Http\Controllers\SertificateProtocolController@sertificateView')->name('sertificate_protocol.sertificate_view');
     Route::get('/accept/{dalolatnoma}', '\App\Http\Controllers\SertificateProtocolController@accept');
     Route::post('/store/{dalolatnoma}', '\App\Http\Controllers\SertificateProtocolController@store');
     Route::get('/change/{dalolatnoma}', '\App\Http\Controllers\SertificateProtocolController@change_status');
     Route::get('/refresh/{dalolatnoma}', '\App\Http\Controllers\SertificateProtocolController@refresh');
+    Route::get('/clamp-data/{dalolatnoma}', '\App\Http\Controllers\SertificateProtocolController@clampData')->name('sertificate_protocol.clamp_data');
 });
 Route::get('/protocol/{dalolatnoma}/download', '\App\Http\Controllers\SertificateProtocolController@download')->name('laboratory_protocol.download');
 //Laboratory results
