@@ -119,7 +119,7 @@ class MenuService
                 'icon' => 'cil-factory',
                 'route' => '/clients/list',
                 'activePattern' => 'clients/*',
-                'visible' => $this->inGroup('quality_certificates_only') || $this->hasRole('admin'),
+                'visible' => $this->inGroup('quality_certificates_only'),
             ],
             [
                 'type' => 'item',
@@ -127,7 +127,7 @@ class MenuService
                 'icon' => 'cil-description',
                 'route' => 'sifat_contracts.list',
                 'activePattern' => 'sifat-contracts/*',
-                'visible' => $this->inGroup('quality_certificates_only') || $this->hasRole('admin'),
+                'visible' => $this->inGroup('quality_certificates_only'),
             ],
 
             // Certification Section (all except CROP_TYPE_2)

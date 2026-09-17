@@ -198,7 +198,7 @@ Route::group(['prefix' => 'employee'], function () {
     Route::post('/list/edit/update/{id}', '\App\Http\Controllers\CropsSelectionController@update');
     });
         //Clients
-    Route::group(['prefix' => 'clients', 'middleware' => 'auth'], function () {
+    Route::group(['prefix' => 'clients', 'middleware' => ['auth', 'crop:' . \App\Models\CropsName::CROP_TYPE_2]], function () {
         Route::get('/add', '\App\Http\Controllers\ClientsController@index');
         Route::get('/list', '\App\Http\Controllers\ClientsController@list');
         Route::post('/store', '\App\Http\Controllers\ClientsController@store');
@@ -461,7 +461,7 @@ Route::group(['prefix' => 'sertificate-protocol', 'middleware' => 'auth'], funct
 });
 Route::get('/protocol/{dalolatnoma}/download', '\App\Http\Controllers\SertificateProtocolController@download')->name('laboratory_protocol.download');
 //Laboratory results
-Route::group(['prefix' => 'sifat-contracts', 'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'sifat-contracts', 'middleware' => ['auth', 'crop:' . \App\Models\CropsName::CROP_TYPE_2]], function () {
     Route::get('/list', '\App\Http\Controllers\Front\SifatContractsController@list')->name('sifat_contracts.list');
     Route::get('/add', '\App\Http\Controllers\Front\SifatContractsController@add')->name('sifat_contracts.add');
     Route::get('/view/{id}', '\App\Http\Controllers\Front\SifatContractsController@view');
