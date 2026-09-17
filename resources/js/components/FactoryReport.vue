@@ -1,21 +1,86 @@
 <template>
     <router-view></router-view> <!-- Renders the routed component -->
     <div class="state-report">
-        <div class="filters">
-            Vaqt bo'yicha filterlash
-            <label for="start-date">:</label>
-            <input type="date" id="start-date" v-model="startDate" @change="fetchStatesReport" />
-
-            <label for="end-date">dan</label>
-            <input type="date" id="end-date" v-model="endDate" @change="fetchStatesReport" />
-            gacha
+        <div class="report-header">
+            <router-link :to="{ name: 'StateReport' }" class="back-link">
+                <span class="back-arrow">←</span> Hududlar ro'yxatiga qaytish
+            </router-link>
+            <div class="report-header-row">
+                <div class="report-title">
+                    <h3>{{ reportTitle }}</h3>
+                    <span class="report-badge">{{ sortedStates.length }} ta zavod</span>
+                </div>
+                <div class="report-actions">
+                    <button type="button" class="action-button action-button--excel" :disabled="!states.length" @click="exportExcel">
+                        Excel fayl
+                    </button>
+                    <button type="button" class="action-button action-button--print" :disabled="!states.length" @click="print">
+                        Chop etish
+                    </button>
+                </div>
+            </div>
         </div>
 
-        <table class="state-table">
+        <div class="filters">
+            <span class="filters-title">Vaqt bo'yicha filterlash</span>
+            <div class="filter-field">
+                <label>Boshlanish sanasi</label>
+                <Datepicker
+                    v-model="startDate"
+                    format="yyyy-MM-dd"
+                    model-type="yyyy-MM-dd"
+                    :enable-time-picker="false"
+                    auto-apply
+                    placeholder="Boshlanish sanasini tanlang"
+                    @update:model-value="onDateChange"
+                />
+            </div>
+            <span class="filter-separator">—</span>
+            <div class="filter-field">
+                <label>Tugash sanasi</label>
+                <Datepicker
+                    v-model="endDate"
+                    format="yyyy-MM-dd"
+                    model-type="yyyy-MM-dd"
+                    :enable-time-picker="false"
+                    auto-apply
+                    placeholder="Tugash sanasini tanlang"
+                    @update:model-value="onDateChange"
+                />
+            </div>
+            <button v-if="startDate || endDate" type="button" class="clear-button" @click="clearDates">
+                Tozalash
+            </button>
+        </div>
+
+        <div class="summary">
+            <div class="summary-card">
+                <span class="summary-label">Jami arizalar</span>
+                <span class="summary-value">{{ totalAppsCount }} ta</span>
+            </div>
+            <div class="summary-card summary-card--success">
+                <span class="summary-label">Sertifikatlar soni</span>
+                <span class="summary-value">{{ totalCertifiedCount }} ta</span>
+            </div>
+            <div class="summary-card summary-card--success">
+                <span class="summary-label">Sertifikatlangan miqdor</span>
+                <span class="summary-value">{{ formatNumber(totalAppsSumAmount / 1000) }} t</span>
+            </div>
+            <div v-if="showKonditsion" class="summary-card">
+                <span class="summary-label">Konditsion massasi</span>
+                <span class="summary-value">{{ formatNumber(totalKonditsionAmount / 1000) }} t</span>
+            </div>
+            <div class="summary-card">
+                <span class="summary-label">Samaradorlik</span>
+                <span class="summary-value">{{ efficiency }}</span>
+            </div>
+        </div>
+
+        <table ref="reportTable" class="state-table">
             <thead>
             <tr>
                 <th @click="sortTable('name')">
-                    Hududlar
+                    Zavodlar
                     <span v-if="sortKey === 'name'">{{ sortOrder === 'asc' ? '↑' : '↓' }}</span>
                 </th>
                 <th @click="sortTable('apps_count')">
@@ -34,13 +99,17 @@
                     Sertifikatlangan miqdor(tonna)
                     <span v-if="sortKey === 'certified_application_count'">{{ sortOrder === 'asc' ? '↑' : '↓' }}</span>
                 </th>
+                <th v-if="showKonditsion" @click="sortTable('konditsion_amount')">
+                    Konditsion massasi(kg)
+                    <span v-if="sortKey === 'konditsion_amount'">{{ sortOrder === 'asc' ? '↑' : '↓' }}</span>
+                </th>
                 <th>Samaradorlik</th>
             </tr>
             </thead>
             <tbody>
             <tr v-for="state in sortedStates" :key="state.id" >
                 <td class="name_row">
-                    <router-link :to="{ name: 'FactoryReport', params: { id: state.id } }">
+                    <router-link :to="{ name: 'FactoryApplicationsReport', params: { id: state.id }, query: { region: $route.query.name } }">
                         {{ state.name }}
                     </router-link>
                 </td>
@@ -48,6 +117,7 @@
                 <td>{{ state.certificates_count }}</td>
                 <td>{{ state.apps_sum_amount.toFixed() }}</td>
                 <td>{{ (state.apps_sum_amount / 1000).toFixed() }}</td>
+                <td v-if="showKonditsion">{{ state.konditsion_amount }}</td>
                 <td>{{ state.apps_count > 0 ? ((state.certified_application_count / state.apps_count) * 100).toFixed(2) + '%' : '0%' }}</td>
             </tr>
             <tr class="total-row" style=" background-color: #ffeeba;">
@@ -56,6 +126,7 @@
                 <td>{{ totalCertifiedCount }}</td>
                 <td>{{ totalAppsSumAmount.toFixed() }}</td>
                 <td>{{ (totalAppsSumAmount / 1000).toFixed() }}</td>
+                <td v-if="showKonditsion">{{ totalKonditsionAmount }}</td>
                 <td>{{ totalAppsCount > 0 ? ((totalCertifiedAppCount / totalAppsCount) * 100).toFixed(2) + '%' : '0%' }}</td>
             </tr>
             </tbody>
@@ -66,9 +137,15 @@
 
 <script>
     import axios from "axios";
+    import Datepicker from "@vuepic/vue-datepicker";
+    import "@vuepic/vue-datepicker/dist/main.css";
+    import { exportToExcel, printReport } from "../reportExport";
 
     export default {
         name: "FactoryReport",
+        components: {
+            Datepicker,
+        },
         data() {
             return {
                 states: [], // Holds state data
@@ -106,6 +183,23 @@
             totalAppsSumAmount() {
                 return this.sortedStates.reduce((sum, state) => sum + state.apps_sum_amount, 0);
             },
+            // konditsion_amount is only returned for chigit
+            showKonditsion() {
+                return this.states.some((state) => state.konditsion_amount !== undefined);
+            },
+            totalKonditsionAmount() {
+                return this.sortedStates.reduce((sum, state) => sum + (state.konditsion_amount || 0), 0);
+            },
+            reportTitle() {
+                return this.$route.query.name
+                    ? `${this.$route.query.name} — zavodlar kesimida ma'lumot`
+                    : "Zavodlar kesimida ma'lumot";
+            },
+            efficiency() {
+                return this.totalAppsCount > 0
+                    ? ((this.totalCertifiedAppCount / this.totalAppsCount) * 100).toFixed(2) + '%'
+                    : '0%';
+            },
         },
         methods: {
             async fetchStatesReport() {
@@ -121,6 +215,72 @@
                     console.error("Failed to fetch state report:", error);
                 }
             },
+            onDateChange() {
+                // v-model is already updated when update:model-value fires
+                this.$nextTick(() => this.fetchStatesReport());
+            },
+            clearDates() {
+                this.startDate = "";
+                this.endDate = "";
+                this.fetchStatesReport();
+            },
+            formatNumber(value) {
+                return Math.round(value || 0).toLocaleString("ru-RU");
+            },
+            exportExcel() {
+                const efficiency = (row) =>
+                    row.apps_count > 0
+                        ? Number(((row.certified_application_count / row.apps_count) * 100).toFixed(2))
+                        : 0;
+
+                const columns = [
+                    { label: "Zavodlar", width: 40 },
+                    { label: "Jami arizalar soni", width: 18 },
+                    { label: "Taqdim etilgan sertifikatlar soni", width: 18 },
+                    { label: "Sertifikatlangan miqdor (kg)", width: 20 },
+                    { label: "Sertifikatlangan miqdor (tonna)", width: 20 },
+                    ...(this.showKonditsion ? [{ label: "Konditsion massasi (kg)", width: 20 }] : []),
+                    { label: "Samaradorlik (%)", width: 16 },
+                ];
+
+                const rows = this.sortedStates.map((factory) => [
+                    factory.name,
+                    factory.apps_count,
+                    factory.certificates_count,
+                    Math.round(factory.apps_sum_amount),
+                    Math.round(factory.apps_sum_amount / 1000),
+                    ...(this.showKonditsion ? [factory.konditsion_amount] : []),
+                    efficiency(factory),
+                ]);
+
+                const totals = [
+                    "Jami",
+                    this.totalAppsCount,
+                    this.totalCertifiedCount,
+                    Math.round(this.totalAppsSumAmount),
+                    Math.round(this.totalAppsSumAmount / 1000),
+                    ...(this.showKonditsion ? [this.totalKonditsionAmount] : []),
+                    efficiency({ apps_count: this.totalAppsCount, certified_application_count: this.totalCertifiedAppCount }),
+                ];
+
+                exportToExcel({
+                    title: this.reportTitle,
+                    fileName: `zavodlar_hisobot_${this.$route.query.name || this.stateId}`,
+                    startDate: this.startDate,
+                    endDate: this.endDate,
+                    columns,
+                    rows,
+                    totals,
+                });
+            },
+            print() {
+                printReport({
+                    title: this.reportTitle,
+                    startDate: this.startDate,
+                    endDate: this.endDate,
+                    table: this.$refs.reportTable,
+                });
+            },
             sortTable(key) {
                 if (this.sortKey === key) {
                     this.sortOrder = this.sortOrder === "asc" ? "desc" : "asc";
@@ -135,6 +295,8 @@
         },
     };
 </script>
+
+<style scoped src="./report-layout.css"></style>
 
 <style scoped>
     .state-summary {
@@ -163,6 +325,7 @@
     }
 
     .state-table th {
+        color: white;
         background-color: #f53535;
         font-weight: bold;
     }
@@ -184,22 +347,6 @@
         border-top: 2px solid #ccc; /* Distinct border above the total row */
         padding: 10px; /* Add padding for better readability */
         text-align: center; /* Center-align the text */
-    }
-    .filters {
-        margin-bottom: 20px;
-        display: flex;
-        gap: 10px;
-        align-items: center;
-    }
-
-    .filters label {
-        font-weight: bold;
-    }
-
-    .filters input[type="date"] {
-        padding: 5px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
     }
     .name_row{
         background-color: #929395;

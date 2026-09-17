@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import StateReport from './components/StateReport.vue';
 import FactoryReport from './components/FactoryReport.vue';
+import FactoryApplicationsReport from './components/FactoryApplicationsReport.vue';
 
 const routes = [
     {
@@ -12,6 +13,11 @@ const routes = [
         name: 'FactoryReport',
         path: '/vue/factory-report/:id',
         component: FactoryReport
+    },
+    {
+        name: 'FactoryApplicationsReport',
+        path: '/vue/factory-applications/:id',
+        component: FactoryApplicationsReport
     }
 ];
 

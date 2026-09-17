@@ -27,4 +27,7 @@ Route::group([
 ], function () {
     Route::get('/get-state-report', [App\Http\Controllers\Api\V1\Vue\StateByReportController::class, 'getReportByState'])->name('reports.getReportByState');
     Route::get('/get-factory-report', [App\Http\Controllers\Api\V1\Vue\FactoryByReportController::class, 'getReportByFactory'])->name('reports.getReportByFactory');
+    Route::get('/get-factory-applications', [App\Http\Controllers\Api\V1\Vue\FactoryApplicationsReportController::class, 'getApplicationsByFactory'])
+        ->middleware('auth:sanctum')
+        ->name('reports.getApplicationsByFactory');
 });

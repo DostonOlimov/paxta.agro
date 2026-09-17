@@ -6,6 +6,7 @@ use App\Filters\V1\ApplicationFilter;
 use App\Http\Controllers\Api\V1\Controller;
 use App\Http\Resources\V1\Vue\StateByReportCollection;
 use App\Http\Resources\V1\Vue\StateByReportResource;
+use App\Models\CropsName;
 use App\Models\PreparedCompanies;
 use App\Models\Region;
 use Illuminate\Http\Request;
@@ -43,11 +44,18 @@ class FactoryByReportController extends Controller
     {
         $query = $this->buildBaseQuery($request);
 
-        return $query->addSelect([
+        $query->addSelect([
             DB::raw('COUNT(CASE WHEN sifat_sertificates.id IS NOT NULL THEN applications.id END) as certificates_count'),
             DB::raw('SUM(CASE WHEN sifat_sertificates.id IS NOT NULL THEN crop_data.amount END) as application_amount'),
             DB::raw('COUNT(CASE WHEN sifat_sertificates.id IS NOT NULL THEN applications.id END) as certified_application_count')
-        ])
+        ]);
+
+        // Konditsion massasi is only for chigit
+        if (getApplicationType() == CropsName::CROP_TYPE_2) {
+            $query->addSelect(DB::raw('SUM(ROUND(sifat_sertificates.amount)) as konditsion_amount'));
+        }
+
+        return $query
             ->leftJoin('sifat_sertificates', 'applications.id', '=', 'sifat_sertificates.app_id')
             ->groupBy('prepared_companies.id', 'prepared_companies.name')
             ->orderByDesc('application_count')

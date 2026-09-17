@@ -1,23 +1,79 @@
 <template>
     <router-view></router-view> <!-- Renders the routed component -->
     <div class="state-report">
-        <div class="filters">
-            <label for="start-date">Boshlaniasdsh sanasi:</label>
-            <Datepicker
-                v-model="startDate"
-                :format="'yyyy-MM-dd'"
-                @change="onDateChange()"
-                placeholder="Boshlanish sanasini tanlang"
-            />
-            <Datepicker
-                v-model="endDate"
-                :format="'yyyy-MM-dd'"
-                @change="onDateChange"
-                placeholder="Tugash sanasini tanlang"
-            />
+        <div class="report-header">
+            <div class="report-header-row">
+                <div class="report-title">
+                    <h3>Hududlar kesimida ma'lumot</h3>
+                    <span class="report-badge">{{ sortedStates.length }} ta hudud</span>
+                </div>
+                <div class="report-actions">
+                    <button type="button" class="action-button action-button--excel" :disabled="!states.length" @click="exportExcel">
+                        Excel fayl
+                    </button>
+                    <button type="button" class="action-button action-button--print" :disabled="!states.length" @click="print">
+                        Chop etish
+                    </button>
+                </div>
+            </div>
         </div>
 
-        <table class="state-table">
+        <div class="filters">
+            <span class="filters-title">Vaqt bo'yicha filterlash</span>
+            <div class="filter-field">
+                <label>Boshlanish sanasi</label>
+                <Datepicker
+                    v-model="startDate"
+                    format="yyyy-MM-dd"
+                    model-type="yyyy-MM-dd"
+                    :enable-time-picker="false"
+                    auto-apply
+                    placeholder="Boshlanish sanasini tanlang"
+                    @update:model-value="onDateChange"
+                />
+            </div>
+            <span class="filter-separator">—</span>
+            <div class="filter-field">
+                <label>Tugash sanasi</label>
+                <Datepicker
+                    v-model="endDate"
+                    format="yyyy-MM-dd"
+                    model-type="yyyy-MM-dd"
+                    :enable-time-picker="false"
+                    auto-apply
+                    placeholder="Tugash sanasini tanlang"
+                    @update:model-value="onDateChange"
+                />
+            </div>
+            <button v-if="startDate || endDate" type="button" class="clear-button" @click="clearDates">
+                Tozalash
+            </button>
+        </div>
+
+        <div class="summary">
+            <div class="summary-card">
+                <span class="summary-label">Jami arizalar</span>
+                <span class="summary-value">{{ totalAppsCount }} ta</span>
+            </div>
+            <div class="summary-card summary-card--success">
+                <span class="summary-label">Sertifikatlar soni</span>
+                <span class="summary-value">{{ totalCertifiedCount }} ta</span>
+            </div>
+            <div class="summary-card summary-card--success">
+                <span class="summary-label">Sertifikatlangan miqdor</span>
+                <span class="summary-value">{{ formatNumber(totalAppsSumAmount / 1000) }} t</span>
+            </div>
+            <div v-if="showKonditsion" class="summary-card">
+                <span class="summary-label">Konditsion massasi</span>
+                <span class="summary-value">{{ formatNumber(totalKonditsionAmount / 1000) }} t</span>
+            </div>
+            <div class="summary-card">
+                <span class="summary-label">Samaradorlik</span>
+                <span class="summary-value">{{ efficiency }}</span>
+            </div>
+        </div>
+
+        <table ref="reportTable" class="state-table">
             <thead>
             <tr>
                 <th @click="sortTable('name')">
@@ -50,7 +106,7 @@
             <tbody>
             <tr v-for="state in sortedStates" :key="state.id">
                 <td class="name_row">
-                    <router-link :to="{ name: 'FactoryReport', params: { id: state.id } }">
+                    <router-link :to="{ name: 'FactoryReport', params: { id: state.id }, query: { name: state.name } }">
                         {{ state.name }}
                     </router-link>
                 </td>
@@ -80,6 +136,7 @@
     import axios from "axios";
     import Datepicker from "@vuepic/vue-datepicker";
     import "@vuepic/vue-datepicker/dist/main.css"; // Import the CSS for styling
+    import { exportToExcel, printReport } from "../reportExport";
 
     export default {
         name: "StateReport",
@@ -132,6 +189,11 @@
             totalKonditsionAmount() {
                 return this.sortedStates.reduce((sum, state) => sum + (state.konditsion_amount || 0), 0);
             },
+            efficiency() {
+                return this.totalAppsCount > 0
+                    ? ((this.totalCertifiedAppCount / this.totalAppsCount) * 100).toFixed(2) + '%'
+                    : '0%';
+            },
         },
         methods: {
             async fetchStatesReport() {
@@ -141,7 +203,6 @@
                         start_date: this.startDate,
                         end_date: this.endDate,
                     };
-                    console.log(params);
                     const response = await axios.get("/api/v1/get-state-report", { params });
                     this.states = response.data.data;
                 } catch (error) {
@@ -157,9 +218,70 @@
                 }
             },
             onDateChange() {
-                console.log("Date changed:", this.startDate, this.endDate);
-                // Trigger fetching data whenever date changes
+                // v-model is already updated when update:model-value fires
+                this.$nextTick(() => this.fetchStatesReport());
+            },
+            clearDates() {
+                this.startDate = "";
+                this.endDate = "";
                 this.fetchStatesReport();
+            },
+            formatNumber(value) {
+                return Math.round(value || 0).toLocaleString("ru-RU");
+            },
+            exportExcel() {
+                const efficiency = (state) =>
+                    state.apps_count > 0
+                        ? Number(((state.certified_application_count / state.apps_count) * 100).toFixed(2))
+                        : 0;
+
+                const columns = [
+                    { label: "Hududlar", width: 30 },
+                    { label: "Jami arizalar soni", width: 18 },
+                    { label: "Taqdim etilgan sertifikatlar soni", width: 18 },
+                    { label: "Sertifikatlangan miqdor (kg)", width: 20 },
+                    { label: "Sertifikatlangan miqdor (tonna)", width: 20 },
+                    ...(this.showKonditsion ? [{ label: "Konditsion massasi (kg)", width: 20 }] : []),
+                    { label: "Samaradorlik (%)", width: 16 },
+                ];
+
+                const rows = this.sortedStates.map((state) => [
+                    state.name,
+                    state.apps_count,
+                    state.certificates_count,
+                    Math.round(state.apps_sum_amount),
+                    Math.round(state.apps_sum_amount / 1000),
+                    ...(this.showKonditsion ? [state.konditsion_amount] : []),
+                    efficiency(state),
+                ]);
+
+                const totals = [
+                    "Jami",
+                    this.totalAppsCount,
+                    this.totalCertifiedCount,
+                    Math.round(this.totalAppsSumAmount),
+                    Math.round(this.totalAppsSumAmount / 1000),
+                    ...(this.showKonditsion ? [this.totalKonditsionAmount] : []),
+                    efficiency({ apps_count: this.totalAppsCount, certified_application_count: this.totalCertifiedAppCount }),
+                ];
+
+                exportToExcel({
+                    title: "Hududlar kesimida ma'lumot",
+                    fileName: "hududlar_hisobot",
+                    startDate: this.startDate,
+                    endDate: this.endDate,
+                    columns,
+                    rows,
+                    totals,
+                });
+            },
+            print() {
+                printReport({
+                    title: "Hududlar kesimida ma'lumot",
+                    startDate: this.startDate,
+                    endDate: this.endDate,
+                    table: this.$refs.reportTable,
+                });
             },
         },
         created() {
@@ -167,6 +289,8 @@
         },
     };
 </script>
+
+<style scoped src="./report-layout.css"></style>
 
 <style scoped>
     .state-summary {
@@ -218,22 +342,6 @@
         border-top: 2px solid #ccc; /* Distinct border above the total row */
         padding: 10px; /* Add padding for better readability */
         text-align: center; /* Center-align the text */
-    }
-    .filters {
-        margin-bottom: 20px;
-        display: flex;
-        gap: 10px;
-        align-items: center;
-    }
-
-    .filters label {
-        font-weight: bold;
-    }
-
-    .filters input[type="date"] {
-        padding: 5px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
     }
     .name_row{
         background-color: #929395;

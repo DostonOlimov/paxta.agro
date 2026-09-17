@@ -1,0 +1,203 @@
+/* Shared header / filter / summary styles for the Vue report pages */
+
+.report-header {
+    margin-bottom: 16px;
+    padding: 16px 20px;
+    background: #fff;
+    border-left: 5px solid #f53535;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 12px;
+    padding: 5px 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #f53535;
+    background: #fff1f1;
+    border: 1px solid #f9c4c4;
+    border-radius: 20px;
+    text-decoration: none;
+    transition: background-color 0.15s, color 0.15s;
+}
+
+.back-link:hover {
+    color: #fff;
+    background: #f53535;
+    text-decoration: none;
+}
+
+.back-arrow {
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.report-header-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.report-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.action-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 36px;
+    padding: 0 14px;
+    font-weight: 600;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: opacity 0.15s;
+}
+
+.action-button:hover:not(:disabled) {
+    opacity: 0.85;
+}
+
+.action-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.action-button--excel {
+    background: #1d6f42;
+}
+
+.action-button--print {
+    background: #495057;
+}
+
+.report-title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+
+.report-title h3 {
+    margin: 0;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #333;
+}
+
+.report-badge {
+    padding: 3px 10px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #555;
+    background: #f1f3f6;
+    border-radius: 12px;
+}
+
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding: 12px 16px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.filters-title {
+    align-self: center;
+    margin-right: 8px;
+    font-weight: 700;
+    color: #333;
+}
+
+.filter-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.filter-field label {
+    margin: 0;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #777;
+}
+
+/* @vuepic/vue-datepicker input */
+.filter-field :deep(.dp__input) {
+    height: 36px;
+    border-radius: 6px;
+}
+
+.filter-field :deep(.dp__input:focus),
+.filter-field :deep(.dp__input_focus) {
+    border-color: #f53535;
+    box-shadow: 0 0 0 3px rgba(245, 53, 53, 0.15);
+}
+
+.filter-separator {
+    padding-bottom: 8px;
+    color: #999;
+}
+
+.clear-button {
+    height: 36px;
+    padding: 0 14px;
+    font-weight: 600;
+    color: #f53535;
+    background: #fff;
+    border: 1px solid #f53535;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.clear-button:hover {
+    color: #fff;
+    background: #f53535;
+}
+
+.summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.summary-card {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px 16px;
+    background: #fff;
+    border-top: 3px solid #f53535;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.summary-card--success {
+    border-top-color: #28a745;
+}
+
+.summary-label {
+    font-size: 0.8rem;
+    color: #777;
+}
+
+.summary-value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #333;
+}
