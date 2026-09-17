@@ -277,7 +277,7 @@
                                                     <td>{{ optional($result->dalolatnoma->test_program->application->crops)->year }}</td>
 
                                                     <td> {{ $result->count}}</td>
-                                                    <td>{{ optional($result->dalolatnoma->akt_amount)->sum('amount') }}</td>
+                                                    <td>{{ optional($result->dalolatnoma)->akt_amount_sum_amount ?? 0 }}</td>
                                                     <td> {{ (optional($result)->amount)? $result->amount." kg":''}}</td>
                                                     <td> {{ ($result->amount != null)?$result->amount - $result->count * optional($result->dalolatnoma)->tara : ''}}</td>
                                                     <td> 4</td>

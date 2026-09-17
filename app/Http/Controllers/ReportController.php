@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Storage;
 use App\Models\CropsSelection;
 use App\Models\OrganizationCompanies;
@@ -192,7 +193,13 @@ class ReportController extends Controller
         $results = $this->getReport($request);
 
         $totalSum = $results->sum('amount');
-        $results = $results->latest('id')
+        $results = $results
+            ->with([
+                // only the bale mass total is shown, so don't load every akt_amount row
+                'dalolatnoma' => fn ($query) => $query->withSum('akt_amount', 'amount'),
+                'dalolatnoma.test_program.application.tests',
+            ])
+            ->latest('id')
             ->paginate(50)
             ->appends(['crop' => request()->input('crop')])
             ->appends(['till' => request()->input('till')])
@@ -254,7 +261,8 @@ class ReportController extends Controller
                 'oc.id',
                 'pc.kod',
                 'oc.name',
-                DB::raw('COUNT(akt.shtrix_kod) AS kip'),
+                // shtrix_kod is NOT NULL, so COUNT(*) is the same and stays index-only
+                DB::raw('COUNT(*) AS kip'),
                 DB::raw('SUM(akt.amount - d.tara) AS netto')
             )
             ->groupBy('oc.id', 'pc.kod', 'oc.name');
@@ -286,7 +294,7 @@ class ReportController extends Controller
             $companiesQuery->where('state.id', $city);
         }
 
-        // Clone query before pagination to calculate totals
+        // Run the heavy query once; totals and the page both come from this result
         $companiesForTotals = $companiesQuery->get();
 
         $kipTotal = $companiesForTotals->sum('kip');
@@ -296,9 +304,15 @@ class ReportController extends Controller
         });
 
         // Paginate
-        $companies = $companiesQuery
-            ->paginate(50)
-            ->appends($request->except('page'));
+        $perPage = 50;
+        $page = LengthAwarePaginator::resolveCurrentPage();
+        $companies = (new LengthAwarePaginator(
+            $companiesForTotals->forPage($page, $perPage)->values(),
+            $companiesForTotals->count(),
+            $perPage,
+            $page,
+            ['path' => LengthAwarePaginator::resolveCurrentPath()]
+        ))->appends($request->except('page'));
 
         return view('reports.company_report', compact(
             'companies',
@@ -457,9 +471,7 @@ class ReportController extends Controller
         $results = FinalResult::with([
             'generation',
             'certificate.attachment',
-            'dalolatnoma.clamp_data',
             'dalolatnoma.selection',
-            'dalolatnoma.akt_amount',
             'dalolatnoma.test_program.application.organization.city.region',
             'dalolatnoma.test_program.application.prepared',
             'dalolatnoma.test_program.application.crops.country',

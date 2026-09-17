@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1\Vue;
 
 use App\Http\Controllers\Api\V1\Controller;
 use App\Http\Resources\V1\Vue\StateByReportCollection;
+use App\Models\CropsName;
 use App\Models\Region;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -40,11 +41,18 @@ class StateByReportController extends Controller
     {
         $query = $this->buildBaseQuery($request);
 
-        return $query->addSelect([
+        $query->addSelect([
             DB::raw('COUNT(CASE WHEN sifat_sertificates.id IS NOT NULL THEN applications.id END) as certificates_count'),
             DB::raw('SUM(CASE WHEN sifat_sertificates.id IS NOT NULL THEN crop_data.amount END) as application_amount'),
             DB::raw('COUNT(CASE WHEN sifat_sertificates.id IS NOT NULL THEN applications.id END) as certified_application_count')
-        ])
+        ]);
+
+        // Konditsion massasi is only for chigit
+        if (getApplicationType() == CropsName::CROP_TYPE_2) {
+            $query->addSelect(DB::raw('SUM(ROUND(sifat_sertificates.amount)) as konditsion_amount'));
+        }
+
+        return $query
             ->leftJoin('sifat_sertificates', 'applications.id', '=', 'sifat_sertificates.app_id')
             ->groupBy('tbl_states.id', 'tbl_states.name','tbl_states.list_id')
             ->orderBy('tbl_states.list_id')

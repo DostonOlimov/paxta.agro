@@ -20,8 +20,11 @@ class StateByReportResource extends JsonResource
             'apps_count' => $this->application_count,
             'apps_sum_amount' => round($this->application_amount,2),
             'certified_application_count' => $this->certified_application_count,
-            'certificates_count' => $this->certificates_count
-
+            'certificates_count' => $this->certificates_count,
+            'konditsion_amount' => $this->when(
+                array_key_exists('konditsion_amount', $this->resource->getAttributes()),
+                fn () => round($this->konditsion_amount ?? 0)
+            ),
         ];
     }
 }

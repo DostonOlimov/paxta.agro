@@ -40,6 +40,10 @@
                     Sertifikatlangan miqdor(tonna)
                     <span v-if="sortKey === 'certified_application_count'">{{ sortOrder === 'asc' ? '↑' : '↓' }}</span>
                 </th>
+                <th v-if="showKonditsion" @click="sortTable('konditsion_amount')">
+                    Konditsion massasi(kg)
+                    <span v-if="sortKey === 'konditsion_amount'">{{ sortOrder === 'asc' ? '↑' : '↓' }}</span>
+                </th>
                 <th>Samaradorlik</th>
             </tr>
             </thead>
@@ -54,6 +58,7 @@
                 <td>{{ state.certificates_count }}</td>
                 <td>{{ state.apps_sum_amount.toFixed() }}</td>
                 <td>{{ (state.apps_sum_amount / 1000).toFixed() }}</td>
+                <td v-if="showKonditsion">{{ state.konditsion_amount }}</td>
                 <td>{{ state.apps_count > 0 ? ((state.certified_application_count / state.apps_count) * 100).toFixed(2) + '%' : '0%' }}</td>
             </tr>
             <tr class="total-row" style=" background-color: #ffeeba;">
@@ -62,6 +67,7 @@
                 <td>{{ totalCertifiedCount }}</td>
                 <td>{{ totalAppsSumAmount.toFixed() }}</td>
                 <td>{{ (totalAppsSumAmount / 1000).toFixed() }}</td>
+                <td v-if="showKonditsion">{{ totalKonditsionAmount }}</td>
                 <td>{{ totalAppsCount > 0 ? ((totalCertifiedAppCount / totalAppsCount) * 100).toFixed(2) + '%' : '0%' }}</td>
             </tr>
             </tbody>
@@ -118,6 +124,13 @@
             },
             totalAppsSumAmount() {
                 return this.sortedStates.reduce((sum, state) => sum + state.apps_sum_amount, 0);
+            },
+            // konditsion_amount is only returned for chigit
+            showKonditsion() {
+                return this.states.some((state) => state.konditsion_amount !== undefined);
+            },
+            totalKonditsionAmount() {
+                return this.sortedStates.reduce((sum, state) => sum + (state.konditsion_amount || 0), 0);
             },
         },
         methods: {
