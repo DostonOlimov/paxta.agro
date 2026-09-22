@@ -34,9 +34,17 @@ class ReportController extends Controller
                 'filters' => $request->all(),
             ]);
 
-            // Dispatch the job to handle the export
-            // Pass the request parameters instead of the full data set to avoid memory issues
-            ExportReportJob::dispatch($exportRequest, $request->all());
+            // Dispatch the job to handle the export.
+            // Pass the request parameters instead of the full data set to avoid memory issues,
+            // plus the session-scoped year/crop: the worker has no session of its own, so
+            // without them the global scopes on FinalResult would fall back to their defaults
+            // and export a different year's data than the page was showing.
+            ExportReportJob::dispatch(
+                $exportRequest,
+                $request->all(),
+                getCurrentYear(),
+                getApplicationType()
+            );
 
             // Return a response indicating the export is in progress
             return response()->json(['message' => 'Export started successfully. You will be notified when it is ready.', 'status' => 'success']);
@@ -421,6 +429,14 @@ class ReportController extends Controller
         // $year =  session('year') ?  session('year') : date('Y');
 
         $user = Auth::user();
+
+        if (!$user) {
+            // Reached from a queue worker that never restored the requesting user. Falling
+            // through would drop the BRANCH_STATE restriction below and build a report over
+            // every region, so stop here instead.
+            throw new \RuntimeException('getReport() needs an authenticated user to scope the report.');
+        }
+
         // `?:` and not `??`: an empty query string ("?city=") must count as "no filter"
         $city = $request->input('city') ?: null;
         $crop = $request->input('crop') ?: null;

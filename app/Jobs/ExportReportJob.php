@@ -9,7 +9,9 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
@@ -20,21 +22,29 @@ class ExportReportJob implements ShouldQueue
 
     protected $exportRequest;
     protected $filters;
+    protected $year;
+    protected $cropType;
 
     public $timeout = 3600; // 1 hour timeout
     public $tries = 3; // Retry 3 times on failure
     public $maxExceptions = 3;
 
-    public function __construct(ExportRequest $exportRequest, array $filters)
+    public function __construct(ExportRequest $exportRequest, array $filters, $year = null, $cropType = null)
     {
         $this->exportRequest = $exportRequest;
         $this->filters = $filters;
+        $this->year = $year;
+        $this->cropType = $cropType;
     }
 
     public function handle()
     {
         try {
             $this->exportRequest->update(['status' => 'processing']);
+
+            // A worker has neither the requesting user nor their session, which the report
+            // query and FinalResult's global scopes both read. Restore them first.
+            $this->restoreRequestContext();
 
             // Get the query builder (not the results)
             $query = $this->getReportQuery();
@@ -65,6 +75,42 @@ class ExportReportJob implements ShouldQueue
             $this->handleFailure($e);
             throw $e;
         }
+    }
+
+    /**
+     * Put the worker into the same state the original request was in.
+     *
+     * ReportController::getReport() reads Auth::user(), and FinalResult's global scopes read
+     * both auth()->user() and the session-scoped year/crop. None of that exists in a queue
+     * worker, which is why the job died on "Attempt to read property branch_id on null".
+     */
+    protected function restoreRequestContext(): void
+    {
+        $user = $this->exportRequest->user;
+
+        if (!$user) {
+            // Without the user we cannot scope the report to their region. Exporting
+            // everything instead would hand a regional user the whole country's data.
+            throw new \RuntimeException(
+                "Export user #{$this->exportRequest->user_id} no longer exists; refusing to build an unscoped report."
+            );
+        }
+
+        // setUser() rather than login(): this guard never needs to be persisted anywhere.
+        Auth::setUser($user);
+
+        if ($this->year !== null) {
+            session(['year' => $this->year]);
+        }
+
+        if ($this->cropType !== null) {
+            session(['crop' => $this->cropType]);
+        }
+
+        // Global scopes are captured once per process in Model::boot(). In a long-running
+        // worker that means job #2 would silently reuse job #1's user, year and crop, so
+        // drop the booted state and let the scopes rebuild from the context set above.
+        Model::clearBootedModels();
     }
 
     protected function getReportQuery()
