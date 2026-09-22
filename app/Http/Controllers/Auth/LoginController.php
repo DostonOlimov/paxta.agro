@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\CropsName;
 use App\Models\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
@@ -43,7 +44,7 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user)
     {
-        session(['crop'=>1]);
+        session(['crop'=>CropsName::CROP_TYPE_3]);
 
         if ($user->role == User::ROLE_CITY_CHIGIT or $user->role == User::ROLE_STATE_CHIGIT_BOSHLIQ or $user->role == User::ROLE_STATE_CHIGI_XODIM ) {
             return redirect('/sifat-sertificates/list');

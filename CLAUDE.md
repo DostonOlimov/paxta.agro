@@ -23,8 +23,8 @@ A Laravel 8 (PHP 8.1) web app for certifying cotton ("paxta") crops in Uzbekista
 
 ### Session-scoped "year" and "crop" context (important)
 The user picks a year and a crop type in the navbar (`POST /change-year`, `/change-crop` → `LanguageController`), and both are stored in the session. Helpers in [app/Http/helpers.php](app/Http/helpers.php) read them:
-- `getCurrentYear()`: `session('year', 2025)`
-- `getApplicationType()`: `session('crop', 1)`, one of `CropsName::CROP_TYPE_1..5`
+- `getCurrentYear()`: `session('year', 2026)`
+- `getApplicationType()`: `session('crop', 3)`, one of `CropsName::CROP_TYPE_1..5`. `LoginController@authenticated` seeds the session value on every login, so change it there too.
 - `isSifatSertificate()` (types 3, 4) and `isProductConclusion()` (type 5)
 
 `Application::booted()` adds **global scopes** from these values: it excludes `STATUS_DELETED`, filters `app_type = crop` and the crop year, and for `BRANCH_STATE` users limits results to their region. A "missing" record is usually filtered out by this scope, so use `withoutGlobalScope(...)` when you need to bypass it. Controllers and views pick different templates or flows per crop type (e.g. `DalolatnomaController@add` → `dalolatnoma/chigit/*` for type 2, `dalolatnoma/conclusion/*` for type 5).

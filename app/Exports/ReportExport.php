@@ -16,8 +16,14 @@ use PhpOffice\PhpSpreadsheet\Style\Alignment;
 
 class ReportExport implements FromCollection, WithHeadings, WithStyles, WithEvents, ShouldAutoSize
 {
+    /** The "Tip" column is fixed for the fibre report, exactly as /full-report shows it. */
+    protected const FIBRE_TYPE = 4;
+
     protected $query;
     protected $chunkSize = 500;
+
+    /** Filled while streaming the rows so styles() doesn't have to re-run the query. */
+    protected ?int $rowCount = null;
 
     public function __construct($query)
     {
@@ -28,51 +34,68 @@ class ReportExport implements FromCollection, WithHeadings, WithStyles, WithEven
     public function collection()
     {
         $rows = new Collection();
-        
+
         // Process data in chunks to reduce memory usage
         $this->query->chunk($this->chunkSize, function ($results) use ($rows) {
             foreach ($results as $result) {
                 $rows->push($this->mapResultToRow($result));
             }
         });
-        
+
+        $this->rowCount = $rows->count();
+
         return $rows;
     }
 
+    /**
+     * Column for column the same as the /full-report table, so the sheet and the
+     * page can be compared row by row.
+     */
     protected function mapResultToRow($result): array
     {
         return [
-            $result->date ?? '',
-            $result->dalolatnoma->number ?? '',
-            $result->certificate->reestr_number ?? '',
+            data_get($result, 'dalolatnoma.test_program.application.date', ''),
+            data_get($result, 'dalolatnoma.number', ''),
+            data_get($result, 'certificate.reestr_number', ''),
             data_get($result, 'dalolatnoma.test_program.application.organization.city.region.name', ''),
             data_get($result, 'dalolatnoma.test_program.application.organization.city.name', ''),
             data_get($result, 'dalolatnoma.test_program.application.organization.name', ''),
             data_get($result, 'dalolatnoma.test_program.application.prepared.name', ''),
             data_get($result, 'dalolatnoma.test_program.application.crops.name.name', ''),
-            data_get($result, 'dalolatnoma.test_program.application.crops.selection.name', ''),
+            data_get($result, 'dalolatnoma.selection.name', ''),
             data_get($result, 'dalolatnoma.test_program.application.crops.party_number', ''),
             data_get($result, 'dalolatnoma.test_program.application.crops.year', ''),
-            optional($result->dalolatnoma->akt_amount)->count() ?? '',
-            optional($result->dalolatnoma->akt_amount)->sum('amount') ?? '',
+            $result->count ?? '',
+            $result->amount ?? '',
             $this->calculateNetWeight($result),
-            $result->type ?? '',
+            self::FIBRE_TYPE,
             $result->sort ?? '',
-            $result->class ?? '',
-            $result->staple_length ?? '',
-            $result->micronaire ?? '',
-            $result->strength ?? '',
-            $result->uniformity ?? '',
-            $result->moisture ?? '',
+            data_get($result, 'generation.name', ''),
+            $this->round($result->staple),
+            $this->round($result->mic, 1),
+            $this->round($result->strength, 1),
+            $this->round($result->uniform, 1),
+            $this->round($result->humidity, 2),
         ];
     }
 
+    /**
+     * Gross mass minus the tare of every bale in the lot — the same arithmetic as the page.
+     */
     protected function calculateNetWeight($result)
     {
-        $aktAmount = optional($result->dalolatnoma->akt_amount)->sum('amount');
-        $tara = $result->dalolatnoma->tara ?? 0;
-        
-        return $aktAmount ? ($aktAmount - $tara) : '';
+        if ($result->amount === null) {
+            return '';
+        }
+
+        $tara = data_get($result, 'dalolatnoma.tara', 0);
+
+        return $result->amount - $result->count * $tara;
+    }
+
+    protected function round($value, int $precision = 0)
+    {
+        return $value === null ? '' : round($value, $precision);
     }
 
     public function headings(): array
@@ -108,7 +131,8 @@ class ReportExport implements FromCollection, WithHeadings, WithStyles, WithEven
 
     public function styles(Worksheet $sheet)
     {
-        $rowCount = $this->query->count();
+        // collection() has already streamed the rows; only fall back for an unexpected call order
+        $rowCount = $this->rowCount ?? $this->query->count();
         $totalRows = $rowCount + 3; // +3 for header rows
 
         // Apply borders to all cells

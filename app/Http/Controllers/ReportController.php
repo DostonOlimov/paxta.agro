@@ -161,34 +161,19 @@ class ReportController extends Controller
 
     public function report(Request $request)
     {
-        $requestData = $request->only([
-            'crop',
-            'city',
-            'region',
-            'from',
-            'till',
-            'organization',
-            'prepared',
-            'number',
-            'reester_number',
-            'party_number',
-            'sort',
-            'class',
-            'selection'
-        ]);
-        $city = $requestData['city'] ?? null;
-        $region = $requestData['region'] ?? null;
-        $crop = $requestData['crop'] ?? null;
-        $selection = $requestData['selection'] ?? null;
-        $from = $requestData['from'] ?? null;
-        $till = $requestData['till'] ?? null;
-        $organization = $requestData['organization'] ?? null;
-        $prepared = $requestData['prepared'] ?? null;
-        $number = $requestData['number'] ?? null;
-        $resster_number = $requestData['resster_number'] ?? null;
-        $party_number = $requestData['party_number'] ?? null;
-        $sort = $requestData['sort'] ?? null;
-        $class = $requestData['class'] ?? null;
+        $city = $request->input('city') ?: null;
+        $region = $request->input('region') ?: null;
+        $crop = $request->input('crop') ?: null;
+        $selection = $request->input('selection') ?: null;
+        $from = $request->input('from') ?: null;
+        $till = $request->input('till') ?: null;
+        $organization = $request->input('organization') ?: null;
+        $prepared = $request->input('prepared') ?: null;
+        $number = $request->input('number') ?: null;
+        $resster_number = $request->input('resster_number') ?: null;
+        $party_number = $request->input('party_number') ?: null;
+        $sort = $request->input('sort') ?: null;
+        $class = $request->input('class') ?: null;
 
         $results = $this->getReport($request);
 
@@ -201,33 +186,23 @@ class ReportController extends Controller
             ])
             ->latest('id')
             ->paginate(50)
-            ->appends(['crop' => request()->input('crop')])
-            ->appends(['till' => request()->input('till')])
-            ->appends(['from' => request()->input('from')])
-            ->appends(['city' => request()->input('city')])
-            ->appends(['cities' => request()->input('cities')])
-            ->appends(['organization' => request()->input('organization')])
-            ->appends(['prepared' => request()->input('prepared')])
-            ->appends(['states' => request()->input('states')])
-            ->appends(['number' => request()->input('number')])
-            ->appends(['selection' => request()->input('selection')])
-            ->appends(['resster_number' => request()->input('resster_number')])
-            ->appends(['party_number' => request()->input('party_number')])
-            ->appends(['sort' => request()->input('sort')])
-            ->appends(['class' => request()->input('class')])
-            ->appends(['region' => request()->input('region')]);
+            // keep every active filter on the pagination links; `page` is re-added by the paginator
+            ->appends($request->except('page'));
 
         $states = DB::table('tbl_states')->where('country_id', 234)->get();
-        $cities = $city ? DB::table('tbl_cities')->where('state_id', $city)->get() : '';
+        $cities = $city
+            ? DB::table('tbl_cities')->where('state_id', $city)->get()
+            : collect();
+
         if ($selection) {
             $selection = CropsSelection::find($selection);
         }
+        // an organization/prepared filter is more specific than a place filter, so it wins
         if ($organization || $prepared) {
-            $organization = OrganizationCompanies::find($organization);
-            $prepared = PreparedCompanies::find($prepared);
+            $organization = $organization ? OrganizationCompanies::find($organization) : null;
+            $prepared = $prepared ? PreparedCompanies::find($prepared) : null;
             $city = $region = null;
         }
-
 
         return view('reports.full_report', compact('results', 'from', 'till', 'city', 'crop', 'totalSum', 'states', 'organization', 'prepared', 'cities', 'region', 'number', 'resster_number', 'party_number', 'sort', 'class', 'selection'));
     }
@@ -441,29 +416,27 @@ class ReportController extends Controller
             ->appends(['crop' => $request->input('crop')]);
         return view('reports.report', compact('apps', 'from', 'till', 'city', 'crop'));
     }
-    private function getReport($request)
+    public function getReport($request)
     {
         // $year =  session('year') ?  session('year') : date('Y');
 
         $user = Auth::user();
-        $city = $request->input('city');
-        $crop = $request->input('crop');
-        $from = $request->input('from');
-        $till = $request->input('till');
-        $region = $request->input('region') ?? null;
-        $organization = $request->input('organization') ?? null;
-        $selection = $request->input('selection') ?? null;
-        $prepared = $request->input('prepared') ?? null;
-        $number =  $request->input('number') ?? null;
-        $resster_number = $request->input('resster_number') ?? null;
-        $party_number = $request->input('party_number') ?? null;
-        $sort = $request->input('sort') ?? null;
-        $class = $request->input('class') ?? null;
+        // `?:` and not `??`: an empty query string ("?city=") must count as "no filter"
+        $city = $request->input('city') ?: null;
+        $crop = $request->input('crop') ?: null;
+        $from = $request->input('from') ?: null;
+        $till = $request->input('till') ?: null;
+        $region = $request->input('region') ?: null;
+        $organization = $request->input('organization') ?: null;
+        $selection = $request->input('selection') ?: null;
+        $prepared = $request->input('prepared') ?: null;
+        $number =  $request->input('number') ?: null;
+        $resster_number = $request->input('resster_number') ?: null;
+        $party_number = $request->input('party_number') ?: null;
+        $sort = $request->input('sort') ?: null;
+        $class = $request->input('class') ?: null;
 
-
-        if ($organization or $prepared) {
-            $city = $region = null;
-        }
+        // an organization/prepared filter is more specific than a place filter, so it wins
         if ($organization || $prepared) {
             $city = $region = null;
         }
@@ -515,15 +488,24 @@ class ReportController extends Controller
         if ($class) {
             $results = $results->where('class', $class);
         }
+        if ($crop) {
+            $results = $results->whereHas('dalolatnoma.test_program.application.crops', function ($query) use ($crop) {
+                $query->where('name_id', $crop);
+            });
+        }
 
         if ($from && $till) {
-            $from = Carbon::createFromFormat('d-m-Y', $from)->format('Y-m-d');
-            $till = Carbon::createFromFormat('d-m-Y', $till)->format('Y-m-d');
+            try {
+                $fromDate = Carbon::createFromFormat('d-m-Y', $from)->format('Y-m-d');
+                $tillDate = Carbon::createFromFormat('d-m-Y', $till)->format('Y-m-d');
 
-            $results = $results->whereHas('dalolatnoma', function ($query) use ($from, $till) {
-                $query->whereDate('date', '>=', $from)
-                    ->whereDate('date', '<=', $till);
-            });
+                $results = $results->whereHas('dalolatnoma', function ($query) use ($fromDate, $tillDate) {
+                    $query->whereDate('date', '>=', $fromDate)
+                        ->whereDate('date', '<=', $tillDate);
+                });
+            } catch (\Exception $e) {
+                // a hand-edited date in the query string shouldn't 500 the whole report
+            }
         }
 
         if ($city) {

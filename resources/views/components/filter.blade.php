@@ -1,6 +1,6 @@
-<div class="row">
+<div class="row" id="list-filter-selects">
     <div class="col-sm-4">
-            <select class="w-100 form-control state_of_country custom-select " name="city" id="city">
+            <select class="w-100 form-control state_of_country custom-select " name="city" id="city" data-filter="city">
                 @if(count($states))
                     <option value="">{{trans('message.Respublika bo\'yicha')}}</option>
                 @endif
@@ -15,7 +15,7 @@
     </div>
 
     <div class="col-sm-4">
-        <select class="w-100 form-control state_of_country custom-select" name="crop" id="crop">
+        <select class="w-100 form-control state_of_country custom-select" name="crop" id="crop" data-filter="crop">
             @if(count($crop_names))
                 <option value="">{{trans('message.Barchasi')}}</option>
             @endif
@@ -76,9 +76,23 @@
 </div>
 
 <script>
- document.getElementById('city').addEventListener('change', function() {
-    setTimeout(function() {
-        window.location.reload();
-    }, 100);
-});
+    // Write the picked value into the query string before reloading; a plain reload
+    // would throw the selection away and leave the list unchanged.
+    document.querySelectorAll('#list-filter-selects [data-filter]').forEach(function (select) {
+        select.addEventListener('change', function () {
+            var url = new URL(window.location.href);
+            var value = this.value;
+
+            if (value === '') {
+                url.searchParams.delete(this.dataset.filter);
+            } else {
+                url.searchParams.set(this.dataset.filter, value);
+            }
+
+            // a different filter means a different result set, so go back to page 1
+            url.searchParams.delete('page');
+
+            window.location.href = url.toString();
+        });
+    });
 </script>

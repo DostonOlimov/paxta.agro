@@ -426,4 +426,18 @@ return[
     'Edit Client' => 'Mijozni tahrirlash',
     'Code' => 'Kod',
     'Type' => 'Turi',
+    // Full report / Excel export
+    'Natija topilmadi' => 'Natija topilmadi',
+    "So'nggi eksportlar" => "So'nggi eksportlar",
+    'Eksport jarayonida...' => 'Eksport jarayonida...',
+    "Eksport boshlandi. Tayyor bo'lganda sizga xabar beriladi." => "Eksport boshlandi. Tayyor bo'lganda sizga xabar beriladi.",
+    'Fayl nomi' => 'Fayl nomi',
+    'Holati' => 'Holati',
+    'Yaratilgan' => 'Yaratilgan',
+    'Amallar' => 'Amallar',
+    'Yuklab olish' => 'Yuklab olish',
+    'Tayyor' => 'Tayyor',
+    'Jarayonda' => 'Jarayonda',
+    'Bajarilmadi' => 'Bajarilmadi',
+    'Kutilmoqda' => 'Kutilmoqda',
 ];

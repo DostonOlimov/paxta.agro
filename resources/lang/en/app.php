@@ -312,4 +312,18 @@ return[
     'Edit Client' => 'Edit Client',
     'Code' => 'Code',
     'Type' => 'Type',
+    // Full report / Excel export
+    'Natija topilmadi' => 'No results found',
+    "So'nggi eksportlar" => 'Recent exports',
+    'Eksport jarayonida...' => 'Export in progress...',
+    "Eksport boshlandi. Tayyor bo'lganda sizga xabar beriladi." => 'Export started. You will be notified when it is ready.',
+    'Fayl nomi' => 'File name',
+    'Holati' => 'Status',
+    'Yaratilgan' => 'Created',
+    'Amallar' => 'Actions',
+    'Yuklab olish' => 'Download',
+    'Tayyor' => 'Ready',
+    'Jarayonda' => 'Processing',
+    'Bajarilmadi' => 'Failed',
+    'Kutilmoqda' => 'Pending',
 ];

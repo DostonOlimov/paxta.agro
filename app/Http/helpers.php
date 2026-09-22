@@ -280,13 +280,13 @@ if (! function_exists('getCropYears')) {
 if (!function_exists('getCurrentYear')) {
     function getCurrentYear()
     {
-        return session('year', 2025);
+        return session('year', 2026);
     }
 }
 if (!function_exists('getApplicationType')) {
     function getApplicationType()
     {
-        return session('crop', 1);
+        return session('crop', CropsName::CROP_TYPE_3);
     }
 }
 if (!function_exists('isSifatSertificate')) {

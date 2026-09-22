@@ -315,4 +315,18 @@ return[
     'Edit Client' => 'Редактировать клиента',
     'Code' => 'Код',
     'Type' => 'Тип',
+    // Full report / Excel export
+    'Natija topilmadi' => 'Результаты не найдены',
+    "So'nggi eksportlar" => 'Последние экспорты',
+    'Eksport jarayonida...' => 'Экспорт выполняется...',
+    "Eksport boshlandi. Tayyor bo'lganda sizga xabar beriladi." => 'Экспорт начат. Вы получите уведомление, когда файл будет готов.',
+    'Fayl nomi' => 'Имя файла',
+    'Holati' => 'Статус',
+    'Yaratilgan' => 'Создан',
+    'Amallar' => 'Действия',
+    'Yuklab olish' => 'Скачать',
+    'Tayyor' => 'Готово',
+    'Jarayonda' => 'В процессе',
+    'Bajarilmadi' => 'Не выполнено',
+    'Kutilmoqda' => 'В очереди',
 ];

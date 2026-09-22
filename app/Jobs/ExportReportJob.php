@@ -70,19 +70,17 @@ class ExportReportJob implements ShouldQueue
     protected function getReportQuery()
     {
         $reportController = app(\App\Http\Controllers\ReportController::class);
-        
-        // Create request object
+
+        // Build the same query the /full-report page shows, from the filters it sent
         $request = new \Illuminate\Http\Request($this->filters);
 
-        // Use reflection to access private method
-        $reflection = new \ReflectionClass($reportController);
-        $method = $reflection->getMethod('getReport');
-        $method->setAccessible(true);
-
-        // Get query builder and order
-        $query = $method->invoke($reportController, $request);
-        
-        return $query->orderBy('id', 'desc');
+        return $reportController->getReport($request)
+            // ReportExport walks these on every row; without them each chunk is an N+1 storm
+            ->with([
+                'dalolatnoma' => fn ($query) => $query->withSum('akt_amount', 'amount'),
+                'dalolatnoma.test_program.application.crops.name',
+            ])
+            ->orderBy('id', 'desc');
     }
 
     protected function buildFilePath(): string

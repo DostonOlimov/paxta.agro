@@ -304,4 +304,18 @@ return[
     'Edit Client' => 'Мижозни таҳрирлаш',
     'Code' => 'Код',
     'Type' => 'Тури',
+    // Full report / Excel export
+    'Natija topilmadi' => 'Натижа топилмади',
+    "So'nggi eksportlar" => 'Сўнгги экспортлар',
+    'Eksport jarayonida...' => 'Экспорт жараёнида...',
+    "Eksport boshlandi. Tayyor bo'lganda sizga xabar beriladi." => 'Экспорт бошланди. Тайёр бўлганда сизга хабар берилади.',
+    'Fayl nomi' => 'Файл номи',
+    'Holati' => 'Ҳолати',
+    'Yaratilgan' => 'Яратилган',
+    'Amallar' => 'Амаллар',
+    'Yuklab olish' => 'Юклаб олиш',
+    'Tayyor' => 'Тайёр',
+    'Jarayonda' => 'Жараёнда',
+    'Bajarilmadi' => 'Бажарилмади',
+    'Kutilmoqda' => 'Кутилмоқда',
 ];
