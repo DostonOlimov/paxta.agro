@@ -157,8 +157,6 @@
             <script>
                 document.getElementById('excelFile').addEventListener('change', function(event) {
                     const file = event.target.files[0];
-                    const reader = new FileReader();
-
                     if (!file) return;
                     const reader = new FileReader();
 
@@ -172,6 +170,8 @@
                     };
 
                     reader.readAsArrayBuffer(file);
+                    // Allow choosing the same file again
+                    event.target.value = '';
                 });
 
                 function normalizeAmount(value) {
@@ -185,7 +185,8 @@
                     const isToyHeader = v => typeof v === 'string' && /toy/i.test(v) && !/irlig/i.test(v);
                     const isAmountHeader = v => typeof v === 'string' && /irlig/i.test(v);
 
-                    const headerIndex = rows.findIndex(r => r.some(isToyHeader));
+                    // The header row must contain both kinds of headers, so a title row above the table is skipped
+                    const headerIndex = rows.findIndex(r => r.some(isToyHeader) && r.some(isAmountHeader));
                     if (headerIndex === -1) return [];
 
                     const header = rows[headerIndex];
@@ -213,6 +214,16 @@
 
                 function populateInputs(rows) {
                     const pairs = readPairs(rows);
+                    if (pairs.length === 0) {
+                        swal({
+                            title: 'Ma\'lumot topilmadi',
+                            html: 'Faylda <b>"№ toy"</b> va <b>"Toy og\'irligi, kg"</b> ustunlari topilmadi.<br>Na\'muna fayli bo\'yicha to\'ldiring.',
+                            type: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                        return;
+                    }
+
                     const inputs = Array.from(document.querySelectorAll('.amount-input'));
                     const byToy = {}, byPosition = {};
                     inputs.forEach(inp => {
@@ -223,7 +234,8 @@
                     // Match by the toy number shown in the table; if the file uses 1..N numbering
                     // instead, fall back to the row position.
                     const toyMatches = pairs.filter(p => byToy[p.toy]).length;
-                    const lookup = toyMatches > 0 ? byToy : byPosition;
+                    const positionMatches = pairs.filter(p => byPosition[p.toy]).length;
+                    const lookup = toyMatches >= positionMatches ? byToy : byPosition;
 
                     let filled = 0;
                     pairs.forEach(p => {
@@ -234,17 +246,28 @@
                         }
                     });
 
-                    alert(filled + ' ta toy og\'irligi fayldan yuklandi' + (pairs.length > filled ? ' (' + (pairs.length - filled) + ' tasi mos kelmadi)' : ''));
+                    const skipped = pairs.length - filled;
+                    let html = '<b>' + filled + '</b> ta toy og\'irligi fayldan yuklandi.';
+                    if (skipped > 0) {
+                        html += '<br><span style="color:#e67e22">' + skipped + ' tasi jadvaldagi toylarga mos kelmadi.</span>';
+                    }
+                    html += '<br><br>Ma\'lumotlarni saqlaysizmi?';
+
+                    // OK saves right away; cancel leaves the values on the page to review and save manually
+                    swal({
+                        title: 'Fayl yuklandi',
+                        html: html,
+                        type: filled > 0 ? 'success' : 'warning',
+                        showCancelButton: filled > 0,
+                        confirmButtonText: filled > 0 ? 'Saqlash' : 'OK',
+                        cancelButtonText: 'Tekshirib ko\'rish',
+                        confirmButtonColor: '#21c44c'
+                    }).then(function () {
+                        if (filled > 0) saveForm();
+                    }, function () {});
                 }
 
-                function changeDisplay(elm) {
-                    const input = elm.parentNode.querySelector('.amount-input');
-                    input.removeAttribute('readonly');
-                    input.focus();
-                    elm.style.display = 'none';
-                }
-
-                document.getElementById('myForm').addEventListener('submit', function () {
+                function prepareSubmit() {
                     const amounts = {};
                     document.querySelectorAll('.amount-input').forEach(inp => {
                         const value = normalizeAmount(inp.value);
@@ -255,6 +278,21 @@
                     const button = document.getElementById('submitter');
                     button.disabled = true;
                     button.innerText = 'Yuklanmoqda...';
-                });
+                }
+
+                function saveForm() {
+                    // form.submit() skips the submit event, so prepare the JSON here
+                    prepareSubmit();
+                    document.getElementById('myForm').submit();
+                }
+
+                function changeDisplay(elm) {
+                    const input = elm.parentNode.querySelector('.amount-input');
+                    input.removeAttribute('readonly');
+                    input.focus();
+                    elm.style.display = 'none';
+                }
+
+                document.getElementById('myForm').addEventListener('submit', prepareSubmit);
             </script>
 @endsection
