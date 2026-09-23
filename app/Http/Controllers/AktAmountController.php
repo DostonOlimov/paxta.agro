@@ -97,23 +97,15 @@ class AktAmountController extends Controller
     // View
     public function view(Dalolatnoma $dalolatnoma): Factory|View|Application
     {
-        $aktAmounts = $dalolatnoma->akt_amount()->get();
+        $results = $dalolatnoma->akt_amount()->get()->toArray();
         $ginBalles = $dalolatnoma->gin_balles()->get();
 
-        $i = 0;
-        $results = $aktAmounts->map(function ($akt) use ($ginBalles, &$i) {
-            // Find matching gin_balles row
-            $match = $ginBalles->first(function ($ball) use ($akt) {
-                return $akt->shtrix_kod >= $ball->from_number &&
-                    $akt->shtrix_kod <= $ball->to_number;
-            });
+        $this->populateCreatedAt($results, $ginBalles);
+        foreach ($results as &$result) {
+            $result['order_number'] = $result['created_at'];
+        }
+        unset($result);
 
-            // Add new field
-            $akt->order_number = $match ? $match->from_toy + $i : null;
-            $i++;
-            return $akt;
-        })->toArray();
-   
         $sum_amount = $dalolatnoma->akt_amount()->sum('amount');
         $count = $dalolatnoma->akt_amount()->count();
         $tara = $dalolatnoma->tara;
@@ -191,16 +183,24 @@ class AktAmountController extends Controller
         return $amounts;
     }
 
-    // sorting gin balles
+    // Sets each record's toy number (stored in 'created_at' for the views) from its shtrix_kod and
+    // sorts by it. Query order can't be trusted: the (dalolatnoma_id, amount) index makes MySQL return rows sorted by amount.
     private function populateCreatedAt(&$tests, $balls): void
     {
-        $i = 0;
-        foreach ($balls as $ball) {
-            for ($j = $ball->from_toy; $j <= $ball->to_toy; $j++) {
-                $tests[$i]['created_at'] = $j;
-                $i++;
-            }
+        foreach ($tests as &$test) {
+            $test['created_at'] = self::toyNumber($test['shtrix_kod'], $balls);
         }
+        unset($test);
+
+        usort($tests, fn($a, $b) => [$a['created_at'] === null, $a['created_at'], $a['shtrix_kod']]
+            <=> [$b['created_at'] === null, $b['created_at'], $b['shtrix_kod']]);
+    }
+
+    public static function toyNumber($shtrixKod, $balls): ?int
+    {
+        $ball = $balls->first(fn($b) => $shtrixKod >= $b->from_number && $shtrixKod <= $b->to_number);
+
+        return $ball ? $ball->from_toy + ($shtrixKod - $ball->from_number) : null;
     }
 
 }

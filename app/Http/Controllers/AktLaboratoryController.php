@@ -81,7 +81,7 @@ class AktLaboratoryController extends Controller
     // Show the 'edit' view with AktAmount details
     public function edit($id)
     {
-        $tests = AktAmount::where('dalolatnoma_id', $id)->get()->toArray();
+        $tests = AktAmount::where('dalolatnoma_id', $id)->orderBy('shtrix_kod')->get()->toArray();
 
         // Split the results into chunks for better display in the view
         $dataChunks = array_chunk($tests, ceil(count($tests) / 4));

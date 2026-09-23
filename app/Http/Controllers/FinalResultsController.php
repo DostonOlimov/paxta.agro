@@ -283,17 +283,8 @@ class FinalResultsController extends Controller
             ->get();
             // ->chunk(50);
 
-        $i = 0;
-        $results = $aktAmounts->map(function ($akt) use ($ginBalles, &$i) {
-            // Find matching gin_balles row
-            $match = $ginBalles->first(function ($ball) use ($akt) {
-                return $akt->gin_bale >= $ball->from_number &&
-                    $akt->gin_bale <= $ball->to_number;
-            });
-
-            // Add new field
-            $akt->order_number = $match ? $match->from_toy + $i : null;
-            $i++;
+        $results = $aktAmounts->map(function ($akt) use ($ginBalles) {
+            $akt->order_number = AktAmountController::toyNumber($akt->gin_bale, $ginBalles);
             return $akt;
         })->toArray();
 
