@@ -102,6 +102,8 @@
                               data-parsley-validate class="form-horizontal form-label-left">
                             @csrf
                             <input type="hidden" name="id" value="{{$id}}">
+                            {{-- All amounts are sent as one JSON field so large acts don't hit PHP max_input_vars --}}
+                            <input type="hidden" name="amounts_json" id="amountsJson">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="card">
@@ -123,9 +125,12 @@
                                                                 <td>
                                                                     @if(isset($data[$i]))
                                                                         <div class="input-container">
-                                                                            <input type="text" step="0.1" class="form-control" name="amount{{ 50 * ($loop->iteration - 1) + $i +1 }}" id="amount{{ 50 * ($loop->iteration - 1) + $i +1 }}"
-                                                                                 value="{{$data[$i]['amount']}}" @if($data[$i]['amount']) {{'readonly'}} @endif>
-                                                                            @if($data[$i]['amount']) <i class="fa fa-pencil pencil" onclick="changeDisplay(this,{{$data[$i]['id']}})"></i> @endif
+                                                                            <input type="text" class="form-control amount-input"
+                                                                                   data-id="{{ $data[$i]['id'] }}"
+                                                                                   data-toy="{{ $data[$i]['created_at'] ?? '' }}"
+                                                                                   data-position="{{ 50 * ($loop->iteration - 1) + $i + 1 }}"
+                                                                                   value="{{$data[$i]['amount']}}" @if($data[$i]['amount']) {{'readonly'}} @endif>
+                                                                            @if($data[$i]['amount']) <i class="fa fa-pencil pencil" onclick="changeDisplay(this)"></i> @endif
                                                                         </div>
                                                                     @endif
                                                                 </td>
@@ -141,7 +146,7 @@
                         </div>
                             <div class="col-md-6 col-sm-6">
                                 <a class="btn btn-primary" href="{{ URL::previous() }}">{{ trans('app.Cancel')}}</a>
-                                <button type="submit" onclick="disableButton()" id="submitter" class="btn btn-success">{{ trans('app.Submit')}}</button>
+                                <button type="submit" id="submitter" class="btn btn-success">{{ trans('app.Submit')}}</button>
                             </div>
                         </form>
                     </div>
@@ -154,50 +159,102 @@
                     const file = event.target.files[0];
                     const reader = new FileReader();
 
+                    if (!file) return;
+                    const reader = new FileReader();
+
                     reader.onload = function(e) {
                         const data = new Uint8Array(e.target.result);
                         const workbook = XLSX.read(data, { type: 'array' });
-                        const sheetName = workbook.SheetNames[0]; // Use the first sheet
-                        const sheet = workbook.Sheets[sheetName];
-                        const jsonData = XLSX.utils.sheet_to_json(sheet);
+                        const sheet = workbook.Sheets[workbook.SheetNames[0]]; // Use the first sheet
+                        const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: null, blankrows: false });
 
-                        // Call a function to populate inputs with amounts based on "№ toy"
-                        populateInputs(jsonData);
+                        populateInputs(rows);
                     };
 
                     reader.readAsArrayBuffer(file);
                 });
 
-                function populateInputs(data) {
+                function normalizeAmount(value) {
+                    if (value === null || value === undefined) return '';
+                    return String(value).trim().replace(/\s/g, '').replace(',', '.');
+                }
 
-                    data.forEach((row, rowIndex) => {
-                        // Assuming that '№ toy' is the identifier and "Toy og'irligi, kg" is the amount
-                        var toyNumber = row['№ toy '] ?? row['№ toy'];
-                        var amount = row["Toy og'irligi, kg"] ?? row["Toy og`irligi,kg"];
+                // Reads every "№ toy" / "Toy og'irligi" column pair, whatever the number of pairs
+                // or small spelling differences in the headers.
+                function readPairs(rows) {
+                    const isToyHeader = v => typeof v === 'string' && /toy/i.test(v) && !/irlig/i.test(v);
+                    const isAmountHeader = v => typeof v === 'string' && /irlig/i.test(v);
 
+                    const headerIndex = rows.findIndex(r => r.some(isToyHeader));
+                    if (headerIndex === -1) return [];
 
-                        let myRow = Math.floor(Object.keys(row).length / 2);
-
-                        // Find the input field by its ID (assuming toy numbers align with input IDs like 'amount1', 'amount2', etc.)
-                        var inputField = document.getElementById('amount' + toyNumber);
-
-                        if (inputField) {
-                            if(amount){
-                                inputField.value = amount;
-                            }
-                        }
-
-                        for ( let i = 1; i < 5; i++ ){
-                            toyNumber = row['№ toy _' + i] ??  row['№ toy_' + i];
-                            amount = row["Toy og'irligi, kg_" + i] ?? row["Toy og`irligi,kg_" + i];
-                            inputField = document.getElementById('amount' + toyNumber);
-                            if (inputField) {
-                                if(amount){
-                                    inputField.value = amount;
-                                }
-                            }
+                    const header = rows[headerIndex];
+                    const columns = [];
+                    header.forEach((cell, c) => {
+                        if (isToyHeader(cell)) {
+                            let a = c + 1;
+                            while (a < header.length && !isAmountHeader(header[a]) && !isToyHeader(header[a])) a++;
+                            if (isAmountHeader(header[a])) columns.push([c, a]);
                         }
                     });
+
+                    const pairs = [];
+                    columns.forEach(([toyCol, amountCol]) => {
+                        rows.slice(headerIndex + 1).forEach(r => {
+                            const toy = parseInt(r[toyCol], 10);
+                            const amount = normalizeAmount(r[amountCol]);
+                            if (!isNaN(toy) && amount !== '' && !isNaN(Number(amount))) {
+                                pairs.push({ toy, amount });
+                            }
+                        });
+                    });
+                    return pairs;
                 }
+
+                function populateInputs(rows) {
+                    const pairs = readPairs(rows);
+                    const inputs = Array.from(document.querySelectorAll('.amount-input'));
+                    const byToy = {}, byPosition = {};
+                    inputs.forEach(inp => {
+                        byToy[inp.dataset.toy] = inp;
+                        byPosition[inp.dataset.position] = inp;
+                    });
+
+                    // Match by the toy number shown in the table; if the file uses 1..N numbering
+                    // instead, fall back to the row position.
+                    const toyMatches = pairs.filter(p => byToy[p.toy]).length;
+                    const lookup = toyMatches > 0 ? byToy : byPosition;
+
+                    let filled = 0;
+                    pairs.forEach(p => {
+                        const input = lookup[p.toy];
+                        if (input) {
+                            input.value = p.amount;
+                            filled++;
+                        }
+                    });
+
+                    alert(filled + ' ta toy og\'irligi fayldan yuklandi' + (pairs.length > filled ? ' (' + (pairs.length - filled) + ' tasi mos kelmadi)' : ''));
+                }
+
+                function changeDisplay(elm) {
+                    const input = elm.parentNode.querySelector('.amount-input');
+                    input.removeAttribute('readonly');
+                    input.focus();
+                    elm.style.display = 'none';
+                }
+
+                document.getElementById('myForm').addEventListener('submit', function () {
+                    const amounts = {};
+                    document.querySelectorAll('.amount-input').forEach(inp => {
+                        const value = normalizeAmount(inp.value);
+                        if (value !== '') amounts[inp.dataset.id] = value;
+                    });
+                    document.getElementById('amountsJson').value = JSON.stringify(amounts);
+
+                    const button = document.getElementById('submitter');
+                    button.disabled = true;
+                    button.innerText = 'Yuklanmoqda...';
+                });
             </script>
 @endsection

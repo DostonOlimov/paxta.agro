@@ -130,7 +130,7 @@ class AktAmountController extends Controller
         $balls = $dalolatnoma->gin_balles()->get();
 
         if (empty($tests)) {
-            $amounts = $this->generateAmounts($$dalolatnoma->id, $balls);
+            $amounts = $this->generateAmounts($dalolatnoma->id, $balls);
             DB::transaction(function () use ($amounts) {
                 AktAmount::insert($amounts);
             });
@@ -150,26 +150,28 @@ class AktAmountController extends Controller
     public function store(Request $request): Redirector|Application|RedirectResponse
     {
 
-        $id = $request->input('id');
-        $dal = Dalolatnoma::findOrFail($id);
+        $dal = Dalolatnoma::findOrFail($request->input('id'));
 
-        // Sanitize and filter only relevant inputs (those that start with 'amount')
-        $amounts = $request->only(array_filter($request->keys(), fn($key) => str_starts_with($key, 'amount')));
+        // Amounts come as one JSON field {akt_amount_id: amount} so big acts don't exceed max_input_vars
+        $amounts = json_decode((string) $request->input('amounts_json'), true);
 
-        // Early return if no amount data is found
-        if (empty($amounts)) {
+        if (empty($amounts) || !is_array($amounts)) {
             return redirect('/akt_amount/search')->with('error', 'No amounts provided.');
         }
 
+        DB::transaction(function () use ($dal, $amounts) {
+            foreach ($dal->akt_amount as $akt) {
+                if (!isset($amounts[$akt->id])) {
+                    continue;
+                }
 
-        foreach ($dal->akt_amount as $index => $akt) {
-            // Match amount keys dynamically (amount1, amount2, etc.)
-            $amountKey = 'amount' . ($index + 1);
+                $amount = (double) str_replace(',', '.', $amounts[$akt->id]);
 
-            if (isset($amounts[$amountKey])) {
-                $akt->update(['amount' => $amounts[$amountKey]]);
+                if ($amount > 0 && $amount < 1000 && (double) $akt->amount !== $amount) {
+                    $akt->update(['amount' => $amount]);
+                }
             }
-        }
+        });
 
         return redirect('/akt_amount/search')->with('message', 'Successfully saved');
     }
