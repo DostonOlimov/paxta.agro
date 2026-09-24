@@ -56,6 +56,9 @@
                                                 <td>
                                                     <a href="{!! url('/hvi/add/'.$state->id) !!}"><button type="button" class="btn btn-round btn-success"><i class="fa fa-refresh"></i>{{trans('app.Yangilash')}}</button></a>
                                                     <a href="{!! url('/hvi/view/'.$state->id) !!}"><button type="button" class="btn btn-round btn-info"><i class="fa fa-eye"></i>{{ trans('app.View')}}</button></a>
+                                                    @if(Auth::user()->isAdmin() && optional($state->hvi_file)->path)
+                                                        <a href="{{ route('hvi.download', $state->id) }}"><button type="button" class="btn btn-round btn-primary"><i class="fa fa-download"></i> Yuklab olish</button></a>
+                                                    @endif
                                                 </td>
                                             @endif
                                             <td>

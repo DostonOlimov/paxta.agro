@@ -12,6 +12,7 @@ use App\Models\Dalolatnoma;
 use Carbon\Carbon;
 use App\Models\GinBalles;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use App\Models\HviFiles;
 use App\Models\Region;
 use Illuminate\Http\Request;
@@ -138,6 +139,20 @@ class HviController extends Controller
             'results' => $tests,
             'id' => $id
         ]);
+    }
+
+    //download the last uploaded HVI file of a region (admin only)
+    public function download($id)
+    {
+        abort_unless(Auth::user()->isAdmin(), 403);
+
+        $hvi = HviFiles::where('state_id', $id)->first();
+
+        if (!$hvi || !$hvi->path || !Storage::exists($hvi->path)) {
+            return redirect('hvi/list')->with('message', 'Fayl topilmadi');
+        }
+
+        return Storage::download($hvi->path);
     }
 
     //add LClass data

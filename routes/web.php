@@ -372,6 +372,7 @@ Route::group(['prefix' => 'hvi', 'middleware' => 'auth'], function () {
     Route::get('/add2/{id}', '\App\Http\Controllers\HviController@addLclass');
     Route::get('/list', '\App\Http\Controllers\HviController@list');
     Route::get('/view/{id}', '\App\Http\Controllers\HviController@view');
+    Route::get('/download/{id}', '\App\Http\Controllers\HviController@download')->name('hvi.download');
     Route::post('/store', '\App\Http\Controllers\HviController@store')->name('hvi.store');
     Route::post('/store2', '\App\Http\Controllers\HviController@storeLclass')->name('hvi.store2');
     Route::post('/store-dalolatnoma/{dalolatnoma}', '\App\Http\Controllers\HviController@storeForDalolatnoma')->name('hvi.store_dalolatnoma');
