@@ -366,6 +366,17 @@ Route::group(['prefix' => 'akt_laboratory', 'middleware' => 'auth'], function ()
     Route::get('/view/{id}', '\App\Http\Controllers\AktLaboratoryController@view')->name('akt_laboratory.view');
     Route::post('/store', '\App\Http\Controllers\AktLaboratoryController@store')->name('akt_laboratory.store');
 });
+//queue jobs control (super admin only)
+Route::group(['prefix' => 'jobs', 'middleware' => 'auth'], function () {
+    Route::get('/', '\App\Http\Controllers\JobsController@index')->name('jobs.index');
+    Route::get('/failed/{id}', '\App\Http\Controllers\JobsController@showFailed')->name('jobs.failed.show');
+    Route::post('/failed/{id}/retry', '\App\Http\Controllers\JobsController@retry')->name('jobs.failed.retry');
+    Route::post('/failed/retry-all', '\App\Http\Controllers\JobsController@retryAll')->name('jobs.failed.retry_all');
+    Route::post('/failed/{id}/delete', '\App\Http\Controllers\JobsController@forget')->name('jobs.failed.delete');
+    Route::post('/failed/flush', '\App\Http\Controllers\JobsController@flush')->name('jobs.failed.flush');
+    Route::post('/pending/{id}/delete', '\App\Http\Controllers\JobsController@deletePending')->name('jobs.pending.delete');
+});
+
 //HVI data
 Route::group(['prefix' => 'hvi', 'middleware' => 'auth'], function () {
     Route::get('/add/{id}', '\App\Http\Controllers\HviController@add');

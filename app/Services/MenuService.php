@@ -417,6 +417,14 @@ class MenuService
                     ],
                 ],
             ],
+            [
+                'type' => 'item',
+                'label' => 'Joblar boshqaruvi',
+                'icon' => 'cil-task',
+                'route' => 'jobs.index',
+                'activePattern' => 'jobs*',
+                'visible' => $this->user->isSuperAdmin(),
+            ],
         ];
     }
 

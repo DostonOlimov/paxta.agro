@@ -95,6 +95,11 @@ class User extends Authenticatable
         return $this->role === 'admin';
     }
 
+    public function isSuperAdmin(): bool
+    {
+        return in_array($this->id, config('app.super_admin_ids', []), true);
+    }
+
     public function access(): BelongsTo
     {
         return $this->belongsTo(tbl_accessrights::class, 'role');

@@ -70,6 +70,11 @@ return [
     'timezone' => 'Asia/Tashkent',
 
     /*
+    | Users (by id) allowed to open system-level pages such as queue jobs control.
+    */
+    'super_admin_ids' => array_filter(array_map('intval', explode(',', env('SUPER_ADMIN_IDS', '1')))),
+
+    /*
     |--------------------------------------------------------------------------
     | Application Locale Configuration
     |--------------------------------------------------------------------------
