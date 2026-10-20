@@ -31,6 +31,7 @@
                                                     {{ trans('app.Ro\'yxat')}}
                                                 </a>
                                             </li>
+                                            @if(auth()->user()->isAdmin())
                                             <li>
                                                 <a href="{!! url('/crops_selection/add')!!}">
                                                     <span class="visible-xs"></span>
@@ -38,6 +39,7 @@
                                                         {{ trans('app.Qo\'shish')}}</b>
                                                 </a>
                                             </li>
+                                            @endif
                                         </ul>
                                     </div>
                                 </div>
@@ -48,7 +50,9 @@
                                             <th>{{trans('message.Seleksiya kodi')}}</th>
                                             <th>{{trans('message.Seleksiya nomi')}}</th>
                                             <th>{{trans('message.Mahsulot turi')}}</th>
+                                            @if(auth()->user()->isAdmin())
                                             <th>{{ trans('app.Action')}}</th>
+                                            @endif
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -57,11 +61,13 @@
                                                 <td>{{ $type->kod }}</td>
                                                 <td>{{ $type->name }}</td>
                                                 <td>{{ optional($type->crops)->name }}</td>
+                                                @if(auth()->user()->isAdmin())
                                                 <td>
                                                     <a href="{!! url ('/crops_selection/list/edit/'.$type->id) !!}"> <button type="button" class="btn btn-round btn-success">{{ trans('app.Edit')}}</button></a>
 
                                                     <a url="{!! url('/crops_selection/list/delete/'.$type->id)!!}" class="sa-warning"> <button type="button" class="btn btn-round btn-danger dgr">{{ trans('app.Delete')}}</button></a>
                                                 </td>
+                                                @endif
                                             </tr>
                                         @endforeach
                                         </tbody>

@@ -10,6 +10,15 @@ use Illuminate\Http\Request;
 
 class CropsSelectionController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            abort_unless(auth()->user()->isAdmin(), 403, 'Sizga ushbu sahifadan foydalanishga ruxsat berilmagan.');
+
+            return $next($request);
+        })->except(['list', 'search_by_name']);
+    }
+
     public function index()
     {
         $title = 'Urug\' avlodini qo\'shish';
@@ -49,8 +58,6 @@ class CropsSelectionController extends Controller
 
     public function destory($id)
     {
-        $this->authorize('setting_delete', User::class);
-
         CropsSelection::destroy($id);
         return redirect('crops_selection/list')->with('message', 'Successfully Deleted');
     }
