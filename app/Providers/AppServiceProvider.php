@@ -26,6 +26,10 @@ class  AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        if ($this->app->environment('production')) {
+            \URL::forceScheme('https');
+        }
+
         Paginator::useBootstrap();
         ResponseFactory::mixin(new ResponseMixin());
         $this->app->singleton(\App\Services\MenuService::class);

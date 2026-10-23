@@ -4,7 +4,7 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class XBarChart extends Component
+class XbarChart extends Component
 {
     public $chart_data ;
 
