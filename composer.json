@@ -9,7 +9,7 @@
         "ext-json": "*",
         "awobaz/compoships": "^2.2",
         "barryvdh/laravel-debugbar": "^3.7",
-        "barryvdh/laravel-dompdf": "^2.2",
+        "barryvdh/laravel-dompdf": "^3.1",
         "guzzlehttp/guzzle": "^7.9",
         "hisamu/php-xbase": "^2.1",
         "irazasyed/telegram-bot-sdk": "^3.9",
