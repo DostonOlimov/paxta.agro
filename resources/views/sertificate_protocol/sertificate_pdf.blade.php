@@ -126,6 +126,19 @@
         use SimpleSoftwareIO\QrCode\Facades\QrCode;
     @endphp
 
-    @include('sertificate_protocol._sertificate_cheque')
+    @isset($groups)
+        @foreach($groups as $index => $group)
+            @php
+                $sertNumber = $sertNumbers[$index];
+                $qrCode = $qrCodes[$index];
+            @endphp
+            @include('sertificate_protocol._sertificate_cheque_' . $lang)
+            @if(!$loop->last)
+                <div style="page-break-after: always"></div>
+            @endif
+        @endforeach
+    @else
+        @include('sertificate_protocol._sertificate_cheque')
+    @endisset
 
 @endsection

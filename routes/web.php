@@ -465,6 +465,8 @@ Route::group(['prefix' => 'sertificate-protocol', 'middleware' => 'auth'], funct
     Route::post('/update/{dalolatnoma}', '\App\Http\Controllers\SertificateProtocolController@update')->name('sertificate_protocol.update');
     Route::get('/view/{dalolatnoma}', '\App\Http\Controllers\SertificateProtocolController@view')->name('sertificate_protocol.view');
     Route::get('/sertificate-view/{dalolatnoma}', '\App\Http\Controllers\SertificateProtocolController@sertificateView')->name('sertificate_protocol.sertificate_view');
+    Route::get('/download/{dalolatnoma}/{lang}', '\App\Http\Controllers\SertificateProtocolController@downloadTranslated')->whereIn('lang', ['ru', 'en'])->name('sertificate_protocol.download_translated');
+    Route::get('/certificate-download/{dalolatnoma}/{lang}', '\App\Http\Controllers\SertificateProtocolController@downloadCertificateTranslated')->whereIn('lang', ['ru', 'en'])->name('sertificate_protocol.certificate_download_translated');
     Route::get('/accept/{dalolatnoma}', '\App\Http\Controllers\SertificateProtocolController@accept');
     Route::post('/store/{dalolatnoma}', '\App\Http\Controllers\SertificateProtocolController@store');
     Route::get('/change/{dalolatnoma}', '\App\Http\Controllers\SertificateProtocolController@change_status');

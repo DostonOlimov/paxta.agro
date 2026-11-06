@@ -196,6 +196,13 @@
                                                                     </a>
                                                                 @endfor
                                                             @endif
+                                                            {{-- @if(auth()->user()->isAdmin())
+                                                                @foreach(['ru' => 'RU', 'en' => 'EN'] as $lang => $label)
+                                                                    <a href="{{ route('sertificate_protocol.download_translated', [$app, $lang]) }}">
+                                                                        <button type="button" class="btn btn-round btn-primary">
+                                                                            <i class="fa fa-download"></i> {{ $label }}</button></a>
+                                                                @endforeach
+                                                            @endif --}}
                                                                 <a href="{{ route('sertificate_protocol.edit', $app) }}"><button type="button"
                                                                     class="btn btn-round btn-success">
                                                                     <i class="fa fa-edit"></i> {{ trans('app.Edit') }}</button></a>
@@ -223,6 +230,13 @@
                                                                 </a>
                                                             @endfor
                                                         @endif
+                                                        {{-- @if(auth()->user()->isAdmin())
+                                                            @foreach(['ru' => 'RU', 'en' => 'EN'] as $lang => $label)
+                                                                <a href="{{ route('sertificate_protocol.certificate_download_translated', [$app, $lang]) }}">
+                                                                    <button type="button" class="btn btn-round btn-primary">
+                                                                        <i class="fa fa-download"></i> {{ $label }}</button></a>
+                                                            @endforeach
+                                                        @endif --}}
 
                                                     @endif
                                                 @endif

@@ -258,6 +258,90 @@ class SertificateProtocolController extends Controller
     }
 
 
+    // Admin only: download the protocol in Russian or English (not stored)
+    public function downloadTranslated(Dalolatnoma $dalolatnoma, string $lang)
+    {
+        abort_unless(Auth::user()->isAdmin() && in_array($lang, ['ru', 'en']), 403);
+
+        $test = $dalolatnoma->load(
+            'laboratory_result',
+            'result',
+            'selection',
+            'laboratory_final_results.operator',
+            'laboratory_final_results.klassiyor',
+            'laboratory_final_results.director',
+            'test_program.application.decision.laboratory.city.region',
+            'test_program.application.crops.name',
+            'test_program.application.organization.city',
+            'test_program.application.prepared.region',
+        );
+
+        if (!$test->laboratory_final_results) {
+            return redirect('/sertificate-protocol/list')->with('message', 'Sinov bayonnomasi hali qo\'shilmagan');
+        }
+
+        $type = $this->determineCropType($dalolatnoma);
+        $groups = $test->result()->get()->groupBy('sort')->values();
+
+        $formatDate = fn ($date) => $date
+            ? \Carbon\Carbon::parse($date)->locale($lang)->translatedFormat('j F Y')
+            : null;
+        $formattedDate = $formatDate($test->laboratory_final_results->date);
+        $formattedDate2 = $formatDate($test->date);
+
+        $qrCodes = $groups->keys()->map(fn ($index) => $this->generateQrCode(
+            route('laboratory_protocol.download', ['dalolatnoma' => $test, 'type' => $index])
+        ))->all();
+
+        $pdf = Pdf::loadView('sertificate_protocol.protocol_pdf', compact(
+            'test', 'type', 'formattedDate', 'formattedDate2', 'qrCodes', 'groups', 'lang'
+        ))->setPaper('A4')
+            ->setOptions([
+                'isFontSubsettingEnabled' => true,
+                'isRemoteEnabled'         => true,
+                'chroot'                  => [public_path()],
+            ]);
+
+        return $pdf->download("protocol_{$test->id}_{$lang}.pdf");
+    }
+
+    // Admin only: download the quality certificate in Russian or English (not stored)
+    public function downloadCertificateTranslated(Dalolatnoma $dalolatnoma, string $lang)
+    {
+        abort_unless(Auth::user()->isAdmin() && in_array($lang, ['ru', 'en']), 403);
+
+        $application = $dalolatnoma->test_program->application;
+        $sifatSertificate = $application->sifat_sertificate;
+
+        if (!$sifatSertificate || !$dalolatnoma->laboratory_final_results) {
+            return redirect('/sertificate-protocol/list')->with('message', 'Sertifikat hali yaratilmagan');
+        }
+
+        $groups = $dalolatnoma->result()->get()->groupBy('sort')->values();
+        $formattedDate = \Carbon\Carbon::parse($dalolatnoma->laboratory_final_results->date)
+            ->locale($lang)->translatedFormat('j F Y');
+
+        $sertNumbers = [];
+        $qrCodes = [];
+        foreach ($groups as $index => $group) {
+            $sertNumbers[$index] = (($sifatSertificate->year - 2000) * 1000000) + ($sifatSertificate->number - 1) + $index + 1;
+            $qrCodes[$index] = $this->generateQrCode(
+                route('sifat_sertificate.download', ['id' => $application->id, 'type' => $index])
+            );
+        }
+
+        $pdf = Pdf::loadView('sertificate_protocol.sertificate_pdf', compact(
+            'application', 'groups', 'sertNumbers', 'formattedDate', 'qrCodes', 'lang'
+        ))->setPaper('A4')
+            ->setOptions([
+                'isFontSubsettingEnabled' => true,
+                'isRemoteEnabled'         => true,
+                'chroot'                  => [public_path()],
+            ]);
+
+        return $pdf->download("certificate_{$application->id}_{$lang}.pdf");
+    }
+
     public function sertificateView(Dalolatnoma $dalolatnoma)
     {
         $application = $dalolatnoma->test_program->application;
