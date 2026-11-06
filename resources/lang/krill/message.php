@@ -48,6 +48,7 @@ return [
     'Navlar ro\'yxati' => 'Навлар рўйхати',
     'Sinflar ro\'yxatii' => 'Синфлар рўйхатии',
     'Seleksiya turlari' => 'Селексия турлари',
+    'Foydalanuvchi ruxsatlari' => 'Фойдаланувчи рухсатлари',
     'Korxona va tashkilotlar' => 'Корхона ва ташкилотлар',
     'Buyurtmachilar korxonalar' => 'Буюртмачилар корхоналар',
     'Ishlab chiqaruvchi zavodlar' => 'Ишлаб чиқарувчи заводлар',

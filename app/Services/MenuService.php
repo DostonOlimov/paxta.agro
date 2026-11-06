@@ -284,6 +284,14 @@ class MenuService
                         'route' => '/crops_selection/list',
                         'activePattern' => 'crops_selection/*',
                     ],
+                    [
+                        'type' => 'item',
+                        'label' => 'message.Foydalanuvchi ruxsatlari',
+                        'icon' => 'cil-lock-locked',
+                        'route' => '/permissions',
+                        'activePattern' => 'permissions',
+                        'visible' => $this->user->isAdmin(),
+                    ],
                 ],
             ],
             [

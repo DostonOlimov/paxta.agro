@@ -31,7 +31,7 @@
                                                     {{ trans('app.Ro\'yxat')}}
                                                 </a>
                                             </li>
-                                            @if(auth()->user()->isAdmin())
+                                            @if(auth()->user()->hasPermission(\App\Models\Permission::CROPS_SELECTION_MANAGE))
                                             <li>
                                                 <a href="{!! url('/crops_selection/add')!!}">
                                                     <span class="visible-xs"></span>
@@ -50,7 +50,7 @@
                                             <th>{{trans('message.Seleksiya kodi')}}</th>
                                             <th>{{trans('message.Seleksiya nomi')}}</th>
                                             <th>{{trans('message.Mahsulot turi')}}</th>
-                                            @if(auth()->user()->isAdmin())
+                                            @if(auth()->user()->hasPermission(\App\Models\Permission::CROPS_SELECTION_MANAGE))
                                             <th>{{ trans('app.Action')}}</th>
                                             @endif
                                         </tr>
@@ -61,7 +61,7 @@
                                                 <td>{{ $type->kod }}</td>
                                                 <td>{{ $type->name }}</td>
                                                 <td>{{ optional($type->crops)->name }}</td>
-                                                @if(auth()->user()->isAdmin())
+                                                @if(auth()->user()->hasPermission(\App\Models\Permission::CROPS_SELECTION_MANAGE))
                                                 <td>
                                                     <a href="{!! url ('/crops_selection/list/edit/'.$type->id) !!}"> <button type="button" class="btn btn-round btn-success">{{ trans('app.Edit')}}</button></a>
 

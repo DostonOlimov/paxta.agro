@@ -52,6 +52,7 @@ return [
     'Navlar ro\'yxati' => 'Navlar ro\'yxati',
     'Sinflar ro\'yxatii' => 'Sinflar ro\'yxati',
     'Seleksiya turlari' => 'Seleksiya turlari',
+    'Foydalanuvchi ruxsatlari' => 'Foydalanuvchi ruxsatlari',
     'Korxona va tashkilotlar' => 'Korxona va tashkilotlar',
     'Buyurtmachilar korxonalar' => 'Buyurtmachilar korxonalar',
     'Ishlab chiqaruvchi zavodlar' => 'Ishlab chiqaruvchi zavodlar',

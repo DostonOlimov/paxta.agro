@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -53,6 +54,9 @@ class User extends Authenticatable
 
     protected $guarded = ['status'];
 
+    /** @var string[]|null per-request cache of permission keys */
+    protected ?array $permissionKeys = null;
+
     protected $appends = [
         'full_name',
     ];
@@ -93,6 +97,25 @@ class User extends Authenticatable
     public function isAdmin(): bool
     {
         return $this->role === 'admin';
+    }
+
+    public function permissions(): BelongsToMany
+    {
+        return $this->belongsToMany(Permission::class, 'permission_user');
+    }
+
+    /**
+     * Admin hamma ruxsatga ega; boshqalar — permission_user orqali berilgan ruxsatlarga.
+     */
+    public function hasPermission(string $key): bool
+    {
+        if ($this->isAdmin()) {
+            return true;
+        }
+
+        $this->permissionKeys ??= $this->permissions()->pluck('key')->all();
+
+        return in_array($key, $this->permissionKeys, true);
     }
 
     public function isSuperAdmin(): bool

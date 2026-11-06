@@ -187,6 +187,9 @@ Route::group(['prefix' => 'employee'], function () {
     Route::get('/list/edit/{id}', '\App\Http\Controllers\CropsGenerationController@edit');
     Route::post('/list/edit/update/{id}', '\App\Http\Controllers\CropsGenerationController@update');
     });
+    //User permissions (admin only)
+    Route::get('/permissions', '\App\Http\Controllers\PermissionController@index')->middleware('auth');
+    Route::post('/permissions', '\App\Http\Controllers\PermissionController@update')->middleware('auth');
     //Crops selection
     Route::group(['prefix' => 'crops_selection', 'middleware' => 'auth'], function () {
     Route::get('/add', '\App\Http\Controllers\CropsSelectionController@index');

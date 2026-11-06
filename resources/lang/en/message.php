@@ -34,6 +34,7 @@ return [
     'Navlar ro\'yxati' => 'Sorts list',
     'Sinflar ro\'yxatii' => 'Classes list',
     'Seleksiya turlari' => 'Selection types',
+    'Foydalanuvchi ruxsatlari' => 'User permissions',
     'Korxona va tashkilotlar' => 'Companies and organizations',
     'Buyurtmachilar korxonalar' => 'Customers are businesses',
     'Ishlab chiqaruvchi zavodlar' => 'Manufacturing copanies',

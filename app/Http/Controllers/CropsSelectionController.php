@@ -13,7 +13,7 @@ class CropsSelectionController extends Controller
     public function __construct()
     {
         $this->middleware(function ($request, $next) {
-            abort_unless(auth()->user()->isAdmin(), 403, 'Sizga ushbu sahifadan foydalanishga ruxsat berilmagan.');
+            abort_unless(auth()->user()->hasPermission(\App\Models\Permission::CROPS_SELECTION_MANAGE), 403, 'Sizga ushbu sahifadan foydalanishga ruxsat berilmagan.');
 
             return $next($request);
         })->except(['list', 'search_by_name']);
